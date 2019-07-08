@@ -18,7 +18,6 @@ public class carFactory2 : MonoBehaviour {
         Random.seed = 456;
         carGenerator = 0;
         StartCoroutine(generateCars1());
-	//	StartCoroutine(generateCars2());
     }
 
     // Update is called once per frame
@@ -27,24 +26,12 @@ public class carFactory2 : MonoBehaviour {
 
     }
 
-    /*void createCar() {
-        Random.Range(0.0f, 1.0f);
-
-
-        Instantiate(car1, spawnSpot1, Quaternion.identity);
-        Instantiate(car2, spawnSpot2, Quaternion.identity);
-        Instantiate(car3, spawnSpot3, Quaternion.identity);
-
-    }   */
-
     IEnumerator generateCars1()
     {
-		//print ("first corou factory2");
-		//for(int i = 0; i <2; i++)
         while (true)
         {
             yield return new WaitForSeconds(Random.Range(6,7));
-            if (newCarCount.carCount < Random.Range(1,4))       //(1,6)newCarCount.maxCarNumbers())
+            if (newCarCount.carCount < Random.Range(1,4))
             {
                 if (carGenerator == 0)
                 {
@@ -52,50 +39,16 @@ public class carFactory2 : MonoBehaviour {
 		    newCarCount.incrementCarCount();
                     carGenerator = 1;
                 }
-                /* else if (carGenerator == 1) {
-                     Instantiate(car2, spawnSpot2, Quaternion.Euler(Vector3.up * 90));
-                     carGenerator = 2;
-                 } */
                 else
                 {
                     Instantiate(car3, spawnSpot3, Quaternion.Euler(Vector3.up * 300));
 		    newCarCount.incrementCarCount();
                     carGenerator = 0;
                 }
-               // newCarCount.incrementCarCount();
             }
 
             
         }
     }
-	/*	IEnumerator generateCars2()
-	{
-		print ("first corou factory2");
-		for(int i = 0; i <2; i++)
-			// while (true)
-		{
-			yield return new WaitForSeconds(Random.Range(2, 7));
-			if (newCarCount.getCarCount() < Random.Range(1,2))       //newCarCount.maxCarNumbers())
-			{
-				if (carGenerator == 0)
-				{
-					Instantiate(car1, spawnSpot1, Quaternion.Euler(Vector3.up * 270));
-					carGenerator = 1;
-				}
-				 else if (carGenerator == 1) {
-                     Instantiate(car2, spawnSpot2, Quaternion.Euler(Vector3.up * 90));
-                     carGenerator = 2;
-                 } 
-				else
-				{
-					Instantiate(car3, spawnSpot3, Quaternion.Euler(Vector3.up * 270));
-					carGenerator = 0;
-				}
-				newCarCount.incrementCarCount();
-			}
-
-
-		}
-	}  */
 
 }

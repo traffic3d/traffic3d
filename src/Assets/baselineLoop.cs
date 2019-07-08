@@ -30,10 +30,8 @@ while(true)
 {
                         yield return StartCoroutine (one());
                         yield return StartCoroutine (wait1());
-                      //  yield return StartCoroutine (amber1());
 			yield return StartCoroutine (two());
 			yield return StartCoroutine (wait2());
-                       // yield return StartCoroutine (amber2());
 }
 }
  public IEnumerator one()
@@ -48,11 +46,6 @@ public IEnumerator wait1()
 {
 yield return new WaitForSeconds(5);
 }
-
-//public IEnumerator amber1()
-//{
-//yield return new WaitForSeconds(6);
-//}
 
 public IEnumerator two()
 {
