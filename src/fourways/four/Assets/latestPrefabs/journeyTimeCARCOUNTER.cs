@@ -25,8 +25,6 @@ public class journeyTimeCARCOUNTER : MonoBehaviour {
 	public static void incrementjourneyCARsCount()
 	{
 		journeyCARs++;
-//		print (journeyCARs);
-		//System.IO.File.AppendAllText ("journeyCarCounter.csv", journeyCARs.ToString () + ",");
 
 	}
 

@@ -16,22 +16,14 @@ public class ScreenImages : MonoBehaviour {
 
         Time.captureFramerate = frameRate;
         System.IO.Directory.CreateDirectory(folder);
-        //StartCoroutine(screenshotsAndTextFile(1f));
-
 
     }
 	
 	
 	void Update () {
-        //if (Time.time > nextActionTime)
-        //{
-            //nextActionTime += period;
             // execute block of code here
             takeScreenshot();
             writeTextFile();
-            //Debug.Log("take screenshot");
-
-        //}
         
 
     }
@@ -50,16 +42,10 @@ public class ScreenImages : MonoBehaviour {
         ScreenCapture.CaptureScreenshot(name);
     }
 
-        public void writeTextFile()                            //(string path, string name)
+        public void writeTextFile()
         {
-        //CountCars countcarsscript = (CountCars)CarCount.GetComponent(typeof(CountCars));
         GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("car") as GameObject[];
-        //print(objectsWithTag.Length);
-        //System.IO.File.AppendAllText("ScreenshotMovieOutput/info.txt", string.Format("{0:D04}", Time.frameCount) + "," + objectsWithTag.Length + System.Environment.NewLine);
         System.IO.File.AppendAllText("ScreenshotMovieOutput/info.csv", string.Format("{0:D04}", Time.frameCount) + "," + CarCounter.getCarCount() + System.Environment.NewLine);
         }
 
 }
-
-//COUNTER counterscript = (COUNTER)Counter.GetComponent(typeof(COUNTER));
-// counterscript.increment_counter();

@@ -23,31 +23,17 @@ public class CarFactory : MonoBehaviour {
 		
 	}
 
-    /*void createCar() {
-        Random.Range(0.0f, 1.0f);
-
-
-        Instantiate(car1, spawnSpot1, Quaternion.identity);
-        Instantiate(car2, spawnSpot2, Quaternion.identity);
-        Instantiate(car3, spawnSpot3, Quaternion.identity);
-
-    }   */
-
     IEnumerator generateCars() {
 
         while (true) { 
             yield return new WaitForSeconds(Random.Range(2,7));
-            if (CarCounter.getCarCount() < Random.Range(2, 8))                   //CarCounter.maxCarNumbers)
+            if (CarCounter.getCarCount() < Random.Range(2, 8))
 
             {
                 if (carGenerator == 0) {
                     Instantiate(car1, spawnSpot1, Quaternion.Euler(Vector3.up*90));
                     carGenerator = 1;
                 }
-               /* else if (carGenerator == 1) {
-                    Instantiate(car2, spawnSpot2, Quaternion.Euler(Vector3.up * 90));
-                    carGenerator = 2;
-                } */
                 else {
                     Instantiate(car3, spawnSpot3, Quaternion.Euler(Vector3.up * 90));
                     carGenerator = 0;

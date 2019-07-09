@@ -12,7 +12,6 @@ public class VehicleRegeneration : MonoBehaviour {
                                  // Use this for initialization
     void Start () {
         ve = VEHICLE.GetComponent<VehicleEngine>();
-        //Instantiate(VEHICLE, spawnSpot, Quaternion.identity);
         
 
 
@@ -36,8 +35,6 @@ public class VehicleRegeneration : MonoBehaviour {
             }
             ve.setUpPath(VEHICLE.GetComponent<Path>().GetComponentsInChildren<Transform>());
 
-            //ve = VEHICLE.GetComponent<VehicleEngine>();
-            
         }
     }
  }

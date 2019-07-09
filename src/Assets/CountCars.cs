@@ -14,7 +14,6 @@ public class CountCars : MonoBehaviour {
 	void Update () {
 
             GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("car") as GameObject[];
-            //print(objectsWithTag.Length);
         }
  
 

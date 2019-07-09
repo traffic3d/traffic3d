@@ -23,7 +23,5 @@ public class incrementCountNumber : MonoBehaviour {
     public static void incrementcarC()
     {
         CarC++;
-      //  print(CarC);
-	//	System.IO.File.AppendAllText ("carcounter.csv", CarC.ToString () + ",");
     }
 }

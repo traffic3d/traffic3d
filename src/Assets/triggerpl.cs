@@ -17,6 +17,5 @@ public class triggerpl : MonoBehaviour {
 void OnTriggerEnter(Collider other)
 {
 other.attachedRigidbody.tag = "rid";
-//print("rid tagged");
 }
 }

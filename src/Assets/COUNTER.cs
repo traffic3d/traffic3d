@@ -25,8 +25,7 @@ public class COUNTER : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //cars_in_lane();
-        //CameraRange();
+
     }
 
 
@@ -49,7 +48,7 @@ public class COUNTER : MonoBehaviour
     {
         if (Instantiate(VEHICLE, spawnSpot, Quaternion.identity))
         {
-            //Counter += 1;
+
         }
     }
 
@@ -59,7 +58,7 @@ public class COUNTER : MonoBehaviour
     {
         if (Vector3.Distance(VEHICLE.transform.position, Camera.transform.position) < 8f)
         {
-            //Counter -= 1;
+
         }
 
     }
@@ -71,10 +70,6 @@ public class COUNTER : MonoBehaviour
     public void writeTextFile(string path, string name) {
         //TODO: add name of the image then the carCount
 
-        // System.IO.File.WriteAllText(path, carCount.ToString());
         System.IO.File.AppendAllText("ScreenshotMovieOutput/info.txt",name+" "+ carCount.ToString()+ System.Environment.NewLine);
-        // System.IO.File.ReadAllText(path);
-        //Debug.Log("save text file " + carCount.ToString());
-        //Debug.Log(carCount);
     }
 }

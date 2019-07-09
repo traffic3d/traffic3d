@@ -7,7 +7,6 @@ public class materialchangeee : MonoBehaviour {
     public Material Material2;
     public Material Material3;
     public Material Material4;
-    //public Material Material5;
 
     public Material[] mat;
     public Material CM;
@@ -86,21 +85,6 @@ public class materialchangeee : MonoBehaviour {
 
             GetComponent<Renderer>().materials = myarr;
         }
-
-        /*  else if (CM == Material5)
-          {
-              if (!Waited(22))
-              {
-                  return;
-              }
-
-              CM = Material1;
-              Material[] myarr = GetComponent<Renderer>().materials;
-              myarr[0] = Material1;
-
-              GetComponent<Renderer>().materials = myarr;
-          }*/
-
         else
         {
 
