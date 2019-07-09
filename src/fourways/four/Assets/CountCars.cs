@@ -2,20 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CountCars : MonoBehaviour {
+public class CountCars : MonoBehaviour
+{
     public object objectsWithTag { get; internal set; }
 
     // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    void Start()
+    {
 
-            GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("car") as GameObject[];
-        }
- 
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+        GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("car") as GameObject[];
+    }
+
 
 }
 

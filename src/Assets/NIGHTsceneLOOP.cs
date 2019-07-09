@@ -8,111 +8,115 @@ using System.Globalization;
 using System.Diagnostics;
 using UnityEngine.SceneManagement;
 
-public class NIGHTsceneLOOP : MonoBehaviour {
+public class NIGHTsceneLOOP : MonoBehaviour
+{
 
 
-	byte[] bytes = new byte[256];
+    byte[] bytes = new byte[256];
 
-	public GameObject trafficlight1;
-	public GameObject trafficlight2;
+    public GameObject trafficlight1;
+    public GameObject trafficlight2;
 
-	public TLaction1 m = null;
-	public TLaction2 n = null;
-            
-	public bool waiting = false;
+    public TLaction1 m = null;
+    public TLaction2 n = null;
 
-	public static int rewCount = 0;
+    public bool waiting = false;
 
-	public bool yes = false;
+    public static int rewCount = 0;
 
-
-	void Start () {
+    public bool yes = false;
 
 
-		trafficlight1 = GameObject.Find("TrafficLight1");
-		m = trafficlight1.GetComponent<TLaction1> ();
-
-		trafficlight2 = GameObject.Find("TrafficLight2");
-		n = trafficlight2.GetComponent<TLaction2> ();
-
-		StartCoroutine (loopsing ());
-	}
+    void Start()
+    {
 
 
-	public IEnumerator loopsing()
-	{
+        trafficlight1 = GameObject.Find("TrafficLight1");
+        m = trafficlight1.GetComponent<TLaction1>();
 
-		if(yes == false)
-		{
-			for(int i = 0; i < 200000; i++)
-			{
-                               yield return StartCoroutine(red());
-                               yield return StartCoroutine(wait1());
-                               yield return StartCoroutine(green());
-                               yield return StartCoroutine(wait2());
-			}
+        trafficlight2 = GameObject.Find("TrafficLight2");
+        n = trafficlight2.GetComponent<TLaction2>();
 
-			yes = true;
-		}
-	}
+        StartCoroutine(loopsing());
+    }
 
-       
-         public IEnumerator red()
+
+    public IEnumerator loopsing()
+    {
+
+        if (yes == false)
         {
-           m.materialchangeGREEN1 ();
-           n.materialchangeRED2();
-           yield return null;
+            for (int i = 0; i < 200000; i++)
+            {
+                yield return StartCoroutine(red());
+                yield return StartCoroutine(wait1());
+                yield return StartCoroutine(green());
+                yield return StartCoroutine(wait2());
+            }
+
+            yes = true;
         }
-         
-         public IEnumerator wait1()
+    }
+
+
+    public IEnumerator red()
+    {
+        m.materialchangeGREEN1();
+        n.materialchangeRED2();
+        yield return null;
+    }
+
+    public IEnumerator wait1()
+    {
+        yield return new WaitForSeconds(20);
+    }
+
+    public IEnumerator green()
+    {
+        n.materialchangeGREEN2();
+        m.materialchangeRED1();
+        yield return null;
+    }
+    public IEnumerator wait2()
+    {
+        yield return new WaitForSeconds(20);
+    }
+
+
+
+
+    public static int getrewcount()
+    {
+        return rewCount;
+    }
+
+
+    public static void incrementRew()
+    {
+        rewCount++;
+    }
+
+    public static void resetRew()
+    {
+        rewCount = 0;
+    }
+
+
+
+
+
+    void Update()
+    {
+        if (yes == true)
         {
-           yield return new WaitForSeconds(20);
-        }
-        
-          public IEnumerator green()
-        {
-           n.materialchangeGREEN2 ();
-           m.materialchangeRED1();
-           yield return null;
-        }
-        public IEnumerator wait2()
-        {
-           yield return new WaitForSeconds(20);
+
+
+            CarCounter.resetCarCount();
+            newCarCount.resetCarCount();
+            SceneManager.LoadScene("nightscene 1");
+
         }
 
-
-
-
-		public static int getrewcount()
-	{
-		return rewCount;
-	}
-
-
-	public static void incrementRew()
-	{
-		rewCount++;
-	}
-
-	public static void resetRew()
-	{
-		rewCount = 0;
-	}
-
-
-
-
-
-	void Update () {
-		if (yes == true) {
-
-
-			CarCounter.resetCarCount ();
-			newCarCount.resetCarCount ();
-			SceneManager.LoadScene ("nightscene 1");
-
-		}
-
-	} 
+    }
 }
 

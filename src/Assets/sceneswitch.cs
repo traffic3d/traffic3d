@@ -3,25 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class sceneswitch : MonoBehaviour {
+public class sceneswitch : MonoBehaviour
+{
 
-	void Start () {
-		StartCoroutine (abc());
-	}
-	
+    void Start()
+    {
+        StartCoroutine(abc());
+    }
 
-	void Update () {
 
-	}
+    void Update()
+    {
 
-	public IEnumerator abc()
-	{
-		while (true) {
-		
-			yield return new WaitForSeconds (30);
-			SceneManager.LoadSceneAsync ("Scene4");
-		}
+    }
 
-	}
+    public IEnumerator abc()
+    {
+        while (true)
+        {
+
+            yield return new WaitForSeconds(30);
+            SceneManager.LoadSceneAsync("Scene4");
+        }
+
+    }
 
 }

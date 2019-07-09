@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CarEngine6 : MonoBehaviour {
+public class CarEngine6 : MonoBehaviour
+{
 
     public Transform path;
     public GameObject trafficLight;
@@ -26,9 +27,9 @@ public class CarEngine6 : MonoBehaviour {
 
     public float range1 = 2f;
     public float range2 = 12f;
-	public Material material2;
+    public Material material2;
     public materialchangeeee m = null;
-	public TLaction2 p = null;
+    public TLaction2 p = null;
     public COUNTER n = null;
     public List<Transform> nodes;
     public List<Transform> MaterialChange;
@@ -38,8 +39,8 @@ public class CarEngine6 : MonoBehaviour {
 
     public newCarCount carCount;
 
-	public float k;
-	public float startTime;
+    public float k;
+    public float startTime;
 
 
 
@@ -51,8 +52,8 @@ public class CarEngine6 : MonoBehaviour {
         path = GameObject.Find("mypath1").GetComponent<Transform>();
 
         m = trafficLight.GetComponent<materialchangeeee>();
-		p = trafficLight.GetComponent<TLaction2>();
-		startTime = Time.time;
+        p = trafficLight.GetComponent<TLaction2>();
+        startTime = Time.time;
 
         cameraObject = GameObject.Find("Main Camera");
 
@@ -150,15 +151,15 @@ public class CarEngine6 : MonoBehaviour {
 
 
             Destroy(this.gameObject);
-			freshLOOPING.incrementRew ();
+            freshLOOPING.incrementRew();
 
             newCarCount.decrementCarCount();
 
-            
-            incrementCountNumber.incrementcarC(); 
 
-			k = (Time.time - startTime);  
-			System.IO.File.AppendAllText("journeyTimeLatest.csv", k.ToString() + "," + System.Environment.NewLine);
+            incrementCountNumber.incrementcarC();
+
+            k = (Time.time - startTime);
+            System.IO.File.AppendAllText("journeyTimeLatest.csv", k.ToString() + "," + System.Environment.NewLine);
         }
 
 
@@ -186,14 +187,14 @@ public class CarEngine6 : MonoBehaviour {
     {
         Vector3 a = GetComponent<Transform>().position;
         Vector3 b = trafficLight.GetComponent<Transform>().position;
-		if((p.CM.color.Equals(material2.color)) && (currentNode == nodes.Count - 3))
-            {
+        if ((p.CM.color.Equals(material2.color)) && (currentNode == nodes.Count - 3))
+        {
             WheelFL.motorTorque = 0;
             WheelFR.motorTorque = 0;
             WheelFL.brakeTorque = maxBrakeTorque;
             WheelFR.brakeTorque = maxBrakeTorque;
 
-        }  
+        }
 
         else
         {

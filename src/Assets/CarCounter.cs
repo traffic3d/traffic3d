@@ -2,23 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CarCounter : MonoBehaviour {
+public class CarCounter : MonoBehaviour
+{
 
     public static int carCount = 0;
 
     public static int maxCarNumbers = 10;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
 
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
-    public static int getCarCount() {
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    public static int getCarCount()
+    {
 
         return carCount;
 
@@ -38,10 +42,10 @@ public class CarCounter : MonoBehaviour {
 
     }
 
-	public static void resetCarCount()
-	{
-		carCount = 0;
-	
-	}
+    public static void resetCarCount()
+    {
+        carCount = 0;
+
+    }
 
 }

@@ -2,30 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class journeyTimeCARCOUNTER : MonoBehaviour {
+public class journeyTimeCARCOUNTER : MonoBehaviour
+{
 
-	public static int journeyCARs = 0;
+    public static int journeyCARs = 0;
 
 
-	void Start () {
-		
-	}
-	
+    void Start()
+    {
 
-	void Update () {
-		
-	}
+    }
 
-	public static int getjourneyCARsCount()
-	{
-		return journeyCARs;
 
-		}
+    void Update()
+    {
 
-	public static void incrementjourneyCARsCount()
-	{
-		journeyCARs++;
+    }
 
-	}
+    public static int getjourneyCARsCount()
+    {
+        return journeyCARs;
+
+    }
+
+    public static void incrementjourneyCARsCount()
+    {
+        journeyCARs++;
+
+    }
 
 }

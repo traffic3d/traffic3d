@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CarWheel : MonoBehaviour {
+public class CarWheel : MonoBehaviour
+{
 
     public WheelCollider targetWheel;
 

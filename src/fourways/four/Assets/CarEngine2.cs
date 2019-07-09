@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CarEngine2 : MonoBehaviour {
+public class CarEngine2 : MonoBehaviour
+{
     public Transform path;
     public GameObject trafficLight;
     public GameObject cameraObject;
@@ -23,12 +24,12 @@ public class CarEngine2 : MonoBehaviour {
     public Vector3 VehicleCurrentPosition;
     public Vector3 TrafficLightPosition;
 
-	public Material material2;
-	public TLaction1 m = null;
+    public Material material2;
+    public TLaction1 m = null;
 
-	public float range1 = 2f;
+    public float range1 = 2f;
     public float range2 = 12f;
-    
+
     public COUNTER n = null;
     public List<Transform> nodes;
     public int currentNode = 0;
@@ -36,20 +37,20 @@ public class CarEngine2 : MonoBehaviour {
     private float targetSteerAngle = 0;
 
     public CarCounter carCount;
-   
-	public float k;
-	public float startTime;
+
+    public float k;
+    public float startTime;
 
 
     void Start()
     {
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
-		trafficLight = GameObject.Find("TrafficLight1");
+        trafficLight = GameObject.Find("TrafficLight1");
         path = GameObject.Find("newpath2").GetComponent<Transform>();
 
-		m = trafficLight.GetComponent<TLaction1>();
+        m = trafficLight.GetComponent<TLaction1>();
 
-		startTime = Time.time;
+        startTime = Time.time;
         cameraObject = GameObject.Find("Main Camera");
 
         Transform[] pathTransforms = path.GetComponentsInChildren<Transform>();
@@ -59,7 +60,7 @@ public class CarEngine2 : MonoBehaviour {
         {
             if (pathTransforms[i] != path.transform)
             {
-             
+
                 nodes.Add(pathTransforms[i]);
             }
         }
@@ -91,7 +92,7 @@ public class CarEngine2 : MonoBehaviour {
         Instantiate();
         LerpToSteerAngle();
         Stop();
-        
+
 
     }
 
@@ -145,19 +146,19 @@ public class CarEngine2 : MonoBehaviour {
     {
         if (currentNode == nodes.Count - 1)
         {
-            
-            
+
+
             Destroy(this.gameObject);
-			CarCounter.decrementCarCount();
-			freshLOOPING.incrementRew ();
-		
-			incrementCountNumber.incrementcarC();    //to get generated car number
+            CarCounter.decrementCarCount();
+            freshLOOPING.incrementRew();
+
+            incrementCountNumber.incrementcarC();    //to get generated car number
 
 
 
-			journeyTimeCARCOUNTER.incrementjourneyCARsCount();
-			k = (Time.time - startTime);
-			System.IO.File.AppendAllText("journeyTimeLatest.csv", k.ToString() + "," + System.Environment.NewLine);
+            journeyTimeCARCOUNTER.incrementjourneyCARsCount();
+            k = (Time.time - startTime);
+            System.IO.File.AppendAllText("journeyTimeLatest.csv", k.ToString() + "," + System.Environment.NewLine);
 
         }
 
@@ -167,9 +168,9 @@ public class CarEngine2 : MonoBehaviour {
 
     private void Instantiate()
     {
-            if (currentNode == nodes.Count - 1)
+        if (currentNode == nodes.Count - 1)
 
-            {
+        {
 
         }
 
@@ -186,8 +187,8 @@ public class CarEngine2 : MonoBehaviour {
     {
         Vector3 a = GetComponent<Transform>().position;
         Vector3 b = trafficLight.GetComponent<Transform>().position;
-		if((m.CM.color.Equals(material2.color)) && (currentNode == nodes.Count - 3))
-		{
+        if ((m.CM.color.Equals(material2.color)) && (currentNode == nodes.Count - 3))
+        {
             WheelFL.motorTorque = 0;
             WheelFR.motorTorque = 0;
             WheelFL.brakeTorque = maxBrakeTorque;
@@ -203,22 +204,24 @@ public class CarEngine2 : MonoBehaviour {
         }
     }
 
-    private void brakeCar() {
+    private void brakeCar()
+    {
         GameObject[] cars;
         cars = GameObject.FindGameObjectsWithTag("car");
-        foreach (GameObject car in cars) {
-            
+        foreach (GameObject car in cars)
+        {
+
             if (car.gameObject != this.gameObject)
             {
                 if (Mathf.Abs(this.transform.position.z - car.transform.position.z) < 0.02f && Mathf.Abs(this.transform.position.z - car.transform.position.z) != 0)
                 {
                     Debug.Log(car.gameObject.name);
                     Debug.Log("-------------------------Breakkkkkkk-------------------------");
-                    Debug.Log(Mathf.Abs(this.transform.position.z- car.transform.position.z) + "lesssss distance");
+                    Debug.Log(Mathf.Abs(this.transform.position.z - car.transform.position.z) + "lesssss distance");
 
                 }
             }
-            
+
         }
     }
 

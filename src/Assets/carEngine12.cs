@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class carEngine12 : MonoBehaviour {
+public class carEngine12 : MonoBehaviour
+{
     public Transform path;
     public GameObject trafficLight;
     public GameObject cameraObject;
@@ -23,8 +24,8 @@ public class carEngine12 : MonoBehaviour {
     public Vector3 VehicleCurrentPosition;
     public Vector3 TrafficLightPosition;
 
-	public Material material2;
-	public TLaction2 r = null;
+    public Material material2;
+    public TLaction2 r = null;
 
     public float range1 = 2f;
     public float range2 = 12f;
@@ -38,11 +39,11 @@ public class carEngine12 : MonoBehaviour {
     public newCarCount carCount;
 
 
-	public float k;
-	public float startTime;
+    public float k;
+    public float startTime;
 
-   public bool frus = false;
-  public bool des = false;
+    public bool frus = false;
+    public bool des = false;
 
     void Start()
     {
@@ -51,9 +52,9 @@ public class carEngine12 : MonoBehaviour {
         trafficLight = GameObject.Find("TrafficLight2");
         path = GameObject.Find("PY").GetComponent<Transform>();
 
-		r = trafficLight.GetComponent<TLaction2>();
+        r = trafficLight.GetComponent<TLaction2>();
 
-		startTime = Time.time;
+        startTime = Time.time;
 
         Transform[] pathTransforms = path.GetComponentsInChildren<Transform>();
         nodes = new List<Transform>();
@@ -83,14 +84,14 @@ public class carEngine12 : MonoBehaviour {
         }
     }
 
-	void OnCollisionEnter(Collision other)
-	{
-		if (other.gameObject.tag == "car") 
-		{
-			other.gameObject.tag = "hap";
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag == "car")
+        {
+            other.gameObject.tag = "hap";
 
-		}
-	}
+        }
+    }
 
     private void FixedUpdate()
     {
@@ -102,49 +103,52 @@ public class carEngine12 : MonoBehaviour {
         Instantiate();
         LerpToSteerAngle();
         Stop();
-		engineoff();
-		go ();
-		
-             keepgoing();
-           
+        engineoff();
+        go();
+
+        keepgoing();
+
     }
 
 
 
 
-private void keepgoing()
-	{
-{
-		if (this.gameObject.tag == "rid") {
+    private void keepgoing()
+    {
+        {
+            if (this.gameObject.tag == "rid")
+            {
 
-			WheelFL.motorTorque = maxMotorTorque;
-			WheelFR.motorTorque = maxMotorTorque;
-			WheelFL.brakeTorque = 0;
-			WheelFR.brakeTorque = 0;
-		}
-	}
+                WheelFL.motorTorque = maxMotorTorque;
+                WheelFR.motorTorque = maxMotorTorque;
+                WheelFL.brakeTorque = 0;
+                WheelFR.brakeTorque = 0;
+            }
+        }
 
-	}
-	private void go()
-	{
-		if (!(r.CM.color.Equals(material2.color))) {
-			WheelFL.motorTorque = maxMotorTorque;
-			WheelFR.motorTorque = maxMotorTorque;
-			WheelFL.brakeTorque = 0;
-			WheelFR.brakeTorque = 0;
-		}
-	}
+    }
+    private void go()
+    {
+        if (!(r.CM.color.Equals(material2.color)))
+        {
+            WheelFL.motorTorque = maxMotorTorque;
+            WheelFR.motorTorque = maxMotorTorque;
+            WheelFL.brakeTorque = 0;
+            WheelFR.brakeTorque = 0;
+        }
+    }
 
-	private void engineoff()
-	{
-		if (this.gameObject.tag == "hap") {
+    private void engineoff()
+    {
+        if (this.gameObject.tag == "hap")
+        {
 
-			WheelFL.motorTorque = 0;
-			WheelFR.motorTorque = 0;
-			WheelFL.brakeTorque = maxBrakeTorque;
-			WheelFR.brakeTorque = maxBrakeTorque;
-		}
-	}
+            WheelFL.motorTorque = 0;
+            WheelFR.motorTorque = 0;
+            WheelFL.brakeTorque = maxBrakeTorque;
+            WheelFR.brakeTorque = maxBrakeTorque;
+        }
+    }
 
 
 
@@ -199,14 +203,14 @@ private void keepgoing()
 
             Destroy(this.gameObject);
             newCarCount.decrementCarCount();
-freshLOOPING.incrementRew();
+            freshLOOPING.incrementRew();
 
             incrementCountNumber.incrementcarC();   //to get the generated car count
 
 
-			journeyTimeCARCOUNTER.incrementjourneyCARsCount();
-			k = (Time.time - startTime);
-System.IO.File.AppendAllText("negjourneyTimeLatest1.csv", k.ToString() + ",");
+            journeyTimeCARCOUNTER.incrementjourneyCARsCount();
+            k = (Time.time - startTime);
+            System.IO.File.AppendAllText("negjourneyTimeLatest1.csv", k.ToString() + ",");
         }
 
 
@@ -233,7 +237,7 @@ System.IO.File.AppendAllText("negjourneyTimeLatest1.csv", k.ToString() + ",");
     {
         Vector3 a = GetComponent<Transform>().position;
         Vector3 b = trafficLight.GetComponent<Transform>().position;
-		if((r.CM.color.Equals(material2.color)) && (currentNode == nodes.Count - 3))
+        if ((r.CM.color.Equals(material2.color)) && (currentNode == nodes.Count - 3))
         {
             WheelFL.motorTorque = 0;
             WheelFR.motorTorque = 0;

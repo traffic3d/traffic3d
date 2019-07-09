@@ -19,7 +19,7 @@ public class CarEngine1 : MonoBehaviour
     public float maxSpeed = 80f;
     public Vector3 centerOfMass;
     public Rigidbody VEHICLE1;
-   public Vector3 spawnSpot = new Vector3(-17.38f, 11.28f, -13.73f);
+    public Vector3 spawnSpot = new Vector3(-17.38f, 11.28f, -13.73f);
     public Vector3 VehicleCurrentPosition;
     public Vector3 TrafficLightPosition;
     public float range1 = 2f;
@@ -145,18 +145,18 @@ public class CarEngine1 : MonoBehaviour
     }
 
 
-     private void Instantiate()
-     {
+    private void Instantiate()
+    {
 
-         {
-             if (currentNode == nodes.Count - 1)
+        {
+            if (currentNode == nodes.Count - 1)
 
 
-                 Instantiate(VEHICLE1, spawnSpot, Quaternion.identity);
+                Instantiate(VEHICLE1, spawnSpot, Quaternion.identity);
 
-         }
+        }
 
-     }  
+    }
 
     private void LerpToSteerAngle()
     {

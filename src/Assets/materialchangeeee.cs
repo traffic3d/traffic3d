@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class materialchangeeee : MonoBehaviour {
+public class materialchangeeee : MonoBehaviour
+{
 
     public Material Material1;
     public Material Material2;
     public Material Material3;
-public Material Material4;
+    public Material Material4;
 
     public Material[] mat;
     public Material CM;
@@ -85,7 +86,7 @@ public Material Material4;
             myarr[0] = Material1;
 
             GetComponent<Renderer>().materials = myarr;
-        }  
+        }
 
         else
         {
