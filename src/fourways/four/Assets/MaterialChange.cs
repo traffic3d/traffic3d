@@ -8,7 +8,6 @@ public class MaterialChange : MonoBehaviour {
     public Material Material2;
     public Material Material3;
     public Material Material4;
-    //public Material Material5;
 
     public Material[] mat;
     public Material CM;

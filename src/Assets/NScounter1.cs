@@ -27,11 +27,6 @@ public class NScounter1 : MonoBehaviour {
 
 	}
 
-	/*  public static int maxCarNumbers()
-    {
-        Random.Range(1, 8);
-    }  */
-
 	public static void incrementCarCount()
 	{
 

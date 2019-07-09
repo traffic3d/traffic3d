@@ -10,7 +10,6 @@ public class TLaction1 : MonoBehaviour {
 	public Material material3; //green
 	public Material material4; //amber
 
-	//public Material[] mat; 
 	public Material CM;
 
 	public float timer = 0;   //we donot need the timer for now
@@ -41,14 +40,6 @@ public class TLaction1 : MonoBehaviour {
 		GetComponent<Renderer> ().materials = myarr;	
 	}
 
-	/*public void materialchangeGREEN1()
-	{
-		CM = material3;
-		Material[] myarr = GetComponent<Renderer> ().materials;
-		myarr [0] = material3;
-		GetComponent<Renderer> ().materials = myarr;	
-	}*/
-
 	public void materialchangeAMBER()
 	{
 		CM = material4;
@@ -77,26 +68,12 @@ public class TLaction1 : MonoBehaviour {
 
 	public void materialchangeGREEN1()
 	{
-//		if (CM == material4) {
-
-
-//			if (!Waited (2)) {
-//				return;
-//			}
 
 		CM = material3;
 		Material[] myarr = GetComponent<Renderer> ().materials;
 		myarr [0] = material3;
 		GetComponent<Renderer> ().materials = myarr;	
 	}
-
-		//}
-			/*CM = material3;
-			Material[] myarr = GetComponent<Renderer> ().materials;
-			myarr [0] = material3;
-			GetComponent<Renderer> ().materials = myarr;
-		}*/
-	
 
 	void Update () {
 		

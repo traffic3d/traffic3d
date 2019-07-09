@@ -5,7 +5,6 @@ using UnityEngine;
 public class VehicleEngine3 : MonoBehaviour {
     public Transform path;
     public GameObject TrafficLight;
-    //public GameObject Counter;
 	public GameObject cameraObject;
     public GameObject CountCars;
 
@@ -54,7 +53,6 @@ public class VehicleEngine3 : MonoBehaviour {
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
         TrafficLightPosition = TrafficLight.transform.position;
         m = TrafficLight.GetComponent<MaterialChange>();
-        //n = Counter.GetComponent<COUNTER>();
 		cameraObject = GameObject.Find("Main Camera");
 
 
@@ -89,7 +87,6 @@ public class VehicleEngine3 : MonoBehaviour {
 
     private void FixedUpdate()
     {
-    // if (!(m.CM.color.Equals(Material1.color) && ((Vector3.Distance(transform.position, TrafficLightPosition) <= range1)))) //&& (Vector3.Distance(transform.position, TrafficLightPosition) >= range2))))
 
         ApplySteer();
         Drive(1);
@@ -130,15 +127,13 @@ public class VehicleEngine3 : MonoBehaviour {
 
     private void CheckWaypointDistance()
     {
-        //print(Vector3.Distance(transform.position, nodes[currentNode].position));
         if (Vector3.Distance(transform.position, nodes[currentNode].position) < 3f)
         {
-            //  print("updating current node from " + currentNode +"   " + nodes.Count);
             if (currentNode == nodes.Count - 1)
-            {                                                    // print("updating current node from " + currentNode +"   " + nodes.Count);
+            {
                 currentNode = 0;
                 lapCounter++;
-            }                                                           //currentNode = (currentNode + 1) % (nodes.Count);
+            }
             else
             {
                 currentNode++;
@@ -152,8 +147,6 @@ public class VehicleEngine3 : MonoBehaviour {
         if (currentNode == nodes.Count - 1)
         {
             Destroy(this.gameObject);
-			//COUNTER counterscript = (COUNTER)Counter.GetComponent(typeof(COUNTER));
-			//counterscript.decrement_counter();
         }
 
 
@@ -167,10 +160,7 @@ public class VehicleEngine3 : MonoBehaviour {
             if (currentNode == nodes.Count - 1)
 
         {
-			//COUNTER counterscript = (COUNTER)Counter.GetComponent(typeof(COUNTER));
-			//counterscript.increment_counter();
 			Instantiate(VEHICLE, spawnSpot, Quaternion.identity);
-			//counterscript.writeTextFile(string.Format("{0}/{1:D04} shot.txt", "ScreenshotMovieOutput", Time.frameCount), string.Format("{0:D04}", Time.frameCount));
         }
 
     }
@@ -184,7 +174,6 @@ public class VehicleEngine3 : MonoBehaviour {
 
     private void Stop()
     {
-        //GameObject go = GameObject.FindWithTag("TrafficLight"); 
         Vector3 a = transform.position;
         Vector3 b = TrafficLight.transform.position;
         if ((((m.CM.color.Equals(Material1.color) && (Vector3.Distance(transform.position, TrafficLight.transform.position) < 8f)))))

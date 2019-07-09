@@ -27,14 +27,12 @@ public class CarEngine1 : MonoBehaviour
     public Material Material1;
     public Material Material3;
     public Material Material5;
- //   public MaterialChange m = null;
 
 	public TLaction3 s = null;
 	public Material material2;
 
 
     public List<Transform> nodes;
-   // public List<Transform> MaterialChange;
     public int currentNode = 0;
     private int lapCounter = 0;
     private float targetSteerAngle = 0;
@@ -50,8 +48,6 @@ public class CarEngine1 : MonoBehaviour
     void Start()
     {
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
-        //TrafficLightPosition = TrafficLight.transform.position;
-     //   m = TrafficLight.GetComponent<MaterialChange>();
 		trafficlight = GameObject.Find("TrafficLight3");
 		s = trafficlight.GetComponent<TLaction3>();
 
@@ -88,9 +84,6 @@ public class CarEngine1 : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //Sensors();
-
-        // if (!(m.CM.color.Equals(Material1.color) && ((Vector3.Distance(transform.position, TrafficLightPosition) <= range1)))) //&& (Vector3.Distance(transform.position, TrafficLightPosition) >= range2))))
 
         ApplySteer();
         Drive(1);
@@ -98,8 +91,6 @@ public class CarEngine1 : MonoBehaviour
         Destroy();
         Instantiate();
         LerpToSteerAngle();
-       // Stop();
-      //  MaintainSafeDistance();
 
 		juststop ();
 
@@ -121,54 +112,6 @@ public class CarEngine1 : MonoBehaviour
 		}
 	
 	}
-
-    /*private void Sensors()
-    {
-        RaycastHit hit;
-        Vector3 sensorStartPos = transform.position + frontSensorPosition;
-        sensorStartPos.z =+ frontSensorPosition; 
-
-        // front center sensor
-        if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength))
-        {
-            Debug.DrawLine(sensorStartPos, hit.point);
-        }
-
-
-        // front right sensor
-        sensorStartPos.x += frontSideSensorPosition;
-        if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength))
-        {
-            Debug.DrawLine(sensorStartPos, hit.point);
-        }
-
-
-        // front right angle sensor
-        if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(frontSensorAngle, transform.up) * transform.forward, out hit, sensorLength))
-        {
-            Debug.DrawLine(sensorStartPos, hit.point);
-        }
-
-
-        // front left sensor
-        sensorStartPos.x -= 2 * frontSideSensorPosition;
-        if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength))
-        {
-            Debug.DrawLine(sensorStartPos, hit.point);
-        }
-
-
-        // front left angle sensor
-        if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(-frontSensorAngle, transform.up) * transform.forward, out hit, sensorLength))
-        {
-
-        }
-        Debug.DrawLine(sensorStartPos, hit.point);
-    }
-    */
-
-
-
 
     private void ApplySteer()
     {
@@ -197,15 +140,13 @@ public class CarEngine1 : MonoBehaviour
 
     private void CheckWaypointDistance()
     {
-        //print(Vector3.Distance(transform.position, nodes[currentNode].position));
         if (Vector3.Distance(transform.position, nodes[currentNode].position) < 3f)
         {
-            //  print("updating current node from " + currentNode +"   " + nodes.Count);
             if (currentNode == nodes.Count - 1)
-            {                                                    // print("updating current node from " + currentNode +"   " + nodes.Count);
+            {
                 currentNode = 0;
                 lapCounter++;
-            }                                                           //currentNode = (currentNode + 1) % (nodes.Count);
+            }
             else
             {
                 currentNode++;
@@ -232,10 +173,6 @@ public class CarEngine1 : MonoBehaviour
      {
 
          {
-          //   if (currentNode == nodes.Count - 1)
-
-
-                // Instantiate(VEHICLE1, spawnSpot, Quaternion.identity);
 
          }
 
@@ -249,10 +186,6 @@ public class CarEngine1 : MonoBehaviour
 
     private void Stop()
     {
-        //GameObject go = GameObject.FindWithTag("TrafficLight"); 
-     //   Vector3 a = transform.position;
-   //     Vector3 b = TrafficLight.transform.position;
-      //  if ((((m.CM.color.Equals(Material1.color) || (m.CM.color.Equals(Material5.color))) && (Vector3.Distance(transform.position, TrafficLight.transform.position) < 8f)) && (Vector3.Distance(transform.position, CAR1.transform.position) < 15f)))
 		if((s.CM.color.Equals(material2.color)) && (currentNode == nodes.Count - 4))
         {
             WheelFL.motorTorque = 0;
@@ -270,37 +203,7 @@ public class CarEngine1 : MonoBehaviour
         }
     }
 
-    /*private void MaintainSafeDistance()
-
-    //GameObject go = GameObject.FindGameObjectWithTag("automobile");
-    {
-        if (Vector3.Distance(transform.position, CAR1.transform.position) < 8f)
-
-        {
-            WheelFL.motorTorque = 0;
-            WheelFR.motorTorque = 0;
-            WheelFL.brakeTorque = maxBrakeTorque;
-            WheelFR.brakeTorque = maxBrakeTorque;
-
-        }
-        else
-        {
-            WheelFL.motorTorque = maxMotorTorque;
-            WheelFR.motorTorque = maxMotorTorque;
-            WheelFL.brakeTorque = 0;
-            WheelFR.brakeTorque = 0;
-        }
-    }*/
 }
-
-
-
-
-
-
-    
-
-                                             //   currentNode = (currentNode + 1) % (nodes.Count);
 
   
 

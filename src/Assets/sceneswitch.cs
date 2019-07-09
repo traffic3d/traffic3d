@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class sceneswitch : MonoBehaviour {
-	//public bool yes = false;
 
 	void Start () {
 		StartCoroutine (abc());
@@ -12,11 +11,7 @@ public class sceneswitch : MonoBehaviour {
 	
 
 	void Update () {
-		//if (yes == true) {
-		
-			
-		
-		//}
+
 	}
 
 	public IEnumerator abc()

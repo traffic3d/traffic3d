@@ -10,7 +10,6 @@ public class TLaction2 : MonoBehaviour {
 	public Material material4;    //amber material
 
 	public Material CM;
-//	public Material[] mat;
 
 	public float timer = 0;
 	private float timerMax = 0;
@@ -70,35 +69,12 @@ public class TLaction2 : MonoBehaviour {
 
 	public void materialchangeGREEN2()
 	{
-		//if (CM == material4) {
-		
-		//	if (!Waited (2)) {
-		//		return;
-		//s	}
 		
 			CM = material3;
 			Material[] myarr = GetComponent<Renderer> ().materials;
 			myarr [0] = material3;
 			GetComponent<Renderer> ().materials = myarr;	
 		}
-
-	//}
-/*	private bool Waited(float seconds)
-	{
-		timerMax = seconds;
-		timer += Time.deltaTime;
-
-		if (timer >= timerMax) 
-		{
-			timer = 0;
-			return true;
-
-		}
-		return false;
-	}    */
-
-
-
 
 	void Update () {
 		

@@ -37,12 +37,6 @@ public class TLaction3 : MonoBehaviour {
 
 	public void materialchangeGREEN3()
 	{
-		//		if (CM == material4) {
-
-
-		//			if (!Waited (2)) {
-		//				return;
-		//			}
 
 		CM = material3;
 		Material[] myarr = GetComponent<Renderer> ().materials;

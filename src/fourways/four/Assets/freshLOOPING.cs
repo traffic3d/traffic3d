@@ -20,7 +20,6 @@ public class freshLOOPING : MonoBehaviour {
 	public GameObject trafficlight2;
 	public GameObject trafficlight3;
 	public GameObject trafficlight4;
-	//public GameObject trafficlight11;
 
 	public TLaction1 m = null;
 	public TLaction2 n = null;
@@ -46,9 +45,6 @@ public class freshLOOPING : MonoBehaviour {
 
 		trafficlight3 = GameObject.Find("TrafficLight11");
 		s = trafficlight3.GetComponent<TLaction1>();
-		//if (trafficlight3 != null) {
-		//	print("trafficlight3 found");
-		//}
 
 
 
@@ -56,7 +52,7 @@ public class freshLOOPING : MonoBehaviour {
 		r = trafficlight4.GetComponent<TLaction4>();
 	
 
-		socket.Connect("localhost", port);                                                 //(IPAddress.Parse("172.16.114.1"), port); for connecting to vmware
+		socket.Connect("localhost", port);
 		print ("tcpSocket unity connected to python");
 
 		StartCoroutine(looping ());
@@ -81,15 +77,10 @@ public class freshLOOPING : MonoBehaviour {
 	{
 		if (waiting == false) 
 		{
-			//m.defaultmaterial();
 			m.materialchangeRED1 ();
-			//print("TL1 default light set");
-			//n.defaultmaterial();
 			n.materialchangeRED2 ();
-		//	print("TL1 default light set");
 			s.materialchangeRED1();
 			n.
-			//s.materialchangeRED1 ();
 			r.materialchangeRED4 ();
 
 			yield return new WaitForSeconds(20);
@@ -102,18 +93,7 @@ public class freshLOOPING : MonoBehaviour {
 	public IEnumerator takeshot()
 	{
 		shot_count +=1; 
-		//try{                     /media/gargd/Data
 		ScreenCapture.CaptureScreenshot("/media/gargd/Data/crossjunctionshots/shot"+ shot_count + ".png");
-			//print("NO ERROR SO FAR");
-		//	print(shot_count);
-		//}
-		//catch (IOException e)
-	//	{
-		//	print ("ERROR WITH PICTURE");
-	//	}
-		//if((ScreenCapture.CaptureScreenshot ("Z:/sharedImages/UNITYshots/shot" + shot_count + ".png")) == true) {
-		//	Time.timeScale = 0;
-		//	print ("unity PAUSED due to screenshot error");
 
 
 		yield return null;
@@ -124,7 +104,6 @@ public class freshLOOPING : MonoBehaviour {
 		byte[] msg = Encoding.UTF8.GetBytes ("shot" + shot_count + ".png");
 		socket.Send(msg);
 		print ("image number sent");
-		//socket.Receive(bytes);
 		yield return null;
 
 	}
@@ -135,98 +114,43 @@ public class freshLOOPING : MonoBehaviour {
 		print(Encoding.UTF8.GetString(bytes));
 
 		if (int.Parse (Encoding.UTF8.GetString (bytes)) == 0) {
-			//m.materialchangeAMBER ();
-		    //print("amber1 set");
-			//m.amberwait();
-			//yield return new WaitForSeconds (2);
 
-
-			//StartCoroutine(amberwaiting1());
-
-
-			//print("about to set green1");
 			m.materialchangeGREEN1 ();
-			//print("green1set");
 			
 
 
 			n.materialchangeRED2();
 			s.materialchangeRED3 ();
 			r.materialchangeRED4 ();
-			//print("red2 set");
 		} 
 
 		if (int.Parse (Encoding.UTF8.GetString (bytes)) == 1) {
-			//n.materialchangeAMBER ();
-		//	n.amberwait2 ();
-			////yield return new WaitForSeconds (2);
-			//print("amber2 set");
-			//yield return StartCoroutine(amberwaiting());
-			//yield return new WaitForSeconds (2);
 
-
-			//print("about to set green2");
 			n.materialchangeGREEN2 ();
-			//print ("green2 set");
 
 			m.materialchangeRED1();
 			s.materialchangeRED3 ();
 			r.materialchangeRED4 ();
-			//print("red1 set");   */
 
-			//StartCoroutine(amberwaiting2());
-
-		} /*else {
-			m.defaultmaterial ();
-			n.defaultmaterial ();
-		
-		}   */
-	
-		//Time.timeScale = 1;
-		//yield return new WaitForSeconds(20);
+		}
 
 		if (int.Parse (Encoding.UTF8.GetString (bytes)) == 2) {
-			//n.materialchangeAMBER ();
-			//	n.amberwait2 ();
-			////yield return new WaitForSeconds (2);
-			//print("amber2 set");
-			//yield return StartCoroutine(amberwaiting());
-			//yield return new WaitForSeconds (2);
 
-
-			//print("about to set green2");
-			//n.materialchangeGREEN2 ();
 			s.materialchangeGREEN3 ();
 			n.materialchangeRED2();
             m.materialchangeRED1();
 			r.materialchangeRED4 ();
 
-			//print ("green2 set");
-
-		//	m.materialchangeRED1();
 			} 
 
 
 		if (int.Parse (Encoding.UTF8.GetString (bytes)) == 3) {
-			//n.materialchangeAMBER ();
-			//	n.amberwait2 ();
-			////yield return new WaitForSeconds (2);
-			//print("amber2 set");
-			//yield return StartCoroutine(amberwaiting());
-			//yield return new WaitForSeconds (2);
 
-
-			//print("about to set green2");
-			//n.materialchangeGREEN2 ();
-			//s.materialchangeGREEN3 ();
 			r.materialchangeGREEN4 ();
 			n.materialchangeRED2();
 			m.materialchangeRED1();
 			s.materialchangeRED3 ();
 
-			//print ("green2 set");
-
-			//	m.materialchangeRED1();
 		} 
 
 
@@ -245,11 +169,9 @@ public class freshLOOPING : MonoBehaviour {
 	public IEnumerator rewards()
 	{
 		Time.timeScale = 0;
-		//m.defaultmaterial();
-		//n.defaultmaterial();
 
 		getrewcount ();
-		System.IO.File.AppendAllText ("rewardsfourway.csv", rewCount.ToString () + ",");   // + System.Environment.NewLine);  // save the rewards in a csv file
+		System.IO.File.AppendAllText ("rewardsfourway.csv", rewCount.ToString () + ","); // save the rewards in a csv file
 		byte[] msg1 = Encoding.UTF8.GetBytes (""+rewCount);
 		socket.Send(msg1);
 
@@ -265,36 +187,16 @@ public class freshLOOPING : MonoBehaviour {
 
 		m.amberwait();
 
-		/* yield return new WaitForSeconds(2);
-		print ("amber1 waiting done");
-
-		print("about to set green1");
-		m.materialchangeGREEN1 ();
-		print("green1set"); */
-
-  
-
 		n.materialchangeRED2();
 		print("red2 set");
 
 		yield return null;
-		//yield return new WaitForSeconds(2);
 	}
 
 	public IEnumerator amberwaiting2()
 	{
 		n.materialchangeAMBER ();
 		n.amberwait2 ();
-
-		//yield return new WaitForSeconds (2);
-		/*print("amber2 set");
-		//yield return StartCoroutine(amberwaiting());
-		yield return new WaitForSeconds (2);
-		print ("amber2 waiting done");
-
-		print("about to set green2");
-		n.materialchangeGREEN2 ();
-		print ("green2 set"); */
 
 		m.materialchangeRED1();
 
