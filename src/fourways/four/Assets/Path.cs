@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Path : MonoBehaviour {
+public class Path : MonoBehaviour
+{
 
     public Color lineColor;
 
@@ -24,11 +25,12 @@ public class Path : MonoBehaviour {
         {
             Vector3 currentNode = nodes[i].position;
             Vector3 previousNode = Vector3.zero;
-			Vector3 lastNode = Vector3.zero;
+            Vector3 lastNode = Vector3.zero;
             if (i > 0)
             {
                 previousNode = nodes[i - 1].position;
-            } else if(i == 0 && nodes.Count > 1)
+            }
+            else if (i == 0 && nodes.Count > 1)
             {
                 currentNode = lastNode;
             }

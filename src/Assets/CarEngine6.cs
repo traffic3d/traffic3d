@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CarEngine6 : MonoBehaviour {
+public class CarEngine6 : MonoBehaviour
+{
 
     public Transform path;
     public GameObject trafficLight;
@@ -26,9 +27,9 @@ public class CarEngine6 : MonoBehaviour {
 
     public float range1 = 2f;
     public float range2 = 12f;
-	public Material material2;
+    public Material material2;
     public materialchangeeee m = null;
-	public TLaction2 p = null;
+    public TLaction2 p = null;
     public COUNTER n = null;
     public List<Transform> nodes;
     public List<Transform> MaterialChange;
@@ -38,10 +39,10 @@ public class CarEngine6 : MonoBehaviour {
 
     public newCarCount carCount;
 
-	public float k;
-	public float startTime;
-     public bool frus = false;
-     public bool des = false;
+    public float k;
+    public float startTime;
+    public bool frus = false;
+    public bool des = false;
 
     void Start()
     {
@@ -51,8 +52,8 @@ public class CarEngine6 : MonoBehaviour {
         path = GameObject.Find("PX").GetComponent<Transform>();
 
         m = trafficLight.GetComponent<materialchangeeee>();
-		p = trafficLight.GetComponent<TLaction2>();
-		startTime = Time.time;
+        p = trafficLight.GetComponent<TLaction2>();
+        startTime = Time.time;
 
         cameraObject = GameObject.Find("Main Camera");
 
@@ -83,14 +84,14 @@ public class CarEngine6 : MonoBehaviour {
         }
     }
 
-	void OnCollisionEnter(Collision other)
-	{
-		if (other.gameObject.tag == "car") 
-		{
-			other.gameObject.tag = "hap";
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag == "car")
+        {
+            other.gameObject.tag = "hap";
 
-		}
-	}
+        }
+    }
 
     private void FixedUpdate()
     {
@@ -103,51 +104,54 @@ public class CarEngine6 : MonoBehaviour {
         LerpToSteerAngle();
         Stop();
 
-		engineoff();
-		go ();
-		
-              keepgoing();
-           
+        engineoff();
+        go();
+
+        keepgoing();
+
 
     }
 
 
 
 
-private void keepgoing()
-	{
-{		
-if (this.gameObject.tag == "rid") {
+    private void keepgoing()
+    {
+        {
+            if (this.gameObject.tag == "rid")
+            {
 
-			WheelFL.motorTorque = maxMotorTorque;
-			WheelFR.motorTorque = maxMotorTorque;
-			WheelFL.brakeTorque = 0;
-			WheelFR.brakeTorque = 0;
-		}
-	}
+                WheelFL.motorTorque = maxMotorTorque;
+                WheelFR.motorTorque = maxMotorTorque;
+                WheelFL.brakeTorque = 0;
+                WheelFR.brakeTorque = 0;
+            }
+        }
 
-	}
+    }
 
-	private void go()
-	{
-		if (!(p.CM.color.Equals(material2.color))) {
-			WheelFL.motorTorque = maxMotorTorque;
-			WheelFR.motorTorque = maxMotorTorque;
-			WheelFL.brakeTorque = 0;
-			WheelFR.brakeTorque = 0;
-		}
-	}
+    private void go()
+    {
+        if (!(p.CM.color.Equals(material2.color)))
+        {
+            WheelFL.motorTorque = maxMotorTorque;
+            WheelFR.motorTorque = maxMotorTorque;
+            WheelFL.brakeTorque = 0;
+            WheelFR.brakeTorque = 0;
+        }
+    }
 
-	private void engineoff()
-	{
-		if (this.gameObject.tag == "hap") {
+    private void engineoff()
+    {
+        if (this.gameObject.tag == "hap")
+        {
 
-			WheelFL.motorTorque = 0;
-			WheelFR.motorTorque = 0;
-			WheelFL.brakeTorque = maxBrakeTorque;
-			WheelFR.brakeTorque = maxBrakeTorque;
-		}
-	}
+            WheelFL.motorTorque = 0;
+            WheelFR.motorTorque = 0;
+            WheelFL.brakeTorque = maxBrakeTorque;
+            WheelFR.brakeTorque = maxBrakeTorque;
+        }
+    }
 
 
 
@@ -204,13 +208,13 @@ if (this.gameObject.tag == "rid") {
             Destroy(this.gameObject);
 
             newCarCount.decrementCarCount();
-freshLOOPING.incrementRew ();
-            
-            incrementCountNumber.incrementcarC(); 
+            freshLOOPING.incrementRew();
 
-			k = (Time.time - startTime);  
+            incrementCountNumber.incrementcarC();
 
-System.IO.File.AppendAllText("negjourneyTimeLatest1.csv", k.ToString() + ",");
+            k = (Time.time - startTime);
+
+            System.IO.File.AppendAllText("negjourneyTimeLatest1.csv", k.ToString() + ",");
 
         }
 
@@ -238,14 +242,14 @@ System.IO.File.AppendAllText("negjourneyTimeLatest1.csv", k.ToString() + ",");
     {
         Vector3 a = GetComponent<Transform>().position;
         Vector3 b = trafficLight.GetComponent<Transform>().position;
-		if((p.CM.color.Equals(material2.color)) && (currentNode == nodes.Count - 3))
-            {
+        if ((p.CM.color.Equals(material2.color)) && (currentNode == nodes.Count - 3))
+        {
             WheelFL.motorTorque = 0;
             WheelFR.motorTorque = 0;
             WheelFL.brakeTorque = maxBrakeTorque;
             WheelFR.brakeTorque = maxBrakeTorque;
 
-        }  
+        }
 
         else
         {

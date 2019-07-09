@@ -4,29 +4,33 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-public class Networking : MonoBehaviour {
+public class Networking : MonoBehaviour
+{
 
-	// Use this for initialization
-	void Start () {
-		StartCoroutine(trying());
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    // Use this for initialization
+    void Start()
+    {
+        StartCoroutine(trying());
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 
 
-	public IEnumerator trying()
-	{
-		while (true) {
-		
-		
-			yield return new WaitForSeconds (20);
-			SceneManager.LoadSceneAsync("Scene5");
-		
-		
-		}
-	}
+    public IEnumerator trying()
+    {
+        while (true)
+        {
+
+
+            yield return new WaitForSeconds(20);
+            SceneManager.LoadSceneAsync("Scene5");
+
+
+        }
+    }
 
 }

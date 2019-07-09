@@ -7,7 +7,7 @@ public class VehicleEngine : MonoBehaviour
 
     public Transform path;
     public GameObject TrafficLight;
-    
+
     public float maxSteerAngle = 45f;
     public float turnSpeed = 5f;
     public WheelCollider WheelFL;
@@ -28,19 +28,19 @@ public class VehicleEngine : MonoBehaviour
     public Material Material5;
     public MaterialChange m = null;
     public COUNTER n = null;
-    
+
 
 
     public List<Transform> nodes;
     public List<Transform> MaterialChange;
-    
+
 
     public int currentNode = 0;
     private int lapCounter = 0;
     public int count = 0;
     private float targetSteerAngle = 0;
 
-    
+
 
     [Header("Sensors")]
     public float sensorLength = 3f;
@@ -53,8 +53,8 @@ public class VehicleEngine : MonoBehaviour
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
         TrafficLightPosition = TrafficLight.transform.position;
         m = TrafficLight.GetComponent<MaterialChange>();
-      
-        
+
+
 
 
         Transform[] pathTransforms = path.GetComponentsInChildren<Transform>();
@@ -96,7 +96,7 @@ public class VehicleEngine : MonoBehaviour
         Instantiate();
         LerpToSteerAngle();
         Stop();
-       
+
 
 
 
@@ -158,18 +158,18 @@ public class VehicleEngine : MonoBehaviour
     }
 
 
-     private void Instantiate()
-     {
+    private void Instantiate()
+    {
 
-         {
+        {
             if (currentNode == nodes.Count - 1)
 
             {
                 Instantiate(VEHICLE, spawnSpot, Quaternion.identity);
             }
-         }
+        }
 
-     }  
+    }
 
     private void LerpToSteerAngle()
     {
@@ -199,10 +199,10 @@ public class VehicleEngine : MonoBehaviour
         }
     }
 
-   
+
 
 }
 
 
-  
+
 

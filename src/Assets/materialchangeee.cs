@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class materialchangeee : MonoBehaviour {
+public class materialchangeee : MonoBehaviour
+{
     public Material Material1;
     public Material Material2;
     public Material Material3;

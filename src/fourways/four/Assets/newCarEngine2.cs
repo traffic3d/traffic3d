@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class newCarEngine2 : MonoBehaviour {
+public class newCarEngine2 : MonoBehaviour
+{
     public Transform path;
     public GameObject trafficLight;
     public GameObject cameraObject;
@@ -23,8 +24,8 @@ public class newCarEngine2 : MonoBehaviour {
     public Vector3 VehicleCurrentPosition;
     public Vector3 TrafficLightPosition;
 
-	public Material material2;
-	public TLaction1 q = null;
+    public Material material2;
+    public TLaction1 q = null;
 
     public float range1 = 2f;
     public float range2 = 12f;
@@ -38,19 +39,19 @@ public class newCarEngine2 : MonoBehaviour {
 
     public CarCounter carCount;
 
-	public float k;
-	public float startTime;
+    public float k;
+    public float startTime;
 
 
 
     void Start()
     {
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
-		trafficLight = GameObject.Find("TrafficLight1");
+        trafficLight = GameObject.Find("TrafficLight1");
         path = GameObject.Find("newpath3").GetComponent<Transform>();
-		q = trafficLight.GetComponent<TLaction1>();
-		m = trafficLight.GetComponent<materialchangeeee>();
-		startTime = Time.time;
+        q = trafficLight.GetComponent<TLaction1>();
+        m = trafficLight.GetComponent<materialchangeeee>();
+        startTime = Time.time;
 
         cameraObject = GameObject.Find("Main Camera");
 
@@ -149,13 +150,13 @@ public class newCarEngine2 : MonoBehaviour {
 
 
             Destroy(this.gameObject);
-			CarCounter.decrementCarCount();
-			freshLOOPING.incrementRew ();
+            CarCounter.decrementCarCount();
+            freshLOOPING.incrementRew();
 
-			incrementCountNumber.incrementcarC();
+            incrementCountNumber.incrementcarC();
 
-			k = (Time.time - startTime);
-			System.IO.File.AppendAllText("journeyTimeLatest.csv", k.ToString() + "," + System.Environment.NewLine);
+            k = (Time.time - startTime);
+            System.IO.File.AppendAllText("journeyTimeLatest.csv", k.ToString() + "," + System.Environment.NewLine);
 
         }
 
@@ -184,8 +185,8 @@ public class newCarEngine2 : MonoBehaviour {
         Vector3 a = GetComponent<Transform>().position;
         Vector3 b = trafficLight.GetComponent<Transform>().position;
 
-		if((q.CM.color.Equals(material2.color)) && (currentNode == nodes.Count - 3))
-		{
+        if ((q.CM.color.Equals(material2.color)) && (currentNode == nodes.Count - 3))
+        {
             WheelFL.motorTorque = 0;
             WheelFR.motorTorque = 0;
             WheelFL.brakeTorque = maxBrakeTorque;

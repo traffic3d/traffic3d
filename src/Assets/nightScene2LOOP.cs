@@ -8,105 +8,109 @@ using System.Globalization;
 using System.Diagnostics;
 using UnityEngine.SceneManagement;
 
-public class nightScene2LOOP : MonoBehaviour {
+public class nightScene2LOOP : MonoBehaviour
+{
 
-	public GameObject trafficlight1;
-	public GameObject trafficlight2;
+    public GameObject trafficlight1;
+    public GameObject trafficlight2;
 
-	public TLaction1 m = null;
-	public TLaction2 n = null;
+    public TLaction1 m = null;
+    public TLaction2 n = null;
 
-	public bool waiting = false;
+    public bool waiting = false;
 
-	public static int rewCount = 0;
+    public static int rewCount = 0;
 
-	public bool yes = false;
-
-
-	void Start () {
+    public bool yes = false;
 
 
-		trafficlight1 = GameObject.Find("TrafficLight1");
-		m = trafficlight1.GetComponent<TLaction1> ();
-
-		trafficlight2 = GameObject.Find("TrafficLight2");
-		n = trafficlight2.GetComponent<TLaction2> ();
-
-		StartCoroutine (loopsing ());
-	}
+    void Start()
+    {
 
 
-	public IEnumerator loopsing()
-	{
+        trafficlight1 = GameObject.Find("TrafficLight1");
+        m = trafficlight1.GetComponent<TLaction1>();
 
-		if(yes == false)
-		{
-			for(int i = 0; i < 50000; i++)
-			{
-                            yield return StartCoroutine(red());
-                               yield return StartCoroutine(wait1());
-                               yield return StartCoroutine(green());
-                               yield return StartCoroutine(wait2());
-                                
-			}
+        trafficlight2 = GameObject.Find("TrafficLight2");
+        n = trafficlight2.GetComponent<TLaction2>();
 
-			yes = true;
-		}
-	}
+        StartCoroutine(loopsing());
+    }
 
-          public IEnumerator red()
+
+    public IEnumerator loopsing()
+    {
+
+        if (yes == false)
         {
-           m.materialchangeGREEN1 ();
-           n.materialchangeRED2();
-           yield return null;
+            for (int i = 0; i < 50000; i++)
+            {
+                yield return StartCoroutine(red());
+                yield return StartCoroutine(wait1());
+                yield return StartCoroutine(green());
+                yield return StartCoroutine(wait2());
+
+            }
+
+            yes = true;
         }
-         
-         public IEnumerator wait1()
+    }
+
+    public IEnumerator red()
+    {
+        m.materialchangeGREEN1();
+        n.materialchangeRED2();
+        yield return null;
+    }
+
+    public IEnumerator wait1()
+    {
+        yield return new WaitForSeconds(20);
+    }
+
+    public IEnumerator green()
+    {
+        n.materialchangeGREEN2();
+        m.materialchangeRED1();
+        yield return null;
+    }
+    public IEnumerator wait2()
+    {
+        yield return new WaitForSeconds(20);
+    }
+
+    public static int getrewcount()
+    {
+        return rewCount;
+    }
+
+
+    public static void incrementRew()
+    {
+        rewCount++;
+    }
+
+    public static void resetRew()
+    {
+        rewCount = 0;
+    }
+
+
+
+
+
+    void Update()
+    {
+        if (yes == true)
         {
-           yield return new WaitForSeconds(20);
-        }
-        
-          public IEnumerator green()
-        {
-           n.materialchangeGREEN2 ();
-           m.materialchangeRED1();
-           yield return null;
-        }
-        public IEnumerator wait2()
-        {
-           yield return new WaitForSeconds(20);
+
+            CarCounter.resetCarCount();
+            newCarCount.resetCarCount();
+            print("done with FINAL TRAINING");
+            Time.timeScale = 0;
+            print("unity paused after final training");
+
         }
 
-		public static int getrewcount()
-	{
-		return rewCount;
-	}
-
-
-	public static void incrementRew()
-	{
-		rewCount++;
-	}
-
-	public static void resetRew()
-	{
-		rewCount = 0;
-	}
-
-
-
-
-
-	void Update () {
-		if (yes == true) {
-
-			CarCounter.resetCarCount ();
-			newCarCount.resetCarCount ();
-			print("done with FINAL TRAINING");
-                        Time.timeScale = 0;
-                        print("unity paused after final training");
-                        
-		}
-
-	} 
+    }
 }

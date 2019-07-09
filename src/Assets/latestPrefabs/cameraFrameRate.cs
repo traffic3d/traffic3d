@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class cameraFrameRate : MonoBehaviour {
+public class cameraFrameRate : MonoBehaviour
+{
 
-	public int frameRate = 2;
+    public int frameRate = 2;
 
-	void Start () {
-		Time.captureFramerate = frameRate;	
-	}
-	
+    void Start()
+    {
+        Time.captureFramerate = frameRate;
+    }
 
-	void Update () {
-		
-	}
+
+    void Update()
+    {
+
+    }
 }

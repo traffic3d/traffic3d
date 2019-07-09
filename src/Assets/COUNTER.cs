@@ -29,7 +29,8 @@ public class COUNTER : MonoBehaviour
     }
 
 
-    public void increment_counter(){
+    public void increment_counter()
+    {
         carCount += 1;
         Debug.Log(carCount);
     }
@@ -52,7 +53,7 @@ public class COUNTER : MonoBehaviour
         }
     }
 
-    
+
     private void CameraRange()
 
     {
@@ -63,13 +64,15 @@ public class COUNTER : MonoBehaviour
 
     }
 
-    public int getCounter() {
+    public int getCounter()
+    {
         return carCount;
     }
 
-    public void writeTextFile(string path, string name) {
+    public void writeTextFile(string path, string name)
+    {
         //TODO: add name of the image then the carCount
 
-        System.IO.File.AppendAllText("ScreenshotMovieOutput/info.txt",name+" "+ carCount.ToString()+ System.Environment.NewLine);
+        System.IO.File.AppendAllText("ScreenshotMovieOutput/info.txt", name + " " + carCount.ToString() + System.Environment.NewLine);
     }
 }

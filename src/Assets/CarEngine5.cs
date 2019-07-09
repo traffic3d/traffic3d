@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CarEngine5 : MonoBehaviour {
+public class CarEngine5 : MonoBehaviour
+{
 
 
     public Transform path;
@@ -156,7 +157,7 @@ public class CarEngine5 : MonoBehaviour {
     {
         Vector3 a = transform.position;
         Vector3 b = TrafficLight.transform.position;
-        if ( ( (m.CM.color.Equals(Material1.color)  && (Vector3.Distance(transform.position, TrafficLight.transform.position) < 8f) && (Vector3.Distance(transform.position, CAR4.transform.position) < 15f))))
+        if (((m.CM.color.Equals(Material1.color) && (Vector3.Distance(transform.position, TrafficLight.transform.position) < 8f) && (Vector3.Distance(transform.position, CAR4.transform.position) < 15f))))
 
         {
             WheelFL.motorTorque = 0;

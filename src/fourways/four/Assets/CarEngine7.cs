@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CarEngine7 : MonoBehaviour {
+public class CarEngine7 : MonoBehaviour
+{
 
     public Transform path;
     public GameObject TrafficLight;

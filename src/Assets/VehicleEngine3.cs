@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VehicleEngine3 : MonoBehaviour {
+public class VehicleEngine3 : MonoBehaviour
+{
     public Transform path;
     public GameObject TrafficLight;
-	public GameObject cameraObject;
+    public GameObject cameraObject;
     public GameObject CountCars;
 
 
@@ -53,7 +54,7 @@ public class VehicleEngine3 : MonoBehaviour {
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
         TrafficLightPosition = TrafficLight.transform.position;
         m = TrafficLight.GetComponent<MaterialChange>();
-		cameraObject = GameObject.Find("Main Camera");
+        cameraObject = GameObject.Find("Main Camera");
 
 
         Transform[] pathTransforms = path.GetComponentsInChildren<Transform>();
@@ -95,7 +96,7 @@ public class VehicleEngine3 : MonoBehaviour {
         Instantiate();
         LerpToSteerAngle();
         Stop();
-        
+
 
     }
 
@@ -154,18 +155,18 @@ public class VehicleEngine3 : MonoBehaviour {
 
 
     private void Instantiate()
-    
+
+
+    {
+        if (currentNode == nodes.Count - 1)
 
         {
-            if (currentNode == nodes.Count - 1)
-
-        {
-			Instantiate(VEHICLE, spawnSpot, Quaternion.identity);
+            Instantiate(VEHICLE, spawnSpot, Quaternion.identity);
         }
 
     }
 
-   
+
     private void LerpToSteerAngle()
     {
         WheelFL.steerAngle = Mathf.Lerp(WheelFL.steerAngle, targetSteerAngle, Time.deltaTime * turnSpeed);

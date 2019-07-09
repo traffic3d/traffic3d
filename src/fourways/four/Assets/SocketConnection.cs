@@ -10,29 +10,32 @@ using UnityEngine.SceneManagement;
 
 
 
-public class SocketConnection : MonoBehaviour {
+public class SocketConnection : MonoBehaviour
+{
 
-	public const int port = 13004;
-	public static Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+    public const int port = 13004;
+    public static Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
 
-	void Start () {
+    void Start()
+    {
 
-		socket.Connect ("localhost", port);
-		print("Established tcpSocket Connection with Python");
+        socket.Connect("localhost", port);
+        print("Established tcpSocket Connection with Python");
 
-		changescene1 ();
-		print("change scene 1 CALLED");
+        changescene1();
+        print("change scene 1 CALLED");
 
-	}
-	
-		void Update () {
-		
-	}
+    }
 
-	public void changescene1()
-	{
-		SceneManager.LoadScene("Demo AI car2");
-	}
+    void Update()
+    {
+
+    }
+
+    public void changescene1()
+    {
+        SceneManager.LoadScene("Demo AI car2");
+    }
 
 }

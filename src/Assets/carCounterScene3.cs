@@ -2,48 +2,52 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class carCounterScene3 : MonoBehaviour {
+public class carCounterScene3 : MonoBehaviour
+{
 
-	private static int carCount = 0;
+    private static int carCount = 0;
 
-	public static int maxCarNumbers = 10;
+    public static int maxCarNumbers = 10;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
 
-	}
+    }
 
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+    void Update()
+    {
 
-	}
+    }
 
-	public static int getCarCount() {
+    public static int getCarCount()
+    {
 
-		return carCount;
+        return carCount;
 
-	}
+    }
 
-	public static void incrementCarCount()
-	{
+    public static void incrementCarCount()
+    {
 
-		carCount++;
+        carCount++;
 
-	}
+    }
 
-	public static void decrementCarCount()
-	{
+    public static void decrementCarCount()
+    {
 
-		carCount--;
+        carCount--;
 
-	}
+    }
 
-	public static void resetCarCount()
-	{
+    public static void resetCarCount()
+    {
 
-		carCount = 0;
+        carCount = 0;
 
-	}
+    }
 
 
 

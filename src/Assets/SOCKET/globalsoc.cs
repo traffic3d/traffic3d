@@ -6,24 +6,27 @@ using System.Net.Sockets;
 using UnityEngine.SceneManagement;
 
 
-public class globalsoc : MonoBehaviour {
+public class globalsoc : MonoBehaviour
+{
 
-	void Start () {
+    void Start()
+    {
 
-		print("scene1 socket one loaded");
+        print("scene1 socket one loaded");
 
-		changeScene2 ();
-	}
-	
-
-	public void changeScene2()
-
-	{
-		SceneManager.LoadSceneAsync("Scene2");
-	}
+        changeScene2();
+    }
 
 
-	void Update () {
-		
-	}
+    public void changeScene2()
+
+    {
+        SceneManager.LoadSceneAsync("Scene2");
+    }
+
+
+    void Update()
+    {
+
+    }
 }

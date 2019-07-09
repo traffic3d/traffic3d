@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class carEngine12 : MonoBehaviour {
+public class carEngine12 : MonoBehaviour
+{
     public Transform path;
     public GameObject trafficLight;
     public GameObject cameraObject;
@@ -23,8 +24,8 @@ public class carEngine12 : MonoBehaviour {
     public Vector3 VehicleCurrentPosition;
     public Vector3 TrafficLightPosition;
 
-	public Material material2;
-	public TLaction2 r = null;
+    public Material material2;
+    public TLaction2 r = null;
 
     public float range1 = 2f;
     public float range2 = 12f;
@@ -38,8 +39,8 @@ public class carEngine12 : MonoBehaviour {
     public newCarCount carCount;
 
 
-	public float k;
-	public float startTime;
+    public float k;
+    public float startTime;
 
 
     void Start()
@@ -49,9 +50,9 @@ public class carEngine12 : MonoBehaviour {
         trafficLight = GameObject.Find("TrafficLight2");
         path = GameObject.Find("mypath2").GetComponent<Transform>();
 
-		r = trafficLight.GetComponent<TLaction2>();
+        r = trafficLight.GetComponent<TLaction2>();
 
-		startTime = Time.time;
+        startTime = Time.time;
 
         cameraObject = GameObject.Find("Main Camera");
 
@@ -93,26 +94,29 @@ public class carEngine12 : MonoBehaviour {
         Destroy();
         Instantiate();
         LerpToSteerAngle();
-     Stop();
+        Stop();
 
 
     }
-	private void juststop()
-	{
-		if (currentNode == nodes.Count - 4) {
-			WheelFL.motorTorque = 0;
-			WheelFR.motorTorque = 0;
-			WheelFL.brakeTorque = maxBrakeTorque;
-			WheelFR.brakeTorque = maxBrakeTorque;
-		} else {
-		
-			WheelFL.motorTorque = maxMotorTorque;
-			WheelFR.motorTorque = maxMotorTorque;
-			WheelFL.brakeTorque = 0;
-			WheelFR.brakeTorque = 0;
-		}
-	
-	}
+    private void juststop()
+    {
+        if (currentNode == nodes.Count - 4)
+        {
+            WheelFL.motorTorque = 0;
+            WheelFR.motorTorque = 0;
+            WheelFL.brakeTorque = maxBrakeTorque;
+            WheelFR.brakeTorque = maxBrakeTorque;
+        }
+        else
+        {
+
+            WheelFL.motorTorque = maxMotorTorque;
+            WheelFR.motorTorque = maxMotorTorque;
+            WheelFL.brakeTorque = 0;
+            WheelFR.brakeTorque = 0;
+        }
+
+    }
 
 
 
@@ -166,15 +170,15 @@ public class carEngine12 : MonoBehaviour {
 
 
             Destroy(this.gameObject);
-			freshLOOPING.incrementRew();
+            freshLOOPING.incrementRew();
             newCarCount.decrementCarCount();
 
             incrementCountNumber.incrementcarC();   //to get the generated car count
 
 
-			journeyTimeCARCOUNTER.incrementjourneyCARsCount();
-			k = (Time.time - startTime);
-			System.IO.File.AppendAllText ("journeyTimeLatest.csv", k.ToString () + "," + System.Environment.NewLine);
+            journeyTimeCARCOUNTER.incrementjourneyCARsCount();
+            k = (Time.time - startTime);
+            System.IO.File.AppendAllText("journeyTimeLatest.csv", k.ToString() + "," + System.Environment.NewLine);
         }
 
 
@@ -202,7 +206,7 @@ public class carEngine12 : MonoBehaviour {
     {
         Vector3 a = GetComponent<Transform>().position;
         Vector3 b = trafficLight.GetComponent<Transform>().position;
-		if((r.CM.color.Equals(material2.color)) && (currentNode == nodes.Count - 4))
+        if ((r.CM.color.Equals(material2.color)) && (currentNode == nodes.Count - 4))
         {
             WheelFL.motorTorque = 0;
             WheelFR.motorTorque = 0;

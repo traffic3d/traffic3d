@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class newCarEngine2 : MonoBehaviour {
+public class newCarEngine2 : MonoBehaviour
+{
     public Transform path;
     public GameObject trafficLight;
     public GameObject cameraObject;
@@ -23,8 +24,8 @@ public class newCarEngine2 : MonoBehaviour {
     public Vector3 VehicleCurrentPosition;
     public Vector3 TrafficLightPosition;
 
-	public Material material2;
-	public TLaction1 q = null;
+    public Material material2;
+    public TLaction1 q = null;
 
     public float range1 = 2f;
     public float range2 = 12f;
@@ -38,19 +39,19 @@ public class newCarEngine2 : MonoBehaviour {
 
     public CarCounter carCount;
 
-	public float k;
-	public float startTime;
+    public float k;
+    public float startTime;
 
-public bool frus = false;
-public bool des = false;
+    public bool frus = false;
+    public bool des = false;
 
-        public static Vector3 startpos;
-          public static Vector3 endpos;
-        public static double distancee;
-        public static double speedd;
+    public static Vector3 startpos;
+    public static Vector3 endpos;
+    public static double distancee;
+    public static double speedd;
 
-        public static double t1;
-        public static double t2;
+    public static double t1;
+    public static double t2;
 
 
 
@@ -58,12 +59,12 @@ public bool des = false;
     {
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
 
-		trafficLight = GameObject.Find("TrafficLight1");
+        trafficLight = GameObject.Find("TrafficLight1");
         path = GameObject.Find("P1").GetComponent<Transform>();
 
-		q = trafficLight.GetComponent<TLaction1>();
+        q = trafficLight.GetComponent<TLaction1>();
 
-		startTime = Time.time;
+        startTime = Time.time;
 
         cameraObject = GameObject.Find("Main Camera");
 
@@ -95,14 +96,14 @@ public bool des = false;
         }
     }
 
-	void OnCollisionEnter(Collision other)
-	{
-		if (other.gameObject.tag == "car") 
-		{
-			other.gameObject.tag = "hap";
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag == "car")
+        {
+            other.gameObject.tag = "hap";
 
-		}
-	}
+        }
+    }
 
     private void FixedUpdate()
     {
@@ -114,52 +115,55 @@ public bool des = false;
         Instantiate();
         LerpToSteerAngle();
         Stop();
-		engineoff();
-		go ();
-		
-          keepgoing();
-    
+        engineoff();
+        go();
+
+        keepgoing();
+
 
     }
 
 
 
-private void keepgoing()
-	{
-{		
+    private void keepgoing()
+    {
+        {
 
-if (this.gameObject.tag == "rid") {
+            if (this.gameObject.tag == "rid")
+            {
 
-			WheelFL.motorTorque = maxMotorTorque;
-			WheelFR.motorTorque = maxMotorTorque;
-			WheelFL.brakeTorque = 0;
-			WheelFR.brakeTorque = 0;
-		}
-	}
+                WheelFL.motorTorque = maxMotorTorque;
+                WheelFR.motorTorque = maxMotorTorque;
+                WheelFL.brakeTorque = 0;
+                WheelFR.brakeTorque = 0;
+            }
+        }
 
-}
+    }
 
 
-	private void go()
-	{
-		if (!(q.CM.color.Equals(material2.color))) {
-			WheelFL.motorTorque = maxMotorTorque;
-			WheelFR.motorTorque = maxMotorTorque;
-			WheelFL.brakeTorque = 0;
-			WheelFR.brakeTorque = 0;
-		}
-	}
+    private void go()
+    {
+        if (!(q.CM.color.Equals(material2.color)))
+        {
+            WheelFL.motorTorque = maxMotorTorque;
+            WheelFR.motorTorque = maxMotorTorque;
+            WheelFL.brakeTorque = 0;
+            WheelFR.brakeTorque = 0;
+        }
+    }
 
-	private void engineoff()
-	{
-		if (this.gameObject.tag == "hap") {
+    private void engineoff()
+    {
+        if (this.gameObject.tag == "hap")
+        {
 
-			WheelFL.motorTorque = 0;
-			WheelFR.motorTorque = 0;
-			WheelFL.brakeTorque = maxBrakeTorque;
-			WheelFR.brakeTorque = maxBrakeTorque;
-		}
-	}
+            WheelFL.motorTorque = 0;
+            WheelFR.motorTorque = 0;
+            WheelFL.brakeTorque = maxBrakeTorque;
+            WheelFR.brakeTorque = maxBrakeTorque;
+        }
+    }
 
 
 
@@ -210,22 +214,22 @@ if (this.gameObject.tag == "rid") {
         if (currentNode == nodes.Count - 1)
         {
 
-	   freshLOOPING.incdensitycount1();
+            freshLOOPING.incdensitycount1();
             endpos = transform.position;
             distancee = Vector3.Distance(startpos, endpos);
             t2 = (Time.time - t1);
             speedd = (distancee / t2);
-            freshLOOPING.speedlist.Add(speedd);		
+            freshLOOPING.speedlist.Add(speedd);
 
             Destroy(this.gameObject);
-			CarCounter.decrementCarCount();
-freshLOOPING.incrementRew ();
+            CarCounter.decrementCarCount();
+            freshLOOPING.incrementRew();
 
-			incrementCountNumber.incrementcarC();
+            incrementCountNumber.incrementcarC();
 
-			k = (Time.time - startTime);
+            k = (Time.time - startTime);
 
-System.IO.File.AppendAllText("negjourneyTimeLatest1.csv", k.ToString() + ",");
+            System.IO.File.AppendAllText("negjourneyTimeLatest1.csv", k.ToString() + ",");
 
         }
 
@@ -255,8 +259,8 @@ System.IO.File.AppendAllText("negjourneyTimeLatest1.csv", k.ToString() + ",");
         Vector3 a = GetComponent<Transform>().position;
         Vector3 b = trafficLight.GetComponent<Transform>().position;
 
-		if((q.CM.color.Equals(material2.color)) && (currentNode == nodes.Count - 3))
-		{
+        if ((q.CM.color.Equals(material2.color)) && (currentNode == nodes.Count - 3))
+        {
             WheelFL.motorTorque = 0;
             WheelFR.motorTorque = 0;
             WheelFL.brakeTorque = maxBrakeTorque;

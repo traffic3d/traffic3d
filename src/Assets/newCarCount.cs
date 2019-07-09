@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class newCarCount : MonoBehaviour {
+public class newCarCount : MonoBehaviour
+{
 
     public static int carCount = 0;
 
@@ -41,10 +42,10 @@ public class newCarCount : MonoBehaviour {
 
     }
 
-	public static void resetCarCount()
-	{
-		carCount = 0;
-	
-	}
+    public static void resetCarCount()
+    {
+        carCount = 0;
+
+    }
 
 }

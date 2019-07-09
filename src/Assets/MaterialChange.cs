@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MaterialChange : MonoBehaviour {
+public class MaterialChange : MonoBehaviour
+{
 
     public Material Material1;
     public Material Material2;
@@ -15,20 +16,22 @@ public class MaterialChange : MonoBehaviour {
     private float timer = 0;
     private float timerMax = 0;
 
-    void Start () {
+    void Start()
+    {
 
         CM = GetComponent<Renderer>().material;
 
     }
-	
-	
-	void Update () {
+
+
+    void Update()
+    {
 
         Materialchange();
-        	
-	}
 
-     private void Materialchange()
+    }
+
+    private void Materialchange()
     {
         if (CM == Material1)
         {
@@ -57,7 +60,7 @@ public class MaterialChange : MonoBehaviour {
             GetComponent<Renderer>().materials = myarr;
         }
 
-       else if (CM == Material3)
+        else if (CM == Material3)
 
         {
             if (!Waited(10))
@@ -71,9 +74,9 @@ public class MaterialChange : MonoBehaviour {
             GetComponent<Renderer>().materials = myarr;
         }
 
-       else if (CM == Material4)
+        else if (CM == Material4)
         {
-            if (!Waited (1))
+            if (!Waited(1))
             {
                 return;
             }
@@ -101,7 +104,7 @@ public class MaterialChange : MonoBehaviour {
         }
     }
 
-      private bool Waited(float seconds)
+    private bool Waited(float seconds)
     {
         timerMax = seconds;
         timer += Time.deltaTime;

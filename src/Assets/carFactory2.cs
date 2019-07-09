@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class carFactory2 : MonoBehaviour {
+public class carFactory2 : MonoBehaviour
+{
 
     public Rigidbody car1;
     public Rigidbody car2;
@@ -30,24 +31,24 @@ public class carFactory2 : MonoBehaviour {
     {
         while (true)
         {
-            yield return new WaitForSeconds(Random.Range(6,7));
-            if (newCarCount.carCount < Random.Range(1,4))
+            yield return new WaitForSeconds(Random.Range(6, 7));
+            if (newCarCount.carCount < Random.Range(1, 4))
             {
                 if (carGenerator == 0)
                 {
                     Instantiate(car1, spawnSpot1, Quaternion.Euler(Vector3.up * 300));
-		    newCarCount.incrementCarCount();
+                    newCarCount.incrementCarCount();
                     carGenerator = 1;
                 }
                 else
                 {
                     Instantiate(car3, spawnSpot3, Quaternion.Euler(Vector3.up * 300));
-		    newCarCount.incrementCarCount();
+                    newCarCount.incrementCarCount();
                     carGenerator = 0;
                 }
             }
 
-            
+
         }
     }
 
