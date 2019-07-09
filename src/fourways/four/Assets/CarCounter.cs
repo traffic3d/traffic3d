@@ -12,7 +12,7 @@ public class CarCounter : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        // int maxCarNumbers = Random.Range(8, 10);
+
     }
 
     // Update is called once per frame
