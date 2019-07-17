@@ -28,7 +28,7 @@ Use a preferred C# IDE or download Visual Studio using the following link: [http
 
 Open Unity and press the open button as shown below.
 
-[![Open Project Image](./docs/OpenProject.png)]
+![Open Project Image](./docs/OpenProject.png)
 
 Navigate to the location of the project select the folder that is the parent folder of both the Assets and ProjectSettings folder.
 
@@ -38,42 +38,42 @@ Navigate to the location of the project select the folder that is the parent fol
 
 All Assets can be access in this area. This includes scripts and models for the simulation
 
-[![Project Window Image](./docs/ProjectWindow.png)]
+![Project Window Image](./docs/ProjectWindow.png)
 
 #### Hierarchy Window
 
 The scenes assets are listed here, each object may have a child object depending on the Asset
 
-[![Hierarchy Window Image](./docs/HierarchyWindow.png)]
+![Hierarchy Window Image](./docs/HierarchyWindow.png)
 
 #### Scene Window
 
 Displays the scene and objects within that scene. Moving around the scene can be done by holding right-click, turning the mouse and using W (forward) S (backward) A (left) and D (right).
 
-[![Scene Window Image](./docs/SceneWindow.png)]
+![Scene Window Image](./docs/SceneWindow.png)
 
 #### Inspector Window
 
 Once an object has been clicked from either the scene or the hierarchy window, the Inspector window will show all the properties of that object.
 
-[![Inspector Window Image](./docs/InspectorWindow.png)]
+![Inspector Window Image](./docs/InspectorWindow.png)
 
 ### Open a scene
 
 In the navigation bar click on File > Open Scene and then click on the scene to open. Scene files have the extension ".unity". The scene should then open into the "Scene" window.
 
-[![Open Scene Image](./docs/OpenScene.png)]
+![Open Scene Image](./docs/OpenScene.png)
 
 ### Edit Properties
 
 Navigate to the Hierarchy window and click on the object that needs to have its values changed. As an example, car has been selected below.
 
-[![Select Car Image](./docs/SelectCar.png)]
+![Select Car Image](./docs/SelectCar.png)
 
 The inspector window then has the object’s properties which can be changed by clicking on the field and typing in the new value. 
 For fields with an object as a value, click on the circle icon to the right of the field and select the new object for the field.
 
-[![Select Car Image](./docs/EditCar.png)]
+![Select Car Image](./docs/EditCar.png)
 
 ## Testing
 
@@ -98,10 +98,10 @@ Go to Create > Testing > (Test Mode) Test C# Script. This will create script in 
 
 Tests can be run within the Unity UI directly.
 
-1. Click “Window” on the top navigation bar.
-1. Click “Test Runner”
-1. Click on “PlayMode” and then “Run All”
-1. Click on “EditMode” and then “Run All”
+1. Click "Window" on the top navigation bar.
+1. Click "Test Runner"
+1. Click on "PlayMode" and then "Run All"
+1. Click on "EditMode" and then "Run All"
 
 ## Building the Project
 
