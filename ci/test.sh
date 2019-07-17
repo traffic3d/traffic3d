@@ -7,7 +7,7 @@ echo "Testing for $TEST_PLATFORM"
 touch $(pwd)/$TEST_PLATFORM-results.xml
 
 ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' /opt/Unity/Editor/Unity} \
-  -projectPath $(pwd)/src \
+  -projectPath $(pwd)/Traffic3D \
   -runTests \
   -testPlatform $TEST_PLATFORM \
   -testResults $(pwd)/$TEST_PLATFORM-results.xml \
