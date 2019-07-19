@@ -32,13 +32,13 @@ Please use code blocks (```) to format console output, logs, and code, otherwise
 
 If the bug was found on a live or demo deployment, state the time and date on which it occurred (this helps in searching web server or operating system logs for more information).
 
-- [ ] The live / demo system was accessed via an Android mobile phone.
-- [ ] The live / demo system was accessed via an Apple mobile phone.
-- [ ] The live / demo system was accessed via a Windows mobile phone
-- [ ] The live / demo system was accessed via Safari.
-- [ ] The live / demo system was accessed via Chrome.
-- [ ] The live / demo system was accessed via Firefox.
-- [ ] The live / demo system was accessed via Internet Explorer.
+- [ ] The simulation was run on Windows.
+- [ ] The simulation was run on Linux.
+- [ ] The simulation was run on MacOS (unsupported).
+- [ ] The simulation was run on iOS (unsupported).
+- [ ] The simulation was run on Android (unsupported).
+
+Please also state the version number of your platform.
 
 ## Confirmation
 
