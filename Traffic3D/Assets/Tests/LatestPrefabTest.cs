@@ -11,7 +11,6 @@ public class LatestPrefabTest
     [SetUp]
     public void SetUpTest()
     {
-        // Load Scene before test
         try
         {
             SceneManager.LoadScene(0);
@@ -20,7 +19,6 @@ public class LatestPrefabTest
         {
             Debug.Log(e);
         }
-
     }
 
     [TearDown]
@@ -37,7 +35,6 @@ public class LatestPrefabTest
 
         cameraFrameRate cameraFrameRate = (cameraFrameRate)UnityEngine.Object.FindObjectOfType(typeof(cameraFrameRate));
 
-        // Check capture framerate is correct
         Assert.AreEqual(Time.captureFramerate, cameraFrameRate.frameRate);
 
     }
@@ -48,13 +45,11 @@ public class LatestPrefabTest
 
         yield return null;
 
-        // Incremental Test for journeyTimeCARCOUNTER
         int count = journeyTimeCARCOUNTER.getjourneyCARsCount();
 
         count++;
         journeyTimeCARCOUNTER.incrementjourneyCARsCount();
 
-        // Get test for journeyTimeCARCOUNTER
         Assert.AreEqual(journeyTimeCARCOUNTER.getjourneyCARsCount(), count);
 
     }
