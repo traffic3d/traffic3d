@@ -25,7 +25,6 @@ public class TrafficLightTest
     [UnityTest]
     public IEnumerator TrafficLightChangeColours()
     {
-        yield return null;
 
         GameObject trafficLightObject1 = GameObject.Find("TrafficLight1");
         GameObject trafficLightObject2 = GameObject.Find("TrafficLight2");
@@ -35,24 +34,17 @@ public class TrafficLightTest
         // First Script
         // Set default (red)
         trafficLightScript1.defaultmaterial();
-        yield return null;
 
         Assert.IsTrue(CheckTrafficLightColour(trafficLightObject1, trafficLightScript1, 1, trafficLightScript1.material1));
 
-        yield return null;
-        // Set colour to green
         trafficLightScript1.materialchangeGREEN1();
 
         Assert.IsTrue(CheckTrafficLightColour(trafficLightObject1, trafficLightScript1, 1, trafficLightScript1.material3));
 
-        yield return null;
-        // Set colour to red
         trafficLightScript1.materialchangeRED1();
 
         Assert.IsTrue(CheckTrafficLightColour(trafficLightObject1, trafficLightScript1, 1, trafficLightScript1.material2));
 
-        yield return null;
-        // Set colour to amber
         trafficLightScript1.materialchangeAMBER();
 
         Assert.IsTrue(CheckTrafficLightColour(trafficLightObject1, trafficLightScript1, 1, trafficLightScript1.material4));
@@ -61,27 +53,22 @@ public class TrafficLightTest
         // Second Script
         // Set default (red)
         trafficLightScript2.defaultmaterial();
-        yield return null;
 
         Assert.IsTrue(CheckTrafficLightColour(trafficLightObject2, trafficLightScript2, 2, trafficLightScript2.material1));
 
-        yield return null;
-        // Set colour to green
         trafficLightScript2.materialchangeGREEN2();
 
         Assert.IsTrue(CheckTrafficLightColour(trafficLightObject2, trafficLightScript2, 2, trafficLightScript2.material3));
 
-        yield return null;
-        // Set colour to red
         trafficLightScript2.materialchangeRED2();
 
         Assert.IsTrue(CheckTrafficLightColour(trafficLightObject2, trafficLightScript2, 2, trafficLightScript2.material2));
 
-        yield return null;
-        // Set colour to amber
         trafficLightScript2.materialchangeAMBER();
 
         Assert.IsTrue(CheckTrafficLightColour(trafficLightObject2, trafficLightScript2, 2, trafficLightScript2.material4));
+
+        yield return null;
 
     }
 
