@@ -28,7 +28,6 @@ public class CarEngine6 : MonoBehaviour
     public float range1 = 2f;
     public float range2 = 12f;
     public Material material2;
-    public materialchangeeee m = null;
     public TLaction2 p = null;
     public COUNTER n = null;
     public List<Transform> nodes;
@@ -51,7 +50,6 @@ public class CarEngine6 : MonoBehaviour
         trafficLight = GameObject.Find("TrafficLight2");
         path = GameObject.Find("PX").GetComponent<Transform>();
 
-        m = trafficLight.GetComponent<materialchangeeee>();
         p = trafficLight.GetComponent<TLaction2>();
         startTime = Time.time;
 

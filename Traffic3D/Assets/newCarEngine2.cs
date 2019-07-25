@@ -29,7 +29,6 @@ public class newCarEngine2 : MonoBehaviour
 
     public float range1 = 2f;
     public float range2 = 12f;
-    public materialchangeeee m = null;
     public COUNTER n = null;
     public List<Transform> nodes;
     public List<Transform> MaterialChange;
