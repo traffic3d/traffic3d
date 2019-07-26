@@ -95,7 +95,13 @@ public class freshLOOPING : MonoBehaviour
     {
         shot_count += 1;
 
-        ScreenCapture.CaptureScreenshot("/media/gargd/Fast/MFDimg/shot" + shot_count + ".png");
+        string screenshotPath = Application.dataPath + "/Screenshots";
+        if (!Directory.Exists(screenshotPath))
+        {
+            Directory.CreateDirectory(screenshotPath);
+        }
+
+        ScreenCapture.CaptureScreenshot(screenshotPath + "/shot" + shot_count + ".png");
 
         yield return null;
     }
