@@ -9,11 +9,7 @@ Created on Wed Apr 10 11:46:42 2019
 import socket
 import numpy as np
 import cv2
-import sys
-import time
 import os
-import math
-import random
 import matplotlib
 import matplotlib.pyplot as plt
 
@@ -39,10 +35,7 @@ Tensor = FloatTensor
 #    net = torch.nn.DataParallel(net, device_ids=range(torch.cuda.device_count()))
 #    cudnn.benchmark = True
 
-#setting up matplotlib
 is_ipython = 'inline' in matplotlib.get_backend()
-if is_ipython:
-    from IPython import display
 plt.ion()
 
 #path for pulling the image
@@ -175,4 +168,3 @@ for u in torch.arange(1, 501):
     del policy.basic_rewards[:]
     del policy.saved_log_probs[:]
     print("things deleted")
-
