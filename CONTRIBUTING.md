@@ -81,6 +81,28 @@ For fields with an object as a value, click on the circle icon to the right of t
 
 ![Select Car Image](./docs/EditCar.png)
 
+## Working with the Python backend
+
+This code comes with a model generator, which generates stochastic events for the simulation.
+The model generator is written in Python3 and can be found in the [backend](/backend) directory.
+
+To use it, first install the requirements in a [Python virtual environment](https://docs.python-guide.org/dev/virtualenvs/).
+
+```sh
+sudo apt-get install python-virtualenv
+cd backend
+virtualenv --python=/usr/bin/python3.7 venv
+. venv/bin/activate
+pip install -r requirements.txt
+```
+
+Then run the code, which will listen for a socket from the Unity application:
+
+```sh
+$ python model_generator.py
+waiting for tcpConnection
+```
+
 ## Testing
 
 ### Creating or Editing Tests
