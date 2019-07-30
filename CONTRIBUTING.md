@@ -96,12 +96,36 @@ virtualenv --python=/usr/bin/python3.7 venv
 pip install -r requirements.txt
 ```
 
+If **Windows** is being used then use the following link to download **PyTorch**:
+[https://pytorch.org/](https://pytorch.org/)
+
+Otherwise run the following command:
+
+```sh
+pip install torch==1.1.0
+```
+
 Then run the code, which will listen for a socket from the Unity application:
 
 ```sh
 $ python model_generator.py
 waiting for tcpConnection
 ```
+
+### Using PyCharm
+
+PyCharm is an IDE for Python can be used to setup the backend easily. 
+It automatically installs the virtual environment.
+
+1. Open up the `backend` folder as a project.
+1. In settings `Ctrl+Alt+S`, `project: backend` > `project interpreter`, press the cog and press `Add...`
+1. Press `Ok` and `Apply`
+1. By using the `Terminal` in the bottom left of the screen, install requirements.txt and torch.
+1. The Terminal can then be used to run `python model_generator.py`.
+
+PyCharm can also be used to debug the script by using breakpoints if needed.
+
+More information can be found on here: [https://www.jetbrains.com/help/pycharm/meet-pycharm.html](https://www.jetbrains.com/help/pycharm/meet-pycharm.html)
 
 ## Testing
 
