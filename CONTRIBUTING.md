@@ -15,9 +15,9 @@ git clone git@gitlab.com:beautifulcanoe/developers/traffic3d.git
 cd traffic3d
 ```
 
-### Installiation and Setup
+### Installation and set-up
 
-The project runs on Unity 2017.2.0f1 and up. 
+The project runs on Unity 2017.2.0f1 and up.
 Download the latest of Unity from the following link: [https://unity3d.com/get-unity/download/](https://unity3d.com/get-unity/download/)
 Or download Unity 2017.2.0f1 from the following link: [https://unity3d.com/get-unity/download/archive](https://unity3d.com/get-unity/download/archive)
 
@@ -37,7 +37,7 @@ Navigate to the location of the project select the folder that is the parent fol
 
 #### Project Window
 
-All `Assets` can be access in this area. 
+All `Assets` can be access in this area.
 This includes scripts and models for the simulation.
 
 ![Project Window Image](./docs/ProjectWindow.png)
@@ -50,7 +50,7 @@ The scenes `assets` are listed here, each object may have a child object dependi
 
 #### Scene Window
 
-Displays the scene and objects within that scene. 
+Displays the scene and objects within that scene.
 Moving around the scene can be done by holding right-click, turning the mouse and using `W` (forward) `S` (backward) `A` (left) and `D` (right).
 
 ![Scene Window Image](./docs/SceneWindow.png)
@@ -63,29 +63,75 @@ Once an object has been clicked from either the scene or the hierarchy window, t
 
 ### Open a scene
 
-In the navigation bar click on **File > Open Scene** and then click on the scene to open. 
-Scene files have the extension `.unity`. 
+In the navigation bar click on **File > Open Scene** and then click on the scene to open.
+Scene files have the extension `.unity`.
 The scene should then open into the **Scene** window.
 
 ![Open Scene Image](./docs/OpenScene.png)
 
 ### Edit Properties
 
-Navigate to the **Hierarchy** window and click on the object that needs to have its values changed. 
+Navigate to the **Hierarchy** window and click on the object that needs to have its values changed.
 As an example, car has been selected below.
 
 ![Select Car Image](./docs/SelectCar.png)
 
-The **inspector** window then has the object’s properties which can be changed by clicking on the field and typing in the new value. 
+The **inspector** window then has the object’s properties which can be changed by clicking on the field and typing in the new value.
 For fields with an object as a value, click on the circle icon to the right of the field and select the new object for the field.
 
 ![Select Car Image](./docs/EditCar.png)
+
+## Working with the Python backend
+
+This code comes with a model generator, which generates stochastic events for the simulation.
+The model generator is written in Python3 and can be found in the [backend](/backend) directory.
+
+To use it, first install the requirements in a [Python virtual environment](https://docs.python-guide.org/dev/virtualenvs/).
+
+```sh
+sudo apt-get install python-virtualenv
+cd backend
+virtualenv --python=/usr/bin/python3.7 venv
+. venv/bin/activate
+pip install -r requirements.txt
+```
+
+If **Windows** is being used then use the following link to download **PyTorch**:
+[https://pytorch.org/](https://pytorch.org/)
+
+Otherwise run the following command:
+
+```sh
+pip install torch==1.1.0
+```
+
+Then run the code, which will listen for a socket from the Unity application:
+
+```sh
+$ python traffic3d_processor.py
+waiting for tcpConnection
+```
+
+### Using PyCharm
+
+[PyCharm](https://www.jetbrains.com/pycharm/) is an IDE for Python can be used to setup the backend easily.
+It automatically installs the virtual environment.
+
+1. Open up the `backend` folder as a project.
+1. In settings `Ctrl+Alt+S`, `project: backend` > `project interpreter`, press the cog and press `Add...`
+1. Press `Ok` and `Apply`
+1. By using the `Terminal` in the bottom left of the screen, install requirements.txt and torch.
+1. The Terminal can then be used to run `python traffic3d_processor.py`.
+
+PyCharm can also be used to debug the script by using breakpoints if needed.
+
+More information about PyCharm can be found here: [https://www.jetbrains.com/help/pycharm/meet-pycharm.html](https://www.jetbrains.com/help/pycharm/meet-pycharm.html)
 
 ## Testing
 
 ### Creating or Editing Tests
 
-For Unity, there are two testing methods; *Play Mode* and *Edit Mode*. 
+For Unity, there are two testing methods; *Play Mode* and *Edit Mode*.
 Edit mode tests are in the following folder:
 
 ```sh
@@ -99,7 +145,7 @@ Play mode tests are in the following folder:
 ```
 
 To create a test script, navigate to the corresponding folder and right-click in the project window (normally at the bottom of the screen).
-Go to **Create > Testing > (Test Mode) Test C# Script**. 
+Go to **Create > Testing > (Test Mode) Test C# Script**.
 This will create script in that directory and simply double click to edit the script.
 
 ## Running Tests
@@ -113,11 +159,11 @@ Tests can be run within the Unity UI directly.
 
 ## Building the Project
 
-It is possible to quickly build the project from the UI if needed. 
-If a preview is needed, click on the Play button at the top of the screen. 
-Make sure to un-click the **Play** button if any more edits are needed, 
+It is possible to quickly build the project from the UI if needed.
+If a preview is needed, click on the Play button at the top of the screen.
+Make sure to un-click the **Play** button if any more edits are needed,
 when the play button is selected all changes during that time are reverted.
 
-For a full build, navigate to the top bar and click **File > Build & Run**, 
-select the folder for the build. 
+For a full build, navigate to the top bar and click **File > Build & Run**,
+select the folder for the build.
 This should create a `.exe` and will automatically execute the `.exe` to play the simulation.
