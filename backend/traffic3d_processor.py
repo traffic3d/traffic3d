@@ -62,7 +62,8 @@ class Traffic3DProcessor(model_generator.ModelGenerator):
         R = 0
         policy_loss = []
         discounted_rewards = []
-        for i in torch.arange(1, 11):  # one episode is made of 100 timesteps, get 100 rewards after an episode
+        # One episode is made of 100 timesteps, get 100 rewards after an episode.
+        for i in torch.arange(1, 11):
             img = self.receive_image()
             img1 = self.prepro(img)
             act = self.select_action(img1)
@@ -79,8 +80,8 @@ class Traffic3DProcessor(model_generator.ModelGenerator):
         for log_prob, reward in zip(self.policy.saved_log_probs, discounted_rewards):
             policy_loss.append(-log_prob * reward)
         policy_loss = torch.cat(policy_loss).sum()
-        policy_loss.backward(
-            retain_graph=True)  # as lon as you have retain_raph=True, you can do backprop at any time at all..
+        # As long as you have retain_raph=True, you can do backprop at any time.
+        policy_loss.backward(retain_graph=True)
         print("done backprop")
 
     def select_action(self, state):
