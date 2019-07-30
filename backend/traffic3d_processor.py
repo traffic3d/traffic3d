@@ -88,8 +88,8 @@ class Traffic3DProcessor(model_generator.ModelGenerator):
         m = Categorical(probs1)
         action = m.sample()
         self.policy.saved_log_probs.append(m.log_prob(action))
-        print(action.data[0])
-        return action.data[0]
+        print(action.data[0].tolist())
+        return action.data[0].tolist()
 
     def prepro(self, x):
         x = cv2.resize(x, (100, 100))
