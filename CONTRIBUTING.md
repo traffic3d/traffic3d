@@ -108,7 +108,7 @@ pip install torch==1.1.0
 Then run the code, which will listen for a socket from the Unity application:
 
 ```sh
-$ python model_generator.py
+$ python traffic3d_processor.py
 waiting for tcpConnection
 ```
 
@@ -121,11 +121,11 @@ It automatically installs the virtual environment.
 1. In settings `Ctrl+Alt+S`, `project: backend` > `project interpreter`, press the cog and press `Add...`
 1. Press `Ok` and `Apply`
 1. By using the `Terminal` in the bottom left of the screen, install requirements.txt and torch.
-1. The Terminal can then be used to run `python model_generator.py`.
+1. The Terminal can then be used to run `python traffic3d_processor.py`.
 
 PyCharm can also be used to debug the script by using breakpoints if needed.
 
-More information can be found on here: [https://www.jetbrains.com/help/pycharm/meet-pycharm.html](https://www.jetbrains.com/help/pycharm/meet-pycharm.html)
+More information about PyCharm can be found here: [https://www.jetbrains.com/help/pycharm/meet-pycharm.html](https://www.jetbrains.com/help/pycharm/meet-pycharm.html)
 
 ## Testing
 
