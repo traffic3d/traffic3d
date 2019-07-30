@@ -114,7 +114,7 @@ waiting for tcpConnection
 
 ### Using PyCharm
 
-PyCharm is an IDE for Python can be used to setup the backend easily. 
+[PyCharm](https://www.jetbrains.com/pycharm/) is an IDE for Python can be used to setup the backend easily.
 It automatically installs the virtual environment.
 
 1. Open up the `backend` folder as a project.
