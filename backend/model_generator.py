@@ -7,7 +7,8 @@ import os
 class ModelGenerator(ABC):
     PORT = 13000
     @abstractmethod
-    def __init__(self, images_path):
+    def __init__(self, images_path, port=PORT):
+        self.port = port
         self.images_path = images_path
         self.client_socket = None
         self.setup_socket()
@@ -20,7 +21,7 @@ class ModelGenerator(ABC):
 
     def setup_socket(self):
         ss = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        ss.bind(("0.0.0.0", ModelGenerator.PORT))
+        ss.bind(("0.0.0.0", self.port))
         ss.listen()
         print("waiting for tcpConnection")
         (self.client_socket, address) = ss.accept()
