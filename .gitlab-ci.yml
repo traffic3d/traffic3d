@@ -39,7 +39,7 @@ test-playmode:
     - chmod +x ./ci/build.sh && ./ci/build.sh
   artifacts:
     paths:
-      - ./src/Builds/
+      - ./Traffic3D/Builds/
 
 build-StandaloneLinux64:
   <<: *build
