@@ -127,6 +127,44 @@ PyCharm can also be used to debug the script by using breakpoints if needed.
 
 More information about PyCharm can be found here: [https://www.jetbrains.com/help/pycharm/meet-pycharm.html](https://www.jetbrains.com/help/pycharm/meet-pycharm.html)
 
+### Custom backend script
+
+To make a custom script which works with the simulation, 
+extend the `ModelGenerator` class by placing the ModelGenerator class in the new class parameter like so: 
+
+```python
+class Traffic3DProcessor(model_generator.ModelGenerator):
+```
+
+Next, add the constructor to the new class using:
+
+```python
+def __init__(self, port, images_path): 
+    super().__init__(port, images_path)
+``` 
+
+The constructor can have as many or as little parameters as needed but the `super().__init__` 
+function needs to have the **port** of the socket (normally `13000`) and the **image path** of the 
+screenshots generated (normally `../Traffic3D/Assets/Screenshots` if script is still in the same folder as in Gitlab).
+
+
+`enable()` is an abstract method which needs to be implemented into the new class. 
+It is called once the socket is setup and a connection has been made between Unity and the Script.
+
+Within the `ModelGenerator` class there are multiple methods that help with interacting with the Traffic Simulation.
+
+`receive_image()` - Used when the script needs to grab a screen shot image from the system. 
+This method blocks the main thread.
+
+`send_action(action)` - Used to send the action to the simulation, usually a number to the lights that need changing.
+
+`receive_rewards()` - Used to receive the rewards from the simulation. This method blocks the main thread.
+
+Once the class is finished, call the class constructor `Traffic3DProcessor(PORT, IMAGES_PATH)` 
+at the bottom of the script to activate the class when the script is ran.
+
+To see an example of this look at the [Traffic3DProcessor](./backend/traffic3d_processor.py) within the backend folder.
+
 ## Testing
 
 ### Creating or Editing Tests
