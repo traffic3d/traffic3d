@@ -20,13 +20,12 @@ import torch.nn.functional as F
 from torch.autograd import Variable
 from torch.distributions import Categorical
 
-PORT = 13000
 IMAGES_PATH = "../Traffic3D/Assets/Screenshots"
 
 
 class Traffic3DProcessor(model_generator.ModelGenerator):
-    def __init__(self, port, images_path):
-        super().__init__(port, images_path)
+    def __init__(self, images_path):
+        super().__init__(images_path)
 
     def enable(self):
         # Using CUDA GPU
@@ -125,4 +124,4 @@ class PG(nn.Module):
         return F.softmax(x, dim=1)
 
 
-Traffic3DProcessor(PORT, IMAGES_PATH)
+Traffic3DProcessor(IMAGES_PATH)

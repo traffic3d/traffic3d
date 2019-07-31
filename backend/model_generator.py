@@ -5,8 +5,9 @@ import os
 
 
 class ModelGenerator(ABC):
+    PORT = 13000
     @abstractmethod
-    def __init__(self, port, images_path):
+    def __init__(self, images_path, port=PORT):
         self.port = port
         self.images_path = images_path
         self.client_socket = None
