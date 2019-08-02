@@ -1,6 +1,7 @@
 ﻿using UnityEditor;
 using System.Linq;
 using System;
+using UnityEditor.Build.Reporting;
 
 static class BuildCommand
 {
@@ -148,15 +149,15 @@ static class BuildCommand
         }
 
         Console.WriteLine("Starting BuildPipeline.BuildPlayer method");
-        string output = BuildPipeline.BuildPlayer(GetEnabledScenes(), fixedBuildPath, buildTarget, GetBuildOptions());
+        BuildReport output = BuildPipeline.BuildPlayer(GetEnabledScenes(), fixedBuildPath, buildTarget, GetBuildOptions());
 
-        if (string.IsNullOrEmpty(output))
+        if (output.summary.result == BuildResult.Succeeded)
         {
             Console.WriteLine("Build Successful");
         }
         else
         {
-            Console.WriteLine("Build Unsuccessful: " + output);
+            Console.WriteLine("Build Unsuccessful");
         }
 
         Console.WriteLine(":: Done with build");

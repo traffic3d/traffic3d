@@ -64,7 +64,7 @@ public class TrafficLightTest
 
         Assert.IsTrue(CheckTrafficLightColour(trafficLightObject2, trafficLightScript2, 2, trafficLightScript2.material2));
 
-        trafficLightScript2.materialchangeAMBER();
+        trafficLightScript2.materialchangeAMBER2();
 
         Assert.IsTrue(CheckTrafficLightColour(trafficLightObject2, trafficLightScript2, 2, trafficLightScript2.material4));
 

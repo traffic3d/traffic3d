@@ -5,9 +5,11 @@ using UnityEngine;
 public class CarEngine2 : MonoBehaviour
 {
     public Transform path;
+    public Transform path1;
+    public Transform path2;
     public GameObject trafficLight;
-    public GameObject cameraObject;
-    public GameObject CountCars;
+    //public GameObject cameraObject;
+    //public GameObject CountCars;
 
 
     public float maxSteerAngle = 45f;
@@ -20,9 +22,9 @@ public class CarEngine2 : MonoBehaviour
     public float maxSpeed = 100f;
     public Vector3 centerOfMass;
     public Rigidbody VEHICLE;
-    public Vector3 spawnSpot = new Vector3(-37.83f, 11.28f, 14.96f);
-    public Vector3 VehicleCurrentPosition;
-    public Vector3 TrafficLightPosition;
+   // public Vector3 spawnSpot = new Vector3(-37.83f, 11.28f, 14.96f);
+    //public Vector3 VehicleCurrentPosition;
+    //public Vector3 TrafficLightPosition;
 
     public Material material2;
     public TLaction1 m = null;
@@ -55,8 +57,9 @@ public class CarEngine2 : MonoBehaviour
     void Start()
     {
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
-        trafficLight = GameObject.Find("TrafficLight1");
-        path = GameObject.Find("P2").GetComponent<Transform>();
+        trafficLight = GameObject.Find("SphereTL1");
+        path1 = GameObject.Find("newpath2").GetComponent<Transform>();
+        path2 = GameObject.Find("newpath21").GetComponent<Transform>();
 
         m = trafficLight.GetComponent<TLaction1>();
 
@@ -65,7 +68,16 @@ public class CarEngine2 : MonoBehaviour
         t1 = Time.time;
         startpos = transform.position;
 
-        cameraObject = GameObject.Find("Main Camera");
+        if (Random.value > 0.5)
+        {
+
+            path = path1;
+        }
+        else
+        {
+
+            path = path1; //path2
+        }
 
         Transform[] pathTransforms = path.GetComponentsInChildren<Transform>();
         nodes = new List<Transform>();

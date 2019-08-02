@@ -11,7 +11,7 @@ public class carFactory2 : MonoBehaviour
     public Vector3 spawnSpot1;
     public Vector3 spawnSpot2;
     public Vector3 spawnSpot3;
-    int carGenerator = 0;
+    public int carGenerator = 0;
 
     // Use this for initialization
     void Start()
@@ -31,18 +31,18 @@ public class carFactory2 : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(Random.Range(6, 7));
-            if (newCarCount.carCount < Random.Range(1, 4))
+            yield return new WaitForSeconds(Random.Range(35, 40));
+            if (newCarCount.carCount < Random.Range(1, 3))
             {
                 if (carGenerator == 0)
                 {
-                    Instantiate(car1, spawnSpot1, Quaternion.Euler(Vector3.up * 300));
+                    Instantiate(car1, spawnSpot1, Quaternion.Euler(Vector3.up * 270));
                     newCarCount.incrementCarCount();
                     carGenerator = 1;
                 }
                 else
                 {
-                    Instantiate(car3, spawnSpot3, Quaternion.Euler(Vector3.up * 300));
+                    Instantiate(car3, spawnSpot3, Quaternion.Euler(Vector3.up * 270));
                     newCarCount.incrementCarCount();
                     carGenerator = 0;
                 }

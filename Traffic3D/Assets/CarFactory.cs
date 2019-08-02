@@ -31,18 +31,18 @@ public class CarFactory : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(Random.Range(8, 10));
-            if (CarCounter.carCount < Random.Range(2, 7))
+            yield return new WaitForSeconds(Random.Range(19, 22));
+            if (CarCounter.carCount < Random.Range(1, 3))
             {
                 if (carGenerator == 0)
                 {
-                    Instantiate(car1, spawnSpot1, Quaternion.Euler(Vector3.up * 45));
+                    Instantiate(car1, spawnSpot1, Quaternion.Euler(Vector3.up * 90));
                     CarCounter.incrementCarCount();
                     carGenerator = 1;
                 }
                 else
                 {
-                    Instantiate(car3, spawnSpot3, Quaternion.Euler(Vector3.up * 45));
+                    Instantiate(car3, spawnSpot3, Quaternion.Euler(Vector3.up * 90));
                     CarCounter.incrementCarCount();
                     carGenerator = 0;
                 }
