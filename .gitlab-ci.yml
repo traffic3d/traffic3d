@@ -1,11 +1,19 @@
 image: gableroux/unity3d:2017.2.0f1
 
-stages:
-- test
-- build
-
 variables:
+  # Use a shallow clone depth to speed up the CI build.
+  # See: https://docs.gitlab.com/ee/ci/large_repositories/
   BUILD_NAME: Traffic3D
+  GIT_DEPTH: 10
+
+cache:
+  key: "$CI_PROJECT_NAMESPACE-$CI_PROJECT_NAME-$CI_COMMIT_REF_SLUG-$BUILD_TARGET"
+  paths:
+    - $BUILD_NAME/Library/
+
+stages:
+  - test
+  - build
 
 .unity_before_script: &unity_before_script
   before_script:
@@ -39,7 +47,7 @@ test-playmode:
     - chmod +x ./ci/build.sh && ./ci/build.sh
   artifacts:
     paths:
-      - ./Traffic3D/Builds/
+      - ./$BUILD_NAME/Builds/
 
 build-StandaloneLinux64:
   <<: *build
