@@ -9,9 +9,6 @@ public class CarEngine6 : MonoBehaviour
     public Transform path1;
     public Transform path2;
     public GameObject trafficLight;
-    //public GameObject cameraObject;
-    //public GameObject CountCars;
-
 
     public float maxSteerAngle = 45f;
     public float turnSpeed = 5f;
@@ -23,9 +20,6 @@ public class CarEngine6 : MonoBehaviour
     public float maxSpeed = 100f;
     public Vector3 centerOfMass;
     public Rigidbody VEHICLE;
-    //public Vector3 spawnSpot = new Vector3(-37.83f, 11.28f, 14.96f);
-    //public Vector3 VehicleCurrentPosition;
-    //public Vector3 TrafficLightPosition;
 
     public float range1 = 2f;
     public float range2 = 12f;

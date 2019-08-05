@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CarEngine4 : MonoBehaviour {
+public class CarEngine4 : MonoBehaviour
+{
 
 
     public Transform path;
-	public Transform path1;
-	public Transform path2;
+    public Transform path1;
+    public Transform path2;
 
     public GameObject trafficlight;
 
@@ -18,27 +19,20 @@ public class CarEngine4 : MonoBehaviour {
     public WheelCollider WheelFR;
     public float maxMotorTorque = 80f;
     public float maxBrakeTorque = 100f;
-	public float maxBrakeTorque2 = 1000f;
+    public float maxBrakeTorque2 = 1000f;
 
     public float currentSpeed;
     public float maxSpeed = 100f;
     public Vector3 centerOfMass;
     public Rigidbody VEHICLE;
-    // public Vector3 spawnSpot = new Vector3(-20.31f, 13.85f, 5.46f);
- //   public Vector3 VehicleCurrentPosition;
- //   public Vector3 TrafficLightPosition;
-  //  public float range1 = 2f;
-   // public float range2 = 12f;
-  //  public Material Material1;
-  //  public Material Material3;
- //   public materialchangeee m = null;
-	public TLaction4 r = null;
-	public Material material2;
-	public Material material4;
+
+    public TLaction4 r = null;
+    public Material material2;
+    public Material material4;
 
 
-	public float startTime;
-	public static float k;
+    public float startTime;
+    public static float k;
 
 
 
@@ -48,32 +42,27 @@ public class CarEngine4 : MonoBehaviour {
     private int lapCounter = 0;
     private float targetSteerAngle = 0;
 
-  public bool des = false;
-
- //   [Header("Sensors")]
- //   public float sensorLength = 3f;
-  //  public Vector3 frontSensorPosition = new Vector3(0f, 0.2f, 0.5f);
-  //  public float frontSideSensorPosition = 0.2f;
- //   public float frontSensorAngle = 30f;
+    public bool des = false;
 
     void Start()
     {
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
-		path1 = GameObject.Find("mypath3").GetComponent<Transform>();
-		path2 = GameObject.Find("mypath31").GetComponent<Transform>();
-		trafficlight = GameObject.Find("SphereTL4");
-		r = trafficlight.GetComponent<TLaction4>();
-     //   TrafficLightPosition = TrafficLight.transform.position;
-      //  m = TrafficLight.GetComponent<materialchangeee>();
-		startTime = Time.time;
+        path1 = GameObject.Find("mypath3").GetComponent<Transform>();
+        path2 = GameObject.Find("mypath31").GetComponent<Transform>();
+        trafficlight = GameObject.Find("SphereTL4");
+        r = trafficlight.GetComponent<TLaction4>();
+        startTime = Time.time;
 
-		if (Random.value > 0.5) {
+        if (Random.value > 0.5)
+        {
 
-			path = path1;
-		} else {
+            path = path1;
+        }
+        else
+        {
 
-			path = path1; //path2
-		}
+            path = path1;
+        }
 
         Transform[] pathTransforms = path.GetComponentsInChildren<Transform>();
         nodes = new List<Transform>();
@@ -102,256 +91,150 @@ public class CarEngine4 : MonoBehaviour {
         }
     }
 
-	/*void OnCollisionEnter(Collision col)
-	{
-		if (col.gameObject.tag == "car") {
-
-			WheelFL.motorTorque = 0;
-			WheelFR.motorTorque = 0;
-			WheelFL.brakeTorque = maxBrakeTorque;
-			WheelFR.brakeTorque = maxBrakeTorque;
-
-		} else {
-
-			WheelFL.motorTorque = maxMotorTorque;
-			WheelFR.motorTorque = maxMotorTorque;
-			WheelFL.brakeTorque = 0;
-			WheelFR.brakeTorque = 0;
-		}
-
-	}   
-
-	private void OnCollisionEnter(Collision collision)
-	{
-		if (collision.gameObject.tag == "car")
-		{
-			//print ("collision7 detected");
-			WheelFL.motorTorque = 0;
-			WheelFR.motorTorque = 0;
-		//	WheelFL.brakeTorque = maxBrakeTorque2;
-		//	WheelFR.brakeTorque = maxBrakeTorque2;
-			maxSpeed = 0;
-			currentSpeed = 0;
-		}
-	}  */
-
-
-	public void OnCollisionEnter(Collision other)
-	{
-		if (other.gameObject.tag == "car")
-		{
-			other.gameObject.tag = "hap";
-		}
-	}
-
-/*	public void OnCollisionExit(Collision other)
-	{
-		if (other.gameObject.tag == "hap")
-		{
-			other.gameObject.tag = "unhap";
-		}
-	}  */
-
+    public void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag == "car")
+        {
+            other.gameObject.tag = "hap";
+        }
+    }
 
     private void FixedUpdate()
-	{
-		//Sensors();
+    {
 
-		// if (!(m.CM.color.Equals(Material1.color) && ((Vector3.Distance(transform.position, TrafficLightPosition) <= range1)))) //&& (Vector3.Distance(transform.position, TrafficLightPosition) >= range2))))
+        ApplySteer();
+        Drive(1);
+        CheckWaypointDistance();
+        Destroy();
+        LerpToSteerAngle();
+        juststop();
+        engineoff();
+        goo();
 
-		ApplySteer ();
-		Drive (1);
-		CheckWaypointDistance ();
-		Destroy ();
-		//Instantiate();
-		LerpToSteerAngle ();
-		// Stop();
-		juststop ();
-		//go ();
-		//redtest ();
-		//amberstop();
-		engineoff();
-	//	keepgoing();
-		goo();
-		//got();
-		//going();
-	}
+    }
 
 
-	private void got()
-	{
-		if (this.gameObject.tag == "drive") {
-			WheelFL.motorTorque = maxMotorTorque;
-			WheelFR.motorTorque = maxMotorTorque;
-			WheelFL.brakeTorque = 0;
-			WheelFR.brakeTorque = 0; 
-		}
+    private void got()
+    {
+        if (this.gameObject.tag == "drive")
+        {
+            WheelFL.motorTorque = maxMotorTorque;
+            WheelFR.motorTorque = maxMotorTorque;
+            WheelFL.brakeTorque = 0;
+            WheelFR.brakeTorque = 0;
+        }
 
-	}
+    }
 
-	private void engineoff()
-	{
-		if(this.gameObject.tag == "hap")
-		{
-			WheelFL.motorTorque = 0;
-			WheelFR.motorTorque = 0;
-			WheelFL.brakeTorque = maxBrakeTorque;
-			WheelFR.brakeTorque = maxBrakeTorque;
-		}
-	}
+    private void engineoff()
+    {
+        if (this.gameObject.tag == "hap")
+        {
+            WheelFL.motorTorque = 0;
+            WheelFR.motorTorque = 0;
+            WheelFL.brakeTorque = maxBrakeTorque;
+            WheelFR.brakeTorque = maxBrakeTorque;
+        }
+    }
 
 
-	private void keepgoing()
-	{
-		if(!(r.CM.color.Equals(material2.color)))
+    private void keepgoing()
+    {
+        if (!(r.CM.color.Equals(material2.color)))
 
-		{
-			WheelFL.motorTorque = maxMotorTorque;
-			WheelFR.motorTorque = maxMotorTorque;
-			WheelFL.brakeTorque = 0;
-			WheelFR.brakeTorque = 0; 	
-		}
+        {
+            WheelFL.motorTorque = maxMotorTorque;
+            WheelFR.motorTorque = maxMotorTorque;
+            WheelFL.brakeTorque = 0;
+            WheelFR.brakeTorque = 0;
+        }
 
-	}
+    }
 
-	private void going()
-	{
-		if (this.gameObject.tag == "unhap") {
-			WheelFL.motorTorque = maxMotorTorque;
-			WheelFR.motorTorque = maxMotorTorque;
-			WheelFL.brakeTorque = 0;
-			WheelFR.brakeTorque = 0; 
+    private void going()
+    {
+        if (this.gameObject.tag == "unhap")
+        {
+            WheelFL.motorTorque = maxMotorTorque;
+            WheelFR.motorTorque = maxMotorTorque;
+            WheelFL.brakeTorque = 0;
+            WheelFR.brakeTorque = 0;
 
-		}
-	}
+        }
+    }
 
 
 
-	private void go()
-	{
-if(des == false)		
-{
-if (this.gameObject.tag == "drive") {
-		//	WheelFL.motorTorque = maxMotorTorque;
-		//	WheelFR.motorTorque = maxMotorTorque;
-		//	WheelFL.brakeTorque = 0;
-		//	WheelFR.brakeTorque = 0; 
-freshLOOPING.incrementRew ();
-des = true;
-		}
+    private void go()
+    {
+        if (des == false)
+        {
+            if (this.gameObject.tag == "drive")
+            {
 
-	}
+                freshLOOPING.incrementRew();
+                des = true;
+            }
 
-}
+        }
+
+    }
 
 
-	private void redtest()
-	{
-		if (r.CM.color.Equals (material2.color)) {
-			print("CarEngine4 red test");
-		}
-	}   
+    private void redtest()
+    {
+        if (r.CM.color.Equals(material2.color))
+        {
+            print("CarEngine4 red test");
+        }
+    }
 
 
-	private void juststop()
-	{
-		//if (r.CM.color.Equals(material2.color) && currentNode == nodes.Count - 3)
-		if(currentNode == nodes.Count - 3 && r.CM.color.Equals(material2.color))
-		{
-			WheelFL.motorTorque = 0;
-			WheelFR.motorTorque = 0;
-			WheelFL.brakeTorque = maxBrakeTorque;
-			WheelFR.brakeTorque = maxBrakeTorque;
+    private void juststop()
+    {
 
-		}
-		 else
-		{
-			WheelFL.motorTorque = maxMotorTorque;
-			WheelFR.motorTorque = maxMotorTorque;
-			WheelFL.brakeTorque = 0;
-			WheelFR.brakeTorque = 0;
-		}
-	} 
+        if (currentNode == nodes.Count - 3 && r.CM.color.Equals(material2.color))
+        {
+            WheelFL.motorTorque = 0;
+            WheelFR.motorTorque = 0;
+            WheelFL.brakeTorque = maxBrakeTorque;
+            WheelFR.brakeTorque = maxBrakeTorque;
 
-	private void goo()
-	{
-		//if (r.CM.color.Equals(material2.color) && currentNode == nodes.Count - 3)
-		if(currentNode == nodes.Count - 2 )
+        }
+        else
+        {
+            WheelFL.motorTorque = maxMotorTorque;
+            WheelFR.motorTorque = maxMotorTorque;
+            WheelFL.brakeTorque = 0;
+            WheelFR.brakeTorque = 0;
+        }
+    }
 
-		{
-			WheelFL.motorTorque = maxMotorTorque;
-			WheelFR.motorTorque = maxMotorTorque;
-			WheelFL.brakeTorque = 0;
-			WheelFR.brakeTorque = 0;
-		}
-	} 
-	private void amberstop()
-	{
-	
-		if(currentNode == nodes.Count - 3 && r.CM.color.Equals(material4.color))
-		{
-			WheelFL.motorTorque = 0;
-			WheelFR.motorTorque = 0;
-			WheelFL.brakeTorque = maxBrakeTorque;
-			WheelFR.brakeTorque = maxBrakeTorque;
+    private void goo()
+    {
 
-		}
-	/*	else
-		{
-			WheelFL.motorTorque = maxMotorTorque;
-			WheelFR.motorTorque = maxMotorTorque;
-			WheelFL.brakeTorque = 0;
-			WheelFR.brakeTorque = 0;
-		}  */
-	}
+        if (currentNode == nodes.Count - 2)
 
-   // private void Sensors()
-    //{
-      //  RaycastHit hit;
-       // Vector3 sensorStartPos = transform.position + frontSensorPosition;
-        //sensorStartPos.z =+ frontSensorPosition; 
+        {
+            WheelFL.motorTorque = maxMotorTorque;
+            WheelFR.motorTorque = maxMotorTorque;
+            WheelFL.brakeTorque = 0;
+            WheelFR.brakeTorque = 0;
+        }
+    }
+    private void amberstop()
+    {
 
-        // front center sensor
-        //if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength))
-       // {
-        //    Debug.DrawLine(sensorStartPos, hit.point);
-        //}
+        if (currentNode == nodes.Count - 3 && r.CM.color.Equals(material4.color))
+        {
+            WheelFL.motorTorque = 0;
+            WheelFR.motorTorque = 0;
+            WheelFL.brakeTorque = maxBrakeTorque;
+            WheelFR.brakeTorque = maxBrakeTorque;
 
+        }
 
-        // front right sensor
-       // sensorStartPos.x += frontSideSensorPosition;
-     //   if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength))
-     //   {
-       //     Debug.DrawLine(sensorStartPos, hit.point);
-       // }
-
-
-        // front right angle sensor
-     //   if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(frontSensorAngle, transform.up) * transform.forward, out hit, sensorLength))
-   //     {
-       //     Debug.DrawLine(sensorStartPos, hit.point);
-      //  }
-
-
-        // front left sensor
-      //  sensorStartPos.x -= 2 * frontSideSensorPosition;
-      //  if (Physics.Raycast(sensorStartPos, transform.forward, out hit, sensorLength))
-      //  {
-     //       Debug.DrawLine(sensorStartPos, hit.point);
-     //   }
-
-
-        // front left angle sensor
-     //   if (Physics.Raycast(sensorStartPos, Quaternion.AngleAxis(-frontSensorAngle, transform.up) * transform.forward, out hit, sensorLength))
-    //    {
-
-      //  }
-   //     Debug.DrawLine(sensorStartPos, hit.point);
-    //}
-    
-
-
-
+    }
 
     private void ApplySteer()
     {
@@ -380,19 +263,20 @@ des = true;
 
     private void CheckWaypointDistance()
     {
-        //print(Vector3.Distance(transform.position, nodes[currentNode].position));
-        if (Vector3.Distance(transform.position, nodes[currentNode].position) < 3f)
+
+        if (Vector3.Distance(transform.position, nodes[currentNode].position) < 4f)
         {
-            //  print("updating current node from " + currentNode +"   " + nodes.Count);
+
             if (currentNode == nodes.Count - 1)
-            {                                                    // print("updating current node from " + currentNode +"   " + nodes.Count);
+            {
                 currentNode = 0;
                 lapCounter++;
-            }                                                           //currentNode = (currentNode + 1) % (nodes.Count);
+            }
             else
             {
                 currentNode++;
             }
+
         }
     }
 
@@ -402,14 +286,15 @@ des = true;
         if (currentNode == nodes.Count - 1)
         {
             Destroy(this.gameObject);
-			carCounterFactory4.decrementCarCount(); // to decrement the counter after car is destroyed
 
-			//freshLOOPING.incrementRew ();
-			incrementCountNumber.incrementcarC();   //to get the generated car count
+            // to decrement the counter after car is destroyed
+            carCounterFactory4.decrementCarCount();
+            //to get the generated car count
+            incrementCountNumber.incrementcarC();
 
-			k = Time.time - startTime;
-//System.IO.File.AppendAllText ("AFourjourneyTimeLatest.csv", k.ToString () + ",");
- System.IO.File.AppendAllText ("xFourjourneyTimeLatest.csv", k.ToString () + ",");
+            k = Time.time - startTime;
+
+            System.IO.File.AppendAllText("xFourjourneyTimeLatest.csv", k.ToString() + ",");
         }
 
 
@@ -417,17 +302,13 @@ des = true;
 
 
     private void Instantiate()
-     {
+    {
 
-         {
-         //    if (currentNode == nodes.Count - 1)
+        {
 
+        }
 
-           //      Instantiate(VEHICLE, spawnSpot, Quaternion.identity);
-
-         }
-
-     }  
+    }
 
     private void LerpToSteerAngle()
     {
@@ -436,33 +317,3 @@ des = true;
     }
 
 }
-
-
-
-	/* private void Stop()
-    {
-        //GameObject go = GameObject.FindWithTag("TrafficLight"); 
-      //  Vector3 a = transform.position;
-      //  Vector3 b = TrafficLight.transform.position;
-		if ((r.CM.color.Equals(material2.color)) && (currentNode == nodes.Count - 3))
-
-        {
-            WheelFL.motorTorque = 0;
-            WheelFR.motorTorque = 0;
-            WheelFL.brakeTorque = maxBrakeTorque;
-            WheelFR.brakeTorque = maxBrakeTorque;
-
-        }
-       // else
-        {
-            WheelFL.motorTorque = maxMotorTorque;
-            WheelFR.motorTorque = maxMotorTorque;
-            WheelFL.brakeTorque = 0;
-            WheelFR.brakeTorque = 0;
-        }
-    }
-            */
-
-
-
-

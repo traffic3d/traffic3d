@@ -8,9 +8,6 @@ public class carEngine12 : MonoBehaviour
     public Transform path1;
     public Transform path2;
     public GameObject trafficLight;
-    //public GameObject cameraObject;
-    //public GameObject CountCars;
-
 
     public float maxSteerAngle = 45f;
     public float turnSpeed = 5f;
@@ -22,24 +19,16 @@ public class carEngine12 : MonoBehaviour
     public float maxSpeed = 100f;
     public Vector3 centerOfMass;
     public Rigidbody VEHICLE;
-    //public Vector3 spawnSpot = new Vector3(-37.83f, 11.28f, 14.96f);
-    //public Vector3 VehicleCurrentPosition;
-    //public Vector3 TrafficLightPosition;
 
     public Material material2;
     public TLaction2 r = null;
 
-    //public float range1 = 2f;
-    //public float range2 = 12f;
     public COUNTER n = null;
     public List<Transform> nodes;
     public List<Transform> MaterialChange;
     public int currentNode = 0;
     private int lapCounter = 0;
     private float targetSteerAngle = 0;
-
-    //public newCarCount carCount;
-
 
     public float k;
     public float startTime;
@@ -67,7 +56,7 @@ public class carEngine12 : MonoBehaviour
         else
         {
 
-            path = path1; //path2
+            path = path1;
         }
 
         Transform[] pathTransforms = path.GetComponentsInChildren<Transform>();
@@ -219,8 +208,8 @@ public class carEngine12 : MonoBehaviour
             newCarCount.decrementCarCount();
             freshLOOPING.incrementRew();
 
-            incrementCountNumber.incrementcarC();   //to get the generated car count
-
+            //to get the generated car count
+            incrementCountNumber.incrementcarC();
 
             journeyTimeCARCOUNTER.incrementjourneyCARsCount();
             k = (Time.time - startTime);

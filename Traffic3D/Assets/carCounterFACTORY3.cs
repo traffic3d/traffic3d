@@ -2,53 +2,44 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class carCounterFACTORY3 : MonoBehaviour {
+public class carCounterFACTORY3 : MonoBehaviour
+{
 
-	public static int carCount;
+    public static int carCount;
 
-	public static int maxCarNumbers = 5;
+    public static int maxCarNumbers = 5;
 
-	//public static int maxcars = Random.Range(2,4);
-
-
-
-	void Start () {
-		//print ("carcounterFAC3 started");
-		carCount = 0;
-	}
-	
-
-	void Update () {
-		
-	}
-
-
-	public static int getCarCount()
-	{
-
-		return carCount;
-
-	}
-
-	/*  public static int maxCarNumbers()
+    void Start()
     {
-        Random.Range(1, 8);
-    }  */
+        carCount = 0;
+    }
 
 
-	public static void incrementCarCount()
-	{
+    void Update()
+    {
 
-		carCount++;
-		//print ("infac3:" + carCount);
-
-	}
+    }
 
 
-	public static void decrementCarCount()
-	{
+    public static int getCarCount()
+    {
 
-		carCount--;
+        return carCount;
 
-	}
+    }
+
+    public static void incrementCarCount()
+    {
+
+        carCount++;
+
+    }
+
+
+    public static void decrementCarCount()
+    {
+
+        carCount--;
+
+    }
 }

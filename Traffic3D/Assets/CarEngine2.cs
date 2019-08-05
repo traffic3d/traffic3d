@@ -8,9 +8,6 @@ public class CarEngine2 : MonoBehaviour
     public Transform path1;
     public Transform path2;
     public GameObject trafficLight;
-    //public GameObject cameraObject;
-    //public GameObject CountCars;
-
 
     public float maxSteerAngle = 45f;
     public float turnSpeed = 5f;
@@ -22,9 +19,6 @@ public class CarEngine2 : MonoBehaviour
     public float maxSpeed = 100f;
     public Vector3 centerOfMass;
     public Rigidbody VEHICLE;
-   // public Vector3 spawnSpot = new Vector3(-37.83f, 11.28f, 14.96f);
-    //public Vector3 VehicleCurrentPosition;
-    //public Vector3 TrafficLightPosition;
 
     public Material material2;
     public TLaction1 m = null;
@@ -76,7 +70,7 @@ public class CarEngine2 : MonoBehaviour
         else
         {
 
-            path = path1; //path2
+            path = path1;
         }
 
         Transform[] pathTransforms = path.GetComponentsInChildren<Transform>();
