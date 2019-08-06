@@ -93,4 +93,46 @@ public class CarTests {
 
     }
 
+    // CarCounter class test
+    [UnityTest]
+    public IEnumerator CarCounterFactory3Test()
+    {
+
+        int currentCarCount = carCounterFACTORY3.getCarCount();
+
+        currentCarCount++;
+        carCounterFACTORY3.incrementCarCount();
+
+        Assert.AreEqual(carCounterFACTORY3.getCarCount(), currentCarCount);
+
+        currentCarCount--;
+        carCounterFACTORY3.decrementCarCount();
+
+        Assert.AreEqual(carCounterFACTORY3.getCarCount(), currentCarCount);
+
+        yield return null;
+
+    }
+
+    // CarCounter class test
+    [UnityTest]
+    public IEnumerator CarCounterFactory4Test()
+    {
+
+        int currentCarCount = carCounterFactory4.getCarCount();
+
+        currentCarCount++;
+        carCounterFactory4.incrementCarCount();
+
+        Assert.AreEqual(carCounterFactory4.getCarCount(), currentCarCount);
+
+        currentCarCount--;
+        carCounterFactory4.decrementCarCount();
+
+        Assert.AreEqual(carCounterFactory4.getCarCount(), currentCarCount);
+
+        yield return null;
+
+    }
+
 }
