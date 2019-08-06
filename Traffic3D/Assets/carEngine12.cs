@@ -5,10 +5,9 @@ using UnityEngine;
 public class carEngine12 : MonoBehaviour
 {
     public Transform path;
+    public Transform path1;
+    public Transform path2;
     public GameObject trafficLight;
-    public GameObject cameraObject;
-    public GameObject CountCars;
-
 
     public float maxSteerAngle = 45f;
     public float turnSpeed = 5f;
@@ -20,24 +19,16 @@ public class carEngine12 : MonoBehaviour
     public float maxSpeed = 100f;
     public Vector3 centerOfMass;
     public Rigidbody VEHICLE;
-    public Vector3 spawnSpot = new Vector3(-37.83f, 11.28f, 14.96f);
-    public Vector3 VehicleCurrentPosition;
-    public Vector3 TrafficLightPosition;
 
     public Material material2;
     public TLaction2 r = null;
 
-    public float range1 = 2f;
-    public float range2 = 12f;
     public COUNTER n = null;
     public List<Transform> nodes;
     public List<Transform> MaterialChange;
     public int currentNode = 0;
     private int lapCounter = 0;
     private float targetSteerAngle = 0;
-
-    public newCarCount carCount;
-
 
     public float k;
     public float startTime;
@@ -49,12 +40,24 @@ public class carEngine12 : MonoBehaviour
     {
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
 
-        trafficLight = GameObject.Find("TrafficLight2");
-        path = GameObject.Find("PY").GetComponent<Transform>();
+        path1 = GameObject.Find("mypath1a").GetComponent<Transform>();
+        path2 = GameObject.Find("mypath21").GetComponent<Transform>();
 
+        trafficLight = GameObject.Find("SphereTL2");
         r = trafficLight.GetComponent<TLaction2>();
 
         startTime = Time.time;
+
+        if (Random.value > 0.5)
+        {
+
+            path = path1;
+        }
+        else
+        {
+
+            path = path1;
+        }
 
         Transform[] pathTransforms = path.GetComponentsInChildren<Transform>();
         nodes = new List<Transform>();
@@ -205,8 +208,8 @@ public class carEngine12 : MonoBehaviour
             newCarCount.decrementCarCount();
             freshLOOPING.incrementRew();
 
-            incrementCountNumber.incrementcarC();   //to get the generated car count
-
+            //to get the generated car count
+            incrementCountNumber.incrementcarC();
 
             journeyTimeCARCOUNTER.incrementjourneyCARsCount();
             k = (Time.time - startTime);
@@ -237,7 +240,7 @@ public class carEngine12 : MonoBehaviour
     {
         Vector3 a = GetComponent<Transform>().position;
         Vector3 b = trafficLight.GetComponent<Transform>().position;
-        if ((r.CM.color.Equals(material2.color)) && (currentNode == nodes.Count - 3))
+        if ((r.CM.color.Equals(material2.color)) && (currentNode == nodes.Count - 4))
         {
             WheelFL.motorTorque = 0;
             WheelFR.motorTorque = 0;

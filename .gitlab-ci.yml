@@ -1,4 +1,4 @@
-image: gableroux/unity3d:2017.2.0f1
+image: gableroux/unity3d:2018.3.11f1
 
 variables:
   # Use a shallow clone depth to speed up the CI build.

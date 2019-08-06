@@ -6,10 +6,9 @@ public class CarEngine6 : MonoBehaviour
 {
 
     public Transform path;
+    public Transform path1;
+    public Transform path2;
     public GameObject trafficLight;
-    public GameObject cameraObject;
-    public GameObject CountCars;
-
 
     public float maxSteerAngle = 45f;
     public float turnSpeed = 5f;
@@ -21,9 +20,6 @@ public class CarEngine6 : MonoBehaviour
     public float maxSpeed = 100f;
     public Vector3 centerOfMass;
     public Rigidbody VEHICLE;
-    public Vector3 spawnSpot = new Vector3(-37.83f, 11.28f, 14.96f);
-    public Vector3 VehicleCurrentPosition;
-    public Vector3 TrafficLightPosition;
 
     public float range1 = 2f;
     public float range2 = 12f;
@@ -47,13 +43,23 @@ public class CarEngine6 : MonoBehaviour
     {
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
 
-        trafficLight = GameObject.Find("TrafficLight2");
-        path = GameObject.Find("PX").GetComponent<Transform>();
+        trafficLight = GameObject.Find("SphereTL2");
+        path1 = GameObject.Find("mypath1").GetComponent<Transform>();
+        path2 = GameObject.Find("mypath11").GetComponent<Transform>();
 
         p = trafficLight.GetComponent<TLaction2>();
         startTime = Time.time;
 
-        cameraObject = GameObject.Find("Main Camera");
+        if (Random.value > 0.5)
+        {
+
+            path = path1;
+        }
+        else
+        {
+
+            path = path1;
+        }
 
         Transform[] pathTransforms = path.GetComponentsInChildren<Transform>();
         nodes = new List<Transform>();
