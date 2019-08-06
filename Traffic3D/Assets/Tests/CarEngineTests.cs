@@ -9,6 +9,8 @@ using System.Collections.Generic;
 public class CarEngineTests
 {
 
+    public const int STOP_LIGHT_TIME = 20;
+
     private List<Type> engineTypeList;
 
     public CarEngineTests()
@@ -37,6 +39,12 @@ public class CarEngineTests
         {
             Debug.Log(e);
         }
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(0));
     }
 
     public Rigidbody SpawnCar(CarFactory carFactory, carFactory2 carFactory2, carfactory3 carfactory3, carfactory4 carfactory4, Type carEngineScriptType)
@@ -104,86 +112,47 @@ public class CarEngineTests
 
             yield return null;
 
-            if (engineType == typeof(carEngine12))
+            Assert.True(GetCarStatus(car, engineType) == CarStatus.DRIVING);
+
+            GameObject.Destroy(car);
+
+        }
+
+    }
+
+    [UnityTest]
+    public IEnumerator CarEngineEngineOffTest()
+    {
+
+        yield return null;
+
+        CarFactory carFactory = (CarFactory)GameObject.FindObjectOfType(typeof(CarFactory));
+        carFactory2 carFactory2 = (carFactory2)GameObject.FindObjectOfType(typeof(carFactory2));
+        carfactory3 carfactory3 = (carfactory3)GameObject.FindObjectOfType(typeof(carfactory3));
+        carfactory4 carfactory4 = (carfactory4)GameObject.FindObjectOfType(typeof(carfactory4));
+
+        foreach (Type engineType in engineTypeList)
+        {
+
+            // Vehicle Engine Scripts do not support engine off method.
+            if (engineType == typeof(VehicleEngine) || engineType == typeof(VehicleEngine1) || engineType == typeof(VehicleEngine3))
             {
-                carEngine12 carEngine12 = (carEngine12)car.GetComponent(engineType);
-                Assert.AreEqual(carEngine12.maxMotorTorque, carEngine12.WheelFL.motorTorque);
-                Assert.AreEqual(carEngine12.maxMotorTorque, carEngine12.WheelFR.motorTorque);
-                Assert.AreEqual(0, carEngine12.WheelFL.brakeTorque);
-                Assert.AreEqual(0, carEngine12.WheelFR.brakeTorque);
+                continue;
             }
 
-            if (engineType == typeof(CarEngine2))
+            Rigidbody car = SpawnCar(carFactory, carFactory2, carfactory3, carfactory4, engineType);
+
+            // Car may not be being used by factory.
+            if (car == null)
             {
-                CarEngine2 carEngine2 = (CarEngine2)car.GetComponent(engineType);
-                Assert.AreEqual(carEngine2.maxMotorTorque, carEngine2.WheelFL.motorTorque);
-                Assert.AreEqual(carEngine2.maxMotorTorque, carEngine2.WheelFR.motorTorque);
-                Assert.AreEqual(0, carEngine2.WheelFL.brakeTorque);
-                Assert.AreEqual(0, carEngine2.WheelFR.brakeTorque);
+                continue;
             }
 
-            if (engineType == typeof(CarEngine4))
-            {
-                CarEngine4 carEngine4 = (CarEngine4)car.GetComponent(engineType);
-                Assert.AreEqual(carEngine4.maxMotorTorque, carEngine4.WheelFL.motorTorque);
-                Assert.AreEqual(carEngine4.maxMotorTorque, carEngine4.WheelFR.motorTorque);
-                Assert.AreEqual(0, carEngine4.WheelFL.brakeTorque);
-                Assert.AreEqual(0, carEngine4.WheelFR.brakeTorque);
-            }
+            car.tag = "hap";
 
-            if (engineType == typeof(CarEngine5))
-            {
-                CarEngine5 carEngine5 = (CarEngine5)car.GetComponent(engineType);
-                Assert.AreEqual(carEngine5.maxMotorTorque, carEngine5.WheelFL.motorTorque);
-                Assert.AreEqual(carEngine5.maxMotorTorque, carEngine5.WheelFR.motorTorque);
-                Assert.AreEqual(0, carEngine5.WheelFL.brakeTorque);
-                Assert.AreEqual(0, carEngine5.WheelFR.brakeTorque);
-            }
+            yield return new WaitForFixedUpdate();
 
-            if (engineType == typeof(CarEngine6))
-            {
-                CarEngine6 carEngine6 = (CarEngine6)car.GetComponent(engineType);
-                Assert.AreEqual(carEngine6.maxMotorTorque, carEngine6.WheelFL.motorTorque);
-                Assert.AreEqual(carEngine6.maxMotorTorque, carEngine6.WheelFR.motorTorque);
-                Assert.AreEqual(0, carEngine6.WheelFL.brakeTorque);
-                Assert.AreEqual(0, carEngine6.WheelFR.brakeTorque);
-            }
-
-            if (engineType == typeof(newCarEngine2))
-            {
-                newCarEngine2 newCarEngine2 = (newCarEngine2)car.GetComponent(engineType);
-                Assert.AreEqual(newCarEngine2.maxMotorTorque, newCarEngine2.WheelFL.motorTorque);
-                Assert.AreEqual(newCarEngine2.maxMotorTorque, newCarEngine2.WheelFR.motorTorque);
-                Assert.AreEqual(0, newCarEngine2.WheelFL.brakeTorque);
-                Assert.AreEqual(0, newCarEngine2.WheelFR.brakeTorque);
-            }
-
-            if (engineType == typeof(VehicleEngine))
-            {
-                VehicleEngine vehicleEngine = (VehicleEngine)car.GetComponent(engineType);
-                Assert.AreEqual(vehicleEngine.maxMotorTorque, vehicleEngine.WheelFL.motorTorque);
-                Assert.AreEqual(vehicleEngine.maxMotorTorque, vehicleEngine.WheelFR.motorTorque);
-                Assert.AreEqual(0, vehicleEngine.WheelFL.brakeTorque);
-                Assert.AreEqual(0, vehicleEngine.WheelFR.brakeTorque);
-            }
-
-            if (engineType == typeof(VehicleEngine1))
-            {
-                VehicleEngine1 vehicleEngine1 = (VehicleEngine1)car.GetComponent(engineType);
-                Assert.AreEqual(vehicleEngine1.maxMotorTorque, vehicleEngine1.WheelFL.motorTorque);
-                Assert.AreEqual(vehicleEngine1.maxMotorTorque, vehicleEngine1.WheelFR.motorTorque);
-                Assert.AreEqual(0, vehicleEngine1.WheelFL.brakeTorque);
-                Assert.AreEqual(0, vehicleEngine1.WheelFR.brakeTorque);
-            }
-
-            if (engineType == typeof(VehicleEngine3))
-            {
-                VehicleEngine3 vehicleEngine3 = (VehicleEngine3)car.GetComponent(engineType);
-                Assert.AreEqual(vehicleEngine3.maxMotorTorque, vehicleEngine3.WheelFL.motorTorque);
-                Assert.AreEqual(vehicleEngine3.maxMotorTorque, vehicleEngine3.WheelFR.motorTorque);
-                Assert.AreEqual(0, vehicleEngine3.WheelFL.brakeTorque);
-                Assert.AreEqual(0, vehicleEngine3.WheelFR.brakeTorque);
-            }
+            Assert.True(GetCarStatus(car, engineType) == CarStatus.STOPPED);
 
             GameObject.Destroy(car);
 
@@ -197,17 +166,21 @@ public class CarEngineTests
 
         yield return null;
 
+        Debug.Log("CarEngineStopTest - start");
+
         CarFactory carFactory = (CarFactory)GameObject.FindObjectOfType(typeof(CarFactory));
         carFactory2 carFactory2 = (carFactory2)GameObject.FindObjectOfType(typeof(carFactory2));
         carfactory3 carfactory3 = (carfactory3)GameObject.FindObjectOfType(typeof(carfactory3));
         carfactory4 carfactory4 = (carfactory4)GameObject.FindObjectOfType(typeof(carfactory4));
 
+        Dictionary<Type, Rigidbody> carList = new Dictionary<Type, Rigidbody>();
+
         foreach (Type engineType in engineTypeList)
         {
 
-            yield return null;
-
             Rigidbody car = SpawnCar(carFactory, carFactory2, carfactory3, carfactory4, engineType);
+
+            yield return null;
 
             // Car may not be being used by factory.
             if (car == null)
@@ -215,100 +188,273 @@ public class CarEngineTests
                 continue;
             }
 
-            car.tag = "hap";
-
-            yield return new WaitForFixedUpdate();
-            yield return new WaitForFixedUpdate();
+            carList.Add(engineType, car);
 
             if (engineType == typeof(carEngine12))
             {
                 carEngine12 carEngine12 = (carEngine12)car.GetComponent(engineType);
-                Assert.AreEqual(0, carEngine12.WheelFL.motorTorque);
-                Assert.AreEqual(0, carEngine12.WheelFR.motorTorque);
-                Assert.AreEqual(carEngine12.maxBrakeTorque, carEngine12.WheelFL.brakeTorque);
-                Assert.AreEqual(carEngine12.maxBrakeTorque, carEngine12.WheelFR.brakeTorque);
+                carEngine12.r.CM = carEngine12.r.material2;
+                carEngine12.r.enabled = false;
             }
-
-            if (engineType == typeof(CarEngine2))
+            else if (engineType == typeof(CarEngine2))
             {
                 CarEngine2 carEngine2 = (CarEngine2)car.GetComponent(engineType);
-                Assert.AreEqual(0, carEngine2.WheelFL.motorTorque);
-                Assert.AreEqual(0, carEngine2.WheelFR.motorTorque);
-                Assert.AreEqual(carEngine2.maxBrakeTorque, carEngine2.WheelFL.brakeTorque);
-                Assert.AreEqual(carEngine2.maxBrakeTorque, carEngine2.WheelFR.brakeTorque);
+                carEngine2.m.CM = carEngine2.m.material2;
+                carEngine2.m.enabled = false;
             }
-
-            if (engineType == typeof(CarEngine4))
+            else if (engineType == typeof(CarEngine4))
             {
                 CarEngine4 carEngine4 = (CarEngine4)car.GetComponent(engineType);
-                Assert.AreEqual(0, carEngine4.WheelFL.motorTorque);
-                Assert.AreEqual(0, carEngine4.WheelFR.motorTorque);
-                Assert.AreEqual(carEngine4.maxBrakeTorque, carEngine4.WheelFL.brakeTorque);
-                Assert.AreEqual(carEngine4.maxBrakeTorque, carEngine4.WheelFR.brakeTorque);
+                carEngine4.r.CM = carEngine4.r.material2;
+                carEngine4.r.enabled = false;
             }
-
-            if (engineType == typeof(CarEngine5))
+            else if (engineType == typeof(CarEngine5))
             {
                 CarEngine5 carEngine5 = (CarEngine5)car.GetComponent(engineType);
-                Assert.AreEqual(0, carEngine5.WheelFL.motorTorque);
-                Assert.AreEqual(0, carEngine5.WheelFR.motorTorque);
-                Assert.AreEqual(carEngine5.maxBrakeTorque, carEngine5.WheelFL.brakeTorque);
-                Assert.AreEqual(carEngine5.maxBrakeTorque, carEngine5.WheelFR.brakeTorque);
+                carEngine5.r.CM = carEngine5.r.material2;
+                carEngine5.r.enabled = false;
             }
-
-            if (engineType == typeof(CarEngine6))
+            else if (engineType == typeof(CarEngine6))
             {
                 CarEngine6 carEngine6 = (CarEngine6)car.GetComponent(engineType);
-                Assert.AreEqual(0, carEngine6.WheelFL.motorTorque);
-                Assert.AreEqual(0, carEngine6.WheelFR.motorTorque);
-                Assert.AreEqual(carEngine6.maxBrakeTorque, carEngine6.WheelFL.brakeTorque);
-                Assert.AreEqual(carEngine6.maxBrakeTorque, carEngine6.WheelFR.brakeTorque);
+                carEngine6.p.CM = carEngine6.p.material2;
+                carEngine6.p.enabled = false;
             }
-
-            if (engineType == typeof(newCarEngine2))
+            else if (engineType == typeof(newCarEngine2))
             {
                 newCarEngine2 newCarEngine2 = (newCarEngine2)car.GetComponent(engineType);
-                Assert.AreEqual(0, newCarEngine2.WheelFL.motorTorque);
-                Assert.AreEqual(0, newCarEngine2.WheelFR.motorTorque);
-                Assert.AreEqual(newCarEngine2.maxBrakeTorque, newCarEngine2.WheelFL.brakeTorque);
-                Assert.AreEqual(newCarEngine2.maxBrakeTorque, newCarEngine2.WheelFR.brakeTorque);
+                newCarEngine2.q.CM = newCarEngine2.q.material2;
+                newCarEngine2.q.enabled = false;
             }
-
-            /*
-            if (engineType == typeof(VehicleEngine))
+            else if (engineType == typeof(VehicleEngine))
             {
                 VehicleEngine vehicleEngine = (VehicleEngine)car.GetComponent(engineType);
-                Assert.AreEqual(0, vehicleEngine.WheelFL.motorTorque);
-                Assert.AreEqual(0, vehicleEngine.WheelFR.motorTorque);
-                Assert.AreEqual(vehicleEngine.maxBrakeTorque, vehicleEngine.WheelFL.brakeTorque);
-                Assert.AreEqual(vehicleEngine.maxBrakeTorque, vehicleEngine.WheelFR.brakeTorque);
+                vehicleEngine.u.CM = vehicleEngine.u.material2;
+                vehicleEngine.u.enabled = false;
             }
-            */
-
-            /*
-            if (engineType == typeof(VehicleEngine1))
+            else if (engineType == typeof(VehicleEngine1))
             {
                 VehicleEngine1 vehicleEngine1 = (VehicleEngine1)car.GetComponent(engineType);
-                Assert.AreEqual(0, vehicleEngine1.WheelFL.motorTorque);
-                Assert.AreEqual(0, vehicleEngine1.WheelFR.motorTorque);
-                Assert.AreEqual(vehicleEngine1.maxBrakeTorque, vehicleEngine1.WheelFL.brakeTorque);
-                Assert.AreEqual(vehicleEngine1.maxBrakeTorque, vehicleEngine1.WheelFR.brakeTorque);
+                vehicleEngine1.u.CM = vehicleEngine1.u.material2;
+                vehicleEngine1.u.enabled = false;
             }
-            */
-
-            if (engineType == typeof(VehicleEngine3))
+            else if (engineType == typeof(VehicleEngine3))
             {
                 VehicleEngine3 vehicleEngine3 = (VehicleEngine3)car.GetComponent(engineType);
-                Assert.AreEqual(0, vehicleEngine3.WheelFL.motorTorque);
-                Assert.AreEqual(0, vehicleEngine3.WheelFR.motorTorque);
-                Assert.AreEqual(vehicleEngine3.maxBrakeTorque, vehicleEngine3.WheelFL.brakeTorque);
-                Assert.AreEqual(vehicleEngine3.maxBrakeTorque, vehicleEngine3.WheelFR.brakeTorque);
+                vehicleEngine3.m.CM = vehicleEngine3.m.material2;
+                vehicleEngine3.m.enabled = false;
             }
 
-            GameObject.Destroy(car);
+            Debug.Log("First Status: " + GetCarStatus(car, engineType) + " - " + engineType);
 
         }
 
+        yield return new WaitForSeconds(STOP_LIGHT_TIME);
+
+        foreach (KeyValuePair<Type, Rigidbody> entry in carList)
+        {
+            CarStatus carStatus = GetCarStatus(entry.Value, entry.Key);
+            Debug.Log("Last Status: " + carStatus + " - " + entry.Key);
+            Assert.True(carStatus == CarStatus.STOPPED);
+            GameObject.Destroy(entry.Value);
+        }
+
+        Debug.Log("CarEngineStopTest - end");
+
+    }
+
+    private CarStatus GetCarStatus(Rigidbody car, Type engineType)
+    {
+
+        if (engineType == typeof(carEngine12))
+        {
+            carEngine12 carEngine12 = (carEngine12)car.GetComponent(engineType);
+            if (carEngine12.WheelFL.motorTorque == 0 && carEngine12.WheelFR.motorTorque == 0 &&
+                carEngine12.maxBrakeTorque == carEngine12.WheelFL.brakeTorque && carEngine12.maxBrakeTorque == carEngine12.WheelFR.brakeTorque)
+            {
+                return CarStatus.STOPPED;
+            }
+        }
+
+        if (engineType == typeof(CarEngine2))
+        {
+            CarEngine2 carEngine2 = (CarEngine2)car.GetComponent(engineType);
+            if (carEngine2.WheelFL.motorTorque == 0 && carEngine2.WheelFR.motorTorque == 0 &&
+                carEngine2.maxBrakeTorque == carEngine2.WheelFL.brakeTorque && carEngine2.maxBrakeTorque == carEngine2.WheelFR.brakeTorque)
+            {
+                return CarStatus.STOPPED;
+            }
+        }
+
+        if (engineType == typeof(CarEngine4))
+        {
+            CarEngine4 carEngine4 = (CarEngine4)car.GetComponent(engineType);
+            if (carEngine4.WheelFL.motorTorque == 0 && carEngine4.WheelFR.motorTorque == 0 &&
+                carEngine4.maxBrakeTorque == carEngine4.WheelFL.brakeTorque && carEngine4.maxBrakeTorque == carEngine4.WheelFR.brakeTorque)
+            {
+                return CarStatus.STOPPED;
+            }
+        }
+
+        if (engineType == typeof(CarEngine5))
+        {
+            CarEngine5 carEngine5 = (CarEngine5)car.GetComponent(engineType);
+            if (carEngine5.WheelFL.motorTorque == 0 && carEngine5.WheelFR.motorTorque == 0 &&
+                carEngine5.maxBrakeTorque == carEngine5.WheelFL.brakeTorque && carEngine5.maxBrakeTorque == carEngine5.WheelFR.brakeTorque)
+            {
+                return CarStatus.STOPPED;
+            }
+        }
+
+        if (engineType == typeof(CarEngine6))
+        {
+            CarEngine6 carEngine6 = (CarEngine6)car.GetComponent(engineType);
+            if (carEngine6.WheelFL.motorTorque == 0 && carEngine6.WheelFR.motorTorque == 0 &&
+                carEngine6.maxBrakeTorque == carEngine6.WheelFL.brakeTorque && carEngine6.maxBrakeTorque == carEngine6.WheelFR.brakeTorque)
+            {
+                return CarStatus.STOPPED;
+            }
+        }
+
+        if (engineType == typeof(newCarEngine2))
+        {
+            newCarEngine2 newCarEngine2 = (newCarEngine2)car.GetComponent(engineType);
+            if (newCarEngine2.WheelFL.motorTorque == 0 && newCarEngine2.WheelFR.motorTorque == 0 &&
+                newCarEngine2.maxBrakeTorque == newCarEngine2.WheelFL.brakeTorque && newCarEngine2.maxBrakeTorque == newCarEngine2.WheelFR.brakeTorque)
+            {
+                return CarStatus.STOPPED;
+            }
+        }
+
+        if (engineType == typeof(VehicleEngine))
+        {
+            VehicleEngine vehicleEngine = (VehicleEngine)car.GetComponent(engineType);
+            if (vehicleEngine.WheelFL.motorTorque == 0 && vehicleEngine.WheelFR.motorTorque == 0 &&
+                vehicleEngine.maxBrakeTorque == vehicleEngine.WheelFL.brakeTorque && vehicleEngine.maxBrakeTorque == vehicleEngine.WheelFR.brakeTorque)
+            {
+                return CarStatus.STOPPED;
+            }
+        }
+
+        if (engineType == typeof(VehicleEngine1))
+        {
+            VehicleEngine1 vehicleEngine1 = (VehicleEngine1)car.GetComponent(engineType);
+            if (vehicleEngine1.WheelFL.motorTorque == 0 && vehicleEngine1.WheelFR.motorTorque == 0 &&
+                vehicleEngine1.maxBrakeTorque2 == vehicleEngine1.WheelFL.brakeTorque && vehicleEngine1.maxBrakeTorque2 == vehicleEngine1.WheelFR.brakeTorque)
+            {
+                return CarStatus.STOPPED;
+            }
+        }
+
+        if (engineType == typeof(VehicleEngine3))
+        {
+            VehicleEngine3 vehicleEngine3 = (VehicleEngine3)car.GetComponent(engineType);
+            if (vehicleEngine3.WheelFL.motorTorque == 0 && vehicleEngine3.WheelFR.motorTorque == 0 &&
+                vehicleEngine3.maxBrakeTorque == vehicleEngine3.WheelFL.brakeTorque && vehicleEngine3.maxBrakeTorque == vehicleEngine3.WheelFR.brakeTorque)
+            {
+                return CarStatus.STOPPED;
+            }
+        }
+
+        if (engineType == typeof(carEngine12))
+        {
+            carEngine12 carEngine12 = (carEngine12)car.GetComponent(engineType);
+            if (carEngine12.maxMotorTorque == carEngine12.WheelFL.motorTorque && carEngine12.maxMotorTorque == carEngine12.WheelFR.motorTorque &&
+                carEngine12.WheelFL.brakeTorque == 0 && carEngine12.WheelFR.brakeTorque == 0)
+            {
+                return CarStatus.DRIVING;
+            }
+        }
+
+        if (engineType == typeof(CarEngine2))
+        {
+            CarEngine2 carEngine2 = (CarEngine2)car.GetComponent(engineType);
+            if (carEngine2.maxMotorTorque == carEngine2.WheelFL.motorTorque && carEngine2.maxMotorTorque == carEngine2.WheelFR.motorTorque &&
+                carEngine2.WheelFL.brakeTorque == 0 && carEngine2.WheelFR.brakeTorque == 0)
+            {
+                return CarStatus.DRIVING;
+            }
+        }
+
+        if (engineType == typeof(CarEngine4))
+        {
+            CarEngine4 carEngine4 = (CarEngine4)car.GetComponent(engineType);
+            if (carEngine4.maxMotorTorque == carEngine4.WheelFL.motorTorque && carEngine4.maxMotorTorque == carEngine4.WheelFR.motorTorque &&
+                carEngine4.WheelFL.brakeTorque == 0 && carEngine4.WheelFR.brakeTorque == 0)
+            {
+                return CarStatus.DRIVING;
+            }
+        }
+
+        if (engineType == typeof(CarEngine5))
+        {
+            CarEngine5 carEngine5 = (CarEngine5)car.GetComponent(engineType);
+            if (carEngine5.maxMotorTorque == carEngine5.WheelFL.motorTorque && carEngine5.maxMotorTorque == carEngine5.WheelFR.motorTorque &&
+                carEngine5.WheelFL.brakeTorque == 0 && carEngine5.WheelFR.brakeTorque == 0)
+            {
+                return CarStatus.DRIVING;
+            }
+        }
+
+        if (engineType == typeof(CarEngine6))
+        {
+            CarEngine6 carEngine6 = (CarEngine6)car.GetComponent(engineType);
+            if (carEngine6.maxMotorTorque == carEngine6.WheelFL.motorTorque && carEngine6.maxMotorTorque == carEngine6.WheelFR.motorTorque &&
+                carEngine6.WheelFL.brakeTorque == 0 && carEngine6.WheelFR.brakeTorque == 0)
+            {
+                return CarStatus.DRIVING;
+            }
+        }
+
+        if (engineType == typeof(newCarEngine2))
+        {
+            newCarEngine2 newCarEngine2 = (newCarEngine2)car.GetComponent(engineType);
+            if (newCarEngine2.maxMotorTorque == newCarEngine2.WheelFL.motorTorque && newCarEngine2.maxMotorTorque == newCarEngine2.WheelFR.motorTorque &&
+                newCarEngine2.WheelFL.brakeTorque == 0 && newCarEngine2.WheelFR.brakeTorque == 0)
+            {
+                return CarStatus.DRIVING;
+            }
+        }
+
+        if (engineType == typeof(VehicleEngine))
+        {
+            VehicleEngine vehicleEngine = (VehicleEngine)car.GetComponent(engineType);
+            if (vehicleEngine.maxMotorTorque == vehicleEngine.WheelFL.motorTorque && vehicleEngine.maxMotorTorque == vehicleEngine.WheelFR.motorTorque &&
+                vehicleEngine.WheelFL.brakeTorque == 0 && vehicleEngine.WheelFR.brakeTorque == 0)
+            {
+                return CarStatus.DRIVING;
+            }
+        }
+
+        if (engineType == typeof(VehicleEngine1))
+        {
+            VehicleEngine1 vehicleEngine1 = (VehicleEngine1)car.GetComponent(engineType);
+            if (vehicleEngine1.maxMotorTorque == vehicleEngine1.WheelFL.motorTorque && vehicleEngine1.maxMotorTorque == vehicleEngine1.WheelFR.motorTorque &&
+                vehicleEngine1.WheelFL.brakeTorque == 0 && vehicleEngine1.WheelFR.brakeTorque == 0)
+            {
+                return CarStatus.DRIVING;
+            }
+        }
+
+        if (engineType == typeof(VehicleEngine3))
+        {
+            VehicleEngine3 vehicleEngine3 = (VehicleEngine3)car.GetComponent(engineType);
+            if (vehicleEngine3.maxMotorTorque == vehicleEngine3.WheelFL.motorTorque && vehicleEngine3.maxMotorTorque == vehicleEngine3.WheelFR.motorTorque &&
+                vehicleEngine3.WheelFL.brakeTorque == 0 && vehicleEngine3.WheelFR.brakeTorque == 0)
+            {
+                return CarStatus.DRIVING;
+            }
+        }
+
+        return CarStatus.UNKNOWN;
+
+    }
+
+    public enum CarStatus
+    {
+        DRIVING,
+        STOPPED,
+        UNKNOWN
     }
 
 }
