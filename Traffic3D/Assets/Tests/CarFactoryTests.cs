@@ -41,8 +41,13 @@ public class CarFactoryTests
         List<Type> engineTypeList = new List<Type>();
         engineTypeList.Add(typeof(carEngine12));
         engineTypeList.Add(typeof(CarEngine2));
+        engineTypeList.Add(typeof(CarEngine4));
+        engineTypeList.Add(typeof(CarEngine5));
         engineTypeList.Add(typeof(CarEngine6));
         engineTypeList.Add(typeof(newCarEngine2));
+        engineTypeList.Add(typeof(VehicleEngine));
+        engineTypeList.Add(typeof(VehicleEngine1));
+        engineTypeList.Add(typeof(VehicleEngine3));
 
         bool carSpawned = false;
         for (int i = 0; i < TEST_TIME; i++)
