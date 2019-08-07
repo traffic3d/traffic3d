@@ -30,32 +30,121 @@ public class RedLightTests
 
         redlight redlight = (redlight)GameObject.FindObjectOfType(typeof(redlight));
 
+        redlight.StartCoroutine(redlight.one());
+
         yield return null;
+
+        Assert.AreEqual(redlight.m.material2, redlight.m.CM);
+        Assert.AreEqual(redlight.m1.material5, redlight.m1.CM);
+        Assert.AreEqual(redlight.v.material2, redlight.v.CM);
+        Assert.AreEqual(redlight.v1.material5, redlight.v1.CM);
+        Assert.AreEqual(redlight.n.material2, redlight.n.CM);
+        Assert.AreEqual(redlight.n1.material5, redlight.n1.CM);
+        Assert.AreEqual(redlight.u.material2, redlight.u.CM);
+        Assert.AreEqual(redlight.u1.material5, redlight.u1.CM);
+
+        redlight.StopAllCoroutines();
+
+    }
+
+    [UnityTest]
+    public IEnumerator RedLightTwoTest()
+    {
+
+        redlight redlight = (redlight)GameObject.FindObjectOfType(typeof(redlight));
+
+        redlight.StartCoroutine(redlight.two());
+
+        yield return null;
+
+        Assert.AreEqual(redlight.m.material5, redlight.m.CM);
+        Assert.AreEqual(redlight.m1.material3, redlight.m1.CM);
+        Assert.AreEqual(redlight.v.material2, redlight.v.CM);
+        Assert.AreEqual(redlight.v1.material5, redlight.v1.CM);
+        Assert.AreEqual(redlight.n.material2, redlight.n.CM);
+        Assert.AreEqual(redlight.n1.material5, redlight.n1.CM);
+        Assert.AreEqual(redlight.u.material2, redlight.u.CM);
+        Assert.AreEqual(redlight.u1.material5, redlight.u1.CM);
+
+        redlight.StopAllCoroutines();
+
+    }
+
+    [UnityTest]
+    public IEnumerator RedLightThirdTest()
+    {
+
+        redlight redlight = (redlight)GameObject.FindObjectOfType(typeof(redlight));
+
+        redlight.StartCoroutine(redlight.third());
+
+        yield return null;
+
+        Assert.AreEqual(redlight.m.material2, redlight.m.CM);
+        Assert.AreEqual(redlight.m1.material5, redlight.m1.CM);
+        Assert.AreEqual(redlight.v.material2, redlight.v.CM);
+        Assert.AreEqual(redlight.v1.material5, redlight.v1.CM);
+        Assert.AreEqual(redlight.n.material2, redlight.n.CM);
+        Assert.AreEqual(redlight.n1.material5, redlight.n1.CM);
+        Assert.AreEqual(redlight.u.material5, redlight.u.CM);
+        Assert.AreEqual(redlight.u1.material3, redlight.u1.CM);
+
+        redlight.StopAllCoroutines();
+
+    }
+
+    [UnityTest]
+    public IEnumerator RedLightFourTest()
+    {
+
+        redlight redlight = (redlight)GameObject.FindObjectOfType(typeof(redlight));
+
+        redlight.StartCoroutine(redlight.four());
+
+        yield return null;
+
+        Assert.AreEqual(redlight.m.material2, redlight.m.CM);
+        Assert.AreEqual(redlight.m1.material5, redlight.m1.CM);
+        Assert.AreEqual(redlight.v.material2, redlight.v.CM);
+        Assert.AreEqual(redlight.v1.material5, redlight.v1.CM);
+        Assert.AreEqual(redlight.n.material5, redlight.n.CM);
+        Assert.AreEqual(redlight.n1.material3, redlight.n1.CM);
+        Assert.AreEqual(redlight.u.material2, redlight.u.CM);
+        Assert.AreEqual(redlight.u1.material5, redlight.u1.CM);
+
+        redlight.StopAllCoroutines();
+
+    }
+
+    [UnityTest]
+    public IEnumerator RedLightFiveTest()
+    {
+
+        redlight redlight = (redlight)GameObject.FindObjectOfType(typeof(redlight));
+
+        redlight.StartCoroutine(redlight.five());
+
+        yield return null;
+
+        Assert.AreEqual(redlight.m.material2, redlight.m.CM);
+        Assert.AreEqual(redlight.m1.material5, redlight.m1.CM);
+        Assert.AreEqual(redlight.v.material5, redlight.v.CM);
+        Assert.AreEqual(redlight.v1.material3, redlight.v1.CM);
+        Assert.AreEqual(redlight.n.material2, redlight.n.CM);
+        Assert.AreEqual(redlight.n1.material5, redlight.n1.CM);
+        Assert.AreEqual(redlight.u.material2, redlight.u.CM);
+        Assert.AreEqual(redlight.u1.material5, redlight.u1.CM);
+
+        redlight.StopAllCoroutines();
 
     }
 
     private void DisableLoops()
     {
 
-        // Optimize time by removing unneeded particles
-        foreach (ParticleSystem particleSystem in GameObject.FindObjectsOfType<ParticleSystem>())
-        {
-            particleSystem.Stop();
-        }
-
         redlight redlight = (redlight)GameObject.FindObjectOfType(typeof(redlight));
         redlight.StopAllCoroutines();
 
-        /*
-        CarFactory carFactory = (CarFactory)GameObject.FindObjectOfType(typeof(CarFactory));
-        carFactory2 carFactory2 = (carFactory2)GameObject.FindObjectOfType(typeof(carFactory2));
-        carfactory3 carfactory3 = (carfactory3)GameObject.FindObjectOfType(typeof(carfactory3));
-        carfactory4 carfactory4 = (carfactory4)GameObject.FindObjectOfType(typeof(carfactory4));
-        carFactory.StopAllCoroutines();
-        carFactory2.StopAllCoroutines();
-        carfactory3.StopAllCoroutines();
-        carfactory4.StopAllCoroutines();
-        */
     }
 
 }
