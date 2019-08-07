@@ -5,7 +5,8 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using System;
 
-public class FreshLoopingTest {
+public class FreshLoopingTest
+{
 
     [SetUp]
     public void SetUpTest()
@@ -85,25 +86,6 @@ public class FreshLoopingTest {
 
         string screenshotPath = Application.dataPath + "/Screenshots";
         FileAssert.Exists(screenshotPath + "/shot" + shotCount + ".png");
-
-        yield return null;
-
-    }
-
-    [UnityTest]
-    public IEnumerator FreshLoopingZeroTest()
-    {
-
-        freshLOOPING freshLooping = (freshLOOPING)GameObject.FindObjectOfType(typeof(freshLOOPING));
-
-        freshLooping.waiting = false;
-
-        yield return freshLooping.zero();
-
-        Assert.IsTrue(freshLooping.n.CM == freshLooping.n.material2);
-        Assert.IsTrue(freshLooping.m.CM == freshLooping.m.material2);
-        Assert.AreEqual(Time.timeScale, 0);
-        Assert.IsTrue(freshLooping.waiting);
 
         yield return null;
 
