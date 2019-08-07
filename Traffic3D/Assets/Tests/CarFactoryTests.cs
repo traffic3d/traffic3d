@@ -38,12 +38,6 @@ public class CarFactoryTests
             particleSystem.Stop();
         }
 
-        // No cars have been spawned at all from Factory 1, 2, 3 or 4
-        Assert.AreEqual(CarCounter.getCarCount(), 0);
-        Assert.AreEqual(newCarCount.getCarCount(), 0);
-        Assert.AreEqual(carCounterFACTORY3.getCarCount(), 0);
-        Assert.AreEqual(carCounterFactory4.getCarCount(), 0);
-
         List<Type> engineTypeList = new List<Type>();
         engineTypeList.Add(typeof(carEngine12));
         engineTypeList.Add(typeof(CarEngine2));
@@ -53,6 +47,12 @@ public class CarFactoryTests
         engineTypeList.Add(typeof(newCarEngine2));
         engineTypeList.Add(typeof(VehicleEngine));
         engineTypeList.Add(typeof(VehicleEngine1));
+
+        // Ensure there are no cars currently spawned in
+        foreach (Type engineType in engineTypeList)
+        {
+            Assert.AreEqual(0, GameObject.FindObjectsOfType(engineType).Length);
+        }
 
         bool allCarsSpawned = false;
         for (int i = 0; i < TEST_TIME; i++)
