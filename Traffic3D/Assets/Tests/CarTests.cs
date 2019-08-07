@@ -5,7 +5,8 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using System;
 
-public class CarTests {
+public class CarTests
+{
 
     [SetUp]
     public void SetUpTest()
@@ -21,8 +22,9 @@ public class CarTests {
     }
 
     // CarCounter class test
-	[UnityTest]
-	public IEnumerator CarCounterTest() {
+    [UnityTest]
+    public IEnumerator CarCounterTest()
+    {
 
         int currentCarCount = CarCounter.getCarCount();
 
@@ -44,9 +46,9 @@ public class CarTests {
 
         Assert.AreEqual(CarCounter.getCarCount(), currentCarCount);
 
-		yield return null;
+        yield return null;
 
-	}
+    }
 
     // incrementCountNumber class test
     [UnityTest]
