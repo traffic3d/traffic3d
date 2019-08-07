@@ -85,7 +85,7 @@ public class FreshLoopingTest
         Assert.AreEqual(shotCount, freshLOOPING.shot_count);
 
         string screenshotPath = Application.dataPath + "/Screenshots";
-        FileAssert.Exists(screenshotPath + "/shot" + shotCount + ".png");
+        Assert.True(System.IO.File.Exists(screenshotPath + "/shot" + shotCount + ".png"));
 
         yield return null;
 
