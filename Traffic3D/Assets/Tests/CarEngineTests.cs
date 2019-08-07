@@ -10,6 +10,7 @@ public class CarEngineTests
 {
 
     public const int STOP_LIGHT_TIME = 20;
+    public const int TIME_OUT_DESTROY_TIME = 60;
 
     private List<Type> engineTypeList;
 
@@ -39,6 +40,7 @@ public class CarEngineTests
         {
             Debug.Log(e);
         }
+
     }
 
     [TearDown]
@@ -92,6 +94,8 @@ public class CarEngineTests
 
         yield return null;
 
+        DisableLoops();
+
         CarFactory carFactory = (CarFactory)GameObject.FindObjectOfType(typeof(CarFactory));
         carFactory2 carFactory2 = (carFactory2)GameObject.FindObjectOfType(typeof(carFactory2));
         carfactory3 carfactory3 = (carfactory3)GameObject.FindObjectOfType(typeof(carfactory3));
@@ -125,6 +129,8 @@ public class CarEngineTests
     {
 
         yield return null;
+
+        DisableLoops();
 
         CarFactory carFactory = (CarFactory)GameObject.FindObjectOfType(typeof(CarFactory));
         carFactory2 carFactory2 = (carFactory2)GameObject.FindObjectOfType(typeof(carFactory2));
@@ -165,6 +171,8 @@ public class CarEngineTests
     {
 
         yield return null;
+
+        DisableLoops();
 
         Debug.Log("CarEngineStopTest - start");
 
@@ -261,6 +269,136 @@ public class CarEngineTests
 
         Debug.Log("CarEngineStopTest - end");
 
+    }
+
+    [UnityTest]
+    [Timeout(TIME_OUT_DESTROY_TIME * 1000 * 20)]
+    public IEnumerator CarEngineDestroyTest()
+    {
+
+        yield return null;
+
+        DisableLoops();
+
+        CarFactory carFactory = (CarFactory)GameObject.FindObjectOfType(typeof(CarFactory));
+        carFactory2 carFactory2 = (carFactory2)GameObject.FindObjectOfType(typeof(carFactory2));
+        carfactory3 carfactory3 = (carfactory3)GameObject.FindObjectOfType(typeof(carfactory3));
+        carfactory4 carfactory4 = (carfactory4)GameObject.FindObjectOfType(typeof(carfactory4));
+
+        Dictionary<Type, Rigidbody> carList = new Dictionary<Type, Rigidbody>();
+
+        foreach (Type engineType in engineTypeList)
+        {
+
+            Rigidbody car = SpawnCar(carFactory, carFactory2, carfactory3, carfactory4, engineType);
+
+            yield return null;
+
+            // Car may not be being used by factory.
+            if (car == null)
+            {
+                continue;
+            }
+
+            carList.Add(engineType, car);
+
+            if (engineType == typeof(carEngine12))
+            {
+                carEngine12 carEngine12 = (carEngine12)car.GetComponent(engineType);
+                carEngine12.r.CM = carEngine12.r.material3;
+                carEngine12.r.enabled = false;
+            }
+            else if (engineType == typeof(CarEngine2))
+            {
+                CarEngine2 carEngine2 = (CarEngine2)car.GetComponent(engineType);
+                carEngine2.m.CM = carEngine2.m.material3;
+                carEngine2.m.enabled = false;
+            }
+            else if (engineType == typeof(CarEngine4))
+            {
+                CarEngine4 carEngine4 = (CarEngine4)car.GetComponent(engineType);
+                carEngine4.r.CM = carEngine4.r.material3;
+                carEngine4.r.enabled = false;
+            }
+            else if (engineType == typeof(CarEngine5))
+            {
+                CarEngine5 carEngine5 = (CarEngine5)car.GetComponent(engineType);
+                carEngine5.r.CM = carEngine5.r.material3;
+                carEngine5.r.enabled = false;
+            }
+            else if (engineType == typeof(CarEngine6))
+            {
+                CarEngine6 carEngine6 = (CarEngine6)car.GetComponent(engineType);
+                carEngine6.p.CM = carEngine6.p.material3;
+                carEngine6.p.enabled = false;
+            }
+            else if (engineType == typeof(newCarEngine2))
+            {
+                newCarEngine2 newCarEngine2 = (newCarEngine2)car.GetComponent(engineType);
+                newCarEngine2.q.CM = newCarEngine2.q.material3;
+                newCarEngine2.q.enabled = false;
+            }
+            else if (engineType == typeof(VehicleEngine))
+            {
+                VehicleEngine vehicleEngine = (VehicleEngine)car.GetComponent(engineType);
+                vehicleEngine.u.CM = vehicleEngine.u.material3;
+                vehicleEngine.u.enabled = false;
+            }
+            else if (engineType == typeof(VehicleEngine1))
+            {
+                VehicleEngine1 vehicleEngine1 = (VehicleEngine1)car.GetComponent(engineType);
+                vehicleEngine1.u.CM = vehicleEngine1.u.material3;
+                vehicleEngine1.u.enabled = false;
+            }
+            else if (engineType == typeof(VehicleEngine3))
+            {
+                VehicleEngine3 vehicleEngine3 = (VehicleEngine3)car.GetComponent(engineType);
+                vehicleEngine3.m.CM = vehicleEngine3.m.material3;
+                vehicleEngine3.m.enabled = false;
+            }
+
+            bool carIsDestroyed = false;
+            for(int i = 0; i <= TIME_OUT_DESTROY_TIME; i = i + 5)
+            {
+
+                yield return new WaitForSeconds(5);
+
+                // Check if car is destroyed
+                if(car == null)
+                {
+                    carIsDestroyed = true;
+                    break;
+                }
+
+            }
+
+            Assert.True(carIsDestroyed);
+
+        }
+
+    }
+
+    private void DisableLoops()
+    {
+
+        // Optimize time by removing unneeded particles
+        foreach (ParticleSystem particleSystem in GameObject.FindObjectsOfType<ParticleSystem>())
+        {
+            particleSystem.Stop();
+        }
+
+        redlight redlight = (redlight)GameObject.FindObjectOfType(typeof(redlight));
+        redlight.enabled = false;
+        redlight.StopAllCoroutines();
+
+        CarFactory carFactory = (CarFactory)GameObject.FindObjectOfType(typeof(CarFactory));
+        carFactory2 carFactory2 = (carFactory2)GameObject.FindObjectOfType(typeof(carFactory2));
+        carfactory3 carfactory3 = (carfactory3)GameObject.FindObjectOfType(typeof(carfactory3));
+        carfactory4 carfactory4 = (carfactory4)GameObject.FindObjectOfType(typeof(carfactory4));
+        carFactory.StopAllCoroutines();
+        carFactory2.StopAllCoroutines();
+        carfactory3.StopAllCoroutines();
+        carfactory4.StopAllCoroutines();
     }
 
     private CarStatus GetCarStatus(Rigidbody car, Type engineType)
