@@ -23,6 +23,15 @@ public class FreshLoopingTest
 
     }
 
+    [TearDown]
+    public void TearDown()
+    {
+
+        freshLOOPING.rewCount = 0;
+        freshLOOPING.densitycount1 = 0;
+
+    }
+
     [UnityTest]
     public IEnumerator FreshLoopingRewCountTest()
     {
