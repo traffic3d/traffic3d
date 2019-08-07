@@ -10,7 +10,7 @@ using Object = UnityEngine.Object;
 public class CarFactoryTests
 {
 
-    public const int TEST_TIME = 50;
+    public const int TEST_TIME = 300;
 
     [SetUp]
     public void SetUpTest()
@@ -32,6 +32,12 @@ public class CarFactoryTests
     public IEnumerator CarFactorySpawnTest()
     {
 
+        // Optimize time by removing unneeded particles
+        foreach (ParticleSystem particleSystem in GameObject.FindObjectsOfType<ParticleSystem>())
+        {
+            particleSystem.Stop();
+        }
+
         // No cars have been spawned at all from Factory 1, 2, 3 or 4
         Assert.AreEqual(CarCounter.getCarCount(), 0);
         Assert.AreEqual(newCarCount.getCarCount(), 0);
@@ -47,31 +53,25 @@ public class CarFactoryTests
         engineTypeList.Add(typeof(newCarEngine2));
         engineTypeList.Add(typeof(VehicleEngine));
         engineTypeList.Add(typeof(VehicleEngine1));
-        engineTypeList.Add(typeof(VehicleEngine3));
 
-        bool carSpawned = false;
+        bool allCarsSpawned = false;
         for (int i = 0; i < TEST_TIME; i++)
         {
 
             yield return new WaitForSeconds(1);
 
-            List<Object> carList = new List<Object>();
+            engineTypeList.RemoveAll(engineType => GameObject.FindObjectsOfType(engineType).Length != 0);
 
-            foreach (Type engineType in engineTypeList)
+            if (engineTypeList.Count == 0)
             {
-                carList.AddRange(GameObject.FindObjectsOfType(engineType));
-            }
-
-            // Check if a car has spawned
-            if (carList.Count != 0)
-            {
-                carSpawned = true;
+                allCarsSpawned = true;
                 break;
             }
 
         }
 
-        Assert.True(carSpawned);
+        Assert.True(allCarsSpawned);
 
     }
+
 }
