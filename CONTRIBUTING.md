@@ -191,6 +191,18 @@ To create a test script, navigate to the corresponding folder and right-click in
 Go to **Create > Testing > (Test Mode) Test C# Script**.
 This will create script in that directory and simply double click to edit the script.
 
+### Edit Mode Tests
+
+**Edit Mode** tests are currently **NOT** used in this project.
+But this can easily be added back into the project when needed by adding the following into the .gitlab-ci.yml file:
+
+```yaml
+test-editmode:
+  <<: *test
+  variables:
+    TEST_PLATFORM: editmode
+```
+
 ## Running Tests
 
 Tests can be run within the Unity UI directly.
