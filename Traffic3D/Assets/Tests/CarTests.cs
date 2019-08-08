@@ -21,6 +21,18 @@ public class CarTests
         }
     }
 
+    [TearDown]
+    public void TearDown()
+    {
+
+        CarCounter.carCount = 0;
+        incrementCountNumber.CarC = 0;
+        newCarCount.carCount = 0;
+        carCounterFACTORY3.carCount = 0;
+        carCounterFactory4.carCount = 0;
+
+    }
+
     // CarCounter class test
     [UnityTest]
     public IEnumerator CarCounterTest()
