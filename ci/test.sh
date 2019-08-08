@@ -20,6 +20,9 @@ set -x
 
 UNITY_EXIT_CODE=$?
 
+ls -lh /builds/beautifulcanoe/developers/traffic3d/Traffic3D/Assets/Screenshots/
+whoami
+
 if [ $UNITY_EXIT_CODE -eq 0 ]; then
   echo "Run succeeded, no failures occurred";
 elif [ $UNITY_EXIT_CODE -eq 2 ]; then
