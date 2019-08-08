@@ -80,24 +80,4 @@ public class FreshLoopingTest
 
     }
 
-    [UnityTest]
-    public IEnumerator FreshLoopingScreenshotTest()
-    {
-
-        freshLOOPING freshLooping = (freshLOOPING)GameObject.FindObjectOfType(typeof(freshLOOPING));
-
-        int shotCount = freshLOOPING.shot_count;
-
-        shotCount++;
-        yield return freshLooping.takeshot();
-
-        Assert.AreEqual(shotCount, freshLOOPING.shot_count);
-
-        string screenshotPath = Application.dataPath + "/Screenshots";
-        FileAssert.Exists(screenshotPath + "/shot" + shotCount + ".png");
-
-        yield return null;
-
-    }
-
 }
