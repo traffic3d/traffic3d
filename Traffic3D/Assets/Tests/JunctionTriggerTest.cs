@@ -24,14 +24,6 @@ public class JunctionTriggerTest
 
     }
 
-    [TearDown]
-    public void TearDown()
-    {
-
-
-
-    }
-
     [UnityTest]
     public IEnumerator TriggerTest()
     {
