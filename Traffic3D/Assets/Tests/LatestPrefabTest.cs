@@ -25,6 +25,7 @@ public class LatestPrefabTest
     public void TearDownTest()
     {
         SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(0));
+        journeyTimeCARCOUNTER.journeyCARs = 0;
     }
 
     [UnityTest]
