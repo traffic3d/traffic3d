@@ -30,11 +30,6 @@ stages:
     paths:
       - $(pwd)/$TEST_PLATFORM-results.xml
 
-test-editmode:
-  <<: *test
-  variables:
-    TEST_PLATFORM: editmode
-
 test-playmode:
   <<: *test
   variables:
