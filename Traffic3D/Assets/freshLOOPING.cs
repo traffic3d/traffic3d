@@ -19,12 +19,16 @@ public class freshLOOPING : MonoBehaviour
 
     public GameObject trafficlight1;
     public GameObject trafficlight2;
+    public GameObject trafficlight3;
+    public GameObject trafficlight4;
 
     public GameObject waitcars1;
     public GameObject waitcars2;
     public GameObject waitcars3;
     public TLaction1 m = null;
     public TLaction2 n = null;
+    public TLaction3 u = null;
+    public TLaction4 v = null;
 
     public bool waiting = false;
 
@@ -46,11 +50,17 @@ public class freshLOOPING : MonoBehaviour
     void Start()
     {
 
-        trafficlight1 = GameObject.Find("TrafficLight1");
+        trafficlight1 = GameObject.Find("SphereTL1");
         m = trafficlight1.GetComponent<TLaction1>();
 
-        trafficlight2 = GameObject.Find("TrafficLight2");
+        trafficlight2 = GameObject.Find("SphereTL2");
         n = trafficlight2.GetComponent<TLaction2>();
+
+        trafficlight3 = GameObject.Find("SphereTL3");
+        u = trafficlight3.GetComponent<TLaction3>();
+
+        trafficlight4 = GameObject.Find("SphereTL4");
+        v = trafficlight4.GetComponent<TLaction4>();
 
         socket.Connect("localhost", port);
 
@@ -83,7 +93,13 @@ public class freshLOOPING : MonoBehaviour
         if (waiting == false)
         {
             m.materialchangeRED1();
+
             n.materialchangeRED2();
+
+            u.materialchangeRED3();
+
+            v.materialchangeRED4();
+
             yield return new WaitForSeconds(20);
             Time.timeScale = 0;
             waiting = true;
@@ -121,6 +137,8 @@ public class freshLOOPING : MonoBehaviour
         if (int.Parse(Encoding.UTF8.GetString(bytes)) == 0)
         {
             n.materialchangeRED2();
+            u.materialchangeRED3();
+            v.materialchangeRED4();
             Time.timeScale = 1;
             yield return new WaitForSeconds(6);
             m.materialchangeGREEN1();
@@ -131,11 +149,41 @@ public class freshLOOPING : MonoBehaviour
         {
 
             m.materialchangeRED1();
+            u.materialchangeRED3();
+            v.materialchangeRED4();
             Time.timeScale = 1;
             yield return new WaitForSeconds(6);
             n.materialchangeGREEN2();
 
         }
+
+        if (int.Parse(Encoding.UTF8.GetString(bytes)) == 2)
+        {
+
+            m.materialchangeRED1();
+            n.materialchangeRED2();
+            v.materialchangeRED4();
+
+            Time.timeScale = 1;
+            yield return new WaitForSeconds(5);
+            u.materialchangeGREEN3();
+            
+        }
+
+
+        if (int.Parse(Encoding.UTF8.GetString(bytes)) == 3)
+        {
+
+            m.materialchangeRED1();
+            n.materialchangeRED2();
+            u.materialchangeRED3();
+
+            Time.timeScale = 1;
+            yield return new WaitForSeconds(5);
+            v.materialchangeGREEN4();
+
+        }
+
         yield return null;
     }
 
