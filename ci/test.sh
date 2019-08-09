@@ -14,6 +14,10 @@ ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x2
   -logFile \
   -batchmode
 
+set +x
+echo "$(<$(pwd)/$TEST_PLATFORM-results.xml)"
+set -x
+
 UNITY_EXIT_CODE=$?
 
 if [ $UNITY_EXIT_CODE -eq 0 ]; then
