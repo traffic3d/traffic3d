@@ -26,7 +26,7 @@ public class CarEngine4 : MonoBehaviour
     public Vector3 centerOfMass;
     public Rigidbody VEHICLE;
 
-    public TLaction4 r = null;
+    public TrafficLightRed4 r = null;
     public Material material2;
     public Material material4;
 
@@ -50,7 +50,7 @@ public class CarEngine4 : MonoBehaviour
         path1 = GameObject.Find("mypath3").GetComponent<Transform>();
         path2 = GameObject.Find("mypath31").GetComponent<Transform>();
         trafficlight = GameObject.Find("SphereTL4");
-        r = trafficlight.GetComponent<TLaction4>();
+        r = trafficlight.GetComponent<TrafficLightRed4>();
         startTime = Time.time;
 
         if (Random.value > 0.5)
@@ -140,7 +140,7 @@ public class CarEngine4 : MonoBehaviour
 
     private void keepgoing()
     {
-        if (!(r.CM.color.Equals(material2.color)))
+        if (!(r.currrentMaterial.color.Equals(material2.color)))
 
         {
             WheelFL.motorTorque = maxMotorTorque;
@@ -183,7 +183,7 @@ public class CarEngine4 : MonoBehaviour
 
     private void redtest()
     {
-        if (r.CM.color.Equals(material2.color))
+        if (r.currrentMaterial.color.Equals(material2.color))
         {
             print("CarEngine4 red test");
         }
@@ -193,7 +193,7 @@ public class CarEngine4 : MonoBehaviour
     private void juststop()
     {
 
-        if (currentNode == nodes.Count - 3 && r.CM.color.Equals(material2.color))
+        if (currentNode == nodes.Count - 3 && r.currrentMaterial.color.Equals(material2.color))
         {
             WheelFL.motorTorque = 0;
             WheelFR.motorTorque = 0;
@@ -225,7 +225,7 @@ public class CarEngine4 : MonoBehaviour
     private void amberstop()
     {
 
-        if (currentNode == nodes.Count - 3 && r.CM.color.Equals(material4.color))
+        if (currentNode == nodes.Count - 3 && r.currrentMaterial.color.Equals(material4.color))
         {
             WheelFL.motorTorque = 0;
             WheelFR.motorTorque = 0;

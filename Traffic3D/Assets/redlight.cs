@@ -20,14 +20,14 @@ public class redlight : MonoBehaviour
     public GameObject trafficlight4;
     public GameObject trafficlight41;
 
-    public TLaction1 m = null;
-    public TLaction11 m1 = null;
-    public TLaction2 n = null;
-    public TLaction21 n1 = null;
-    public TLaction3 u = null;
-    public TLaction31 u1 = null;
-    public TLaction4 v = null;
-    public TLaction41 v1 = null;
+    public TrafficLightRed1 m = null;
+    public TrafficLightGreen1 m1 = null;
+    public TrafficLightRed2 n = null;
+    public TrafficLightGreen2 n1 = null;
+    public TrafficLightRed3 u = null;
+    public TrafficLightGreen3 u1 = null;
+    public TrafficLightRed4 v = null;
+    public TrafficLightGreen4 v1 = null;
 
 
 
@@ -37,27 +37,27 @@ public class redlight : MonoBehaviour
 
         print("start LOOPING");
         trafficlight1 = GameObject.Find("SphereTL1");   //TrafficLight1
-        m = trafficlight1.GetComponent<TLaction1>();
+        m = trafficlight1.GetComponent<TrafficLightRed1>();
 
         trafficlight11 = GameObject.Find("SphereTL11");   //TrafficLight1
-        m1 = trafficlight11.GetComponent<TLaction11>();
+        m1 = trafficlight11.GetComponent<TrafficLightGreen1>();
 
         trafficlight2 = GameObject.Find("SphereTL2");  //TrafficLight2
-        n = trafficlight2.GetComponent<TLaction2>();
+        n = trafficlight2.GetComponent<TrafficLightRed2>();
 
         trafficlight21 = GameObject.Find("SphereTL21");  //TrafficLight2
-        n1 = trafficlight21.GetComponent<TLaction21>();
+        n1 = trafficlight21.GetComponent<TrafficLightGreen2>();
 
         trafficlight3 = GameObject.Find("SphereTL3");
-        u = trafficlight3.GetComponent<TLaction3>();
+        u = trafficlight3.GetComponent<TrafficLightRed3>();
 
         trafficlight31 = GameObject.Find("SphereTL31");
-        u1 = trafficlight31.GetComponent<TLaction31>();
+        u1 = trafficlight31.GetComponent<TrafficLightGreen3>();
 
         trafficlight4 = GameObject.Find("SphereTL4");
-        v = trafficlight4.GetComponent<TLaction4>();
+        v = trafficlight4.GetComponent<TrafficLightRed4>();
         trafficlight41 = GameObject.Find("SphereTL41");
-        v1 = trafficlight41.GetComponent<TLaction41>();
+        v1 = trafficlight41.GetComponent<TrafficLightGreen4>();
 
 
 
@@ -82,15 +82,15 @@ public class redlight : MonoBehaviour
 
     public IEnumerator one()
     {
-        m.materialchangeRED1();
-        m1.materialchangeblack();
-        v.materialchangeRED4();
-        v1.materialchangeblack();
-        n.materialchangeRED2();
-        n1.materialchangeblack();
+        m.SetToRedMaterial();
+        m1.SetToBlackMaterial();
+        v.SetToRedMaterial();
+        v1.SetToBlackMaterial();
+        n.SetToRedMaterial();
+        n1.SetToBlackMaterial();
 
-        u.materialchangeRED3();
-        u1.materialchangeblack();
+        u.SetToRedMaterial();
+        u1.SetToBlackMaterial();
         yield return new WaitForSeconds(200);
 
 
@@ -98,30 +98,30 @@ public class redlight : MonoBehaviour
 
     public IEnumerator two()
     {
-        u.materialchangeRED3();
-        u1.materialchangeblack();
-        m.materialchangeblack();
-        m1.materialchangeGREEN1();
-        v.materialchangeRED4();
-        v1.materialchangeblack();
+        u.SetToRedMaterial();
+        u1.SetToBlackMaterial();
+        m.SetToBlackMaterial();
+        m1.SetToGreenMaterial();
+        v.SetToRedMaterial();
+        v1.SetToBlackMaterial();
 
-        n.materialchangeRED2();
-        n1.materialchangeblack();
+        n.SetToRedMaterial();
+        n1.SetToBlackMaterial();
         yield return new WaitForSeconds(19);
 
     }
 
     public IEnumerator third()
     {
-        v.materialchangeRED4();
-        v1.materialchangeblack();
-        m.materialchangeRED1();
-        m1.materialchangeblack();
-        u.materialchangeblack();
-        u1.materialchangeGREEN3();
+        v.SetToRedMaterial();
+        v1.SetToBlackMaterial();
+        m.SetToRedMaterial();
+        m1.SetToBlackMaterial();
+        u.SetToBlackMaterial();
+        u1.SetToGreenMaterial();
 
-        n.materialchangeRED2();
-        n1.materialchangeblack();
+        n.SetToRedMaterial();
+        n1.SetToBlackMaterial();
 
         yield return new WaitForSeconds(19);
 
@@ -129,15 +129,15 @@ public class redlight : MonoBehaviour
 
     public IEnumerator four()
     {
-        m.materialchangeRED1();
-        m1.materialchangeblack();
-        v.materialchangeRED4();
-        v1.materialchangeblack();
-        u.materialchangeRED3();
-        u1.materialchangeblack();
+        m.SetToRedMaterial();
+        m1.SetToBlackMaterial();
+        v.SetToRedMaterial();
+        v1.SetToBlackMaterial();
+        u.SetToRedMaterial();
+        u1.SetToBlackMaterial();
 
-        n.materialchangeblack();
-        n1.materialchangeGREEN2();
+        n.SetToBlackMaterial();
+        n1.SetToGreenMaterial();
 
         yield return new WaitForSeconds(19);
 
@@ -147,14 +147,14 @@ public class redlight : MonoBehaviour
 
     public IEnumerator five()
     {
-        v1.materialchangeGREEN4();
-        v.materialchangeblack();
-        m.materialchangeRED1();
-        m1.materialchangeblack();
-        u.materialchangeRED3();
-        u1.materialchangeblack();
-        n.materialchangeRED2();
-        n1.materialchangeblack();
+        v1.SetToGreenMaterial();
+        v.SetToBlackMaterial();
+        m.SetToRedMaterial();
+        m1.SetToBlackMaterial();
+        u.SetToRedMaterial();
+        u1.SetToBlackMaterial();
+        n.SetToRedMaterial();
+        n1.SetToBlackMaterial();
         yield return new WaitForSeconds(19);
 
 

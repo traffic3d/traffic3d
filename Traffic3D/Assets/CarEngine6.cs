@@ -24,7 +24,7 @@ public class CarEngine6 : MonoBehaviour
     public float range1 = 2f;
     public float range2 = 12f;
     public Material material2;
-    public TLaction2 p = null;
+    public TrafficLightRed2 p = null;
     public COUNTER n = null;
     public List<Transform> nodes;
     public List<Transform> MaterialChange;
@@ -47,7 +47,7 @@ public class CarEngine6 : MonoBehaviour
         path1 = GameObject.Find("mypath1").GetComponent<Transform>();
         path2 = GameObject.Find("mypath11").GetComponent<Transform>();
 
-        p = trafficLight.GetComponent<TLaction2>();
+        p = trafficLight.GetComponent<TrafficLightRed2>();
         startTime = Time.time;
 
         if (Random.value > 0.5)
@@ -136,7 +136,7 @@ public class CarEngine6 : MonoBehaviour
 
     private void go()
     {
-        if (!(p.CM.color.Equals(material2.color)))
+        if (!(p.currentMaterial.color.Equals(material2.color)))
         {
             WheelFL.motorTorque = maxMotorTorque;
             WheelFR.motorTorque = maxMotorTorque;
@@ -246,7 +246,7 @@ public class CarEngine6 : MonoBehaviour
     {
         Vector3 a = GetComponent<Transform>().position;
         Vector3 b = trafficLight.GetComponent<Transform>().position;
-        if ((p.CM.color.Equals(material2.color)) && (currentNode == nodes.Count - 3))
+        if ((p.currentMaterial.color.Equals(material2.color)) && (currentNode == nodes.Count - 3))
         {
             WheelFL.motorTorque = 0;
             WheelFR.motorTorque = 0;

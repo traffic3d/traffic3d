@@ -21,7 +21,7 @@ public class carEngine12 : MonoBehaviour
     public Rigidbody VEHICLE;
 
     public Material material2;
-    public TLaction2 r = null;
+    public TrafficLightRed2 r = null;
 
     public COUNTER n = null;
     public List<Transform> nodes;
@@ -44,7 +44,7 @@ public class carEngine12 : MonoBehaviour
         path2 = GameObject.Find("mypath21").GetComponent<Transform>();
 
         trafficLight = GameObject.Find("SphereTL2");
-        r = trafficLight.GetComponent<TLaction2>();
+        r = trafficLight.GetComponent<TrafficLightRed2>();
 
         startTime = Time.time;
 
@@ -132,7 +132,7 @@ public class carEngine12 : MonoBehaviour
     }
     private void go()
     {
-        if (!(r.CM.color.Equals(material2.color)))
+        if (!(r.currentMaterial.color.Equals(material2.color)))
         {
             WheelFL.motorTorque = maxMotorTorque;
             WheelFR.motorTorque = maxMotorTorque;
@@ -240,7 +240,7 @@ public class carEngine12 : MonoBehaviour
     {
         Vector3 a = GetComponent<Transform>().position;
         Vector3 b = trafficLight.GetComponent<Transform>().position;
-        if ((r.CM.color.Equals(material2.color)) && (currentNode == nodes.Count - 4))
+        if ((r.currentMaterial.color.Equals(material2.color)) && (currentNode == nodes.Count - 4))
         {
             WheelFL.motorTorque = 0;
             WheelFR.motorTorque = 0;

@@ -141,7 +141,7 @@ public class freshLOOPING : MonoBehaviour
             v.materialchangeRED4();
             Time.timeScale = 1;
             yield return new WaitForSeconds(6);
-            m.materialchangeGREEN1();
+            m.SetToGreenMaterial();
 
         }
 
@@ -153,7 +153,7 @@ public class freshLOOPING : MonoBehaviour
             v.materialchangeRED4();
             Time.timeScale = 1;
             yield return new WaitForSeconds(6);
-            n.materialchangeGREEN2();
+            n.SetToGreenMaterial();
 
         }
 

@@ -201,55 +201,55 @@ public class CarEngineTests
             if (engineType == typeof(carEngine12))
             {
                 carEngine12 carEngine12 = (carEngine12)car.GetComponent(engineType);
-                carEngine12.r.CM = carEngine12.r.material2;
+                carEngine12.r.currentMaterial = carEngine12.r.redMaterial;
                 carEngine12.r.enabled = false;
             }
             else if (engineType == typeof(CarEngine2))
             {
                 CarEngine2 carEngine2 = (CarEngine2)car.GetComponent(engineType);
-                carEngine2.m.CM = carEngine2.m.material2;
+                carEngine2.m.currentMaterial = carEngine2.m.redMaterial;
                 carEngine2.m.enabled = false;
             }
             else if (engineType == typeof(CarEngine4))
             {
                 CarEngine4 carEngine4 = (CarEngine4)car.GetComponent(engineType);
-                carEngine4.r.CM = carEngine4.r.material2;
+                carEngine4.r.currrentMaterial = carEngine4.r.redMaterial;
                 carEngine4.r.enabled = false;
             }
             else if (engineType == typeof(CarEngine5))
             {
                 CarEngine5 carEngine5 = (CarEngine5)car.GetComponent(engineType);
-                carEngine5.r.CM = carEngine5.r.material2;
+                carEngine5.r.currrentMaterial = carEngine5.r.redMaterial;
                 carEngine5.r.enabled = false;
             }
             else if (engineType == typeof(CarEngine6))
             {
                 CarEngine6 carEngine6 = (CarEngine6)car.GetComponent(engineType);
-                carEngine6.p.CM = carEngine6.p.material2;
+                carEngine6.p.currentMaterial = carEngine6.p.redMaterial;
                 carEngine6.p.enabled = false;
             }
             else if (engineType == typeof(newCarEngine2))
             {
                 newCarEngine2 newCarEngine2 = (newCarEngine2)car.GetComponent(engineType);
-                newCarEngine2.q.CM = newCarEngine2.q.material2;
+                newCarEngine2.q.currentMaterial = newCarEngine2.q.redMaterial;
                 newCarEngine2.q.enabled = false;
             }
             else if (engineType == typeof(VehicleEngine))
             {
                 VehicleEngine vehicleEngine = (VehicleEngine)car.GetComponent(engineType);
-                vehicleEngine.u.CM = vehicleEngine.u.material2;
+                vehicleEngine.u.currentMaterial = vehicleEngine.u.redMaterial;
                 vehicleEngine.u.enabled = false;
             }
             else if (engineType == typeof(VehicleEngine1))
             {
                 VehicleEngine1 vehicleEngine1 = (VehicleEngine1)car.GetComponent(engineType);
-                vehicleEngine1.u.CM = vehicleEngine1.u.material2;
+                vehicleEngine1.u.currentMaterial = vehicleEngine1.u.redMaterial;
                 vehicleEngine1.u.enabled = false;
             }
             else if (engineType == typeof(VehicleEngine3))
             {
                 VehicleEngine3 vehicleEngine3 = (VehicleEngine3)car.GetComponent(engineType);
-                vehicleEngine3.m.CM = vehicleEngine3.m.material2;
+                vehicleEngine3.m.currentMaterial = vehicleEngine3.m.redMaterial;
                 vehicleEngine3.m.enabled = false;
             }
 
@@ -305,55 +305,55 @@ public class CarEngineTests
             if (engineType == typeof(carEngine12))
             {
                 carEngine12 carEngine12 = (carEngine12)car.GetComponent(engineType);
-                carEngine12.r.CM = carEngine12.r.material3;
+                carEngine12.r.currentMaterial = carEngine12.r.greenMaterial;
                 carEngine12.r.enabled = false;
             }
             else if (engineType == typeof(CarEngine2))
             {
                 CarEngine2 carEngine2 = (CarEngine2)car.GetComponent(engineType);
-                carEngine2.m.CM = carEngine2.m.material3;
+                carEngine2.m.currentMaterial = carEngine2.m.greenMaterial;
                 carEngine2.m.enabled = false;
             }
             else if (engineType == typeof(CarEngine4))
             {
                 CarEngine4 carEngine4 = (CarEngine4)car.GetComponent(engineType);
-                carEngine4.r.CM = carEngine4.r.material3;
+                carEngine4.r.currrentMaterial = carEngine4.r.greenMaterial;
                 carEngine4.r.enabled = false;
             }
             else if (engineType == typeof(CarEngine5))
             {
                 CarEngine5 carEngine5 = (CarEngine5)car.GetComponent(engineType);
-                carEngine5.r.CM = carEngine5.r.material3;
+                carEngine5.r.currrentMaterial = carEngine5.r.greenMaterial;
                 carEngine5.r.enabled = false;
             }
             else if (engineType == typeof(CarEngine6))
             {
                 CarEngine6 carEngine6 = (CarEngine6)car.GetComponent(engineType);
-                carEngine6.p.CM = carEngine6.p.material3;
+                carEngine6.p.currentMaterial = carEngine6.p.greenMaterial;
                 carEngine6.p.enabled = false;
             }
             else if (engineType == typeof(newCarEngine2))
             {
                 newCarEngine2 newCarEngine2 = (newCarEngine2)car.GetComponent(engineType);
-                newCarEngine2.q.CM = newCarEngine2.q.material3;
+                newCarEngine2.q.currentMaterial = newCarEngine2.q.greenMaterial;
                 newCarEngine2.q.enabled = false;
             }
             else if (engineType == typeof(VehicleEngine))
             {
                 VehicleEngine vehicleEngine = (VehicleEngine)car.GetComponent(engineType);
-                vehicleEngine.u.CM = vehicleEngine.u.material3;
+                vehicleEngine.u.currentMaterial = vehicleEngine.u.greenMaterial;
                 vehicleEngine.u.enabled = false;
             }
             else if (engineType == typeof(VehicleEngine1))
             {
                 VehicleEngine1 vehicleEngine1 = (VehicleEngine1)car.GetComponent(engineType);
-                vehicleEngine1.u.CM = vehicleEngine1.u.material3;
+                vehicleEngine1.u.currentMaterial = vehicleEngine1.u.greenMaterial;
                 vehicleEngine1.u.enabled = false;
             }
             else if (engineType == typeof(VehicleEngine3))
             {
                 VehicleEngine3 vehicleEngine3 = (VehicleEngine3)car.GetComponent(engineType);
-                vehicleEngine3.m.CM = vehicleEngine3.m.material3;
+                vehicleEngine3.m.currentMaterial = vehicleEngine3.m.greenMaterial;
                 vehicleEngine3.m.enabled = false;
             }
 

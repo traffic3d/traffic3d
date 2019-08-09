@@ -21,7 +21,7 @@ public class newCarEngine2 : MonoBehaviour
     public Rigidbody VEHICLE;
 
     public Material material2;
-    public TLaction1 q = null;
+    public TrafficLightRed1 q = null;
 
     public float range1 = 2f;
     public float range2 = 12f;
@@ -58,7 +58,7 @@ public class newCarEngine2 : MonoBehaviour
         path1 = GameObject.Find("newpath3").GetComponent<Transform>();
         path2 = GameObject.Find("newpath31").GetComponent<Transform>();
 
-        q = trafficLight.GetComponent<TLaction1>();
+        q = trafficLight.GetComponent<TrafficLightRed1>();
 
         startTime = Time.time;
 
@@ -149,7 +149,7 @@ public class newCarEngine2 : MonoBehaviour
 
     private void go()
     {
-        if (!(q.CM.color.Equals(material2.color)))
+        if (!(q.currentMaterial.color.Equals(material2.color)))
         {
             WheelFL.motorTorque = maxMotorTorque;
             WheelFR.motorTorque = maxMotorTorque;
@@ -264,7 +264,7 @@ public class newCarEngine2 : MonoBehaviour
         Vector3 a = GetComponent<Transform>().position;
         Vector3 b = trafficLight.GetComponent<Transform>().position;
 
-        if ((q.CM.color.Equals(material2.color)) && (currentNode == nodes.Count - 3))
+        if ((q.currentMaterial.color.Equals(material2.color)) && (currentNode == nodes.Count - 3))
         {
             WheelFL.motorTorque = 0;
             WheelFR.motorTorque = 0;

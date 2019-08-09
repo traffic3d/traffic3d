@@ -30,7 +30,7 @@ public class CarEngine5 : MonoBehaviour
     public Material material2;
     public Material material4;
 
-    public TLaction4 r = null;
+    public TrafficLightRed4 r = null;
 
     public List<Transform> nodes;
     public List<Transform> MaterialChange;
@@ -50,7 +50,7 @@ public class CarEngine5 : MonoBehaviour
         path2 = GameObject.Find("mypath41").GetComponent<Transform>();
 
         trafficlight = GameObject.Find("SphereTL4");
-        r = trafficlight.GetComponent<TLaction4>();
+        r = trafficlight.GetComponent<TrafficLightRed4>();
 
         startTime = Time.time;
 
@@ -141,7 +141,7 @@ public class CarEngine5 : MonoBehaviour
 
     private void keepgoing()
     {
-        if (!(r.CM.color.Equals(material2.color)))
+        if (!(r.currrentMaterial.color.Equals(material2.color)))
 
         {
             WheelFL.motorTorque = maxMotorTorque;
@@ -184,7 +184,7 @@ public class CarEngine5 : MonoBehaviour
     private void juststop()
     {
 
-        if (currentNode == nodes.Count - 3 && r.CM.color.Equals(material2.color))
+        if (currentNode == nodes.Count - 3 && r.currrentMaterial.color.Equals(material2.color))
 
         {
             WheelFL.motorTorque = 0;

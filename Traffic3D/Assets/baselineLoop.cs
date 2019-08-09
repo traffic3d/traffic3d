@@ -8,18 +8,18 @@ public class baselineLoop : MonoBehaviour
     public GameObject trafficlight1;
     public GameObject trafficlight2;
 
-    public TLaction1 m = null;
-    public TLaction2 n = null;
+    public TrafficLightRed1 m = null;
+    public TrafficLightRed2 n = null;
 
 
 
     void Start()
     {
         trafficlight1 = GameObject.Find("TrafficLight1");
-        m = trafficlight1.GetComponent<TLaction1>();
+        m = trafficlight1.GetComponent<TrafficLightRed1>();
 
         trafficlight2 = GameObject.Find("TrafficLight2");
-        n = trafficlight2.GetComponent<TLaction2>();
+        n = trafficlight2.GetComponent<TrafficLightRed2>();
 
         StartCoroutine(looping());
     }
@@ -38,9 +38,9 @@ public class baselineLoop : MonoBehaviour
     }
     public IEnumerator one()
     {
-        n.materialchangeRED2();
+        n.SetToRedMaterial();
         yield return new WaitForSeconds(6);
-        m.materialchangeGREEN1();
+        m.SetToGreenMaterial();
         yield return null;
     }
 
@@ -51,9 +51,9 @@ public class baselineLoop : MonoBehaviour
 
     public IEnumerator two()
     {
-        m.materialchangeRED1();
+        m.SetToRedMaterial();
         yield return new WaitForSeconds(6);
-        n.materialchangeGREEN2();
+        n.SetToGreenMaterial();
         yield return null;
     }
 

@@ -30,7 +30,7 @@ public class VehicleEngine3 : MonoBehaviour
     public Material Material3;
     public Material Material5;
     public COUNTER n = null;
-    public TLaction1 m;
+    public TrafficLightRed1 m;
 
 
 
@@ -54,7 +54,7 @@ public class VehicleEngine3 : MonoBehaviour
         TrafficLightPosition = TrafficLight.transform.position;
         cameraObject = GameObject.Find("Main Camera");
 
-        m = TrafficLight.GetComponent<TLaction1>();
+        m = TrafficLight.GetComponent<TrafficLightRed1>();
 
         Transform[] pathTransforms = path.GetComponentsInChildren<Transform>();
         nodes = new List<Transform>();
@@ -177,7 +177,7 @@ public class VehicleEngine3 : MonoBehaviour
     {
         Vector3 a = transform.position;
         Vector3 b = TrafficLight.transform.position;
-        if ((((m.CM.color.Equals(Material1.color) && (Vector3.Distance(transform.position, TrafficLight.transform.position) < 8f)))))
+        if ((((m.currentMaterial.color.Equals(Material1.color) && (Vector3.Distance(transform.position, TrafficLight.transform.position) < 8f)))))
 
         {
             WheelFL.motorTorque = 0;

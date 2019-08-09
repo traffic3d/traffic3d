@@ -34,7 +34,7 @@ public class policeEngine : MonoBehaviour {
 	public Material material2;
 	public Material material4;
 	// public Material Material5;
-	public TLaction1 m = null;
+	public TrafficLightRed1 m = null;
 
 	public float range1 = 2f;
 	public float range2 = 12f;
@@ -65,7 +65,7 @@ public class policeEngine : MonoBehaviour {
 		path2 = GameObject.Find("newpath21").GetComponent<Transform>();     //turning path
 		//carCount = GameObject.Find("CarCount").GetComponent<CarCounter>();
 		//        m = trafficLight.GetComponent<materialchangeeee>();
-		m = trafficLight.GetComponent<TLaction1>();
+		m = trafficLight.GetComponent<TrafficLightRed1>();
 
 		startTime = Time.time;
 		//n = Counter.GetComponent<COUNTER>();
@@ -263,7 +263,7 @@ private void engineoff()
 
 private void keepgoing()
 {
-	if(!(m.CM.color.Equals(material2.color)))
+	if(!(m.currentMaterial.color.Equals(material2.color)))
 
 	{
 		WheelFL.motorTorque = maxMotorTorque;
@@ -439,7 +439,7 @@ private void Stop()
 	//if(m.defaultmaterial() && m.materialchangeRED1() && (currentNode == nodes.Count - 3))
 
 	//if ((((m.CM.color.Equals(material1.color) && ((m.CM.color.Equals(material2.color)) && (currentNode == nodes.Count - 3))))))
-	if((m.CM.color.Equals(material2.color)) && (currentNode == nodes.Count - 3))
+	if((m.currentMaterial.color.Equals(material2.color)) && (currentNode == nodes.Count - 3))
 	{
 		WheelFL.motorTorque = 0;
 		WheelFR.motorTorque = 0;
