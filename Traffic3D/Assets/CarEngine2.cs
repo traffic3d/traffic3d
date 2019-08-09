@@ -26,13 +26,13 @@ public class CarEngine2 : MonoBehaviour
     public float range1 = 2f;
     public float range2 = 12f;
 
-    public COUNTER n = null;
+    public Counter n = null;
     public List<Transform> nodes;
     public int currentNode = 0;
     private int lapCounter = 0;
     private float targetSteerAngle = 0;
 
-    public CarCounter carCount;
+    public CarFactoryCounter1 carCount;
 
     public float k;
     public float startTime;
@@ -223,10 +223,10 @@ public class CarEngine2 : MonoBehaviour
             freshLOOPING.speedlist.Add(speedd);
 
             Destroy(this.gameObject);
-            CarCounter.decrementCarCount();
+            CarFactoryCounter1.DecrementCarCount();
             freshLOOPING.incrementRew();
 
-            incrementCountNumber.incrementcarC();    //to get generated car number
+            OverallCarCounter.IncrementOverallCarCount();    //to get generated car number
 
 
 

@@ -49,7 +49,7 @@ public class CarEngineTests
         SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(0));
     }
 
-    public Rigidbody SpawnCar(CarFactory carFactory, carFactory2 carFactory2, carfactory3 carfactory3, carfactory4 carfactory4, Type carEngineScriptType)
+    public Rigidbody SpawnCar(CarFactory carFactory, CarFactory2 carFactory2, CarFactory3 carfactory3, CarFactory4 carfactory4, Type carEngineScriptType)
     {
 
         if (carFactory.car1.gameObject.GetComponent(carEngineScriptType) != null)
@@ -97,9 +97,9 @@ public class CarEngineTests
         DisableLoops();
 
         CarFactory carFactory = (CarFactory)GameObject.FindObjectOfType(typeof(CarFactory));
-        carFactory2 carFactory2 = (carFactory2)GameObject.FindObjectOfType(typeof(carFactory2));
-        carfactory3 carfactory3 = (carfactory3)GameObject.FindObjectOfType(typeof(carfactory3));
-        carfactory4 carfactory4 = (carfactory4)GameObject.FindObjectOfType(typeof(carfactory4));
+        CarFactory2 carFactory2 = (CarFactory2)GameObject.FindObjectOfType(typeof(CarFactory2));
+        CarFactory3 carfactory3 = (CarFactory3)GameObject.FindObjectOfType(typeof(CarFactory3));
+        CarFactory4 carfactory4 = (CarFactory4)GameObject.FindObjectOfType(typeof(CarFactory4));
 
         foreach (Type engineType in engineTypeList)
         {
@@ -133,9 +133,9 @@ public class CarEngineTests
         DisableLoops();
 
         CarFactory carFactory = (CarFactory)GameObject.FindObjectOfType(typeof(CarFactory));
-        carFactory2 carFactory2 = (carFactory2)GameObject.FindObjectOfType(typeof(carFactory2));
-        carfactory3 carfactory3 = (carfactory3)GameObject.FindObjectOfType(typeof(carfactory3));
-        carfactory4 carfactory4 = (carfactory4)GameObject.FindObjectOfType(typeof(carfactory4));
+        CarFactory2 carFactory2 = (CarFactory2)GameObject.FindObjectOfType(typeof(CarFactory2));
+        CarFactory3 carfactory3 = (CarFactory3)GameObject.FindObjectOfType(typeof(CarFactory3));
+        CarFactory4 carfactory4 = (CarFactory4)GameObject.FindObjectOfType(typeof(CarFactory4));
 
         foreach (Type engineType in engineTypeList)
         {
@@ -177,9 +177,9 @@ public class CarEngineTests
         Debug.Log("CarEngineStopTest - start");
 
         CarFactory carFactory = (CarFactory)GameObject.FindObjectOfType(typeof(CarFactory));
-        carFactory2 carFactory2 = (carFactory2)GameObject.FindObjectOfType(typeof(carFactory2));
-        carfactory3 carfactory3 = (carfactory3)GameObject.FindObjectOfType(typeof(carfactory3));
-        carfactory4 carfactory4 = (carfactory4)GameObject.FindObjectOfType(typeof(carfactory4));
+        CarFactory2 carFactory2 = (CarFactory2)GameObject.FindObjectOfType(typeof(CarFactory2));
+        CarFactory3 carfactory3 = (CarFactory3)GameObject.FindObjectOfType(typeof(CarFactory3));
+        CarFactory4 carfactory4 = (CarFactory4)GameObject.FindObjectOfType(typeof(CarFactory4));
 
         Dictionary<Type, Rigidbody> carList = new Dictionary<Type, Rigidbody>();
 
@@ -281,9 +281,9 @@ public class CarEngineTests
         DisableLoops();
 
         CarFactory carFactory = (CarFactory)GameObject.FindObjectOfType(typeof(CarFactory));
-        carFactory2 carFactory2 = (carFactory2)GameObject.FindObjectOfType(typeof(carFactory2));
-        carfactory3 carfactory3 = (carfactory3)GameObject.FindObjectOfType(typeof(carfactory3));
-        carfactory4 carfactory4 = (carfactory4)GameObject.FindObjectOfType(typeof(carfactory4));
+        CarFactory2 carFactory2 = (CarFactory2)GameObject.FindObjectOfType(typeof(CarFactory2));
+        CarFactory3 carfactory3 = (CarFactory3)GameObject.FindObjectOfType(typeof(CarFactory3));
+        CarFactory4 carfactory4 = (CarFactory4)GameObject.FindObjectOfType(typeof(CarFactory4));
 
         Dictionary<Type, Rigidbody> carList = new Dictionary<Type, Rigidbody>();
 
@@ -392,9 +392,9 @@ public class CarEngineTests
         redlight.StopAllCoroutines();
 
         CarFactory carFactory = (CarFactory)GameObject.FindObjectOfType(typeof(CarFactory));
-        carFactory2 carFactory2 = (carFactory2)GameObject.FindObjectOfType(typeof(carFactory2));
-        carfactory3 carfactory3 = (carfactory3)GameObject.FindObjectOfType(typeof(carfactory3));
-        carfactory4 carfactory4 = (carfactory4)GameObject.FindObjectOfType(typeof(carfactory4));
+        CarFactory2 carFactory2 = (CarFactory2)GameObject.FindObjectOfType(typeof(CarFactory2));
+        CarFactory3 carfactory3 = (CarFactory3)GameObject.FindObjectOfType(typeof(CarFactory3));
+        CarFactory4 carfactory4 = (CarFactory4)GameObject.FindObjectOfType(typeof(CarFactory4));
         carFactory.StopAllCoroutines();
         carFactory2.StopAllCoroutines();
         carfactory3.StopAllCoroutines();

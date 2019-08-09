@@ -26,7 +26,7 @@ public class VehicleEngine : MonoBehaviour
     public Vector3 VehicleCurrentPosition;
     public Vector3 TrafficLightPosition;
 
-    public COUNTER n = null;
+    public Counter n = null;
 
     public Material material2;
     public Material material4;
@@ -273,10 +273,10 @@ public class VehicleEngine : MonoBehaviour
         if (currentNode == nodes.Count - 1)
         {
             Destroy(this.gameObject);
-            carCounterFACTORY3.decrementCarCount();
+            CarFactoryCounter3.DecrementCarCount();
 
             //to get the generated car count
-            incrementCountNumber.incrementcarC();
+            OverallCarCounter.IncrementOverallCarCount();
 
             k = Time.time - startTime;
             System.IO.File.AppendAllText("xFourjourneyTimeLatest.csv", k.ToString() + ",");

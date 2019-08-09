@@ -288,9 +288,9 @@ public class CarEngine4 : MonoBehaviour
             Destroy(this.gameObject);
 
             // to decrement the counter after car is destroyed
-            carCounterFactory4.decrementCarCount();
+            CarFactoryCounter4.DecrementCarCount();
             //to get the generated car count
-            incrementCountNumber.incrementcarC();
+            OverallCarCounter.IncrementOverallCarCount();
 
             k = Time.time - startTime;
 

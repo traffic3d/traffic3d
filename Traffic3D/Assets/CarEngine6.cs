@@ -25,14 +25,14 @@ public class CarEngine6 : MonoBehaviour
     public float range2 = 12f;
     public Material material2;
     public TrafficLightRed2 p = null;
-    public COUNTER n = null;
+    public Counter n = null;
     public List<Transform> nodes;
     public List<Transform> MaterialChange;
     public int currentNode = 0;
     private int lapCounter = 0;
     private float targetSteerAngle = 0;
 
-    public newCarCount carCount;
+    public CarFactoryCounter2 carCount;
 
     public float k;
     public float startTime;
@@ -211,10 +211,10 @@ public class CarEngine6 : MonoBehaviour
 
             Destroy(this.gameObject);
 
-            newCarCount.decrementCarCount();
+            CarFactoryCounter2.DecrementCarCount();
             freshLOOPING.incrementRew();
 
-            incrementCountNumber.incrementcarC();
+            OverallCarCounter.IncrementOverallCarCount();
 
             k = (Time.time - startTime);
 

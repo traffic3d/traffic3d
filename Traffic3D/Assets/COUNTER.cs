@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class COUNTER : MonoBehaviour
+public class Counter : MonoBehaviour
 {
 
     private static int carCount = 0;
@@ -11,10 +11,11 @@ public class COUNTER : MonoBehaviour
     public int currentNode = 0;
     public List<Transform> nodes;
     public Vector3 spawnSpot = new Vector3(-37.83f, 11.28f, 14.96f);
-    public Rigidbody VEHICLE;
+    public Rigidbody vehicle;
     public Vector3 CameraPosition;
 
     public ScreenImages p = null;
+
     // Use this for initialization
     void Start()
     {
@@ -22,54 +23,45 @@ public class COUNTER : MonoBehaviour
         carCount = 1;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-
-    public void increment_counter()
+    public void IncrementCarCount()
     {
         carCount += 1;
         Debug.Log(carCount);
     }
 
-    public void decrement_counter()
+    public void DecrementCarCount()
     {
         carCount -= 1;
     }
 
-    public void save_counter_take_image()
+    public void AddCurrentCounterToList()
     {
         counts.Add(carCount);
     }
 
-    private void cars_in_lane()
+    private void GenerateVehicle()
     {
-        if (Instantiate(VEHICLE, spawnSpot, Quaternion.identity))
+        if (Instantiate(vehicle, spawnSpot, Quaternion.identity))
         {
 
         }
     }
-
 
     private void CameraRange()
-
     {
-        if (Vector3.Distance(VEHICLE.transform.position, Camera.transform.position) < 8f)
+        if (Vector3.Distance(vehicle.transform.position, Camera.transform.position) < 8f)
         {
 
         }
 
     }
 
-    public int getCounter()
+    public int GetCarCount()
     {
         return carCount;
     }
 
-    public void writeTextFile(string path, string name)
+    public void WriteTextFile(string path, string name)
     {
         //TODO: add name of the image then the carCount
 

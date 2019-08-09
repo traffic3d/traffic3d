@@ -267,10 +267,10 @@ public class CarEngine5 : MonoBehaviour
         if (currentNode == nodes.Count - 1)
         {
             Destroy(this.gameObject);
-            carCounterFactory4.decrementCarCount();
+            CarFactoryCounter4.DecrementCarCount();
 
             //to get the generated car count
-            incrementCountNumber.incrementcarC();
+            OverallCarCounter.IncrementOverallCarCount();
 
             k = Time.time - startTime;
             System.IO.File.AppendAllText("xFourjourneyTimeLatest.csv", k.ToString() + ",");

@@ -29,7 +29,7 @@ public class VehicleEngine3 : MonoBehaviour
     public Material Material1;
     public Material Material3;
     public Material Material5;
-    public COUNTER n = null;
+    public Counter n = null;
     public TrafficLightRed1 m;
 
 

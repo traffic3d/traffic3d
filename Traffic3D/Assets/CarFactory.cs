@@ -11,40 +11,34 @@ public class CarFactory : MonoBehaviour
     public Vector3 spawnSpot1;
     public Vector3 spawnSpot2;
     public Vector3 spawnSpot3;
-    int carGenerator = 0;
+    int carTypeSwitch = 0;
 
     // Use this for initialization
     void Start()
     {
         Random.seed = 123;
-        carGenerator = 0;
-        StartCoroutine(generateCars1());
+        carTypeSwitch = 0;
+        StartCoroutine(GenerateCars());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    IEnumerator generateCars1()
+    IEnumerator GenerateCars()
     {
         while (true)
         {
             yield return new WaitForSeconds(Random.Range(19, 22));
-            if (CarCounter.carCount < Random.Range(1, 3))
+            if (CarFactoryCounter1.carCount < Random.Range(1, 3))
             {
-                if (carGenerator == 0)
+                if (carTypeSwitch == 0)
                 {
                     Instantiate(car1, spawnSpot1, Quaternion.Euler(Vector3.up * 90));
-                    CarCounter.incrementCarCount();
-                    carGenerator = 1;
+                    CarFactoryCounter1.IncrementCarCount();
+                    carTypeSwitch = 1;
                 }
                 else
                 {
                     Instantiate(car3, spawnSpot3, Quaternion.Euler(Vector3.up * 90));
-                    CarCounter.incrementCarCount();
-                    carGenerator = 0;
+                    CarFactoryCounter1.IncrementCarCount();
+                    carTypeSwitch = 0;
                 }
 
             }

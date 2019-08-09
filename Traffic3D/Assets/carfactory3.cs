@@ -2,50 +2,41 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class carfactory3 : MonoBehaviour
+public class CarFactory3 : MonoBehaviour
 {
 
     public Rigidbody car1;
     public Rigidbody car3;
     public Vector3 spawnSpot1;
     public Vector3 spawnSpot3;
-    public int carGenerator;
-
-
+    public int carTypeSwitch;
 
     void Start()
     {
-        carGenerator = 0;
-        StartCoroutine(generateCars());
+        carTypeSwitch = 0;
+        StartCoroutine(GenerateCars());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    IEnumerator generateCars()
+    IEnumerator GenerateCars()
     {
 
         while (true)
         {
             yield return new WaitForSeconds(Random.Range(23, 33));
 
-            if (carCounterFACTORY3.carCount < Random.Range(1, 3))
+            if (CarFactoryCounter3.carCount < Random.Range(1, 3))
             {
-                if (carGenerator == 0)
+                if (carTypeSwitch == 0)
                 {
                     Instantiate(car1, spawnSpot1, Quaternion.identity);
-                    carGenerator = 1;
-                    carCounterFACTORY3.incrementCarCount();
-
+                    carTypeSwitch = 1;
+                    CarFactoryCounter3.IncrementCarCount();
                 }
                 else
                 {
                     Instantiate(car3, spawnSpot3, Quaternion.identity);
-                    carGenerator = 0;
-                    carCounterFACTORY3.incrementCarCount();
+                    carTypeSwitch = 0;
+                    CarFactoryCounter3.IncrementCarCount();
                 }
 
             }

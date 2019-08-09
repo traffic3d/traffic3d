@@ -49,7 +49,7 @@ public class ScreenImages : MonoBehaviour
     public void writeTextFile()
     {
         GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("car") as GameObject[];
-        System.IO.File.AppendAllText("ScreenshotMovieOutput/info.csv", string.Format("{0:D04}", Time.frameCount) + "," + CarCounter.getCarCount() + System.Environment.NewLine);
+        System.IO.File.AppendAllText("ScreenshotMovieOutput/info.csv", string.Format("{0:D04}", Time.frameCount) + "," + CarFactoryCounter1.GetCarCount() + System.Environment.NewLine);
     }
 
 }

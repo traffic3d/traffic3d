@@ -23,7 +23,7 @@ public class carEngine12 : MonoBehaviour
     public Material material2;
     public TrafficLightRed2 r = null;
 
-    public COUNTER n = null;
+    public Counter n = null;
     public List<Transform> nodes;
     public List<Transform> MaterialChange;
     public int currentNode = 0;
@@ -205,11 +205,11 @@ public class carEngine12 : MonoBehaviour
 
 
             Destroy(this.gameObject);
-            newCarCount.decrementCarCount();
+            CarFactoryCounter2.DecrementCarCount();
             freshLOOPING.incrementRew();
 
             //to get the generated car count
-            incrementCountNumber.incrementcarC();
+            OverallCarCounter.IncrementOverallCarCount();
 
             journeyTimeCARCOUNTER.incrementjourneyCARsCount();
             k = (Time.time - startTime);
