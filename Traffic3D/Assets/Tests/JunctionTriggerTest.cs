@@ -12,7 +12,6 @@ public class JunctionTriggerTest
     [SetUp]
     public void SetUpTest()
     {
-
         try
         {
             SceneManager.LoadScene(0);
@@ -21,7 +20,6 @@ public class JunctionTriggerTest
         {
             Debug.Log(e);
         }
-
     }
 
     [UnityTest]
