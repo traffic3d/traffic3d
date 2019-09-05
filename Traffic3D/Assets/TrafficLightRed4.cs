@@ -10,16 +10,16 @@ public class TrafficLightRed4 : MonoBehaviour
     public Material amberMaterial;
     public Material blackMaterial;
 
-    public Material currrentMaterial;
+    public Material currentMaterial;
 
     void Start()
     {
-        currrentMaterial = GetComponent<Renderer>().material;
+        currentMaterial = GetComponent<Renderer>().material;
     }
 
     public void SetToBlackMaterial()
     {
-        currrentMaterial = blackMaterial;
+        currentMaterial = blackMaterial;
         Material[] materials = GetComponent<Renderer>().materials;
         materials[0] = blackMaterial;
         GetComponent<Renderer>().materials = materials;
@@ -27,7 +27,7 @@ public class TrafficLightRed4 : MonoBehaviour
 
     public void SetToRedMaterial()
     {
-        currrentMaterial = redMaterial;
+        currentMaterial = redMaterial;
         Material[] materials = GetComponent<Renderer>().materials;
         materials[0] = redMaterial;
         GetComponent<Renderer>().materials = materials;
@@ -35,7 +35,7 @@ public class TrafficLightRed4 : MonoBehaviour
 
     public void SetToGreenMaterial()
     {
-        currrentMaterial = greenMaterial;
+        currentMaterial = greenMaterial;
         Material[] materials = GetComponent<Renderer>().materials;
         materials[0] = greenMaterial;
         GetComponent<Renderer>().materials = materials;
@@ -43,7 +43,7 @@ public class TrafficLightRed4 : MonoBehaviour
 
     public void SetToAmberMaterial()
     {
-        currrentMaterial = amberMaterial;
+        currentMaterial = amberMaterial;
         Material[] materials = GetComponent<Renderer>().materials;
         materials[0] = amberMaterial;
         GetComponent<Renderer>().materials = materials;

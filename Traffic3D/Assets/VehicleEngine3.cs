@@ -224,7 +224,7 @@ public class VehicleEngine3 : MonoBehaviour
 
             OverallCarCounter.IncrementOverallCarCount();    //to get generated car number
 
-            journeyTimeCARCOUNTER.incrementjourneyCARsCount();
+            JourneyCarCounter.IncrementJourneyCarCount();
             k = (Time.time - startTime);
 
 

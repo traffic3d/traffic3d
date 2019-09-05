@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class cameraFrameRate : MonoBehaviour
+public class FrameRate : MonoBehaviour
 {
 
     public int frameRate = 2;

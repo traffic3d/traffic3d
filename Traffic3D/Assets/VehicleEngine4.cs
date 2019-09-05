@@ -140,7 +140,7 @@ public class VehicleEngine4 : MonoBehaviour
 
     private void GoIfNotRed()
     {
-        if (!(trafficLightRed4.currrentMaterial.color.Equals(redMaterial.color)))
+        if (!(trafficLightRed4.currentMaterial.color.Equals(redMaterial.color)))
 
         {
             wheelColliderFrontLeft.motorTorque = maxMotorTorque;
@@ -183,7 +183,7 @@ public class VehicleEngine4 : MonoBehaviour
 
     private void RedLightTest()
     {
-        if (trafficLightRed4.currrentMaterial.color.Equals(redMaterial.color))
+        if (trafficLightRed4.currentMaterial.color.Equals(redMaterial.color))
         {
             print("VehicleEngine4 red test");
         }
@@ -193,7 +193,7 @@ public class VehicleEngine4 : MonoBehaviour
     private void StopAtLineIfRedElseGo()
     {
 
-        if (currentNode == nodes.Count - 3 && trafficLightRed4.currrentMaterial.color.Equals(redMaterial.color))
+        if (currentNode == nodes.Count - 3 && trafficLightRed4.currentMaterial.color.Equals(redMaterial.color))
         {
             wheelColliderFrontLeft.motorTorque = 0;
             wheelColliderFrontRight.motorTorque = 0;
@@ -225,7 +225,7 @@ public class VehicleEngine4 : MonoBehaviour
     private void StopOnAmber()
     {
 
-        if (currentNode == nodes.Count - 3 && trafficLightRed4.currrentMaterial.color.Equals(amberMaterial.color))
+        if (currentNode == nodes.Count - 3 && trafficLightRed4.currentMaterial.color.Equals(amberMaterial.color))
         {
             wheelColliderFrontLeft.motorTorque = 0;
             wheelColliderFrontRight.motorTorque = 0;

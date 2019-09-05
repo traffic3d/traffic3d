@@ -25,10 +25,10 @@ public class TrafficLightManagerWithAI : MonoBehaviour
     public GameObject waitcars1;
     public GameObject waitcars2;
     public GameObject waitcars3;
-    public TLaction1 m = null;
-    public TLaction2 n = null;
-    public TLaction3 u = null;
-    public TLaction4 v = null;
+    public TrafficLightRed1 trafficLightRed1 = null;
+    public TrafficLightRed2 trafficLightRed2 = null;
+    public TrafficLightRed3 trafficLightRed3 = null;
+    public TrafficLightRed4 trafficLightRed4 = null;
 
     public bool waiting = false;
 
@@ -51,16 +51,16 @@ public class TrafficLightManagerWithAI : MonoBehaviour
     {
 
         trafficlight1 = GameObject.Find("SphereTL1");
-        m = trafficlight1.GetComponent<TLaction1>();
+        trafficLightRed1 = trafficlight1.GetComponent<TrafficLightRed1>();
 
         trafficlight2 = GameObject.Find("SphereTL2");
-        n = trafficlight2.GetComponent<TLaction2>();
+        trafficLightRed2 = trafficlight2.GetComponent<TrafficLightRed2>();
 
         trafficlight3 = GameObject.Find("SphereTL3");
-        u = trafficlight3.GetComponent<TLaction3>();
+        trafficLightRed3 = trafficlight3.GetComponent<TrafficLightRed3>();
 
         trafficlight4 = GameObject.Find("SphereTL4");
-        v = trafficlight4.GetComponent<TLaction4>();
+        trafficLightRed4 = trafficlight4.GetComponent<TrafficLightRed4>();
 
         socket.Connect("localhost", port);
 
@@ -92,13 +92,13 @@ public class TrafficLightManagerWithAI : MonoBehaviour
     {
         if (waiting == false)
         {
-            m.materialchangeRED1();
+            trafficLightRed1.SetToRedMaterial();
 
-            n.materialchangeRED2();
+            trafficLightRed2.SetToRedMaterial();
 
-            u.materialchangeRED3();
+            trafficLightRed3.SetToRedMaterial();
 
-            v.materialchangeRED4();
+            trafficLightRed4.SetToRedMaterial();
 
             yield return new WaitForSeconds(20);
             Time.timeScale = 0;
@@ -136,37 +136,37 @@ public class TrafficLightManagerWithAI : MonoBehaviour
 
         if (int.Parse(Encoding.UTF8.GetString(bytes)) == 0)
         {
-            n.materialchangeRED2();
-            u.materialchangeRED3();
-            v.materialchangeRED4();
+            trafficLightRed2.SetToRedMaterial();
+            trafficLightRed3.SetToRedMaterial();
+            trafficLightRed4.SetToRedMaterial();
             Time.timeScale = 1;
             yield return new WaitForSeconds(6);
-            m.SetToGreenMaterial();
+            trafficLightRed1.SetToGreenMaterial();
 
         }
 
         if (int.Parse(Encoding.UTF8.GetString(bytes)) == 1)
         {
 
-            m.materialchangeRED1();
-            u.materialchangeRED3();
-            v.materialchangeRED4();
+            trafficLightRed1.SetToRedMaterial();
+            trafficLightRed3.SetToRedMaterial();
+            trafficLightRed4.SetToRedMaterial();
             Time.timeScale = 1;
             yield return new WaitForSeconds(6);
-            n.SetToGreenMaterial();
+            trafficLightRed2.SetToGreenMaterial();
 
         }
 
         if (int.Parse(Encoding.UTF8.GetString(bytes)) == 2)
         {
 
-            m.materialchangeRED1();
-            n.materialchangeRED2();
-            v.materialchangeRED4();
+            trafficLightRed1.SetToRedMaterial();
+            trafficLightRed2.SetToRedMaterial();
+            trafficLightRed4.SetToRedMaterial();
 
             Time.timeScale = 1;
             yield return new WaitForSeconds(5);
-            u.materialchangeGREEN3();
+            trafficLightRed3.SetToGreenMaterial();
             
         }
 
@@ -174,13 +174,13 @@ public class TrafficLightManagerWithAI : MonoBehaviour
         if (int.Parse(Encoding.UTF8.GetString(bytes)) == 3)
         {
 
-            m.materialchangeRED1();
-            n.materialchangeRED2();
-            u.materialchangeRED3();
+            trafficLightRed1.SetToRedMaterial();
+            trafficLightRed2.SetToRedMaterial();
+            trafficLightRed3.SetToRedMaterial();
 
             Time.timeScale = 1;
             yield return new WaitForSeconds(5);
-            v.materialchangeGREEN4();
+            trafficLightRed4.SetToGreenMaterial();
 
         }
 

@@ -25,33 +25,33 @@ public class LatestPrefabTest
     public void TearDownTest()
     {
         SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(0));
-        journeyTimeCARCOUNTER.journeyCARs = 0;
+        JourneyCarCounter.journeyCarCount = 0;
     }
 
     [UnityTest]
-    public IEnumerator CameraFrameRateTest()
+    public IEnumerator FrameRateTest()
     {
 
         yield return null;
 
-        cameraFrameRate cameraFrameRate = (cameraFrameRate)UnityEngine.Object.FindObjectOfType(typeof(cameraFrameRate));
+        FrameRate frameRate = (FrameRate)UnityEngine.Object.FindObjectOfType(typeof(FrameRate));
 
-        Assert.AreEqual(Time.captureFramerate, cameraFrameRate.frameRate);
+        Assert.AreEqual(Time.captureFramerate, frameRate.frameRate);
 
     }
 
     [UnityTest]
-    public IEnumerator JourneyTimeCarCounterTest()
+    public IEnumerator JourneyCarCounterTest()
     {
 
         yield return null;
 
-        int count = journeyTimeCARCOUNTER.getjourneyCARsCount();
+        int count = JourneyCarCounter.GetJourneyCarCount();
 
         count++;
-        journeyTimeCARCOUNTER.incrementjourneyCARsCount();
+        JourneyCarCounter.IncrementJourneyCarCount();
 
-        Assert.AreEqual(journeyTimeCARCOUNTER.getjourneyCARsCount(), count);
+        Assert.AreEqual(JourneyCarCounter.GetJourneyCarCount(), count);
 
     }
 

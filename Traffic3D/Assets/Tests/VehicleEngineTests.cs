@@ -213,13 +213,13 @@ public class VehicleEngineTests
             else if (engineType == typeof(VehicleEngine4))
             {
                 VehicleEngine4 vehicleEngine4 = (VehicleEngine4)car.GetComponent(engineType);
-                vehicleEngine4.trafficLightRed4.currrentMaterial = vehicleEngine4.trafficLightRed4.redMaterial;
+                vehicleEngine4.trafficLightRed4.currentMaterial = vehicleEngine4.trafficLightRed4.redMaterial;
                 vehicleEngine4.trafficLightRed4.enabled = false;
             }
             else if (engineType == typeof(VehicleEngine5))
             {
                 VehicleEngine5 vehicleEngine5 = (VehicleEngine5)car.GetComponent(engineType);
-                vehicleEngine5.trafficLightRed4.currrentMaterial = vehicleEngine5.trafficLightRed4.redMaterial;
+                vehicleEngine5.trafficLightRed4.currentMaterial = vehicleEngine5.trafficLightRed4.redMaterial;
                 vehicleEngine5.trafficLightRed4.enabled = false;
             }
             else if (engineType == typeof(VehicleEngine6))
@@ -311,13 +311,13 @@ public class VehicleEngineTests
             else if (engineType == typeof(VehicleEngine4))
             {
                 VehicleEngine4 vehicleEngine4 = (VehicleEngine4)car.GetComponent(engineType);
-                vehicleEngine4.trafficLightRed4.currrentMaterial = vehicleEngine4.trafficLightRed4.greenMaterial;
+                vehicleEngine4.trafficLightRed4.currentMaterial = vehicleEngine4.trafficLightRed4.greenMaterial;
                 vehicleEngine4.trafficLightRed4.enabled = false;
             }
             else if (engineType == typeof(VehicleEngine5))
             {
                 VehicleEngine5 vehicleEngine5 = (VehicleEngine5)car.GetComponent(engineType);
-                vehicleEngine5.trafficLightRed4.currrentMaterial = vehicleEngine5.trafficLightRed4.greenMaterial;
+                vehicleEngine5.trafficLightRed4.currentMaterial = vehicleEngine5.trafficLightRed4.greenMaterial;
                 vehicleEngine5.trafficLightRed4.enabled = false;
             }
             else if (engineType == typeof(VehicleEngine6))

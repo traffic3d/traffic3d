@@ -26,11 +26,11 @@ public class JunctionTriggerTest
     public IEnumerator TriggerTest()
     {
 
-        TRIGGERjunction tRIGGERjunction = GameObject.FindObjectOfType<TRIGGERjunction>();
+        JunctionTrigger juctionTrigger = GameObject.FindObjectOfType<JunctionTrigger>();
 
-        Vector3 position = tRIGGERjunction.gameObject.GetComponent<BoxCollider>().bounds.center;
+        Vector3 position = juctionTrigger.gameObject.GetComponent<BoxCollider>().bounds.center;
 
-        position = new Vector3(position.x, position.y + tRIGGERjunction.gameObject.GetComponent<BoxCollider>().bounds.size.y + 0.1f, position.z);
+        position = new Vector3(position.x, position.y + juctionTrigger.gameObject.GetComponent<BoxCollider>().bounds.size.y + 0.1f, position.z);
 
         GameObject emptyObject = GameObject.Instantiate(new GameObject(), position, Quaternion.identity);
         emptyObject.AddComponent<Rigidbody>();

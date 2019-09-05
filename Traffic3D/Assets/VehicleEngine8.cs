@@ -210,7 +210,7 @@ public class VehicleEngine8 : MonoBehaviour
             //to get the generated car count
             OverallCarCounter.IncrementOverallCarCount();
 
-            journeyTimeCARCOUNTER.incrementjourneyCARsCount();
+            JourneyCarCounter.IncrementJourneyCarCount();
             k = (Time.time - startTime);
             System.IO.File.AppendAllText("negjourneyTimeLatest1.csv", k.ToString() + ",");
         }
