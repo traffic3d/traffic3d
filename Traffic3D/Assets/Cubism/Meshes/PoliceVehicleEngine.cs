@@ -2,16 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CarEngine4 : MonoBehaviour
+public class PoliceVehicleEngine : MonoBehaviour
 {
-
 
     public Transform path;
     public Transform path1;
     public Transform path2;
 
-    public GameObject trafficlight;
-
+    public GameObject trafficLight;
 
     public float maxSteerAngle = 45f;
     public float turnSpeed = 5f;
@@ -26,32 +24,38 @@ public class CarEngine4 : MonoBehaviour
     public Vector3 centerOfMass;
     public Rigidbody VEHICLE;
 
-    public TrafficLightRed4 r = null;
     public Material material2;
     public Material material4;
+    public TrafficLightRed1 m = null;
 
+    public float range1 = 2f;
+    public float range2 = 12f;
 
-    public float startTime;
-    public static float k;
-
-
-
+    public Counter n = null;
     public List<Transform> nodes;
-    public List<Transform> MaterialChange;
+    public List<Transform> nodes1;
+
     public int currentNode = 0;
     private int lapCounter = 0;
     private float targetSteerAngle = 0;
 
+    public CarFactoryCounter1 carCount;
+
+    public static float k;
+    public float startTime;
     public bool des = false;
+
 
     void Start()
     {
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
-        path1 = GameObject.Find("mypath3").GetComponent<Transform>();
-        path2 = GameObject.Find("mypath31").GetComponent<Transform>();
-        trafficlight = GameObject.Find("SphereTL4");
-        r = trafficlight.GetComponent<TrafficLightRed4>();
+        trafficLight = GameObject.Find("TrafficLight1");
+        path1 = GameObject.Find("newpath2").GetComponent<Transform>();
+        path2 = GameObject.Find("newpath21").GetComponent<Transform>();     //turning path
+        m = trafficLight.GetComponent<TrafficLightRed1>();
+
         startTime = Time.time;
+
 
         if (Random.value > 0.5)
         {
@@ -61,7 +65,7 @@ public class CarEngine4 : MonoBehaviour
         else
         {
 
-            path = path1;
+            path = path2;
         }
 
         Transform[] pathTransforms = path.GetComponentsInChildren<Transform>();
@@ -71,24 +75,11 @@ public class CarEngine4 : MonoBehaviour
         {
             if (pathTransforms[i] != path.transform)
             {
+
                 nodes.Add(pathTransforms[i]);
             }
         }
 
-    }
-
-    public void setUpPath(Transform[] pathTransforms)
-    {
-
-        nodes = new List<Transform>();
-
-        for (int i = 0; i < pathTransforms.Length; i++)
-        {
-            if (pathTransforms[i] != path.transform)
-            {
-                nodes.Add(pathTransforms[i]);
-            }
-        }
     }
 
     public void OnCollisionEnter(Collision other)
@@ -106,13 +97,16 @@ public class CarEngine4 : MonoBehaviour
         Drive(1);
         CheckWaypointDistance();
         Destroy();
+        Instantiate();
         LerpToSteerAngle();
-        juststop();
+        Stop();
+        go();
         engineoff();
-        goo();
+        keepgoing();
+        got();
+
 
     }
-
 
     private void got()
     {
@@ -125,6 +119,8 @@ public class CarEngine4 : MonoBehaviour
         }
 
     }
+
+
 
     private void engineoff()
     {
@@ -140,7 +136,7 @@ public class CarEngine4 : MonoBehaviour
 
     private void keepgoing()
     {
-        if (!(r.currrentMaterial.color.Equals(material2.color)))
+        if (!(m.currentMaterial.color.Equals(material2.color)))
 
         {
             WheelFL.motorTorque = maxMotorTorque;
@@ -163,74 +159,15 @@ public class CarEngine4 : MonoBehaviour
         }
     }
 
-
-
     private void go()
     {
         if (des == false)
         {
             if (this.gameObject.tag == "drive")
             {
-
-                freshLOOPING.incrementRew();
+                TrafficLightManagerWithAI.IncrementRewardCount();
                 des = true;
             }
-
-        }
-
-    }
-
-
-    private void redtest()
-    {
-        if (r.currrentMaterial.color.Equals(material2.color))
-        {
-            print("CarEngine4 red test");
-        }
-    }
-
-
-    private void juststop()
-    {
-
-        if (currentNode == nodes.Count - 3 && r.currrentMaterial.color.Equals(material2.color))
-        {
-            WheelFL.motorTorque = 0;
-            WheelFR.motorTorque = 0;
-            WheelFL.brakeTorque = maxBrakeTorque;
-            WheelFR.brakeTorque = maxBrakeTorque;
-
-        }
-        else
-        {
-            WheelFL.motorTorque = maxMotorTorque;
-            WheelFR.motorTorque = maxMotorTorque;
-            WheelFL.brakeTorque = 0;
-            WheelFR.brakeTorque = 0;
-        }
-    }
-
-    private void goo()
-    {
-
-        if (currentNode == nodes.Count - 2)
-
-        {
-            WheelFL.motorTorque = maxMotorTorque;
-            WheelFR.motorTorque = maxMotorTorque;
-            WheelFL.brakeTorque = 0;
-            WheelFR.brakeTorque = 0;
-        }
-    }
-    private void amberstop()
-    {
-
-        if (currentNode == nodes.Count - 3 && r.currrentMaterial.color.Equals(material4.color))
-        {
-            WheelFL.motorTorque = 0;
-            WheelFR.motorTorque = 0;
-            WheelFL.brakeTorque = maxBrakeTorque;
-            WheelFR.brakeTorque = maxBrakeTorque;
 
         }
 
@@ -263,10 +200,8 @@ public class CarEngine4 : MonoBehaviour
 
     private void CheckWaypointDistance()
     {
-
-        if (Vector3.Distance(transform.position, nodes[currentNode].position) < 4f)
+        if (Vector3.Distance(transform.position, nodes[currentNode].position) < 1.5f)
         {
-
             if (currentNode == nodes.Count - 1)
             {
                 currentNode = 0;
@@ -276,7 +211,6 @@ public class CarEngine4 : MonoBehaviour
             {
                 currentNode++;
             }
-
         }
     }
 
@@ -285,24 +219,23 @@ public class CarEngine4 : MonoBehaviour
     {
         if (currentNode == nodes.Count - 1)
         {
+
+
             Destroy(this.gameObject);
+            CarFactoryCounter1.DecrementCarCount();
 
-            // to decrement the counter after car is destroyed
-            CarFactoryCounter4.DecrementCarCount();
-            //to get the generated car count
-            OverallCarCounter.IncrementOverallCarCount();
+            OverallCarCounter.IncrementOverallCarCount();    //to get generated car number
 
-            k = Time.time - startTime;
-
+            k = (Time.time - startTime);
             System.IO.File.AppendAllText("xFourjourneyTimeLatest.csv", k.ToString() + ",");
         }
 
 
     }
 
-
     private void Instantiate()
     {
+        if (currentNode == nodes.Count - 1)
 
         {
 
@@ -315,5 +248,25 @@ public class CarEngine4 : MonoBehaviour
         WheelFL.steerAngle = Mathf.Lerp(WheelFL.steerAngle, targetSteerAngle, Time.deltaTime * turnSpeed);
         WheelFR.steerAngle = Mathf.Lerp(WheelFR.steerAngle, targetSteerAngle, Time.deltaTime * turnSpeed);
     }
+
+    private void Stop()
+    {
+        if ((m.currentMaterial.color.Equals(material2.color)) && (currentNode == nodes.Count - 3))
+        {
+            WheelFL.motorTorque = 0;
+            WheelFR.motorTorque = 0;
+            WheelFL.brakeTorque = maxBrakeTorque;
+            WheelFR.brakeTorque = maxBrakeTorque;
+
+        }
+        else
+        {
+            WheelFL.motorTorque = maxMotorTorque;
+            WheelFR.motorTorque = maxMotorTorque;
+            WheelFL.brakeTorque = 0;
+            WheelFR.brakeTorque = 0;
+        }
+    }
+
 
 }

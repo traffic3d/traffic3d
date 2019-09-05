@@ -467,16 +467,16 @@ MonoBehaviour:
   trafficLight: {fileID: 0}
   maxSteerAngle: 45
   turnSpeed: 5
-  WheelFL: {fileID: 146604992525955724}
-  WheelFR: {fileID: 146863425692079250}
+  wheelColliderFrontLeft: {fileID: 146604992525955724}
+  wheelColliderFrontRight: {fileID: 146863425692079250}
   maxMotorTorque: 80
   maxBrakeTorque: 100
   currentSpeed: 0
   maxSpeed: 100
   centerOfMass: {x: 0, y: 0, z: 0}
-  VEHICLE: {fileID: 0}
-  material2: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  m: {fileID: 0}
+  vehicle: {fileID: 0}
+  redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
+  trafficLightRed1: {fileID: 0}
   range1: 2
   range2: 12
   n: {fileID: 0}

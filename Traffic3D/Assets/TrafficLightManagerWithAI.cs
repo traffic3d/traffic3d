@@ -10,7 +10,7 @@ using System.Globalization;
 using System.Diagnostics;
 using UnityEngine.SceneManagement;
 
-public class freshLOOPING : MonoBehaviour
+public class TrafficLightManagerWithAI : MonoBehaviour
 {
 
     private const int port = 13000;
@@ -32,7 +32,7 @@ public class freshLOOPING : MonoBehaviour
 
     public bool waiting = false;
 
-    public static int shot_count = 0;
+    public static int shotCount = 0;
     public static int rewCount = 0;
 
     public static int finalrew = 0;
@@ -40,9 +40,9 @@ public class freshLOOPING : MonoBehaviour
     public bool yes = false;
     List<GameObject> mylist = new List<GameObject>();
 
-    public static int densitycount1;
-    public static double densityperkm;
-    public static double averagespeed;
+    public static int densityCount1;
+    public static double densityPerkm;
+    public static double averageSpeed;
     public static double flow;
 
     public static List<double> speedlist = new List<double>();
@@ -65,30 +65,30 @@ public class freshLOOPING : MonoBehaviour
         socket.Connect("localhost", port);
 
 
-        StartCoroutine(looping());
+        StartCoroutine(MainLoop());
 
     }
 
 
-    public IEnumerator looping()
+    public IEnumerator MainLoop()
     {
 
         while (true)
         {
-            yield return StartCoroutine(zero());
-            yield return StartCoroutine(takeshot());
-            yield return StartCoroutine(soc());
-            yield return StartCoroutine(action());
-            yield return StartCoroutine(another());
-            yield return StartCoroutine(densitycal());
-            yield return StartCoroutine(rewards());
+            yield return StartCoroutine(Reset());
+            yield return StartCoroutine(TakeScreenshot());
+            yield return StartCoroutine(SendScreenshot());
+            yield return StartCoroutine(GetAction());
+            yield return StartCoroutine(WaitTenSeconds());
+            yield return StartCoroutine(CalculateDensity());
+            yield return StartCoroutine(SendRewards());
 
 
         }
 
     }
 
-    public IEnumerator zero()
+    public IEnumerator Reset()
     {
         if (waiting == false)
         {
@@ -107,9 +107,9 @@ public class freshLOOPING : MonoBehaviour
     }
 
 
-    public IEnumerator takeshot()
+    public IEnumerator TakeScreenshot()
     {
-        shot_count += 1;
+        shotCount += 1;
 
         string screenshotPath = Application.dataPath + "/Screenshots";
         if (!Directory.Exists(screenshotPath))
@@ -117,20 +117,20 @@ public class freshLOOPING : MonoBehaviour
             Directory.CreateDirectory(screenshotPath);
         }
 
-        ScreenCapture.CaptureScreenshot(screenshotPath + "/shot" + shot_count + ".png");
+        ScreenCapture.CaptureScreenshot(screenshotPath + "/shot" + shotCount + ".png");
 
         yield return null;
     }
 
-    public IEnumerator soc()
+    public IEnumerator SendScreenshot()
     {
-        byte[] msg = Encoding.UTF8.GetBytes("shot" + shot_count + ".png");
+        byte[] msg = Encoding.UTF8.GetBytes("shot" + shotCount + ".png");
         socket.Send(msg);
         yield return null;
 
     }
 
-    public IEnumerator action()
+    public IEnumerator GetAction()
     {
         socket.Receive(bytes);
 
@@ -187,37 +187,35 @@ public class freshLOOPING : MonoBehaviour
         yield return null;
     }
 
-    public IEnumerator another()
+    public IEnumerator WaitTenSeconds()
     {
         yield return new WaitForSeconds(10);
 
     }
 
-
-    public IEnumerator densitycal()
+    public IEnumerator CalculateDensity()
     {
         Time.timeScale = 0;
-        getdensitycount1();
-        densityperkm = (densitycount1 / 34.0);
-        System.IO.File.AppendAllText("densityperkm.csv", densityperkm.ToString() + ",");
+        GetDensityCount1();
+        densityPerkm = (densityCount1 / 34.0);
+        System.IO.File.AppendAllText("densityperkm.csv", densityPerkm.ToString() + ",");
 
-        averagespeed = (speedlist.Sum() / (densitycount1));
+        averageSpeed = (speedlist.Sum() / (densityCount1));
 
-        flow = (densityperkm * averagespeed);
+        flow = (densityPerkm * averageSpeed);
         System.IO.File.AppendAllText("flow.csv", flow.ToString() + ",");
 
-        resetdensitycount1();
+        ResetDensityCount1();
         speedlist.Clear();
         yield return null;
     }
 
-
-    public IEnumerator rewards()
+    public IEnumerator SendRewards()
     {
 
 
 
-        getrewcount();
+        GetRewardCount();
 
         GameObject[] waitcars1 = (GameObject.FindGameObjectsWithTag("hap"));
         foreach (GameObject obj in waitcars1)
@@ -246,61 +244,48 @@ public class freshLOOPING : MonoBehaviour
 
         byte[] msg1 = Encoding.UTF8.GetBytes("" + finalrew);
         socket.Send(msg1);
-        resetRew();
+        ResetRewardCount();
 
         mylist.Clear();
         yield return null;
     }
 
-
-
-
-    public static int getrewcount()
+    public static int GetRewardCount()
     {
         return rewCount;
     }
 
 
-    public static void incrementRew()
+    public static void IncrementRewardCount()
     {
         rewCount++;
     }
 
-    public static void resetRew()
+    public static void ResetRewardCount()
     {
         rewCount = 0;
     }
 
 
-    public static int getdensitycount1()
+    public static int GetDensityCount1()
     {
-        return densitycount1;
+        return densityCount1;
     }
 
 
-    public static void incdensitycount1()
+    public static void IncrementDensityCount1()
     {
-        densitycount1++;
+        densityCount1++;
     }
 
-    public static void decdensitycount1()
+    public static void DecrementDensityCount1()
     {
-        densitycount1--;
+        densityCount1--;
     }
 
-    public static void resetdensitycount1()
+    public static void ResetDensityCount1()
     {
-        densitycount1 = 0;
+        densityCount1 = 0;
     }
 
-
-    void Update()
-
-    {
-
-    }
 }
-
-
-
-

@@ -1,8 +1,8 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CarEngine5 : MonoBehaviour
+public class VehicleEngine5 : MonoBehaviour
 {
 
 
@@ -14,8 +14,8 @@ public class CarEngine5 : MonoBehaviour
 
     public float maxSteerAngle = 45f;
     public float turnSpeed = 5f;
-    public WheelCollider WheelFL;
-    public WheelCollider WheelFR;
+    public WheelCollider wheelColliderFrontLeft;
+    public WheelCollider wheelColliderFrontRight;
     public float maxMotorTorque = 70f;
     public float maxBrakeTorque = 250f;
 
@@ -23,17 +23,16 @@ public class CarEngine5 : MonoBehaviour
     public float currentSpeed;
     public float maxSpeed = 100f;
     public Vector3 centerOfMass;
-    public Rigidbody VEHICLE;
+    public Rigidbody vehicle;
     public float range1 = 2f;
     public float range2 = 12f;
 
-    public Material material2;
-    public Material material4;
+    public Material redMaterial;
 
-    public TrafficLightRed4 r = null;
+    public TrafficLightRed4 trafficLightRed4 = null;
 
     public List<Transform> nodes;
-    public List<Transform> MaterialChange;
+    public List<Transform> materialChange;
     public int currentNode = 0;
     private int lapCounter = 0;
     private float targetSteerAngle = 0;
@@ -50,7 +49,7 @@ public class CarEngine5 : MonoBehaviour
         path2 = GameObject.Find("mypath41").GetComponent<Transform>();
 
         trafficlight = GameObject.Find("SphereTL4");
-        r = trafficlight.GetComponent<TrafficLightRed4>();
+        trafficLightRed4 = trafficlight.GetComponent<TrafficLightRed4>();
 
         startTime = Time.time;
 
@@ -78,7 +77,7 @@ public class CarEngine5 : MonoBehaviour
 
     }
 
-    public void setUpPath(Transform[] pathTransforms)
+    public void SetUpPath(Transform[] pathTransforms)
     {
 
         nodes = new List<Transform>();
@@ -108,58 +107,58 @@ public class CarEngine5 : MonoBehaviour
         CheckWaypointDistance();
         Destroy();
         LerpToSteerAngle();
-        juststop();
+        StopAtLineIfRedElseGo();
 
-        goo();
-        engineoff();
+        GoIfSecondToLastNode();
+        TurnOff();
 
     }
 
-    private void got()
+    private void GoIfTagDrive()
     {
         if (this.gameObject.tag == "drive")
         {
-            WheelFL.motorTorque = maxMotorTorque;
-            WheelFR.motorTorque = maxMotorTorque;
-            WheelFL.brakeTorque = 0;
-            WheelFR.brakeTorque = 0;
+            wheelColliderFrontLeft.motorTorque = maxMotorTorque;
+            wheelColliderFrontRight.motorTorque = maxMotorTorque;
+            wheelColliderFrontLeft.brakeTorque = 0;
+            wheelColliderFrontRight.brakeTorque = 0;
         }
 
     }
 
-    private void engineoff()
+    private void TurnOff()
     {
         if (this.gameObject.tag == "hap")
         {
-            WheelFL.motorTorque = 0;
-            WheelFR.motorTorque = 0;
-            WheelFL.brakeTorque = maxBrakeTorque;
-            WheelFR.brakeTorque = maxBrakeTorque;
+            wheelColliderFrontLeft.motorTorque = 0;
+            wheelColliderFrontRight.motorTorque = 0;
+            wheelColliderFrontLeft.brakeTorque = maxBrakeTorque;
+            wheelColliderFrontRight.brakeTorque = maxBrakeTorque;
         }
     }
 
 
-    private void keepgoing()
+    private void GoIfNotRed()
     {
-        if (!(r.currrentMaterial.color.Equals(material2.color)))
+        if (!(trafficLightRed4.currrentMaterial.color.Equals(redMaterial.color)))
 
         {
-            WheelFL.motorTorque = maxMotorTorque;
-            WheelFR.motorTorque = maxMotorTorque;
-            WheelFL.brakeTorque = 0;
-            WheelFR.brakeTorque = 0;
+            wheelColliderFrontLeft.motorTorque = maxMotorTorque;
+            wheelColliderFrontRight.motorTorque = maxMotorTorque;
+            wheelColliderFrontLeft.brakeTorque = 0;
+            wheelColliderFrontRight.brakeTorque = 0;
         }
 
     }
 
-    private void going()
+    private void GoIfTagUnhap()
     {
         if (this.gameObject.tag == "unhap")
         {
-            WheelFL.motorTorque = maxMotorTorque;
-            WheelFR.motorTorque = maxMotorTorque;
-            WheelFL.brakeTorque = 0;
-            WheelFR.brakeTorque = 0;
+            wheelColliderFrontLeft.motorTorque = maxMotorTorque;
+            wheelColliderFrontRight.motorTorque = maxMotorTorque;
+            wheelColliderFrontLeft.brakeTorque = 0;
+            wheelColliderFrontRight.brakeTorque = 0;
 
         }
     }
@@ -167,13 +166,13 @@ public class CarEngine5 : MonoBehaviour
 
 
 
-    private void go()
+    private void GoIfDesFalseAndTagDrive()
     {
         if (des == false)
         {
             if (this.gameObject.tag == "drive")
             {
-                freshLOOPING.incrementRew();
+                TrafficLightManagerWithAI.IncrementRewardCount();
                 des = true;
             }
 
@@ -181,39 +180,39 @@ public class CarEngine5 : MonoBehaviour
     }
 
 
-    private void juststop()
+    private void StopAtLineIfRedElseGo()
     {
 
-        if (currentNode == nodes.Count - 3 && r.currrentMaterial.color.Equals(material2.color))
+        if (currentNode == nodes.Count - 3 && trafficLightRed4.currrentMaterial.color.Equals(redMaterial.color))
 
         {
-            WheelFL.motorTorque = 0;
-            WheelFR.motorTorque = 0;
-            WheelFL.brakeTorque = maxBrakeTorque;
-            WheelFR.brakeTorque = maxBrakeTorque;
+            wheelColliderFrontLeft.motorTorque = 0;
+            wheelColliderFrontRight.motorTorque = 0;
+            wheelColliderFrontLeft.brakeTorque = maxBrakeTorque;
+            wheelColliderFrontRight.brakeTorque = maxBrakeTorque;
 
         }
 
         else
         {
-            WheelFL.motorTorque = maxMotorTorque;
-            WheelFR.motorTorque = maxMotorTorque;
-            WheelFL.brakeTorque = 0;
-            WheelFR.brakeTorque = 0;
+            wheelColliderFrontLeft.motorTorque = maxMotorTorque;
+            wheelColliderFrontRight.motorTorque = maxMotorTorque;
+            wheelColliderFrontLeft.brakeTorque = 0;
+            wheelColliderFrontRight.brakeTorque = 0;
         }
     }
 
-    private void goo()
+    private void GoIfSecondToLastNode()
     {
 
         if (currentNode == nodes.Count - 2)
 
 
         {
-            WheelFL.motorTorque = maxMotorTorque;
-            WheelFR.motorTorque = maxMotorTorque;
-            WheelFL.brakeTorque = 0;
-            WheelFR.brakeTorque = 0;
+            wheelColliderFrontLeft.motorTorque = maxMotorTorque;
+            wheelColliderFrontRight.motorTorque = maxMotorTorque;
+            wheelColliderFrontLeft.brakeTorque = 0;
+            wheelColliderFrontRight.brakeTorque = 0;
         }
     }
 
@@ -221,24 +220,24 @@ public class CarEngine5 : MonoBehaviour
     {
         Vector3 relativeVector = transform.InverseTransformPoint(nodes[currentNode].position);
         float newSteer = (relativeVector.x / relativeVector.magnitude) * maxSteerAngle;
-        WheelFL.steerAngle = newSteer;
-        WheelFR.steerAngle = newSteer;
+        wheelColliderFrontLeft.steerAngle = newSteer;
+        wheelColliderFrontRight.steerAngle = newSteer;
     }
     private void Drive(int numlaps)
     {
-        currentSpeed = 2 * Mathf.PI * WheelFL.radius * WheelFL.rpm * 60 / 1000;
+        currentSpeed = 2 * Mathf.PI * wheelColliderFrontLeft.radius * wheelColliderFrontLeft.rpm * 60 / 1000;
 
         if (currentSpeed < maxSpeed && lapCounter < numlaps)
         {
-            WheelFL.motorTorque = maxMotorTorque;
-            WheelFR.motorTorque = maxMotorTorque;
+            wheelColliderFrontLeft.motorTorque = maxMotorTorque;
+            wheelColliderFrontRight.motorTorque = maxMotorTorque;
         }
         else
         {
-            WheelFL.motorTorque = 0;
-            WheelFR.motorTorque = 0;
-            WheelFL.brakeTorque = maxBrakeTorque;
-            WheelFR.brakeTorque = maxBrakeTorque;
+            wheelColliderFrontLeft.motorTorque = 0;
+            wheelColliderFrontRight.motorTorque = 0;
+            wheelColliderFrontLeft.brakeTorque = maxBrakeTorque;
+            wheelColliderFrontRight.brakeTorque = maxBrakeTorque;
         }
     }
 
@@ -279,20 +278,10 @@ public class CarEngine5 : MonoBehaviour
 
     }
 
-
-    private void Instantiate()
-    {
-
-        {
-
-        }
-
-    }
-
     private void LerpToSteerAngle()
     {
-        WheelFL.steerAngle = Mathf.Lerp(WheelFL.steerAngle, targetSteerAngle, Time.deltaTime * turnSpeed);
-        WheelFR.steerAngle = Mathf.Lerp(WheelFR.steerAngle, targetSteerAngle, Time.deltaTime * turnSpeed);
+        wheelColliderFrontLeft.steerAngle = Mathf.Lerp(wheelColliderFrontLeft.steerAngle, targetSteerAngle, Time.deltaTime * turnSpeed);
+        wheelColliderFrontRight.steerAngle = Mathf.Lerp(wheelColliderFrontRight.steerAngle, targetSteerAngle, Time.deltaTime * turnSpeed);
     }
 
 }

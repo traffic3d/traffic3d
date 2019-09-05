@@ -39,13 +39,13 @@ public class CarFactoryTests
         }
 
         List<Type> engineTypeList = new List<Type>();
-        engineTypeList.Add(typeof(carEngine12));
-        engineTypeList.Add(typeof(CarEngine2));
-        engineTypeList.Add(typeof(CarEngine4));
-        engineTypeList.Add(typeof(CarEngine5));
-        engineTypeList.Add(typeof(CarEngine6));
-        engineTypeList.Add(typeof(newCarEngine2));
-        engineTypeList.Add(typeof(VehicleEngine));
+        engineTypeList.Add(typeof(VehicleEngine8));
+        engineTypeList.Add(typeof(VehicleEngine3));
+        engineTypeList.Add(typeof(VehicleEngine4));
+        engineTypeList.Add(typeof(VehicleEngine5));
+        engineTypeList.Add(typeof(VehicleEngine6));
+        engineTypeList.Add(typeof(VehicleEngine7));
+        engineTypeList.Add(typeof(VehicleEngine2));
         engineTypeList.Add(typeof(VehicleEngine1));
 
         // Ensure there are no cars currently spawned in
