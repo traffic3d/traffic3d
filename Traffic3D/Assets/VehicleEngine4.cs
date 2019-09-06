@@ -5,13 +5,9 @@ using UnityEngine;
 public class VehicleEngine4 : MonoBehaviour
 {
 
-
     public Transform path;
     public Transform path1;
     public Transform path2;
-
-    public GameObject trafficlight;
-
 
     public float maxSteerAngle = 45f;
     public float turnSpeed = 5f;
@@ -24,20 +20,14 @@ public class VehicleEngine4 : MonoBehaviour
     public float currentSpeed;
     public float maxSpeed = 100f;
     public Vector3 centerOfMass;
-    public Rigidbody vehicle;
 
     public TrafficLightRed4 trafficLightRed4 = null;
     public Material redMaterial;
-    public Material amberMaterial;
-
 
     public float startTime;
     public static float k;
 
-
-
     public List<Transform> nodes;
-    public List<Transform> materialChange;
     public int currentNode = 0;
     private int lapCounter = 0;
     private float targetSteerAngle = 0;
@@ -49,20 +39,10 @@ public class VehicleEngine4 : MonoBehaviour
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
         path1 = GameObject.Find("mypath3").GetComponent<Transform>();
         path2 = GameObject.Find("mypath31").GetComponent<Transform>();
-        trafficlight = GameObject.Find("SphereTL4");
-        trafficLightRed4 = trafficlight.GetComponent<TrafficLightRed4>();
+        trafficLightRed4 = GameObject.Find("SphereTL4").GetComponent<TrafficLightRed4>();
         startTime = Time.time;
 
-        if (Random.value > 0.5)
-        {
-
-            path = path1;
-        }
-        else
-        {
-
-            path = path1;
-        }
+        path = path1;
 
         Transform[] pathTransforms = path.GetComponentsInChildren<Transform>();
         nodes = new List<Transform>();
@@ -75,20 +55,6 @@ public class VehicleEngine4 : MonoBehaviour
             }
         }
 
-    }
-
-    public void SetUpPath(Transform[] pathTransforms)
-    {
-
-        nodes = new List<Transform>();
-
-        for (int i = 0; i < pathTransforms.Length; i++)
-        {
-            if (pathTransforms[i] != path.transform)
-            {
-                nodes.Add(pathTransforms[i]);
-            }
-        }
     }
 
     public void OnCollisionEnter(Collision other)
@@ -113,19 +79,6 @@ public class VehicleEngine4 : MonoBehaviour
 
     }
 
-
-    private void GoIfTagDrive()
-    {
-        if (this.gameObject.tag == "drive")
-        {
-            wheelColliderFrontLeft.motorTorque = maxMotorTorque;
-            wheelColliderFrontRight.motorTorque = maxMotorTorque;
-            wheelColliderFrontLeft.brakeTorque = 0;
-            wheelColliderFrontRight.brakeTorque = 0;
-        }
-
-    }
-
     private void TurnOff()
     {
         if (this.gameObject.tag == "hap")
@@ -136,59 +89,6 @@ public class VehicleEngine4 : MonoBehaviour
             wheelColliderFrontRight.brakeTorque = maxBrakeTorque;
         }
     }
-
-
-    private void GoIfNotRed()
-    {
-        if (!(trafficLightRed4.currentMaterial.color.Equals(redMaterial.color)))
-
-        {
-            wheelColliderFrontLeft.motorTorque = maxMotorTorque;
-            wheelColliderFrontRight.motorTorque = maxMotorTorque;
-            wheelColliderFrontLeft.brakeTorque = 0;
-            wheelColliderFrontRight.brakeTorque = 0;
-        }
-
-    }
-
-    private void GoIfTagUnhap()
-    {
-        if (this.gameObject.tag == "unhap")
-        {
-            wheelColliderFrontLeft.motorTorque = maxMotorTorque;
-            wheelColliderFrontRight.motorTorque = maxMotorTorque;
-            wheelColliderFrontLeft.brakeTorque = 0;
-            wheelColliderFrontRight.brakeTorque = 0;
-
-        }
-    }
-
-
-
-    private void GoIfDesFalseAndTagDrive()
-    {
-        if (des == false)
-        {
-            if (this.gameObject.tag == "drive")
-            {
-
-                TrafficLightManagerWithAI.IncrementRewardCount();
-                des = true;
-            }
-
-        }
-
-    }
-
-
-    private void RedLightTest()
-    {
-        if (trafficLightRed4.currentMaterial.color.Equals(redMaterial.color))
-        {
-            print("VehicleEngine4 red test");
-        }
-    }
-
 
     private void StopAtLineIfRedElseGo()
     {
@@ -222,19 +122,6 @@ public class VehicleEngine4 : MonoBehaviour
             wheelColliderFrontRight.brakeTorque = 0;
         }
     }
-    private void StopOnAmber()
-    {
-
-        if (currentNode == nodes.Count - 3 && trafficLightRed4.currentMaterial.color.Equals(amberMaterial.color))
-        {
-            wheelColliderFrontLeft.motorTorque = 0;
-            wheelColliderFrontRight.motorTorque = 0;
-            wheelColliderFrontLeft.brakeTorque = maxBrakeTorque;
-            wheelColliderFrontRight.brakeTorque = maxBrakeTorque;
-
-        }
-
-    }
 
     private void ApplySteer()
     {
@@ -243,6 +130,7 @@ public class VehicleEngine4 : MonoBehaviour
         wheelColliderFrontLeft.steerAngle = newSteer;
         wheelColliderFrontRight.steerAngle = newSteer;
     }
+
     private void Drive(int numlaps)
     {
         currentSpeed = 2 * Mathf.PI * wheelColliderFrontLeft.radius * wheelColliderFrontLeft.rpm * 60 / 1000;
@@ -279,7 +167,6 @@ public class VehicleEngine4 : MonoBehaviour
 
         }
     }
-
 
     private void Destroy()
     {

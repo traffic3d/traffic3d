@@ -299,49 +299,49 @@ public class VehicleEngineTests
             if (engineType == typeof(VehicleEngine8))
             {
                 VehicleEngine8 vehicleEngine8 = (VehicleEngine8)car.GetComponent(engineType);
-                vehicleEngine8.trafficLightRed2.currentMaterial = vehicleEngine8.trafficLightRed2.greenMaterial;
+                vehicleEngine8.trafficLightRed2.currentMaterial = vehicleEngine8.trafficLightRed2.blackMaterial;
                 vehicleEngine8.trafficLightRed2.enabled = false;
             }
             else if (engineType == typeof(VehicleEngine3))
             {
                 VehicleEngine3 vehicleEngine3 = (VehicleEngine3)car.GetComponent(engineType);
-                vehicleEngine3.trafficLightRed1.currentMaterial = vehicleEngine3.trafficLightRed1.greenMaterial;
+                vehicleEngine3.trafficLightRed1.currentMaterial = vehicleEngine3.trafficLightRed1.blackMaterial;
                 vehicleEngine3.trafficLightRed1.enabled = false;
             }
             else if (engineType == typeof(VehicleEngine4))
             {
                 VehicleEngine4 vehicleEngine4 = (VehicleEngine4)car.GetComponent(engineType);
-                vehicleEngine4.trafficLightRed4.currentMaterial = vehicleEngine4.trafficLightRed4.greenMaterial;
+                vehicleEngine4.trafficLightRed4.currentMaterial = vehicleEngine4.trafficLightRed4.blackMaterial;
                 vehicleEngine4.trafficLightRed4.enabled = false;
             }
             else if (engineType == typeof(VehicleEngine5))
             {
                 VehicleEngine5 vehicleEngine5 = (VehicleEngine5)car.GetComponent(engineType);
-                vehicleEngine5.trafficLightRed4.currentMaterial = vehicleEngine5.trafficLightRed4.greenMaterial;
+                vehicleEngine5.trafficLightRed4.currentMaterial = vehicleEngine5.trafficLightRed4.blackMaterial;
                 vehicleEngine5.trafficLightRed4.enabled = false;
             }
             else if (engineType == typeof(VehicleEngine6))
             {
                 VehicleEngine6 vehicleEngine6 = (VehicleEngine6)car.GetComponent(engineType);
-                vehicleEngine6.trafficLightRed2.currentMaterial = vehicleEngine6.trafficLightRed2.greenMaterial;
+                vehicleEngine6.trafficLightRed2.currentMaterial = vehicleEngine6.trafficLightRed2.blackMaterial;
                 vehicleEngine6.trafficLightRed2.enabled = false;
             }
             else if (engineType == typeof(VehicleEngine7))
             {
                 VehicleEngine7 vehicleEngine7 = (VehicleEngine7)car.GetComponent(engineType);
-                vehicleEngine7.trafficLightRed1.currentMaterial = vehicleEngine7.trafficLightRed1.greenMaterial;
+                vehicleEngine7.trafficLightRed1.currentMaterial = vehicleEngine7.trafficLightRed1.blackMaterial;
                 vehicleEngine7.trafficLightRed1.enabled = false;
             }
             else if (engineType == typeof(VehicleEngine2))
             {
                 VehicleEngine2 vehicleEngine2 = (VehicleEngine2)car.GetComponent(engineType);
-                vehicleEngine2.trafficLightRed3.currentMaterial = vehicleEngine2.trafficLightRed3.greenMaterial;
+                vehicleEngine2.trafficLightRed3.currentMaterial = vehicleEngine2.trafficLightRed3.blackMaterial;
                 vehicleEngine2.trafficLightRed3.enabled = false;
             }
             else if (engineType == typeof(VehicleEngine1))
             {
                 VehicleEngine1 vehicleEngine1 = (VehicleEngine1)car.GetComponent(engineType);
-                vehicleEngine1.trafficLightRed3.currentMaterial = vehicleEngine1.trafficLightRed3.greenMaterial;
+                vehicleEngine1.trafficLightRed3.currentMaterial = vehicleEngine1.trafficLightRed3.blackMaterial;
                 vehicleEngine1.trafficLightRed3.enabled = false;
             }
 

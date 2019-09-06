@@ -1,15 +1,12 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CarFactory2 : MonoBehaviour
 {
 
     public Rigidbody car1;
-    public Rigidbody car2;
     public Rigidbody car3;
     public Vector3 spawnSpot1;
-    public Vector3 spawnSpot2;
     public Vector3 spawnSpot3;
     public int carTypeSwitch = 0;
 

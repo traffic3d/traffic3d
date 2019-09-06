@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class VehicleEngine8 : MonoBehaviour
 {
+
     public Transform path;
     public Transform path1;
     public Transform path2;
-    public GameObject trafficLight;
 
     public float maxSteerAngle = 45f;
     public float turnSpeed = 5f;
@@ -18,14 +18,11 @@ public class VehicleEngine8 : MonoBehaviour
     public float currentSpeed;
     public float maxSpeed = 100f;
     public Vector3 centerOfMass;
-    public Rigidbody vehicle;
 
     public Material redMaterial;
     public TrafficLightRed2 trafficLightRed2 = null;
 
-    public Counter counter = null;
     public List<Transform> nodes;
-    public List<Transform> materialChange;
     public int currentNode = 0;
     private int lapCounter = 0;
     private float targetSteerAngle = 0;
@@ -43,21 +40,11 @@ public class VehicleEngine8 : MonoBehaviour
         path1 = GameObject.Find("mypath1a").GetComponent<Transform>();
         path2 = GameObject.Find("mypath21").GetComponent<Transform>();
 
-        trafficLight = GameObject.Find("SphereTL2");
-        trafficLightRed2 = trafficLight.GetComponent<TrafficLightRed2>();
+        trafficLightRed2 = GameObject.Find("SphereTL2").GetComponent<TrafficLightRed2>();
 
         startTime = Time.time;
 
-        if (Random.value > 0.5)
-        {
-
-            path = path1;
-        }
-        else
-        {
-
-            path = path1;
-        }
+        path = path1;
 
         Transform[] pathTransforms = path.GetComponentsInChildren<Transform>();
         nodes = new List<Transform>();
@@ -71,20 +58,6 @@ public class VehicleEngine8 : MonoBehaviour
             }
         }
 
-    }
-
-    public void setUpPath(Transform[] pathTransforms)
-    {
-
-        nodes = new List<Transform>();
-
-        for (int i = 0; i < pathTransforms.Length; i++)
-        {
-            if (pathTransforms[i] != path.transform)
-            {
-                nodes.Add(pathTransforms[i]);
-            }
-        }
     }
 
     void OnCollisionEnter(Collision other)
@@ -105,17 +78,14 @@ public class VehicleEngine8 : MonoBehaviour
         Destroy();
         LerpToSteerAngle();
         StopAtLineIfRedElseGo();
-        engineoff();
-        go();
+        TurnOff();
+        GoIfNotRed();
 
-        keepgoing();
+        GoIfTagRid();
 
     }
 
-
-
-
-    private void keepgoing()
+    private void GoIfTagRid()
     {
         {
             if (this.gameObject.tag == "rid")
@@ -129,7 +99,8 @@ public class VehicleEngine8 : MonoBehaviour
         }
 
     }
-    private void go()
+
+    private void GoIfNotRed()
     {
         if (!(trafficLightRed2.currentMaterial.color.Equals(redMaterial.color)))
         {
@@ -140,7 +111,7 @@ public class VehicleEngine8 : MonoBehaviour
         }
     }
 
-    private void engineoff()
+    private void TurnOff()
     {
         if (this.gameObject.tag == "hap")
         {
@@ -152,9 +123,6 @@ public class VehicleEngine8 : MonoBehaviour
         }
     }
 
-
-
-
     private void ApplySteer()
     {
         Vector3 relativeVector = transform.InverseTransformPoint(nodes[currentNode].position);
@@ -162,6 +130,7 @@ public class VehicleEngine8 : MonoBehaviour
         wheelColliderFrontLeft.steerAngle = newSteer;
         wheelColliderFrontRight.steerAngle = newSteer;
     }
+
     private void Drive(int numlaps)
     {
         currentSpeed = 2 * Mathf.PI * wheelColliderFrontLeft.radius * wheelColliderFrontLeft.rpm * 60 / 1000;
@@ -226,8 +195,6 @@ public class VehicleEngine8 : MonoBehaviour
 
     private void StopAtLineIfRedElseGo()
     {
-        Vector3 a = GetComponent<Transform>().position;
-        Vector3 b = trafficLight.GetComponent<Transform>().position;
         if ((trafficLightRed2.currentMaterial.color.Equals(redMaterial.color)) && (currentNode == nodes.Count - 4))
         {
             wheelColliderFrontLeft.motorTorque = 0;
@@ -245,28 +212,4 @@ public class VehicleEngine8 : MonoBehaviour
         }
     }
 
-    private void CarBrake()
-    {
-        GameObject[] cars;
-        cars = GameObject.FindGameObjectsWithTag("car");
-        foreach (GameObject car in cars)
-        {
-
-            if (car.gameObject != this.gameObject)
-            {
-                if (Mathf.Abs(this.transform.position.z - car.transform.position.z) < 0.02f && Mathf.Abs(this.transform.position.z - car.transform.position.z) != 0)
-                {
-                    Debug.Log(car.gameObject.name);
-                    Debug.Log("-------------------------Breakkkkkkk-------------------------");
-                    Debug.Log(Mathf.Abs(this.transform.position.z - car.transform.position.z) + "lesssss distance");
-
-                }
-            }
-
-        }
-    }
-
-
 }
-
-

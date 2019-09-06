@@ -31,7 +31,6 @@ public class PoliceVehicleEngine : MonoBehaviour
     public float range1 = 2f;
     public float range2 = 12f;
 
-    public Counter n = null;
     public List<Transform> nodes;
     public List<Transform> nodes1;
 
