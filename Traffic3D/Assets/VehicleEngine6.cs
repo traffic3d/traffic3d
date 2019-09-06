@@ -181,7 +181,6 @@ public class VehicleEngine6 : MonoBehaviour
 
         }
 
-
     }
 
     private void LerpToSteerAngle()
@@ -200,7 +199,6 @@ public class VehicleEngine6 : MonoBehaviour
             wheelColliderFrontRight.brakeTorque = maxBrakeTorque;
 
         }
-
         else
         {
             wheelColliderFrontLeft.motorTorque = maxMotorTorque;

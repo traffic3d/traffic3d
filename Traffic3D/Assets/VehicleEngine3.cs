@@ -75,7 +75,6 @@ public class VehicleEngine3 : MonoBehaviour
         if (other.gameObject.tag == "car")
         {
             other.gameObject.tag = "hap";
-
         }
     }
 
@@ -92,7 +91,6 @@ public class VehicleEngine3 : MonoBehaviour
         GoIfNotRed();
 
         GoIfTagRid();
-
 
     }
 

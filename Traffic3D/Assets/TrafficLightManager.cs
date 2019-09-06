@@ -17,8 +17,6 @@ public class TrafficLightManager : MonoBehaviour
     void Start()
     {
 
-        print("Start Traffic Light System");
-
         trafficLightRed1 = GameObject.Find("SphereTL1").GetComponent<TrafficLightRed1>();
 
         trafficLightGreen1 = GameObject.Find("SphereTL11").GetComponent<TrafficLightGreen1>();

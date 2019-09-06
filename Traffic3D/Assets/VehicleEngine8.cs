@@ -87,17 +87,14 @@ public class VehicleEngine8 : MonoBehaviour
 
     private void GoIfTagRid()
     {
+        if (this.gameObject.tag == "rid")
         {
-            if (this.gameObject.tag == "rid")
-            {
 
-                wheelColliderFrontLeft.motorTorque = maxMotorTorque;
-                wheelColliderFrontRight.motorTorque = maxMotorTorque;
-                wheelColliderFrontLeft.brakeTorque = 0;
-                wheelColliderFrontRight.brakeTorque = 0;
-            }
+            wheelColliderFrontLeft.motorTorque = maxMotorTorque;
+            wheelColliderFrontRight.motorTorque = maxMotorTorque;
+            wheelColliderFrontLeft.brakeTorque = 0;
+            wheelColliderFrontRight.brakeTorque = 0;
         }
-
     }
 
     private void GoIfNotRed()
@@ -165,7 +162,6 @@ public class VehicleEngine8 : MonoBehaviour
         }
     }
 
-
     private void Destroy()
     {
         if (currentNode == nodes.Count - 1)
@@ -183,8 +179,6 @@ public class VehicleEngine8 : MonoBehaviour
             k = (Time.time - startTime);
             System.IO.File.AppendAllText("negjourneyTimeLatest1.csv", k.ToString() + ",");
         }
-
-
     }
 
     private void LerpToSteerAngle()

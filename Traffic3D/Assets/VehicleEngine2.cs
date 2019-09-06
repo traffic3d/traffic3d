@@ -67,8 +67,6 @@ public class VehicleEngine2 : MonoBehaviour
 
     private void FixedUpdate()
     {
-
-
         ApplySteer();
         Drive(1);
         CheckWaypointDistance();
@@ -82,7 +80,6 @@ public class VehicleEngine2 : MonoBehaviour
     private void GoIfNotRed()
     {
         if (!(trafficLightRed3.currentMaterial.color.Equals(redMaterial.color)))
-
         {
             wheelColliderFrontLeft.motorTorque = maxMotorTorque;
             wheelColliderFrontRight.motorTorque = maxMotorTorque;
@@ -94,7 +91,6 @@ public class VehicleEngine2 : MonoBehaviour
 
     private void StopAtLineIfRedElseGo()
     {
-
         if (currentNode == nodes.Count - 3 && trafficLightRed3.currentMaterial.color.Equals(redMaterial.color))
         {
             wheelColliderFrontLeft.motorTorque = 0;
@@ -115,7 +111,6 @@ public class VehicleEngine2 : MonoBehaviour
 
     private void GoIfSecondToLastNode()
     {
-
         if (currentNode == nodes.Count - 2)
         {
             wheelColliderFrontLeft.motorTorque = maxMotorTorque;
@@ -132,6 +127,7 @@ public class VehicleEngine2 : MonoBehaviour
         wheelColliderFrontLeft.steerAngle = newSteer;
         wheelColliderFrontRight.steerAngle = newSteer;
     }
+
     private void Drive(int numlaps)
     {
         currentSpeed = 2 * Mathf.PI * wheelColliderFrontLeft.radius * wheelColliderFrontLeft.rpm * 60 / 1000;
@@ -179,8 +175,6 @@ public class VehicleEngine2 : MonoBehaviour
             k = Time.time - startTime;
             System.IO.File.AppendAllText("xFourjourneyTimeLatest.csv", k.ToString() + ",");
         }
-
-
     }
 
     private void LerpToSteerAngle()

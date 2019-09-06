@@ -15,7 +15,6 @@ public class SocketConnection : MonoBehaviour
         print("Established tcpSocket Connection with Python");
 
         ChangeScene1();
-        print("change scene 1 CALLED");
 
     }
 

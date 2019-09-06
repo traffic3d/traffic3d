@@ -42,8 +42,6 @@ public class VehicleEngine7 : MonoBehaviour
     public static double t1;
     public static double t2;
 
-
-
     void Start()
     {
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
@@ -55,16 +53,7 @@ public class VehicleEngine7 : MonoBehaviour
 
         startTime = Time.time;
 
-        if (Random.value > 0.5)
-        {
-
-            path = path1;
-        }
-        else
-        {
-
-            path = path1;
-        }
+        path = path1;
 
         Transform[] pathTransforms = path.GetComponentsInChildren<Transform>();
         nodes = new List<Transform>();
@@ -108,18 +97,14 @@ public class VehicleEngine7 : MonoBehaviour
 
     private void GoIfTagRid()
     {
+        if (this.gameObject.tag == "rid")
         {
 
-            if (this.gameObject.tag == "rid")
-            {
-
-                wheelColliderFrontLeft.motorTorque = maxMotorTorque;
-                wheelColliderFrontRight.motorTorque = maxMotorTorque;
-                wheelColliderFrontLeft.brakeTorque = 0;
-                wheelColliderFrontRight.brakeTorque = 0;
-            }
+            wheelColliderFrontLeft.motorTorque = maxMotorTorque;
+            wheelColliderFrontRight.motorTorque = maxMotorTorque;
+            wheelColliderFrontLeft.brakeTorque = 0;
+            wheelColliderFrontRight.brakeTorque = 0;
         }
-
     }
 
     private void GoIfNotRed()
@@ -152,6 +137,7 @@ public class VehicleEngine7 : MonoBehaviour
         wheelColliderFrontLeft.steerAngle = newSteer;
         wheelColliderFrontRight.steerAngle = newSteer;
     }
+
     private void Drive(int numlaps)
     {
         currentSpeed = 2 * Mathf.PI * wheelColliderFrontLeft.radius * wheelColliderFrontLeft.rpm * 60 / 1000;
@@ -210,7 +196,6 @@ public class VehicleEngine7 : MonoBehaviour
             System.IO.File.AppendAllText("negjourneyTimeLatest1.csv", k.ToString() + ",");
 
         }
-
 
     }
 

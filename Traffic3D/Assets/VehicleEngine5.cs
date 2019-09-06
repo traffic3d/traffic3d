@@ -98,7 +98,6 @@ public class VehicleEngine5 : MonoBehaviour
     {
 
         if (currentNode == nodes.Count - 3 && trafficLightRed4.currentMaterial.color.Equals(redMaterial.color))
-
         {
             wheelColliderFrontLeft.motorTorque = 0;
             wheelColliderFrontRight.motorTorque = 0;
@@ -106,7 +105,6 @@ public class VehicleEngine5 : MonoBehaviour
             wheelColliderFrontRight.brakeTorque = maxBrakeTorque;
 
         }
-
         else
         {
             wheelColliderFrontLeft.motorTorque = maxMotorTorque;
@@ -120,8 +118,6 @@ public class VehicleEngine5 : MonoBehaviour
     {
 
         if (currentNode == nodes.Count - 2)
-
-
         {
             wheelColliderFrontLeft.motorTorque = maxMotorTorque;
             wheelColliderFrontRight.motorTorque = maxMotorTorque;
@@ -137,6 +133,7 @@ public class VehicleEngine5 : MonoBehaviour
         wheelColliderFrontLeft.steerAngle = newSteer;
         wheelColliderFrontRight.steerAngle = newSteer;
     }
+
     private void Drive(int numlaps)
     {
         currentSpeed = 2 * Mathf.PI * wheelColliderFrontLeft.radius * wheelColliderFrontLeft.rpm * 60 / 1000;
@@ -173,7 +170,6 @@ public class VehicleEngine5 : MonoBehaviour
 
         }
     }
-
 
     private void Destroy()
     {
