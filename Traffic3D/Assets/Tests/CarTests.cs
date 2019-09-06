@@ -25,125 +25,125 @@ public class CarTests
     public void TearDown()
     {
 
-        CarCounter.carCount = 0;
-        incrementCountNumber.CarC = 0;
-        newCarCount.carCount = 0;
-        carCounterFACTORY3.carCount = 0;
-        carCounterFactory4.carCount = 0;
+        CarFactoryCounter1.carCount = 0;
+        OverallCarCounter.overallCarCount = 0;
+        CarFactoryCounter2.carCount = 0;
+        CarFactoryCounter3.carCount = 0;
+        CarFactoryCounter4.carCount = 0;
 
     }
 
-    // CarCounter class test
+    // CarFactoryCounter1 class test
     [UnityTest]
-    public IEnumerator CarCounterTest()
+    public IEnumerator CarFactoryCounter1Test()
     {
 
-        int currentCarCount = CarCounter.getCarCount();
+        int currentCarCount = CarFactoryCounter1.GetCarCount();
 
         currentCarCount++;
-        CarCounter.incrementCarCount();
+        CarFactoryCounter1.IncrementCarCount();
 
-        Assert.AreEqual(CarCounter.getCarCount(), currentCarCount);
+        Assert.AreEqual(CarFactoryCounter1.GetCarCount(), currentCarCount);
 
         currentCarCount--;
-        CarCounter.decrementCarCount();
+        CarFactoryCounter1.DecrementCarCount();
 
-        Assert.AreEqual(CarCounter.getCarCount(), currentCarCount);
+        Assert.AreEqual(CarFactoryCounter1.GetCarCount(), currentCarCount);
 
         currentCarCount++;
-        CarCounter.incrementCarCount();
+        CarFactoryCounter1.IncrementCarCount();
 
         currentCarCount = 0;
-        CarCounter.resetCarCount();
+        CarFactoryCounter1.ResetCarCount();
 
-        Assert.AreEqual(CarCounter.getCarCount(), currentCarCount);
+        Assert.AreEqual(CarFactoryCounter1.GetCarCount(), currentCarCount);
 
         yield return null;
 
     }
 
-    // incrementCountNumber class test
+    // OverallCarCounter class test
     [UnityTest]
-    public IEnumerator IncrementCountNumberTest()
+    public IEnumerator OverallCarCounterTest()
     {
 
-        int currentCount = incrementCountNumber.getcarC();
+        int currentCount = OverallCarCounter.GetOverallCarCount();
 
         currentCount++;
-        incrementCountNumber.incrementcarC();
+        OverallCarCounter.IncrementOverallCarCount();
 
-        Assert.AreEqual(incrementCountNumber.getcarC(), currentCount);
+        Assert.AreEqual(OverallCarCounter.GetOverallCarCount(), currentCount);
 
         yield return null;
 
     }
 
-    // newCarCount class test
+    // CarFactoryCounter2 class test
     [UnityTest]
-    public IEnumerator NewCarCountTest()
+    public IEnumerator CarFactoryCounter2Test()
     {
 
-        int currentCarCount = newCarCount.getCarCount();
+        int currentCarCount = CarFactoryCounter2.GetCarCount();
 
         currentCarCount++;
-        newCarCount.incrementCarCount();
+        CarFactoryCounter2.IncrementCarCount();
 
-        Assert.AreEqual(newCarCount.getCarCount(), currentCarCount);
+        Assert.AreEqual(CarFactoryCounter2.GetCarCount(), currentCarCount);
 
         currentCarCount--;
-        newCarCount.decrementCarCount();
+        CarFactoryCounter2.DecrementCarCount();
 
-        Assert.AreEqual(newCarCount.getCarCount(), currentCarCount);
+        Assert.AreEqual(CarFactoryCounter2.GetCarCount(), currentCarCount);
 
         currentCarCount++;
-        newCarCount.incrementCarCount();
+        CarFactoryCounter2.IncrementCarCount();
 
         currentCarCount = 0;
-        newCarCount.resetCarCount();
+        CarFactoryCounter2.ResetCarCount();
 
-        Assert.AreEqual(newCarCount.getCarCount(), currentCarCount);
-
-        yield return null;
-
-    }
-
-    // CarCounter class test
-    [UnityTest]
-    public IEnumerator CarCounterFactory3Test()
-    {
-
-        int currentCarCount = carCounterFACTORY3.getCarCount();
-
-        currentCarCount++;
-        carCounterFACTORY3.incrementCarCount();
-
-        Assert.AreEqual(carCounterFACTORY3.getCarCount(), currentCarCount);
-
-        currentCarCount--;
-        carCounterFACTORY3.decrementCarCount();
-
-        Assert.AreEqual(carCounterFACTORY3.getCarCount(), currentCarCount);
+        Assert.AreEqual(CarFactoryCounter2.GetCarCount(), currentCarCount);
 
         yield return null;
 
     }
 
-    // CarCounter class test
+    // CarFactoryCounter3 class test
     [UnityTest]
-    public IEnumerator CarCounterFactory4Test()
+    public IEnumerator CarFactoryCounter3Test()
     {
 
-        int currentCarCount = carCounterFactory4.getCarCount();
+        int currentCarCount = CarFactoryCounter3.GetCarCount();
 
         currentCarCount++;
-        carCounterFactory4.incrementCarCount();
+        CarFactoryCounter3.IncrementCarCount();
 
-        Assert.AreEqual(carCounterFactory4.getCarCount(), currentCarCount);
+        Assert.AreEqual(CarFactoryCounter3.GetCarCount(), currentCarCount);
 
         currentCarCount--;
-        carCounterFactory4.decrementCarCount();
+        CarFactoryCounter3.DecrementCarCount();
 
-        Assert.AreEqual(carCounterFactory4.getCarCount(), currentCarCount);
+        Assert.AreEqual(CarFactoryCounter3.GetCarCount(), currentCarCount);
+
+        yield return null;
+
+    }
+
+    // CarFactoryCounter4 class test
+    [UnityTest]
+    public IEnumerator CarFactoryCounter4Test()
+    {
+
+        int currentCarCount = CarFactoryCounter4.GetCarCount();
+
+        currentCarCount++;
+        CarFactoryCounter4.IncrementCarCount();
+
+        Assert.AreEqual(CarFactoryCounter4.GetCarCount(), currentCarCount);
+
+        currentCarCount--;
+        CarFactoryCounter4.DecrementCarCount();
+
+        Assert.AreEqual(CarFactoryCounter4.GetCarCount(), currentCarCount);
 
         yield return null;
 

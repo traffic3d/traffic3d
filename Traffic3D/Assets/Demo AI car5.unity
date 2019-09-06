@@ -5563,11 +5563,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5902268c555574160af83e350ac0cd5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material2: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  material3: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
-  material4: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
-  material5: {fileID: 0}
-  CM: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
+  redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
+  greenMaterial: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
+  amberMaterial: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
+  blackMaterial: {fileID: 0}
+  currrentMaterial: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
 --- !u!1 &59077454
 GameObject:
   m_ObjectHideFlags: 0
@@ -18157,14 +18157,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fea0cd4daeb4d124fad8bbf33a99100e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Material1: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  Material2: {fileID: 2100000, guid: 98a517e072139a445ae41e82489b370b, type: 2}
-  Material3: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
-  Material4: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
-  mat: []
-  CM: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
 --- !u!114 &272707326
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18177,12 +18169,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5e8f741aae4e46c980d1822a536b46a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material1: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  material2: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  material3: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
-  material4: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
-  material5: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
-  CM: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
+  defaultMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
+  redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
+  greenMaterial: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
+  amberMaterial: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
+  blackMaterial: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
+  currentMaterial: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
   timer: 0
   timerMax: 0
 --- !u!1 &280356411
@@ -36507,11 +36499,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbc65aadb25e54054b5f82a59cc2b6ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material2: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  material3: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
-  material4: {fileID: 0}
-  material5: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
-  CM: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
+  redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
+  greenMaterial: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
+  amberMaterial: {fileID: 0}
+  blackMaterial: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
+  currentMaterial: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
 --- !u!1 &577355028
 GameObject:
   m_ObjectHideFlags: 0
@@ -36701,12 +36693,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bdf9c00c848943f79d0a51fff4e1374, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material1: {fileID: 2100000, guid: f5b76796247e64830ae57ea1dd1edc97, type: 2}
-  material2: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  material3: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
-  material4: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
-  material5: {fileID: 0}
-  CM: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
+  defaultMaterial: {fileID: 2100000, guid: f5b76796247e64830ae57ea1dd1edc97, type: 2}
+  redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
+  greenMaterial: {fileID: 0}
+  amberMaterial: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
+  blackMaterial: {fileID: 0}
+  currentMaterial: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
   timer: 0
 --- !u!4 &588870967
 Transform:
@@ -45268,12 +45260,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5e8f741aae4e46c980d1822a536b46a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material1: {fileID: 2100000, guid: f5b76796247e64830ae57ea1dd1edc97, type: 2}
-  material2: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  material3: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
-  material4: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
-  material5: {fileID: 0}
-  CM: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
+  defaultMaterial: {fileID: 0}
+  redMaterial: {fileID: 0}
+  greenMaterial: {fileID: 0}
+  amberMaterial: {fileID: 0}
+  blackMaterial: {fileID: 0}
+  currentMaterial: {fileID: 0}
   timer: 0
   timerMax: 0
 --- !u!4 &866387412
@@ -45589,12 +45581,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75bc855a8315d483482f272c00e0247f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material1: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  material2: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  material3: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
-  material4: {fileID: 0}
-  material5: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
-  CM: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
+  defaultMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
+  redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
+  greenMaterial: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
+  amberMaterial: {fileID: 0}
+  blackMaterial: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
+  currentMaterial: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
   timer: 0
 --- !u!1 &888545329
 GameObject:
@@ -52825,36 +52817,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6283bbf22f8b1947b3de91dafcee32e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  path: {fileID: 307888982}
-  TrafficLight: {fileID: 1904128777}
-  CAR6: {fileID: 1832650405}
-  maxSteerAngle: 45
-  turnSpeed: 5
-  WheelFL: {fileID: 0}
-  WheelFR: {fileID: 0}
-  maxMotorTorque: 70
-  maxBrakeTorque: 250
-  currentSpeed: 0
-  maxSpeed: 100
-  centerOfMass: {x: 0, y: 0, z: 0}
-  VEHICLE: {fileID: 0}
-  VehicleCurrentPosition: {x: 0, y: 0, z: 0}
-  TrafficLightPosition: {x: 0, y: 0, z: 0}
-  range1: 2
-  range2: 12
-  Material1: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  Material3: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
-  Material5: {fileID: 2100000, guid: bd22ce3088334b444906e9f9069922c0, type: 2}
-  m: {fileID: 0}
-  nodes: []
-  materialchangee: []
-  currentNode: 0
-  sensorLength: 3
-  frontSensorPosition: {x: 0, y: 0.2, z: 0.5}
-  frontSideSensorPosition: 0.2
-  frontSensorAngle: 30
 --- !u!4 &1022821953
 Transform:
   m_ObjectHideFlags: 0
@@ -53025,12 +52987,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5e8f741aae4e46c980d1822a536b46a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material1: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  material2: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  material3: {fileID: 0}
-  material4: {fileID: 0}
-  material5: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
-  CM: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
+  defaultMaterial: {fileID: 0}
+  redMaterial: {fileID: 0}
+  greenMaterial: {fileID: 0}
+  amberMaterial: {fileID: 0}
+  blackMaterial: {fileID: 0}
+  currentMaterial: {fileID: 0}
   timer: 0
   timerMax: 0
 --- !u!114 &1033400381
@@ -53045,12 +53007,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5e8f741aae4e46c980d1822a536b46a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material1: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  material2: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  material3: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
-  material4: {fileID: 0}
-  material5: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
-  CM: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
+  defaultMaterial: {fileID: 0}
+  redMaterial: {fileID: 0}
+  greenMaterial: {fileID: 0}
+  amberMaterial: {fileID: 0}
+  blackMaterial: {fileID: 0}
+  currentMaterial: {fileID: 0}
   timer: 0
   timerMax: 0
 --- !u!114 &1033400382
@@ -53065,9 +53027,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f25e5609b87e84522bbea6235129ba8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material3: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
-  material5: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
-  CM: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
+  greenMaterial: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
+  blackMaterial: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
+  currentMaterial: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
   timer: 0
   timerMax: 0
 --- !u!1 &1037417724
@@ -54261,11 +54223,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a69b891c826144f76af47d754fcb855b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material2: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  material3: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
-  material4: {fileID: 0}
-  material5: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
-  CM: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
+  redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
+  greenMaterial: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
+  amberMaterial: {fileID: 0}
+  blackMaterial: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
+  currentMaterial: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
 --- !u!1 &1120713197
 GameObject:
   m_ObjectHideFlags: 0
@@ -54613,11 +54575,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b76693c24565470da8774f482b91b2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material2: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  material3: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
-  material4: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
-  material5: {fileID: 0}
-  CM: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
+  redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
+  greenMaterial: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
+  amberMaterial: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
+  blackMaterial: {fileID: 0}
+  currentMaterial: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
 --- !u!1 &1142427222
 GameObject:
   m_ObjectHideFlags: 0
@@ -54893,11 +54855,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b76693c24565470da8774f482b91b2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material2: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  material3: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
-  material4: {fileID: 0}
-  material5: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
-  CM: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
+  redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
+  greenMaterial: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
+  amberMaterial: {fileID: 0}
+  blackMaterial: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
+  currentMaterial: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
 --- !u!1 &1152229964
 GameObject:
   m_ObjectHideFlags: 0
@@ -61403,12 +61365,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5e8f741aae4e46c980d1822a536b46a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material1: {fileID: 0}
-  material2: {fileID: 0}
-  material3: {fileID: 0}
-  material4: {fileID: 0}
-  material5: {fileID: 0}
-  CM: {fileID: 0}
+  defaultMaterial: {fileID: 0}
+  redMaterial: {fileID: 0}
+  greenMaterial: {fileID: 0}
+  amberMaterial: {fileID: 0}
+  blackMaterial: {fileID: 0}
+  currentMaterial: {fileID: 0}
   timer: 0
   timerMax: 0
 --- !u!1 &1254321210
@@ -63273,14 +63235,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90667a2b653974f4ba800f72b475e90f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Material1: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
-  Material2: {fileID: 2100000, guid: 98a517e072139a445ae41e82489b370b, type: 2}
-  Material3: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  Material4: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
-  mat: []
-  CM: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
 --- !u!23 &1369120428
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -67602,31 +67556,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dafc29ff75708ea4da3d3ed04ef3151d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  path: {fileID: 0}
-  path1: {fileID: 0}
-  path2: {fileID: 0}
-  trafficLight: {fileID: 0}
-  maxSteerAngle: 45
-  turnSpeed: 5
-  WheelFL: {fileID: 646882408}
-  WheelFR: {fileID: 180569725}
-  maxMotorTorque: 70
-  maxBrakeTorque: 250
-  maxBrakeTorque2: 1000
-  currentSpeed: 0
-  maxSpeed: 80
-  centerOfMass: {x: 0, y: 0, z: 0}
-  VEHICLE1: {fileID: 0}
-  VehicleCurrentPosition: {x: 0, y: 0, z: 0}
-  material2: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  material4: {fileID: 0}
-  j: {fileID: 0}
-  nodes: []
-  currentNode: 0
-  startTime: 0
-  des: 0
 --- !u!54 &1662756356
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -68658,11 +68587,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5902268c555574160af83e350ac0cd5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material2: {fileID: 0}
-  material3: {fileID: 0}
-  material4: {fileID: 0}
-  material5: {fileID: 0}
-  CM: {fileID: 0}
+  redMaterial: {fileID: 0}
+  greenMaterial: {fileID: 0}
+  amberMaterial: {fileID: 0}
+  blackMaterial: {fileID: 0}
+  currrentMaterial: {fileID: 0}
 --- !u!114 &1732710678
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68675,11 +68604,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5902268c555574160af83e350ac0cd5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material2: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  material3: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
-  material4: {fileID: 0}
-  material5: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
-  CM: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
+  redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
+  greenMaterial: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
+  amberMaterial: {fileID: 0}
+  blackMaterial: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
+  currrentMaterial: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
 --- !u!1 &1734317044
 GameObject:
   m_ObjectHideFlags: 0
@@ -70563,14 +70492,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c17a253bb27b165498eb4bc2bf5e605a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Material1: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  Material2: {fileID: 2100000, guid: 98a517e072139a445ae41e82489b370b, type: 2}
-  Material3: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
-  Material4: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
-  mat: []
-  CM: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
 --- !u!4 &1860801849
 Transform:
   m_ObjectHideFlags: 0
@@ -71723,14 +71644,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2fe93e55a6b51744825ad78e58f097a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Material1: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
-  Material2: {fileID: 2100000, guid: 98a517e072139a445ae41e82489b370b, type: 2}
-  Material3: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  Material4: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
-  mat: []
-  CM: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
 --- !u!4 &1904128779
 Transform:
   m_ObjectHideFlags: 0
@@ -71849,12 +71762,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bdf9c00c848943f79d0a51fff4e1374, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material1: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  material2: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  material3: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
-  material4: {fileID: 0}
-  material5: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
-  CM: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
+  defaultMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
+  redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
+  greenMaterial: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
+  amberMaterial: {fileID: 0}
+  blackMaterial: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
+  currentMaterial: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
   timer: 0
 --- !u!1 &1919755636
 GameObject:
@@ -73127,12 +73040,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5e8f741aae4e46c980d1822a536b46a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material1: {fileID: 2100000, guid: f5b76796247e64830ae57ea1dd1edc97, type: 2}
-  material2: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  material3: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
-  material4: {fileID: 2100000, guid: 98a517e072139a445ae41e82489b370b, type: 2}
-  material5: {fileID: 0}
-  CM: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
+  defaultMaterial: {fileID: 0}
+  redMaterial: {fileID: 0}
+  greenMaterial: {fileID: 0}
+  amberMaterial: {fileID: 0}
+  blackMaterial: {fileID: 0}
+  currentMaterial: {fileID: 0}
   timer: 0
   timerMax: 0
 --- !u!4 &1992037915
@@ -73465,38 +73378,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0854ff50d53d09d41917d956ff4dc7ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2004613692
@@ -75196,38 +75077,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a3d3ef1a5bbfb4e0a910fbbe5830b1f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!23 &2081938384

@@ -1,8 +1,8 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VehicleEngine1 : MonoBehaviour
+public class VehicleEngine2 : MonoBehaviour
 {
 
     public Transform path;
@@ -31,8 +31,8 @@ public class VehicleEngine1 : MonoBehaviour
     public Material redMaterial;
     public TrafficLightRed3 trafficLightRed3 = null;
 
-    public List<Transform> nodes;
 
+    public List<Transform> nodes;
 
     public int currentNode = 0;
     private int lapCounter = 0;
@@ -46,7 +46,7 @@ public class VehicleEngine1 : MonoBehaviour
     void Start()
     {
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
-        path1 = GameObject.Find("mypathye").GetComponent<Transform>();
+        path1 = GameObject.Find("mypathy").GetComponent<Transform>();
         path2 = GameObject.Find("mypathy1").GetComponent<Transform>();
         trafficLight = GameObject.Find("SphereTL3");
         trafficLightRed3 = trafficLight.GetComponent<TrafficLightRed3>();
@@ -198,8 +198,8 @@ public class VehicleEngine1 : MonoBehaviour
         {
             wheelColliderFrontLeft.motorTorque = 0;
             wheelColliderFrontRight.motorTorque = 0;
-            wheelColliderFrontLeft.brakeTorque = maxBrakeTorque2;
-            wheelColliderFrontRight.brakeTorque = maxBrakeTorque2;
+            wheelColliderFrontLeft.brakeTorque = maxBrakeTorque;
+            wheelColliderFrontRight.brakeTorque = maxBrakeTorque;
 
         }
         else
@@ -231,7 +231,6 @@ public class VehicleEngine1 : MonoBehaviour
         wheelColliderFrontLeft.steerAngle = newSteer;
         wheelColliderFrontRight.steerAngle = newSteer;
     }
-
     private void Drive(int numlaps)
     {
         currentSpeed = 2 * Mathf.PI * wheelColliderFrontLeft.radius * wheelColliderFrontLeft.rpm * 60 / 1000;

@@ -1,59 +1,57 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VehicleEngine1 : MonoBehaviour
+public class VehicleEngine5 : MonoBehaviour
 {
+
 
     public Transform path;
     public Transform path1;
     public Transform path2;
 
-    public GameObject trafficLight;
+    public GameObject trafficlight;
 
     public float maxSteerAngle = 45f;
     public float turnSpeed = 5f;
     public WheelCollider wheelColliderFrontLeft;
     public WheelCollider wheelColliderFrontRight;
-    public float maxMotorTorque = 80f;
-    public float maxBrakeTorque = 100f;
-    public float maxBrakeTorque2 = 1000f;
+    public float maxMotorTorque = 70f;
+    public float maxBrakeTorque = 250f;
 
+    public float maxBrakeTorque2 = 1000f;
     public float currentSpeed;
     public float maxSpeed = 100f;
     public Vector3 centerOfMass;
     public Rigidbody vehicle;
-    public Vector3 vehicleCurrentPosition;
-    public Vector3 trafficLightPosition;
-
-    public Counter counter = null;
+    public float range1 = 2f;
+    public float range2 = 12f;
 
     public Material redMaterial;
-    public TrafficLightRed3 trafficLightRed3 = null;
+
+    public TrafficLightRed4 trafficLightRed4 = null;
 
     public List<Transform> nodes;
-
-
+    public List<Transform> materialChange;
     public int currentNode = 0;
     private int lapCounter = 0;
-    public int count = 0;
     private float targetSteerAngle = 0;
 
-    public static float k;
     public float startTime;
+    public static float k;
     public bool des = false;
 
     void Start()
     {
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
-        path1 = GameObject.Find("mypathye").GetComponent<Transform>();
-        path2 = GameObject.Find("mypathy1").GetComponent<Transform>();
-        trafficLight = GameObject.Find("SphereTL3");
-        trafficLightRed3 = trafficLight.GetComponent<TrafficLightRed3>();
 
+        path1 = GameObject.Find("mypath4").GetComponent<Transform>();
+        path2 = GameObject.Find("mypath41").GetComponent<Transform>();
+
+        trafficlight = GameObject.Find("SphereTL4");
+        trafficLightRed4 = trafficlight.GetComponent<TrafficLightRed4>();
 
         startTime = Time.time;
-
 
         if (Random.value > 0.5)
         {
@@ -65,7 +63,6 @@ public class VehicleEngine1 : MonoBehaviour
 
             path = path1;
         }
-
 
         Transform[] pathTransforms = path.GetComponentsInChildren<Transform>();
         nodes = new List<Transform>();
@@ -105,28 +102,28 @@ public class VehicleEngine1 : MonoBehaviour
     private void FixedUpdate()
     {
 
-
         ApplySteer();
         Drive(1);
         CheckWaypointDistance();
         Destroy();
         LerpToSteerAngle();
         StopAtLineIfRedElseGo();
-        GoIfNotRed();
+
         GoIfSecondToLastNode();
+        TurnOff();
+
     }
 
-
-    private void RedLightTest()
+    private void GoIfTagDrive()
     {
-        if (trafficLightRed3.currentMaterial.color.Equals(redMaterial.color))
+        if (this.gameObject.tag == "drive")
         {
-            print("red1");
-            wheelColliderFrontLeft.motorTorque = 0;
-            wheelColliderFrontRight.motorTorque = 0;
-            wheelColliderFrontLeft.brakeTorque = maxBrakeTorque;
-            wheelColliderFrontRight.brakeTorque = maxBrakeTorque;
+            wheelColliderFrontLeft.motorTorque = maxMotorTorque;
+            wheelColliderFrontRight.motorTorque = maxMotorTorque;
+            wheelColliderFrontLeft.brakeTorque = 0;
+            wheelColliderFrontRight.brakeTorque = 0;
         }
+
     }
 
     private void TurnOff()
@@ -143,7 +140,7 @@ public class VehicleEngine1 : MonoBehaviour
 
     private void GoIfNotRed()
     {
-        if (!(trafficLightRed3.currentMaterial.color.Equals(redMaterial.color)))
+        if (!(trafficLightRed4.currentMaterial.color.Equals(redMaterial.color)))
 
         {
             wheelColliderFrontLeft.motorTorque = maxMotorTorque;
@@ -166,17 +163,8 @@ public class VehicleEngine1 : MonoBehaviour
         }
     }
 
-    private void GoIfTagDrive()
-    {
-        if (this.gameObject.tag == "drive")
-        {
-            wheelColliderFrontLeft.motorTorque = maxMotorTorque;
-            wheelColliderFrontRight.motorTorque = maxMotorTorque;
-            wheelColliderFrontLeft.brakeTorque = 0;
-            wheelColliderFrontRight.brakeTorque = 0;
-        }
 
-    }
+
 
     private void GoIfDesFalseAndTagDrive()
     {
@@ -189,19 +177,22 @@ public class VehicleEngine1 : MonoBehaviour
             }
 
         }
-
     }
+
+
     private void StopAtLineIfRedElseGo()
     {
 
-        if (currentNode == nodes.Count - 3 && trafficLightRed3.currentMaterial.color.Equals(redMaterial.color))
+        if (currentNode == nodes.Count - 3 && trafficLightRed4.currentMaterial.color.Equals(redMaterial.color))
+
         {
             wheelColliderFrontLeft.motorTorque = 0;
             wheelColliderFrontRight.motorTorque = 0;
-            wheelColliderFrontLeft.brakeTorque = maxBrakeTorque2;
-            wheelColliderFrontRight.brakeTorque = maxBrakeTorque2;
+            wheelColliderFrontLeft.brakeTorque = maxBrakeTorque;
+            wheelColliderFrontRight.brakeTorque = maxBrakeTorque;
 
         }
+
         else
         {
             wheelColliderFrontLeft.motorTorque = maxMotorTorque;
@@ -211,11 +202,12 @@ public class VehicleEngine1 : MonoBehaviour
         }
     }
 
-
     private void GoIfSecondToLastNode()
     {
 
         if (currentNode == nodes.Count - 2)
+
+
         {
             wheelColliderFrontLeft.motorTorque = maxMotorTorque;
             wheelColliderFrontRight.motorTorque = maxMotorTorque;
@@ -231,7 +223,6 @@ public class VehicleEngine1 : MonoBehaviour
         wheelColliderFrontLeft.steerAngle = newSteer;
         wheelColliderFrontRight.steerAngle = newSteer;
     }
-
     private void Drive(int numlaps)
     {
         currentSpeed = 2 * Mathf.PI * wheelColliderFrontLeft.radius * wheelColliderFrontLeft.rpm * 60 / 1000;
@@ -252,8 +243,10 @@ public class VehicleEngine1 : MonoBehaviour
 
     private void CheckWaypointDistance()
     {
+
         if (Vector3.Distance(transform.position, nodes[currentNode].position) < 3f)
         {
+
             if (currentNode == nodes.Count - 1)
             {
                 currentNode = 0;
@@ -263,6 +256,7 @@ public class VehicleEngine1 : MonoBehaviour
             {
                 currentNode++;
             }
+
         }
     }
 
@@ -272,7 +266,7 @@ public class VehicleEngine1 : MonoBehaviour
         if (currentNode == nodes.Count - 1)
         {
             Destroy(this.gameObject);
-            CarFactoryCounter3.DecrementCarCount();
+            CarFactoryCounter4.DecrementCarCount();
 
             //to get the generated car count
             OverallCarCounter.IncrementOverallCarCount();
@@ -291,3 +285,4 @@ public class VehicleEngine1 : MonoBehaviour
     }
 
 }
+

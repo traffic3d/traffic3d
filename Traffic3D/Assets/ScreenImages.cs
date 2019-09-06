@@ -11,45 +11,40 @@ public class ScreenImages : MonoBehaviour
 
     public GameObject CarCount;
 
-
-
     void Start()
     {
-
         Time.captureFramerate = frameRate;
         System.IO.Directory.CreateDirectory(folder);
-
-
     }
 
 
     void Update()
     {
         // execute block of code here
-        takeScreenshot();
-        writeTextFile();
+        TakeScreenshots();
+        WriteTextFile();
     }
-    IEnumerator screenshotsAndTextFile(float interval)
+    IEnumerator TakeScreenshotsAndWriteTextFile(float interval)
     {
         while (true)
         {
-            takeScreenshot();
-            writeTextFile();
+            TakeScreenshots();
+            WriteTextFile();
             yield return new WaitForSeconds(interval);
         }
     }
 
-    public void takeScreenshot()
+    public void TakeScreenshots()
     {
 
         string name = string.Format("{0}/{1:D04} shot.png", folder, Time.frameCount);
         ScreenCapture.CaptureScreenshot(name);
     }
 
-    public void writeTextFile()
+    public void WriteTextFile()
     {
         GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("car") as GameObject[];
-        System.IO.File.AppendAllText("ScreenshotMovieOutput/info.csv", string.Format("{0:D04}", Time.frameCount) + "," + CarCounter.getCarCount() + System.Environment.NewLine);
+        System.IO.File.AppendAllText("ScreenshotMovieOutput/info.csv", string.Format("{0:D04}", Time.frameCount) + "," + CarFactoryCounter1.GetCarCount() + System.Environment.NewLine);
     }
 
 }
