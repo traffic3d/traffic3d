@@ -1,14 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
 using System.IO;
 using System.Linq;
-using System.Globalization;
-using System.Diagnostics;
-using UnityEngine.SceneManagement;
+using System.Net.Sockets;
+using System.Text;
+using UnityEngine;
 
 public class TrafficLightManagerWithAI : MonoBehaviour
 {
@@ -17,18 +13,18 @@ public class TrafficLightManagerWithAI : MonoBehaviour
     byte[] bytes = new byte[256];
     public Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
-    public GameObject trafficlight1;
-    public GameObject trafficlight2;
-    public GameObject trafficlight3;
-    public GameObject trafficlight4;
-
     public GameObject waitcars1;
     public GameObject waitcars2;
     public GameObject waitcars3;
+
     public TrafficLightRed1 trafficLightRed1 = null;
+    public TrafficLightGreen1 trafficLightGreen1 = null;
     public TrafficLightRed2 trafficLightRed2 = null;
+    public TrafficLightGreen2 trafficLightGreen2 = null;
     public TrafficLightRed3 trafficLightRed3 = null;
+    public TrafficLightGreen3 trafficLightGreen3 = null;
     public TrafficLightRed4 trafficLightRed4 = null;
+    public TrafficLightGreen4 trafficLightGreen4 = null;
 
     public bool waiting = false;
 
@@ -50,17 +46,21 @@ public class TrafficLightManagerWithAI : MonoBehaviour
     void Start()
     {
 
-        trafficlight1 = GameObject.Find("SphereTL1");
-        trafficLightRed1 = trafficlight1.GetComponent<TrafficLightRed1>();
+        trafficLightRed1 = GameObject.Find("SphereTL1").GetComponent<TrafficLightRed1>();
 
-        trafficlight2 = GameObject.Find("SphereTL2");
-        trafficLightRed2 = trafficlight2.GetComponent<TrafficLightRed2>();
+        trafficLightGreen1 = GameObject.Find("SphereTL11").GetComponent<TrafficLightGreen1>();
 
-        trafficlight3 = GameObject.Find("SphereTL3");
-        trafficLightRed3 = trafficlight3.GetComponent<TrafficLightRed3>();
+        trafficLightRed2 = GameObject.Find("SphereTL2").GetComponent<TrafficLightRed2>();
 
-        trafficlight4 = GameObject.Find("SphereTL4");
-        trafficLightRed4 = trafficlight4.GetComponent<TrafficLightRed4>();
+        trafficLightGreen2 = GameObject.Find("SphereTL21").GetComponent<TrafficLightGreen2>();
+
+        trafficLightRed3 = GameObject.Find("SphereTL3").GetComponent<TrafficLightRed3>();
+
+        trafficLightGreen3 = GameObject.Find("SphereTL31").GetComponent<TrafficLightGreen3>();
+
+        trafficLightRed4 = GameObject.Find("SphereTL4").GetComponent<TrafficLightRed4>();
+
+        trafficLightGreen4 = GameObject.Find("SphereTL41").GetComponent<TrafficLightGreen4>();
 
         socket.Connect("localhost", port);
 
@@ -136,51 +136,64 @@ public class TrafficLightManagerWithAI : MonoBehaviour
 
         if (int.Parse(Encoding.UTF8.GetString(bytes)) == 0)
         {
+            trafficLightGreen2.SetToBlackMaterial();
             trafficLightRed2.SetToRedMaterial();
+            trafficLightGreen3.SetToBlackMaterial();
             trafficLightRed3.SetToRedMaterial();
+            trafficLightGreen4.SetToBlackMaterial();
             trafficLightRed4.SetToRedMaterial();
             Time.timeScale = 1;
             yield return new WaitForSeconds(6);
-            trafficLightRed1.SetToGreenMaterial();
+            trafficLightGreen1.SetToGreenMaterial();
+            trafficLightRed1.SetToBlackMaterial();
 
         }
 
         if (int.Parse(Encoding.UTF8.GetString(bytes)) == 1)
         {
-
+            trafficLightGreen1.SetToBlackMaterial();
             trafficLightRed1.SetToRedMaterial();
+            trafficLightGreen3.SetToBlackMaterial();
             trafficLightRed3.SetToRedMaterial();
+            trafficLightGreen4.SetToBlackMaterial();
             trafficLightRed4.SetToRedMaterial();
             Time.timeScale = 1;
             yield return new WaitForSeconds(6);
-            trafficLightRed2.SetToGreenMaterial();
+            trafficLightGreen2.SetToGreenMaterial();
+            trafficLightRed2.SetToBlackMaterial();
 
         }
 
         if (int.Parse(Encoding.UTF8.GetString(bytes)) == 2)
         {
-
+            trafficLightGreen1.SetToBlackMaterial();
             trafficLightRed1.SetToRedMaterial();
+            trafficLightGreen2.SetToBlackMaterial();
             trafficLightRed2.SetToRedMaterial();
+            trafficLightGreen4.SetToBlackMaterial();
             trafficLightRed4.SetToRedMaterial();
 
             Time.timeScale = 1;
             yield return new WaitForSeconds(5);
-            trafficLightRed3.SetToGreenMaterial();
+            trafficLightGreen3.SetToGreenMaterial();
+            trafficLightRed3.SetToBlackMaterial();
             
         }
 
 
         if (int.Parse(Encoding.UTF8.GetString(bytes)) == 3)
         {
-
+            trafficLightGreen1.SetToBlackMaterial();
             trafficLightRed1.SetToRedMaterial();
+            trafficLightGreen2.SetToBlackMaterial();
             trafficLightRed2.SetToRedMaterial();
+            trafficLightGreen3.SetToBlackMaterial();
             trafficLightRed3.SetToRedMaterial();
 
             Time.timeScale = 1;
             yield return new WaitForSeconds(5);
-            trafficLightRed4.SetToGreenMaterial();
+            trafficLightGreen2.SetToGreenMaterial();
+            trafficLightRed4.SetToBlackMaterial();
 
         }
 
