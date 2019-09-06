@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
-public class RedLightTests
+public class TrafficLightManagerTests
 {
 
     [SetUp]
@@ -25,7 +25,7 @@ public class RedLightTests
     }
 
     [UnityTest]
-    public IEnumerator RedLightOneTest()
+    public IEnumerator TrafficLightFirstEventTest()
     {
 
         TrafficLightManager trafficLightManager = (TrafficLightManager)GameObject.FindObjectOfType(typeof(TrafficLightManager));
@@ -48,7 +48,7 @@ public class RedLightTests
     }
 
     [UnityTest]
-    public IEnumerator RedLightTwoTest()
+    public IEnumerator TrafficLightSecondEventTest()
     {
 
         TrafficLightManager trafficLightManager = (TrafficLightManager)GameObject.FindObjectOfType(typeof(TrafficLightManager));
@@ -71,7 +71,7 @@ public class RedLightTests
     }
 
     [UnityTest]
-    public IEnumerator RedLightThirdTest()
+    public IEnumerator TrafficLightThirdEventTest()
     {
 
         TrafficLightManager trafficLightManager = (TrafficLightManager)GameObject.FindObjectOfType(typeof(TrafficLightManager));
@@ -94,7 +94,7 @@ public class RedLightTests
     }
 
     [UnityTest]
-    public IEnumerator RedLightFourTest()
+    public IEnumerator TrafficLightFourthEventTest()
     {
 
         TrafficLightManager trafficLightManager = (TrafficLightManager)GameObject.FindObjectOfType(typeof(TrafficLightManager));
@@ -117,7 +117,7 @@ public class RedLightTests
     }
 
     [UnityTest]
-    public IEnumerator RedLightFiveTest()
+    public IEnumerator TrafficLightFifthEventTest()
     {
 
         TrafficLightManager trafficLightManager = (TrafficLightManager)GameObject.FindObjectOfType(typeof(TrafficLightManager));

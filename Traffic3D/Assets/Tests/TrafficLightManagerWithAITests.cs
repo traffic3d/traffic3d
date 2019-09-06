@@ -33,7 +33,7 @@ public class TrafficLightManagerWithAITests
     }
 
     [UnityTest]
-    public IEnumerator FreshLoopingRewCountTest()
+    public IEnumerator TrafficLightManagerWithAIRewCountTest()
     {
 
         int currentCount = TrafficLightManagerWithAI.GetRewardCount();
@@ -53,7 +53,7 @@ public class TrafficLightManagerWithAITests
     }
 
     [UnityTest]
-    public IEnumerator FreshLoopingDensityCountTest()
+    public IEnumerator TrafficLightManagerWithAIDensityCountTest()
     {
 
         int currentCount = TrafficLightManagerWithAI.GetDensityCount1();
