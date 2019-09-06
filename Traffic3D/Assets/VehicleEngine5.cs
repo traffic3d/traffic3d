@@ -23,7 +23,7 @@ public class VehicleEngine5 : MonoBehaviour
 
     public Material redMaterial;
 
-    public TrafficLightRed4 trafficLightRed4 = null;
+    public TrafficLight trafficLight = null;
 
     public List<Transform> nodes;
     public int currentNode = 0;
@@ -41,7 +41,7 @@ public class VehicleEngine5 : MonoBehaviour
         path1 = GameObject.Find("mypath4").GetComponent<Transform>();
         path2 = GameObject.Find("mypath41").GetComponent<Transform>();
 
-        trafficLightRed4 = GameObject.Find("SphereTL4").GetComponent<TrafficLightRed4>();
+        trafficLight = TrafficLightManager.GetInstance().GetTrafficLight(4);
 
         startTime = Time.time;
 
@@ -97,7 +97,7 @@ public class VehicleEngine5 : MonoBehaviour
     private void StopAtLineIfRedElseGo()
     {
 
-        if (currentNode == nodes.Count - 3 && trafficLightRed4.currentMaterial.color.Equals(redMaterial.color))
+        if (currentNode == nodes.Count - 3 && trafficLight.IsCurrentLightColour(TrafficLight.LightColour.RED))
         {
             wheelColliderFrontLeft.motorTorque = 0;
             wheelColliderFrontRight.motorTorque = 0;

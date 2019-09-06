@@ -34,14 +34,10 @@ public class TrafficLightManagerTests
 
         yield return null;
 
-        Assert.AreEqual(trafficLightManager.trafficLightRed1.redMaterial, trafficLightManager.trafficLightRed1.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightGreen1.blackMaterial, trafficLightManager.trafficLightGreen1.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightRed2.redMaterial, trafficLightManager.trafficLightRed2.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightGreen2.blackMaterial, trafficLightManager.trafficLightGreen2.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightRed3.redMaterial, trafficLightManager.trafficLightRed3.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightGreen3.blackMaterial, trafficLightManager.trafficLightGreen3.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightRed4.redMaterial, trafficLightManager.trafficLightRed4.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightGreen4.blackMaterial, trafficLightManager.trafficLightGreen4.currentMaterial);
+        foreach(TrafficLight trafficLight in trafficLightManager.GetTrafficLights())
+        {
+            Assert.AreEqual(TrafficLight.LightColour.RED, trafficLight.GetCurrentLightColour());
+        }
 
         trafficLightManager.StopAllCoroutines();
 
@@ -57,14 +53,7 @@ public class TrafficLightManagerTests
 
         yield return null;
 
-        Assert.AreEqual(trafficLightManager.trafficLightRed1.blackMaterial, trafficLightManager.trafficLightRed1.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightGreen1.greenMaterial, trafficLightManager.trafficLightGreen1.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightRed2.redMaterial, trafficLightManager.trafficLightRed2.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightGreen2.blackMaterial, trafficLightManager.trafficLightGreen2.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightRed3.redMaterial, trafficLightManager.trafficLightRed3.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightGreen3.blackMaterial, trafficLightManager.trafficLightGreen3.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightRed4.redMaterial, trafficLightManager.trafficLightRed4.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightGreen4.blackMaterial, trafficLightManager.trafficLightGreen4.currentMaterial);
+        CheckTrafficLightIsGreen(1);
 
         trafficLightManager.StopAllCoroutines();
 
@@ -80,14 +69,7 @@ public class TrafficLightManagerTests
 
         yield return null;
 
-        Assert.AreEqual(trafficLightManager.trafficLightRed1.redMaterial, trafficLightManager.trafficLightRed1.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightGreen1.blackMaterial, trafficLightManager.trafficLightGreen1.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightRed2.redMaterial, trafficLightManager.trafficLightRed2.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightGreen2.blackMaterial, trafficLightManager.trafficLightGreen2.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightRed3.blackMaterial, trafficLightManager.trafficLightRed3.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightGreen3.greenMaterial, trafficLightManager.trafficLightGreen3.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightRed4.redMaterial, trafficLightManager.trafficLightRed4.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightGreen4.blackMaterial, trafficLightManager.trafficLightGreen4.currentMaterial);
+        CheckTrafficLightIsGreen(3);
 
         trafficLightManager.StopAllCoroutines();
 
@@ -103,14 +85,7 @@ public class TrafficLightManagerTests
 
         yield return null;
 
-        Assert.AreEqual(trafficLightManager.trafficLightRed1.redMaterial, trafficLightManager.trafficLightRed1.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightGreen1.blackMaterial, trafficLightManager.trafficLightGreen1.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightRed2.blackMaterial, trafficLightManager.trafficLightRed2.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightGreen2.greenMaterial, trafficLightManager.trafficLightGreen2.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightRed3.redMaterial, trafficLightManager.trafficLightRed3.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightGreen3.blackMaterial, trafficLightManager.trafficLightGreen3.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightRed4.redMaterial, trafficLightManager.trafficLightRed4.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightGreen4.blackMaterial, trafficLightManager.trafficLightGreen4.currentMaterial);
+        CheckTrafficLightIsGreen(2);
 
         trafficLightManager.StopAllCoroutines();
 
@@ -126,14 +101,7 @@ public class TrafficLightManagerTests
 
         yield return null;
 
-        Assert.AreEqual(trafficLightManager.trafficLightRed1.redMaterial, trafficLightManager.trafficLightRed1.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightGreen1.blackMaterial, trafficLightManager.trafficLightGreen1.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightRed2.redMaterial, trafficLightManager.trafficLightRed2.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightGreen2.blackMaterial, trafficLightManager.trafficLightGreen2.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightRed3.redMaterial, trafficLightManager.trafficLightRed3.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightGreen3.blackMaterial, trafficLightManager.trafficLightGreen3.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightRed4.blackMaterial, trafficLightManager.trafficLightRed4.currentMaterial);
-        Assert.AreEqual(trafficLightManager.trafficLightGreen4.greenMaterial, trafficLightManager.trafficLightGreen4.currentMaterial);
+        CheckTrafficLightIsGreen(4);
 
         trafficLightManager.StopAllCoroutines();
 
@@ -145,6 +113,21 @@ public class TrafficLightManagerTests
         TrafficLightManager trafficLightManager = (TrafficLightManager)GameObject.FindObjectOfType(typeof(TrafficLightManager));
         trafficLightManager.StopAllCoroutines();
 
+    }
+
+    private void CheckTrafficLightIsGreen(int id)
+    {
+        foreach (TrafficLight trafficLight in TrafficLightManager.GetInstance().GetTrafficLights())
+        {
+            if (trafficLight.GetTrafficLightId() == id)
+            {
+                Assert.AreEqual(TrafficLight.LightColour.GREEN, trafficLight.GetCurrentLightColour());
+            }
+            else
+            {
+                Assert.AreEqual(TrafficLight.LightColour.RED, trafficLight.GetCurrentLightColour());
+            }
+        }
     }
 
 }
