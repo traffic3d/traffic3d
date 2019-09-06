@@ -1,24 +1,9 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 
 using UnityEngine;
-using System.Text;
-using System.IO;
-using System.Linq;
-using System.Globalization;
-using System.Diagnostics;
 
 public class TrafficLightManager : MonoBehaviour
 {
-
-    public GameObject trafficLightObjectRed1;
-    public GameObject trafficLightObjectGreen1;
-    public GameObject trafficLightObjectRed2;
-    public GameObject TrafficLightObjectGreen2;
-    public GameObject trafficLightObjectRed3;
-    public GameObject trafficLightObjectGreen3;
-    public GameObject trafficLightObjectRed4;
-    public GameObject trafficLightObjectGreen4;
 
     public TrafficLightRed1 trafficLightRed1 = null;
     public TrafficLightGreen1 trafficLightGreen1 = null;
@@ -32,36 +17,25 @@ public class TrafficLightManager : MonoBehaviour
     void Start()
     {
 
-        print("Start Traffic Light System");
+        trafficLightRed1 = GameObject.Find("SphereTL1").GetComponent<TrafficLightRed1>();
 
-        trafficLightObjectRed1 = GameObject.Find("SphereTL1");
-        trafficLightRed1 = trafficLightObjectRed1.GetComponent<TrafficLightRed1>();
+        trafficLightGreen1 = GameObject.Find("SphereTL11").GetComponent<TrafficLightGreen1>();
 
-        trafficLightObjectGreen1 = GameObject.Find("SphereTL11");
-        trafficLightGreen1 = trafficLightObjectGreen1.GetComponent<TrafficLightGreen1>();
+        trafficLightRed2 = GameObject.Find("SphereTL2").GetComponent<TrafficLightRed2>();
 
-        trafficLightObjectRed2 = GameObject.Find("SphereTL2");
-        trafficLightRed2 = trafficLightObjectRed2.GetComponent<TrafficLightRed2>();
+        trafficLightGreen2 = GameObject.Find("SphereTL21").GetComponent<TrafficLightGreen2>();
 
-        TrafficLightObjectGreen2 = GameObject.Find("SphereTL21");
-        trafficLightGreen2 = TrafficLightObjectGreen2.GetComponent<TrafficLightGreen2>();
+        trafficLightRed3 = GameObject.Find("SphereTL3").GetComponent<TrafficLightRed3>();
 
-        trafficLightObjectRed3 = GameObject.Find("SphereTL3");
-        trafficLightRed3 = trafficLightObjectRed3.GetComponent<TrafficLightRed3>();
+        trafficLightGreen3 = GameObject.Find("SphereTL31").GetComponent<TrafficLightGreen3>();
 
-        trafficLightObjectGreen3 = GameObject.Find("SphereTL31");
-        trafficLightGreen3 = trafficLightObjectGreen3.GetComponent<TrafficLightGreen3>();
+        trafficLightRed4 = GameObject.Find("SphereTL4").GetComponent<TrafficLightRed4>();
 
-        trafficLightObjectRed4 = GameObject.Find("SphereTL4");
-        trafficLightRed4 = trafficLightObjectRed4.GetComponent<TrafficLightRed4>();
-
-        trafficLightObjectGreen4 = GameObject.Find("SphereTL41");
-        trafficLightGreen4 = trafficLightObjectGreen4.GetComponent<TrafficLightGreen4>();
+        trafficLightGreen4 = GameObject.Find("SphereTL41").GetComponent<TrafficLightGreen4>();
 
         StartCoroutine(MainLoop());
 
     }
-
 
     public IEnumerator MainLoop()
     {
@@ -138,7 +112,6 @@ public class TrafficLightManager : MonoBehaviour
 
 
     }
-
 
     public IEnumerator FifthEvent()
     {

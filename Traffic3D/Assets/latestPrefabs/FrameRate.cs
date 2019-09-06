@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class FrameRate : MonoBehaviour
 {
@@ -12,9 +10,4 @@ public class FrameRate : MonoBehaviour
         Time.captureFramerate = frameRate;
     }
 
-
-    void Update()
-    {
-
-    }
 }

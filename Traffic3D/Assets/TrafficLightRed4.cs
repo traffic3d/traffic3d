@@ -1,13 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TrafficLightRed4 : MonoBehaviour
 {
 
     public Material redMaterial;
-    public Material greenMaterial;
-    public Material amberMaterial;
     public Material blackMaterial;
 
     public Material currentMaterial;
@@ -30,22 +26,6 @@ public class TrafficLightRed4 : MonoBehaviour
         currentMaterial = redMaterial;
         Material[] materials = GetComponent<Renderer>().materials;
         materials[0] = redMaterial;
-        GetComponent<Renderer>().materials = materials;
-    }
-
-    public void SetToGreenMaterial()
-    {
-        currentMaterial = greenMaterial;
-        Material[] materials = GetComponent<Renderer>().materials;
-        materials[0] = greenMaterial;
-        GetComponent<Renderer>().materials = materials;
-    }
-
-    public void SetToAmberMaterial()
-    {
-        currentMaterial = amberMaterial;
-        Material[] materials = GetComponent<Renderer>().materials;
-        materials[0] = amberMaterial;
         GetComponent<Renderer>().materials = materials;
     }
 

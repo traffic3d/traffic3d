@@ -6,10 +6,8 @@ public class CarFactory : MonoBehaviour
 {
 
     public Rigidbody car1;
-    public Rigidbody car2;
     public Rigidbody car3;
     public Vector3 spawnSpot1;
-    public Vector3 spawnSpot2;
     public Vector3 spawnSpot3;
     int carTypeSwitch = 0;
 
