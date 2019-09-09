@@ -2421,18 +2421,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: newpath6
       objectReference: {fileID: 0}
-    - target: {fileID: 4097052595813966, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -28.65
-      objectReference: {fileID: 0}
-    - target: {fileID: 4097052595813966, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -2.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4097052595813966, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 15.9
-      objectReference: {fileID: 0}
     - target: {fileID: 4877386250703692, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
       propertyPath: m_LocalPosition.x
       value: -27.17
@@ -2464,6 +2452,18 @@ PrefabInstance:
     - target: {fileID: 4497692856497596, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
       propertyPath: m_LocalPosition.y
       value: 9.34
+      objectReference: {fileID: 0}
+    - target: {fileID: 4097052595813966, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -28.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 4097052595813966, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4097052595813966, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 15.9
       objectReference: {fileID: 0}
     - target: {fileID: 4847752757314654, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3239,6 +3239,7 @@ GameObject:
   - component: {fileID: 234100397}
   - component: {fileID: 234100396}
   - component: {fileID: 234100395}
+  - component: {fileID: 234100399}
   m_Layer: 0
   m_Name: TrafficLight4
   m_TagString: Untagged
@@ -3319,6 +3320,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 132
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &234100399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 234100394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32b828f238dc02c4aa7c05633187e86a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trafficLightId: 4
+  redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
+  amberMaterial: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
+  greenMaterial: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
+  blackMaterial: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
+  redLightObject: {fileID: 1732710672}
+  amberLightObject: {fileID: 1729275186}
+  greenLightObject: {fileID: 574275521}
+  currentLightColour: 0
 --- !u!1 &236561311
 GameObject:
   m_ObjectHideFlags: 0
@@ -3767,8 +3789,6 @@ GameObject:
   - component: {fileID: 272707324}
   - component: {fileID: 272707323}
   - component: {fileID: 272707322}
-  - component: {fileID: 272707326}
-  - component: {fileID: 272707325}
   m_Layer: 0
   m_Name: SphereTL1
   m_TagString: Untagged
@@ -3848,45 +3868,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 272707320}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &272707325
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 272707320}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fea0cd4daeb4d124fad8bbf33a99100e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Name: 
-  Material1: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  Material2: {fileID: 2100000, guid: 98a517e072139a445ae41e82489b370b, type: 2}
-  Material3: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
-  Material4: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
-  mat: []
-  CM: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
---- !u!114 &272707326
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 272707320}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5e8f741aae4e46c980d1822a536b46a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultMaterial: {fileID: 2100000, guid: f5b76796247e64830ae57ea1dd1edc97, type: 2}
-  redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  greenMaterial: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
-  amberMaterial: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
-  blackMaterial: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
-  currentMaterial: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
-  timer: 0
-  timerMax: 0
 --- !u!1 &284172604
 GameObject:
   m_ObjectHideFlags: 0
@@ -6348,14 +6329,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: path (6)
       objectReference: {fileID: 0}
-    - target: {fileID: 4097052595813966, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -17.62
-      objectReference: {fileID: 0}
-    - target: {fileID: 4097052595813966, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 3.34
-      objectReference: {fileID: 0}
     - target: {fileID: 4877386250703692, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
       propertyPath: m_LocalPosition.x
       value: -18.66
@@ -6379,6 +6352,14 @@ PrefabInstance:
     - target: {fileID: 4497692856497596, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
       propertyPath: m_LocalPosition.z
       value: 22.62
+      objectReference: {fileID: 0}
+    - target: {fileID: 4097052595813966, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -17.62
+      objectReference: {fileID: 0}
+    - target: {fileID: 4097052595813966, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 3.34
       objectReference: {fileID: 0}
     - target: {fileID: 4847752757314654, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7561,7 +7542,6 @@ GameObject:
   - component: {fileID: 574275525}
   - component: {fileID: 574275524}
   - component: {fileID: 574275523}
-  - component: {fileID: 574275526}
   m_Layer: 0
   m_Name: SphereTL41
   m_TagString: Untagged
@@ -7641,23 +7621,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 574275521}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &574275526
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 574275521}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbc65aadb25e54054b5f82a59cc2b6ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  greenMaterial: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
-  amberMaterial: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
-  blackMaterial: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
-  currentMaterial: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
 --- !u!1 &577355028
 GameObject:
   m_ObjectHideFlags: 0
@@ -8488,22 +8451,17 @@ MonoBehaviour:
   path: {fileID: 0}
   path1: {fileID: 0}
   path2: {fileID: 0}
-  trafficLight: {fileID: 0}
   maxSteerAngle: 45
   turnSpeed: 5
-  WheelFL: {fileID: 942955510}
-  WheelFR: {fileID: 376298922}
+  wheelColliderFrontLeft: {fileID: 0}
+  wheelColliderFrontRight: {fileID: 0}
   maxMotorTorque: 80
   maxBrakeTorque: 100
   currentSpeed: 0
   maxSpeed: 100
   centerOfMass: {x: 0, y: 0, z: 0}
-  VEHICLE: {fileID: 0}
-  material2: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  m: {fileID: 0}
-  range1: 2
-  range2: 12
-  n: {fileID: 0}
+  redMaterial: {fileID: 0}
+  trafficLight: {fileID: 0}
   nodes: []
   currentNode: 0
   carCount: {fileID: 0}
@@ -8532,7 +8490,7 @@ Transform:
   - {fileID: 376298923}
   - {fileID: 1283479902}
   m_Father: {fileID: 0}
-  m_RootOrder: 43
+  m_RootOrder: 45
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &633481191
 GameObject:
@@ -9062,7 +9020,7 @@ MonoBehaviour:
   car3: {fileID: 54272025488572840, guid: 7e18cdb9eeaed4a66b40612cc522f29d, type: 3}
   spawnSpot1: {x: -18.3, y: 14.3, z: -26.1}
   spawnSpot3: {x: -27.1, y: 11.28, z: -27.3}
-  carGenerator: 0
+  carTypeSwitch: 0
 --- !u!1001 &662752575
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9765,7 +9723,7 @@ Transform:
   m_Children:
   - {fileID: 31497121}
   m_Father: {fileID: 0}
-  m_RootOrder: 34
+  m_RootOrder: 38
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1001 &715229822
 PrefabInstance:
@@ -10622,7 +10580,7 @@ Transform:
   - {fileID: 1298811679}
   - {fileID: 545076196}
   m_Father: {fileID: 0}
-  m_RootOrder: 62
+  m_RootOrder: 64
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &785228433
 GameObject:
@@ -12091,7 +12049,6 @@ GameObject:
   - component: {fileID: 888414159}
   - component: {fileID: 888414158}
   - component: {fileID: 888414157}
-  - component: {fileID: 888414160}
   m_Layer: 0
   m_Name: SphereTL21
   m_TagString: Untagged
@@ -12171,25 +12128,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 888414155}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &888414160
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 888414155}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75bc855a8315d483482f272c00e0247f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultMaterial: {fileID: 2100000, guid: f5b76796247e64830ae57ea1dd1edc97, type: 2}
-  redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  greenMaterial: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
-  amberMaterial: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
-  blackMaterial: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
-  currentMaterial: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
-  timer: 0
 --- !u!1 &888545329
 GameObject:
   m_ObjectHideFlags: 0
@@ -12382,7 +12320,7 @@ Transform:
   - {fileID: 2068516617}
   - {fileID: 804681696}
   m_Father: {fileID: 0}
-  m_RootOrder: 46
+  m_RootOrder: 47
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!114 &896396292
 MonoBehaviour:
@@ -12454,22 +12392,17 @@ MonoBehaviour:
   path: {fileID: 0}
   path1: {fileID: 0}
   path2: {fileID: 0}
-  trafficLight: {fileID: 0}
   maxSteerAngle: 45
   turnSpeed: 5
-  WheelFL: {fileID: 1120713199}
-  WheelFR: {fileID: 1464935785}
+  wheelColliderFrontLeft: {fileID: 0}
+  wheelColliderFrontRight: {fileID: 0}
   maxMotorTorque: 80
   maxBrakeTorque: 100
   currentSpeed: 0
   maxSpeed: 100
   centerOfMass: {x: 0, y: 0, z: 0}
-  VEHICLE: {fileID: 0}
-  material2: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  m: {fileID: 0}
-  range1: 2
-  range2: 12
-  n: {fileID: 0}
+  redMaterial: {fileID: 0}
+  trafficLight: {fileID: 0}
   nodes: []
   currentNode: 0
   carCount: {fileID: 0}
@@ -13277,18 +13210,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: newpath7
       objectReference: {fileID: 0}
-    - target: {fileID: 4097052595813966, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -31.76
-      objectReference: {fileID: 0}
-    - target: {fileID: 4097052595813966, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -2.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4097052595813966, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 18.52
-      objectReference: {fileID: 0}
     - target: {fileID: 4877386250703692, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
       propertyPath: m_LocalPosition.x
       value: -27.17
@@ -13320,6 +13241,18 @@ PrefabInstance:
     - target: {fileID: 4497692856497596, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
       propertyPath: m_LocalPosition.y
       value: 9.34
+      objectReference: {fileID: 0}
+    - target: {fileID: 4097052595813966, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -31.76
+      objectReference: {fileID: 0}
+    - target: {fileID: 4097052595813966, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4097052595813966, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 18.52
       objectReference: {fileID: 0}
     - target: {fileID: 4847752757314654, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
       propertyPath: m_LocalPosition.z
@@ -13489,13 +13422,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf20f1e502643436fbfaf9df5b5d7abc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trafficlight1: {fileID: 0}
-  trafficlight2: {fileID: 0}
   waitcars1: {fileID: 0}
   waitcars2: {fileID: 0}
   waitcars3: {fileID: 0}
-  m: {fileID: 0}
-  n: {fileID: 0}
+  trafficLights: []
   waiting: 0
   yes: 0
 --- !u!4 &942803147
@@ -13524,22 +13454,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5750edc0becf7446694e80b8394b69e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trafficlight1: {fileID: 0}
-  trafficlight11: {fileID: 0}
-  trafficlight2: {fileID: 0}
-  trafficlight21: {fileID: 0}
-  trafficlight3: {fileID: 0}
-  trafficlight31: {fileID: 0}
-  trafficlight4: {fileID: 0}
-  trafficlight41: {fileID: 0}
-  m: {fileID: 0}
-  m1: {fileID: 0}
-  n: {fileID: 0}
-  n1: {fileID: 0}
-  u: {fileID: 0}
-  u1: {fileID: 0}
-  v: {fileID: 0}
-  v1: {fileID: 0}
+  trafficLights: []
 --- !u!1 &942955509
 GameObject:
   m_ObjectHideFlags: 0
@@ -15080,9 +14995,6 @@ GameObject:
   - component: {fileID: 1033400379}
   - component: {fileID: 1033400378}
   - component: {fileID: 1033400377}
-  - component: {fileID: 1033400381}
-  - component: {fileID: 1033400380}
-  - component: {fileID: 1033400382}
   m_Layer: 0
   m_Name: SphereTL11
   m_TagString: Untagged
@@ -15162,63 +15074,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1033400375}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &1033400380
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1033400375}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5e8f741aae4e46c980d1822a536b46a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultMaterial: {fileID: 0}
-  redMaterial: {fileID: 0}
-  greenMaterial: {fileID: 0}
-  amberMaterial: {fileID: 0}
-  blackMaterial: {fileID: 0}
-  currentMaterial: {fileID: 0}
-  timer: 0
-  timerMax: 0
---- !u!114 &1033400381
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1033400375}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5e8f741aae4e46c980d1822a536b46a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultMaterial: {fileID: 2100000, guid: f5b76796247e64830ae57ea1dd1edc97, type: 2}
-  redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  greenMaterial: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
-  amberMaterial: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
-  blackMaterial: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
-  currentMaterial: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
-  timer: 0
-  timerMax: 0
---- !u!114 &1033400382
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1033400375}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f25e5609b87e84522bbea6235129ba8c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  greenMaterial: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
-  blackMaterial: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
-  currentMaterial: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
-  timer: 0
-  timerMax: 0
 --- !u!1 &1039736809
 GameObject:
   m_ObjectHideFlags: 0
@@ -16470,7 +16325,6 @@ GameObject:
   - component: {fileID: 1118677408}
   - component: {fileID: 1118677407}
   - component: {fileID: 1118677406}
-  - component: {fileID: 1118677409}
   m_Layer: 0
   m_Name: SphereTL31
   m_TagString: Untagged
@@ -16550,23 +16404,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1118677404}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &1118677409
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1118677404}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a69b891c826144f76af47d754fcb855b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  greenMaterial: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
-  amberMaterial: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
-  blackMaterial: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
-  currentMaterial: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
 --- !u!1 &1120713197
 GameObject:
   m_ObjectHideFlags: 0
@@ -17049,7 +16886,7 @@ Transform:
   m_LocalScale: {x: 114.31198, y: -0.98071855, z: 99.21407}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 50
+  m_RootOrder: 51
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!146 &1148462340 stripped
 WheelCollider:
@@ -17069,7 +16906,6 @@ GameObject:
   - component: {fileID: 1148753345}
   - component: {fileID: 1148753344}
   - component: {fileID: 1148753343}
-  - component: {fileID: 1148753346}
   m_Layer: 0
   m_Name: SphereTL3
   m_TagString: Untagged
@@ -17149,23 +16985,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1148753341}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &1148753346
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1148753341}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b76693c24565470da8774f482b91b2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  greenMaterial: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
-  amberMaterial: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
-  blackMaterial: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
-  currentMaterial: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
 --- !u!1 &1152229964
 GameObject:
   m_ObjectHideFlags: 0
@@ -18473,10 +18292,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   car1: {fileID: 54280346119316502, guid: d2d21d8010c1c40e3a775968e254b2de, type: 3}
-  car2: {fileID: 0}
   car3: {fileID: 54530616890679596, guid: 1033c1a7523064cd79e138342dd09237, type: 3}
   spawnSpot1: {x: -53.17, y: 11.6, z: 16.12}
-  spawnSpot2: {x: -37.85355, y: 11.29, z: 11.8443}
   spawnSpot3: {x: -51.8, y: 11.29, z: 10.4}
 --- !u!4 &1212612604
 Transform:
@@ -19227,19 +19044,20 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1252727316}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5e8f741aae4e46c980d1822a536b46a, type: 3}
+  m_Script: {fileID: 11500000, guid: 32b828f238dc02c4aa7c05633187e86a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultMaterial: {fileID: 0}
-  redMaterial: {fileID: 0}
-  greenMaterial: {fileID: 0}
-  amberMaterial: {fileID: 0}
-  blackMaterial: {fileID: 0}
-  currentMaterial: {fileID: 0}
-  timer: 0
-  timerMax: 0
+  trafficLightId: 1
+  redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
+  amberMaterial: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
+  greenMaterial: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
+  blackMaterial: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
+  redLightObject: {fileID: 272707320}
+  amberLightObject: {fileID: 1339128195}
+  greenLightObject: {fileID: 1033400375}
+  currentLightColour: 0
 --- !u!1 &1254321210
 GameObject:
   m_ObjectHideFlags: 0
@@ -19477,22 +19295,17 @@ MonoBehaviour:
   path: {fileID: 0}
   path1: {fileID: 0}
   path2: {fileID: 0}
-  trafficLight: {fileID: 0}
   maxSteerAngle: 45
   turnSpeed: 5
-  WheelFL: {fileID: 852663173}
-  WheelFR: {fileID: 1882227719}
+  wheelColliderFrontLeft: {fileID: 0}
+  wheelColliderFrontRight: {fileID: 0}
   maxMotorTorque: 80
   maxBrakeTorque: 100
   currentSpeed: 0
   maxSpeed: 100
   centerOfMass: {x: 0, y: 0, z: 0}
-  VEHICLE: {fileID: 0}
-  material2: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  m: {fileID: 0}
-  range1: 2
-  range2: 12
-  n: {fileID: 0}
+  redMaterial: {fileID: 0}
+  trafficLight: {fileID: 0}
   nodes: []
   currentNode: 0
   carCount: {fileID: 0}
@@ -19537,7 +19350,7 @@ Transform:
   - {fileID: 2119407100}
   - {fileID: 1855886123}
   m_Father: {fileID: 0}
-  m_RootOrder: 40
+  m_RootOrder: 44
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1266604622
 GameObject:
@@ -20331,7 +20144,7 @@ Transform:
   - {fileID: 215733700}
   - {fileID: 20021483}
   m_Father: {fileID: 0}
-  m_RootOrder: 60
+  m_RootOrder: 62
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1298811678
 GameObject:
@@ -20684,12 +20497,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   car1: {fileID: 54329891447940280, guid: 389154cd7472f41a7b5ad5e90e564a2b, type: 3}
-  car2: {fileID: 0}
   car3: {fileID: 54162081345283232, guid: 14eab376b0a144867a1e547c112cebfe, type: 3}
   spawnSpot1: {x: 22.8, y: 13.1, z: 3.3}
-  spawnSpot2: {x: 0, y: 0, z: 0}
   spawnSpot3: {x: 23, y: 11.17, z: -1.4}
-  carGenerator: 0
+  carTypeSwitch: 0
 --- !u!4 &1321794936
 Transform:
   m_ObjectHideFlags: 0
@@ -20759,18 +20570,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: path0
       objectReference: {fileID: 0}
-    - target: {fileID: 4097052595813966, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -29.92
-      objectReference: {fileID: 0}
-    - target: {fileID: 4097052595813966, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -2.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4097052595813966, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 15.01
-      objectReference: {fileID: 0}
     - target: {fileID: 4877386250703692, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
       propertyPath: m_LocalPosition.x
       value: -26.14
@@ -20806,6 +20605,18 @@ PrefabInstance:
     - target: {fileID: 4497692856497596, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
       propertyPath: m_LocalPosition.y
       value: -2.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4097052595813966, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -29.92
+      objectReference: {fileID: 0}
+    - target: {fileID: 4097052595813966, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4097052595813966, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 15.01
       objectReference: {fileID: 0}
     - target: {fileID: 4847752757314654, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
       propertyPath: m_LocalPosition.z
@@ -22789,6 +22600,7 @@ GameObject:
   - component: {fileID: 1446248153}
   - component: {fileID: 1446248152}
   - component: {fileID: 1446248151}
+  - component: {fileID: 1446248155}
   m_Layer: 0
   m_Name: TrafficLight3
   m_TagString: Untagged
@@ -22869,6 +22681,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 135
   m_LocalEulerAnglesHint: {x: -30, y: 180, z: 0}
+--- !u!114 &1446248155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1446248150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32b828f238dc02c4aa7c05633187e86a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trafficLightId: 3
+  redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
+  amberMaterial: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
+  greenMaterial: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
+  blackMaterial: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
+  redLightObject: {fileID: 1148753341}
+  amberLightObject: {fileID: 2075642695}
+  greenLightObject: {fileID: 1118677404}
+  currentLightColour: 0
 --- !u!1 &1453214434
 GameObject:
   m_ObjectHideFlags: 0
@@ -23745,6 +23578,7 @@ GameObject:
   - component: {fileID: 1502594123}
   - component: {fileID: 1502594122}
   - component: {fileID: 1502594121}
+  - component: {fileID: 1502594125}
   m_Layer: 0
   m_Name: TrafficLight2
   m_TagString: Untagged
@@ -23825,6 +23659,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 138
   m_LocalEulerAnglesHint: {x: -5, y: 270, z: 0}
+--- !u!114 &1502594125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1502594120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32b828f238dc02c4aa7c05633187e86a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trafficLightId: 2
+  redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
+  amberMaterial: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
+  greenMaterial: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
+  blackMaterial: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
+  redLightObject: {fileID: 1908001069}
+  amberLightObject: {fileID: 1387098567}
+  greenLightObject: {fileID: 888414155}
+  currentLightColour: 0
 --- !u!1001 &1508901409
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25230,14 +25085,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: path (7)
       objectReference: {fileID: 0}
-    - target: {fileID: 4097052595813966, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -21.59
-      objectReference: {fileID: 0}
-    - target: {fileID: 4097052595813966, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 14.11
-      objectReference: {fileID: 0}
     - target: {fileID: 4877386250703692, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
       propertyPath: m_LocalPosition.x
       value: -18.66
@@ -25261,6 +25108,14 @@ PrefabInstance:
     - target: {fileID: 4497692856497596, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
       propertyPath: m_LocalPosition.z
       value: 22.62
+      objectReference: {fileID: 0}
+    - target: {fileID: 4097052595813966, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -21.59
+      objectReference: {fileID: 0}
+    - target: {fileID: 4097052595813966, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 14.11
       objectReference: {fileID: 0}
     - target: {fileID: 4847752757314654, guid: 9a8a14e3a96d40a43ad2e5e7e0838d12, type: 3}
       propertyPath: m_LocalPosition.z
@@ -25842,7 +25697,7 @@ Transform:
   - {fileID: 1438801312}
   - {fileID: 1612747159}
   m_Father: {fileID: 0}
-  m_RootOrder: 37
+  m_RootOrder: 42
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1667292367
 GameObject:
@@ -26580,8 +26435,6 @@ GameObject:
   - component: {fileID: 1732710676}
   - component: {fileID: 1732710675}
   - component: {fileID: 1732710674}
-  - component: {fileID: 1732710678}
-  - component: {fileID: 1732710677}
   m_Layer: 0
   m_Name: SphereTL4
   m_TagString: Untagged
@@ -26661,40 +26514,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1732710672}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &1732710677
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1732710672}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5902268c555574160af83e350ac0cd5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  redMaterial: {fileID: 0}
-  greenMaterial: {fileID: 0}
-  amberMaterial: {fileID: 0}
-  blackMaterial: {fileID: 0}
-  currrentMaterial: {fileID: 0}
---- !u!114 &1732710678
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1732710672}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5902268c555574160af83e350ac0cd5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  greenMaterial: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
-  amberMaterial: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
-  blackMaterial: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
-  currrentMaterial: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
 --- !u!1 &1734317044
 GameObject:
   m_ObjectHideFlags: 0
@@ -29803,7 +29622,6 @@ GameObject:
   - component: {fileID: 1908001073}
   - component: {fileID: 1908001072}
   - component: {fileID: 1908001071}
-  - component: {fileID: 1908001074}
   m_Layer: 0
   m_Name: SphereTL2
   m_TagString: Untagged
@@ -29883,25 +29701,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1908001069}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &1908001074
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1908001069}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bdf9c00c848943f79d0a51fff4e1374, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultMaterial: {fileID: 2100000, guid: f5b76796247e64830ae57ea1dd1edc97, type: 2}
-  redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  greenMaterial: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
-  amberMaterial: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
-  blackMaterial: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
-  currentMaterial: {fileID: 2100000, guid: 5ab49c2f70b6cd646bcfe7a208908f12, type: 2}
-  timer: 0
 --- !u!1 &1924013064
 GameObject:
   m_ObjectHideFlags: 0
@@ -30726,7 +30525,7 @@ Transform:
   m_Children:
   - {fileID: 931275463}
   m_Father: {fileID: 0}
-  m_RootOrder: 48
+  m_RootOrder: 49
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1949120503
 GameObject:
@@ -31532,7 +31331,7 @@ Transform:
   - {fileID: 2087132899}
   - {fileID: 87035817}
   m_Father: {fileID: 0}
-  m_RootOrder: 51
+  m_RootOrder: 52
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2004530386
 GameObject:
