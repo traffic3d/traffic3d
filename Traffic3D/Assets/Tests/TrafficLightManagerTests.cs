@@ -34,7 +34,7 @@ public class TrafficLightManagerTests
 
         yield return null;
 
-        foreach(TrafficLight trafficLight in trafficLightManager.GetTrafficLights())
+        foreach (TrafficLight trafficLight in trafficLightManager.GetTrafficLights())
         {
             Assert.AreEqual(TrafficLight.LightColour.RED, trafficLight.GetCurrentLightColour());
         }
@@ -44,64 +44,22 @@ public class TrafficLightManagerTests
     }
 
     [UnityTest]
-    public IEnumerator TrafficLightSecondEventTest()
+    public IEnumerator TrafficLightFireEventTest()
     {
 
+        DisableLoops();
         TrafficLightManager trafficLightManager = (TrafficLightManager)GameObject.FindObjectOfType(typeof(TrafficLightManager));
 
-        trafficLightManager.StartCoroutine(trafficLightManager.SecondEvent());
+        foreach (int i in trafficLightManager.demoOrder)
+        {
 
-        yield return null;
+            trafficLightManager.StartCoroutine(trafficLightManager.FireEvent(i));
 
-        CheckTrafficLightIsGreen(1);
+            yield return null;
 
-        trafficLightManager.StopAllCoroutines();
+            CheckTrafficLightIsGreen(i);
 
-    }
-
-    [UnityTest]
-    public IEnumerator TrafficLightThirdEventTest()
-    {
-
-        TrafficLightManager trafficLightManager = (TrafficLightManager)GameObject.FindObjectOfType(typeof(TrafficLightManager));
-
-        trafficLightManager.StartCoroutine(trafficLightManager.ThirdEvent());
-
-        yield return null;
-
-        CheckTrafficLightIsGreen(3);
-
-        trafficLightManager.StopAllCoroutines();
-
-    }
-
-    [UnityTest]
-    public IEnumerator TrafficLightFourthEventTest()
-    {
-
-        TrafficLightManager trafficLightManager = (TrafficLightManager)GameObject.FindObjectOfType(typeof(TrafficLightManager));
-
-        trafficLightManager.StartCoroutine(trafficLightManager.FourthEvent());
-
-        yield return null;
-
-        CheckTrafficLightIsGreen(2);
-
-        trafficLightManager.StopAllCoroutines();
-
-    }
-
-    [UnityTest]
-    public IEnumerator TrafficLightFifthEventTest()
-    {
-
-        TrafficLightManager trafficLightManager = (TrafficLightManager)GameObject.FindObjectOfType(typeof(TrafficLightManager));
-
-        trafficLightManager.StartCoroutine(trafficLightManager.FifthEvent());
-
-        yield return null;
-
-        CheckTrafficLightIsGreen(4);
+        }
 
         trafficLightManager.StopAllCoroutines();
 

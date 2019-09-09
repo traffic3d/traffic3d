@@ -19,9 +19,12 @@ public class TrafficLightManager : MonoBehaviour
 
     public TrafficLight[] trafficLights;
 
+    public int[] demoOrder;
+
     void Start()
     {
         trafficLights = GameObject.FindObjectsOfType<TrafficLight>();
+        demoOrder = new int[4] { 1, 3, 2, 4 };
     }
 
     public void RunDemo()
@@ -34,10 +37,10 @@ public class TrafficLightManager : MonoBehaviour
         while (true)
         {
             yield return StartCoroutine(FirstEvent());
-            yield return StartCoroutine(SecondEvent());
-            yield return StartCoroutine(ThirdEvent());
-            yield return StartCoroutine(FourthEvent());
-            yield return StartCoroutine(FifthEvent());
+            foreach(int i in demoOrder)
+            {
+                yield return StartCoroutine(FireEvent(i));
+            }
         }
     }
 
@@ -48,27 +51,9 @@ public class TrafficLightManager : MonoBehaviour
         yield return new WaitForSeconds(200);
     }
 
-    public IEnumerator SecondEvent()
+    public IEnumerator FireEvent(int trafficLightId)
     {
-        SetTrafficLightToGreen(1);
-        yield return new WaitForSeconds(19);
-    }
-
-    public IEnumerator ThirdEvent()
-    {
-        SetTrafficLightToGreen(3);
-        yield return new WaitForSeconds(19);
-    }
-
-    public IEnumerator FourthEvent()
-    {
-        SetTrafficLightToGreen(2);
-        yield return new WaitForSeconds(19);
-    }
-
-    public IEnumerator FifthEvent()
-    {
-        SetTrafficLightToGreen(4);
+        SetTrafficLightToGreen(trafficLightId);
         yield return new WaitForSeconds(19);
     }
 
