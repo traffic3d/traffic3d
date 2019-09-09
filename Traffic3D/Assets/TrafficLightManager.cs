@@ -21,14 +21,15 @@ public class TrafficLightManager : MonoBehaviour
 
     void Start()
     {
-
         trafficLights = GameObject.FindObjectsOfType<TrafficLight>();
-
-        StartCoroutine(MainLoop());
-
     }
 
-    public IEnumerator MainLoop()
+    public void RunDemo()
+    {
+        StartCoroutine(DemoLoop());
+    }
+
+    public IEnumerator DemoLoop()
     {
         while (true)
         {
@@ -42,6 +43,7 @@ public class TrafficLightManager : MonoBehaviour
 
     public IEnumerator FirstEvent()
     {
+        yield return new WaitForSeconds(1);
         SetAllToRed();
         yield return new WaitForSeconds(200);
     }

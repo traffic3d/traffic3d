@@ -178,16 +178,16 @@ public class VehicleEngine7 : MonoBehaviour
         if (currentNode == nodes.Count - 1)
         {
 
-            TrafficLightManagerWithAI.IncrementDensityCount1();
+            PythonManager.IncrementDensityCount1();
             endpos = transform.position;
             distancee = Vector3.Distance(startpos, endpos);
             t2 = (Time.time - t1);
             speedd = (distancee / t2);
-            TrafficLightManagerWithAI.speedlist.Add(speedd);
+            PythonManager.speedlist.Add(speedd);
 
             Destroy(this.gameObject);
             CarFactoryCounter1.DecrementCarCount();
-            TrafficLightManagerWithAI.IncrementRewardCount();
+            PythonManager.IncrementRewardCount();
 
             OverallCarCounter.IncrementOverallCarCount();
 

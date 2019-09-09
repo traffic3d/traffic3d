@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,28 +7,13 @@ using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
 
-public class TrafficLightManagerWithAI : MonoBehaviour
+public class PythonManager : MonoBehaviour
 {
-
-    private const int port = 13000;
-    byte[] bytes = new byte[256];
-    public Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
-    public GameObject waitcars1;
-    public GameObject waitcars2;
-    public GameObject waitcars3;
-
-    public TrafficLight[] trafficLights;
-
-    public bool waiting = false;
 
     public static int shotCount = 0;
     public static int rewCount = 0;
 
     public static int finalrew = 0;
-
-    public bool yes = false;
-    List<GameObject> mylist = new List<GameObject>();
 
     public static int densityCount1;
     public static double densityPerkm;
@@ -38,46 +24,37 @@ public class TrafficLightManagerWithAI : MonoBehaviour
 
     void Start()
     {
-
-        trafficLights = GameObject.FindObjectsOfType<TrafficLight>();
-
-        socket.Connect("localhost", port);
-
-        StartCoroutine(MainLoop());
-
+        if (SocketManager.GetInstance().Connect())
+        {
+            StartCoroutine(MainLoop());
+        }
+        else
+        {
+            TrafficLightManager.GetInstance().RunDemo();
+        }
     }
-
 
     public IEnumerator MainLoop()
     {
-
+        yield return StartCoroutine(Reset());
         while (true)
         {
-            yield return StartCoroutine(Reset());
             yield return StartCoroutine(TakeScreenshot());
             yield return StartCoroutine(SendScreenshot());
             yield return StartCoroutine(GetAction());
-            yield return StartCoroutine(WaitTenSeconds());
+            yield return StartCoroutine(Wait20Seconds());
             yield return StartCoroutine(CalculateDensity());
             yield return StartCoroutine(SendRewards());
-
-
         }
-
     }
 
     public IEnumerator Reset()
     {
-        if (waiting == false)
-        {
-            SetAllToRed();
-
-            yield return new WaitForSeconds(20);
-            Time.timeScale = 0;
-            waiting = true;
-        }
+        yield return new WaitForSeconds(1);
+        TrafficLightManager.GetInstance().SetAllToRed();
+        yield return new WaitForSeconds(20);
+        Time.timeScale = 0;
     }
-
 
     public IEnumerator TakeScreenshot()
     {
@@ -90,58 +67,36 @@ public class TrafficLightManagerWithAI : MonoBehaviour
         }
 
         ScreenCapture.CaptureScreenshot(screenshotPath + "/shot" + shotCount + ".png");
-
         yield return null;
     }
 
     public IEnumerator SendScreenshot()
     {
         byte[] msg = Encoding.UTF8.GetBytes("shot" + shotCount + ".png");
-        socket.Send(msg);
+        SocketManager.GetInstance().Send(msg);
         yield return null;
 
     }
 
     public IEnumerator GetAction()
     {
-        socket.Receive(bytes);
+        byte[] bytes = new byte[125];
 
-        int trafficLightId = int.Parse(Encoding.UTF8.GetString(bytes));
+        SocketManager.GetInstance().Receive(bytes);
 
-        SetAllToRed();
+        int trafficLightId = int.Parse(Encoding.UTF8.GetString(bytes)) + 1;
+
+        TrafficLightManager.GetInstance().SetAllToRed();
         Time.timeScale = 1;
-        yield return new WaitForSeconds(6);
-        SetTrafficLightToGreen(trafficLightId);
+        yield return new WaitForSeconds(10);
+        TrafficLightManager.GetInstance().SetTrafficLightToGreen(trafficLightId);
 
         yield return null;
     }
 
-    public void SetTrafficLightToGreen(int id)
+    public IEnumerator Wait20Seconds()
     {
-        foreach (TrafficLight trafficLight in trafficLights)
-        {
-            if (trafficLight.GetTrafficLightId() == id)
-            {
-                trafficLight.SetColour(TrafficLight.LightColour.GREEN);
-            }
-            else
-            {
-                trafficLight.SetColour(TrafficLight.LightColour.RED);
-            }
-        }
-    }
-
-    public void SetAllToRed()
-    {
-        foreach (TrafficLight trafficLight in trafficLights)
-        {
-            trafficLight.SetColour(TrafficLight.LightColour.RED);
-        }
-    }
-
-    public IEnumerator WaitTenSeconds()
-    {
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(20);
 
     }
 
@@ -165,40 +120,38 @@ public class TrafficLightManagerWithAI : MonoBehaviour
     public IEnumerator SendRewards()
     {
 
-
-
         GetRewardCount();
+
+        List<GameObject> waitingCars = new List<GameObject>();
 
         GameObject[] waitcars1 = (GameObject.FindGameObjectsWithTag("hap"));
         foreach (GameObject obj in waitcars1)
         {
-            if (!mylist.Contains(obj))
+            if (!waitingCars.Contains(obj))
             {
-                mylist.Add(obj);
+                waitingCars.Add(obj);
             }
         }
 
         GameObject[] waitcars2 = (GameObject.FindGameObjectsWithTag("car"));
         foreach (GameObject obje in waitcars2)
         {
-            if (!mylist.Contains(obje))
+            if (!waitingCars.Contains(obje))
             {
-                mylist.Add(obje);
+                waitingCars.Add(obje);
             }
         }
 
-
-
-        finalrew = (rewCount - mylist.Count);
+        finalrew = (rewCount - waitingCars.Count);
 
         System.IO.File.AppendAllText("truerewards.csv", finalrew.ToString() + ",");
         System.IO.File.AppendAllText("throughput.csv", rewCount.ToString() + ",");
 
         byte[] msg1 = Encoding.UTF8.GetBytes("" + finalrew);
-        socket.Send(msg1);
+        SocketManager.GetInstance().Send(msg1);
         ResetRewardCount();
 
-        mylist.Clear();
+        waitingCars.Clear();
         yield return null;
     }
 
@@ -206,7 +159,6 @@ public class TrafficLightManagerWithAI : MonoBehaviour
     {
         return rewCount;
     }
-
 
     public static void IncrementRewardCount()
     {
@@ -218,12 +170,10 @@ public class TrafficLightManagerWithAI : MonoBehaviour
         rewCount = 0;
     }
 
-
     public static int GetDensityCount1()
     {
         return densityCount1;
     }
-
 
     public static void IncrementDensityCount1()
     {

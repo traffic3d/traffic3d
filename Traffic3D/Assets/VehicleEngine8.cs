@@ -170,7 +170,7 @@ public class VehicleEngine8 : MonoBehaviour
 
             Destroy(this.gameObject);
             CarFactoryCounter2.DecrementCarCount();
-            TrafficLightManagerWithAI.IncrementRewardCount();
+            PythonManager.IncrementRewardCount();
 
             //to get the generated car count
             OverallCarCounter.IncrementOverallCarCount();
