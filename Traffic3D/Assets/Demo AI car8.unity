@@ -3304,6 +3304,27 @@ MonoBehaviour:
   - {fileID: 1007368776}
   - {fileID: 1618179732}
   currentLightColour: 0
+--- !u!114 &234100399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 234100394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32b828f238dc02c4aa7c05633187e86a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trafficLightId: 4
+  redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
+  amberMaterial: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
+  greenMaterial: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
+  blackMaterial: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
+  redLightObject: {fileID: 1732710672}
+  amberLightObject: {fileID: 1729275186}
+  greenLightObject: {fileID: 574275521}
+  currentLightColour: 0
 --- !u!1 &236561311
 GameObject:
   m_ObjectHideFlags: 0
@@ -9638,6 +9659,7 @@ Transform:
   - {fileID: 31497121}
   m_Father: {fileID: 0}
   m_RootOrder: 41
+  m_RootOrder: 38
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1001 &715229822
 PrefabInstance:
@@ -13278,6 +13300,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf20f1e502643436fbfaf9df5b5d7abc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waitcars1: {fileID: 0}
+  waitcars2: {fileID: 0}
+  waitcars3: {fileID: 0}
+  trafficLights: []
+  waiting: 0
+  yes: 0
 --- !u!4 &942803147
 Transform:
   m_ObjectHideFlags: 0
@@ -13306,6 +13334,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trafficLights: []
   demoOrder: 
+  trafficLights: []
 --- !u!1 &942955509
 GameObject:
   m_ObjectHideFlags: 0
@@ -18836,6 +18865,15 @@ MonoBehaviour:
   - {fileID: 1152229965}
   - {fileID: 888545330}
   currentLightColour: 0
+  trafficLightId: 1
+  redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
+  amberMaterial: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
+  greenMaterial: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
+  blackMaterial: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
+  redLightObject: {fileID: 272707320}
+  amberLightObject: {fileID: 1339128195}
+  greenLightObject: {fileID: 1033400375}
+  currentLightColour: 0
 --- !u!1 &1254321210
 GameObject:
   m_ObjectHideFlags: 0
@@ -22464,6 +22502,27 @@ MonoBehaviour:
   - {fileID: 1410567156}
   - {fileID: 1127525655}
   currentLightColour: 0
+--- !u!114 &1446248155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1446248150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32b828f238dc02c4aa7c05633187e86a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trafficLightId: 3
+  redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
+  amberMaterial: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
+  greenMaterial: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
+  blackMaterial: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
+  redLightObject: {fileID: 1148753341}
+  amberLightObject: {fileID: 2075642695}
+  greenLightObject: {fileID: 1118677404}
+  currentLightColour: 0
 --- !u!1 &1453214434
 GameObject:
   m_ObjectHideFlags: 0
@@ -23445,6 +23504,27 @@ MonoBehaviour:
   stopNodes:
   - {fileID: 1461020449}
   - {fileID: 1103265016}
+  currentLightColour: 0
+--- !u!114 &1502594125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1502594120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32b828f238dc02c4aa7c05633187e86a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trafficLightId: 2
+  redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
+  amberMaterial: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
+  greenMaterial: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
+  blackMaterial: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
+  redLightObject: {fileID: 1908001069}
+  amberLightObject: {fileID: 1387098567}
+  greenLightObject: {fileID: 888414155}
   currentLightColour: 0
 --- !u!1001 &1508901409
 PrefabInstance:
@@ -25369,6 +25449,7 @@ Transform:
   - {fileID: 1612747159}
   m_Father: {fileID: 0}
   m_RootOrder: 43
+  m_RootOrder: 42
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1667292367
 GameObject:
