@@ -9659,7 +9659,6 @@ Transform:
   - {fileID: 31497121}
   m_Father: {fileID: 0}
   m_RootOrder: 41
-  m_RootOrder: 38
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1001 &715229822
 PrefabInstance:
@@ -13300,12 +13299,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf20f1e502643436fbfaf9df5b5d7abc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waitcars1: {fileID: 0}
-  waitcars2: {fileID: 0}
-  waitcars3: {fileID: 0}
-  trafficLights: []
-  waiting: 0
-  yes: 0
 --- !u!4 &942803147
 Transform:
   m_ObjectHideFlags: 0
@@ -25449,7 +25442,6 @@ Transform:
   - {fileID: 1612747159}
   m_Father: {fileID: 0}
   m_RootOrder: 43
-  m_RootOrder: 42
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1667292367
 GameObject:
