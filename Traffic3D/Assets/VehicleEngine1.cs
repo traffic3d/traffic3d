@@ -4,9 +4,7 @@ using UnityEngine;
 public class VehicleEngine1 : MonoBehaviour
 {
 
-    public Transform path;
-    public Transform path1;
-    public Transform path2;
+    public Path path;
 
     public float maxSteerAngle = 45f;
     public float turnSpeed = 5f;
@@ -21,9 +19,6 @@ public class VehicleEngine1 : MonoBehaviour
     public Vector3 centerOfMass;
 
     public Material redMaterial;
-    public TrafficLight trafficLight = null;
-
-    public List<Transform> nodes;
 
     public Transform currentNode;
     public int currentNodeNumber;
@@ -37,28 +32,15 @@ public class VehicleEngine1 : MonoBehaviour
     void Start()
     {
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
-        path1 = GameObject.Find("mypathye").GetComponent<Transform>();
-        path2 = GameObject.Find("mypathy1").GetComponent<Transform>();
-        trafficLight = TrafficLightManager.GetInstance().GetTrafficLight(3);
-
-        path = path1;
 
         startTime = Time.time;
+    }
 
-        Transform[] pathTransforms = path.GetComponentsInChildren<Transform>();
-        nodes = new List<Transform>();
-
-        for (int i = 0; i < pathTransforms.Length; i++)
-        {
-            if (pathTransforms[i] != path.transform)
-            {
-                nodes.Add(pathTransforms[i]);
-            }
-        }
-
+    public void SetPath(Path path)
+    {
+        this.path = path;
         currentNodeNumber = 0;
-        currentNode = nodes[currentNodeNumber];
-
+        currentNode = path.nodes[currentNodeNumber];
     }
 
     public void OnCollisionEnter(Collision other)
@@ -71,6 +53,10 @@ public class VehicleEngine1 : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (path == null)
+        {
+            return;
+        }
         ApplySteer();
         Drive(1);
         CheckWaypointDistance();
@@ -80,10 +66,12 @@ public class VehicleEngine1 : MonoBehaviour
         GoIfNotRed();
         GoIfSecondToLastNode();
     }
-    
+
     private void GoIfNotRed()
     {
-        if (!trafficLight.IsCurrentLightColour(TrafficLight.LightColour.RED))
+        TrafficLight trafficLight = TrafficLightManager.GetInstance().GetTrafficLightFromStopNode(currentNode);
+
+        if (trafficLight == null || !trafficLight.IsCurrentLightColour(TrafficLight.LightColour.RED))
         {
             wheelColliderFrontLeft.motorTorque = maxMotorTorque;
             wheelColliderFrontRight.motorTorque = maxMotorTorque;
@@ -97,7 +85,7 @@ public class VehicleEngine1 : MonoBehaviour
 
         TrafficLight trafficLight = TrafficLightManager.GetInstance().GetTrafficLightFromStopNode(currentNode);
 
-        if(trafficLight != null && trafficLight.IsCurrentLightColour(TrafficLight.LightColour.RED))
+        if (trafficLight != null && trafficLight.IsCurrentLightColour(TrafficLight.LightColour.RED))
         {
             wheelColliderFrontLeft.motorTorque = 0;
             wheelColliderFrontRight.motorTorque = 0;
@@ -116,7 +104,7 @@ public class VehicleEngine1 : MonoBehaviour
 
     private void GoIfSecondToLastNode()
     {
-        if (currentNodeNumber == nodes.Count - 2)
+        if (currentNodeNumber == path.nodes.Count - 2)
         {
             wheelColliderFrontLeft.motorTorque = maxMotorTorque;
             wheelColliderFrontRight.motorTorque = maxMotorTorque;
@@ -162,10 +150,9 @@ public class VehicleEngine1 : MonoBehaviour
 
     private void Destroy()
     {
-        if (currentNodeNumber == nodes.Count - 1)
+        if (currentNodeNumber == path.nodes.Count - 1)
         {
             Destroy(this.gameObject);
-            CarFactoryCounter3.DecrementCarCount();
 
             //to get the generated car count
             OverallCarCounter.IncrementOverallCarCount();
@@ -183,7 +170,7 @@ public class VehicleEngine1 : MonoBehaviour
 
     private void NextNode()
     {
-        if (currentNodeNumber == nodes.Count - 1)
+        if (currentNodeNumber == path.nodes.Count - 1)
         {
             currentNodeNumber = 0;
             lapCounter++;
@@ -191,7 +178,7 @@ public class VehicleEngine1 : MonoBehaviour
         else
         {
             currentNodeNumber++;
-            currentNode = nodes[currentNodeNumber];
+            currentNode = path.nodes[currentNodeNumber];
         }
     }
 
