@@ -25,7 +25,8 @@ public class VehicleEngine2 : MonoBehaviour
 
     public List<Transform> nodes;
 
-    public int currentNode = 0;
+    public Transform currentNode;
+    public int currentNodeNumber;
     private int lapCounter = 0;
     private float targetSteerAngle = 0;
 
@@ -54,6 +55,9 @@ public class VehicleEngine2 : MonoBehaviour
                 nodes.Add(pathTransforms[i]);
             }
         }
+
+        currentNodeNumber = 0;
+        currentNode = nodes[currentNodeNumber];
 
     }
 
@@ -91,7 +95,10 @@ public class VehicleEngine2 : MonoBehaviour
 
     private void StopAtLineIfRedElseGo()
     {
-        if (currentNode == nodes.Count - 3 && trafficLight.IsCurrentLightColour(TrafficLight.LightColour.RED))
+
+        TrafficLight trafficLight = TrafficLightManager.GetInstance().GetTrafficLightFromStopNode(currentNode);
+
+        if (trafficLight != null && trafficLight.IsCurrentLightColour(TrafficLight.LightColour.RED))
         {
             wheelColliderFrontLeft.motorTorque = 0;
             wheelColliderFrontRight.motorTorque = 0;
@@ -111,7 +118,7 @@ public class VehicleEngine2 : MonoBehaviour
 
     private void GoIfSecondToLastNode()
     {
-        if (currentNode == nodes.Count - 2)
+        if (currentNodeNumber == nodes.Count - 2)
         {
             wheelColliderFrontLeft.motorTorque = maxMotorTorque;
             wheelColliderFrontRight.motorTorque = maxMotorTorque;
@@ -122,7 +129,7 @@ public class VehicleEngine2 : MonoBehaviour
 
     private void ApplySteer()
     {
-        Vector3 relativeVector = transform.InverseTransformPoint(nodes[currentNode].position);
+        Vector3 relativeVector = transform.InverseTransformPoint(currentNode.position);
         float newSteer = (relativeVector.x / relativeVector.magnitude) * maxSteerAngle;
         wheelColliderFrontLeft.steerAngle = newSteer;
         wheelColliderFrontRight.steerAngle = newSteer;
@@ -148,23 +155,15 @@ public class VehicleEngine2 : MonoBehaviour
 
     private void CheckWaypointDistance()
     {
-        if (Vector3.Distance(transform.position, nodes[currentNode].position) < 3f)
+        if (Vector3.Distance(transform.position, currentNode.position) < 3f)
         {
-            if (currentNode == nodes.Count - 1)
-            {
-                currentNode = 0;
-                lapCounter++;
-            }
-            else
-            {
-                currentNode++;
-            }
+            NextNode();
         }
     }
 
     private void Destroy()
     {
-        if (currentNode == nodes.Count - 1)
+        if (currentNodeNumber == nodes.Count - 1)
         {
             Destroy(this.gameObject);
             CarFactoryCounter3.DecrementCarCount();
@@ -181,6 +180,20 @@ public class VehicleEngine2 : MonoBehaviour
     {
         wheelColliderFrontLeft.steerAngle = Mathf.Lerp(wheelColliderFrontLeft.steerAngle, targetSteerAngle, Time.deltaTime * turnSpeed);
         wheelColliderFrontRight.steerAngle = Mathf.Lerp(wheelColliderFrontRight.steerAngle, targetSteerAngle, Time.deltaTime * turnSpeed);
+    }
+
+    private void NextNode()
+    {
+        if (currentNodeNumber == nodes.Count - 1)
+        {
+            currentNodeNumber = 0;
+            lapCounter++;
+        }
+        else
+        {
+            currentNodeNumber++;
+            currentNode = nodes[currentNodeNumber];
+        }
     }
 
 }

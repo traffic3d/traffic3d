@@ -15,6 +15,8 @@ public class TrafficLight : MonoBehaviour
     public GameObject amberLightObject;
     public GameObject greenLightObject;
 
+    public List<Transform> stopNodes;
+
     public LightColour currentLightColour = LightColour.RED;
 
     private Dictionary<LightColour, GameObject> lightObjects;
@@ -64,6 +66,16 @@ public class TrafficLight : MonoBehaviour
     public int GetTrafficLightId()
     {
         return trafficLightId;
+    }
+
+    public bool HasStopNode(Transform node)
+    {
+        return stopNodes.Contains(node);
+    }
+
+    public List<Transform> GetStopNodes()
+    {
+        return stopNodes;
     }
 
     public LightColour GetCurrentLightColour()

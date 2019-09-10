@@ -22,7 +22,8 @@ public class VehicleEngine3 : MonoBehaviour
     public TrafficLight trafficLight = null;
 
     public List<Transform> nodes;
-    public int currentNode = 0;
+    public Transform currentNode;
+    public int currentNodeNumber;
     private int lapCounter = 0;
     private float targetSteerAngle = 0;
 
@@ -67,6 +68,9 @@ public class VehicleEngine3 : MonoBehaviour
                 nodes.Add(pathTransforms[i]);
             }
         }
+
+        currentNodeNumber = 0;
+        currentNode = nodes[currentNodeNumber];
 
     }
 
@@ -131,7 +135,7 @@ public class VehicleEngine3 : MonoBehaviour
 
     private void ApplySteer()
     {
-        Vector3 relativeVector = transform.InverseTransformPoint(nodes[currentNode].position);
+        Vector3 relativeVector = transform.InverseTransformPoint(currentNode.position);
         float newSteer = (relativeVector.x / relativeVector.magnitude) * maxSteerAngle;
         wheelColliderFrontLeft.steerAngle = newSteer;
         wheelColliderFrontRight.steerAngle = newSteer;
@@ -157,23 +161,15 @@ public class VehicleEngine3 : MonoBehaviour
 
     private void CheckWaypointDistance()
     {
-        if (Vector3.Distance(transform.position, nodes[currentNode].position) < 1.5f)
+        if (Vector3.Distance(transform.position, currentNode.position) < 1.5f)
         {
-            if (currentNode == nodes.Count - 1)
-            {
-                currentNode = 0;
-                lapCounter++;
-            }
-            else
-            {
-                currentNode++;
-            }
+            NextNode();
         }
     }
 
     private void Destroy()
     {
-        if (currentNode == nodes.Count - 1)
+        if (currentNodeNumber == nodes.Count - 1)
         {
             PythonManager.IncrementDensityCount1();
             endpos = transform.position;
@@ -206,7 +202,10 @@ public class VehicleEngine3 : MonoBehaviour
 
     private void Stop()
     {
-        if (trafficLight.IsCurrentLightColour(TrafficLight.LightColour.RED) && (currentNode == nodes.Count - 3))
+
+        TrafficLight trafficLight = TrafficLightManager.GetInstance().GetTrafficLightFromStopNode(currentNode);
+
+        if (trafficLight != null && trafficLight.IsCurrentLightColour(TrafficLight.LightColour.RED))
         {
             wheelColliderFrontLeft.motorTorque = 0;
             wheelColliderFrontRight.motorTorque = 0;
@@ -220,6 +219,20 @@ public class VehicleEngine3 : MonoBehaviour
             wheelColliderFrontRight.motorTorque = maxMotorTorque;
             wheelColliderFrontLeft.brakeTorque = 0;
             wheelColliderFrontRight.brakeTorque = 0;
+        }
+    }
+
+    private void NextNode()
+    {
+        if (currentNodeNumber == nodes.Count - 1)
+        {
+            currentNodeNumber = 0;
+            lapCounter++;
+        }
+        else
+        {
+            currentNodeNumber++;
+            currentNode = nodes[currentNodeNumber];
         }
     }
 

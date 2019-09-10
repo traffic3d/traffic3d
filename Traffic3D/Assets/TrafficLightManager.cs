@@ -62,6 +62,18 @@ public class TrafficLightManager : MonoBehaviour
         return trafficLights;
     }
 
+    public TrafficLight GetTrafficLightFromStopNode(Transform node)
+    {
+        foreach (TrafficLight trafficLight in trafficLights)
+        {
+            if (trafficLight.HasStopNode(node))
+            {
+                return trafficLight;
+            }
+        }
+        return null;
+    }
+
     public TrafficLight GetTrafficLight(int id)
     {
         foreach (TrafficLight trafficLight in trafficLights)
