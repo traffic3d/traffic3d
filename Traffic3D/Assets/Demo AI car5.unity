@@ -62849,6 +62849,9 @@ MonoBehaviour:
   redLightObject: {fileID: 1908001069}
   amberLightObject: {fileID: 1387098567}
   greenLightObject: {fileID: 888414155}
+  stopNodes:
+  - {fileID: 1461020449}
+  - {fileID: 1103265016}
   currentLightColour: 0
 --- !u!1 &1503591364
 GameObject:

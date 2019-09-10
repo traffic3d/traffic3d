@@ -2950,6 +2950,9 @@ MonoBehaviour:
   redLightObject: {fileID: 1732710672}
   amberLightObject: {fileID: 1729275186}
   greenLightObject: {fileID: 574275521}
+  stopNodes:
+  - {fileID: 1007368776}
+  - {fileID: 1618179732}
   currentLightColour: 0
 --- !u!114 &234100399
 MonoBehaviour:
@@ -11710,7 +11713,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trafficLights: []
-  trafficLights: []
   demoOrder: 
 --- !u!1 &942955509
 GameObject:
@@ -15991,6 +15993,9 @@ MonoBehaviour:
   redLightObject: {fileID: 272707320}
   amberLightObject: {fileID: 1339128195}
   greenLightObject: {fileID: 1033400375}
+  stopNodes:
+  - {fileID: 1152229965}
+  - {fileID: 888545330}
   currentLightColour: 0
   trafficLightId: 1
   redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
@@ -19152,6 +19157,9 @@ MonoBehaviour:
   redLightObject: {fileID: 1148753341}
   amberLightObject: {fileID: 2075642695}
   greenLightObject: {fileID: 1118677404}
+  stopNodes:
+  - {fileID: 1410567156}
+  - {fileID: 1127525655}
   currentLightColour: 0
 --- !u!114 &1446248155
 MonoBehaviour:
@@ -19940,6 +19948,9 @@ MonoBehaviour:
   redLightObject: {fileID: 1908001069}
   amberLightObject: {fileID: 1387098567}
   greenLightObject: {fileID: 888414155}
+  stopNodes:
+  - {fileID: 1461020449}
+  - {fileID: 1103265016}
   currentLightColour: 0
 --- !u!114 &1502594125
 MonoBehaviour:

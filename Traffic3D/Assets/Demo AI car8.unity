@@ -13327,7 +13327,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trafficLights: []
   demoOrder: 
-  trafficLights: []
 --- !u!1 &942955509
 GameObject:
   m_ObjectHideFlags: 0
