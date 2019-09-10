@@ -27,8 +27,8 @@ public class TrafficLightManagerWithAITests
     public void TearDown()
     {
 
-        TrafficLightManagerWithAI.rewCount = 0;
-        TrafficLightManagerWithAI.densityCount1 = 0;
+        PythonManager.rewCount = 0;
+        PythonManager.densityCount1 = 0;
 
     }
 
@@ -36,17 +36,17 @@ public class TrafficLightManagerWithAITests
     public IEnumerator TrafficLightManagerWithAIRewCountTest()
     {
 
-        int currentCount = TrafficLightManagerWithAI.GetRewardCount();
+        int currentCount = PythonManager.GetRewardCount();
 
         currentCount++;
-        TrafficLightManagerWithAI.IncrementRewardCount();
+        PythonManager.IncrementRewardCount();
 
-        Assert.AreEqual(TrafficLightManagerWithAI.GetRewardCount(), currentCount);
+        Assert.AreEqual(PythonManager.GetRewardCount(), currentCount);
 
         currentCount = 0;
-        TrafficLightManagerWithAI.ResetRewardCount();
+        PythonManager.ResetRewardCount();
 
-        Assert.AreEqual(TrafficLightManagerWithAI.GetRewardCount(), currentCount);
+        Assert.AreEqual(PythonManager.GetRewardCount(), currentCount);
 
         yield return null;
 
@@ -56,25 +56,25 @@ public class TrafficLightManagerWithAITests
     public IEnumerator TrafficLightManagerWithAIDensityCountTest()
     {
 
-        int currentCount = TrafficLightManagerWithAI.GetDensityCount1();
+        int currentCount = PythonManager.GetDensityCount1();
 
         currentCount++;
-        TrafficLightManagerWithAI.IncrementDensityCount1();
+        PythonManager.IncrementDensityCount1();
 
-        Assert.AreEqual(TrafficLightManagerWithAI.GetDensityCount1(), currentCount);
+        Assert.AreEqual(PythonManager.GetDensityCount1(), currentCount);
 
         currentCount--;
-        TrafficLightManagerWithAI.DecrementDensityCount1();
+        PythonManager.DecrementDensityCount1();
 
-        Assert.AreEqual(TrafficLightManagerWithAI.GetDensityCount1(), currentCount);
+        Assert.AreEqual(PythonManager.GetDensityCount1(), currentCount);
 
         currentCount++;
-        TrafficLightManagerWithAI.IncrementDensityCount1();
+        PythonManager.IncrementDensityCount1();
 
         currentCount = 0;
-        TrafficLightManagerWithAI.ResetDensityCount1();
+        PythonManager.ResetDensityCount1();
 
-        Assert.AreEqual(TrafficLightManagerWithAI.GetDensityCount1(), currentCount);
+        Assert.AreEqual(PythonManager.GetDensityCount1(), currentCount);
 
         yield return null;
 

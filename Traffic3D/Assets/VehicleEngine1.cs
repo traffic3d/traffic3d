@@ -21,11 +21,12 @@ public class VehicleEngine1 : MonoBehaviour
     public Vector3 centerOfMass;
 
     public Material redMaterial;
-    public TrafficLightRed3 trafficLightRed3 = null;
+    public TrafficLight trafficLight = null;
 
     public List<Transform> nodes;
 
-    public int currentNode = 0;
+    public Transform currentNode;
+    public int currentNodeNumber;
     private int lapCounter = 0;
     private float targetSteerAngle = 0;
 
@@ -38,7 +39,7 @@ public class VehicleEngine1 : MonoBehaviour
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
         path1 = GameObject.Find("mypathye").GetComponent<Transform>();
         path2 = GameObject.Find("mypathy1").GetComponent<Transform>();
-        trafficLightRed3 = GameObject.Find("SphereTL3").GetComponent<TrafficLightRed3>();
+        trafficLight = TrafficLightManager.GetInstance().GetTrafficLight(3);
 
         path = path1;
 
@@ -55,6 +56,9 @@ public class VehicleEngine1 : MonoBehaviour
             }
         }
 
+        currentNodeNumber = 0;
+        currentNode = nodes[currentNodeNumber];
+
     }
 
     public void OnCollisionEnter(Collision other)
@@ -67,8 +71,6 @@ public class VehicleEngine1 : MonoBehaviour
 
     private void FixedUpdate()
     {
-
-
         ApplySteer();
         Drive(1);
         CheckWaypointDistance();
@@ -78,22 +80,24 @@ public class VehicleEngine1 : MonoBehaviour
         GoIfNotRed();
         GoIfSecondToLastNode();
     }
-
+    
     private void GoIfNotRed()
     {
-        if (!(trafficLightRed3.currentMaterial.color.Equals(redMaterial.color)))
+        if (!trafficLight.IsCurrentLightColour(TrafficLight.LightColour.RED))
         {
             wheelColliderFrontLeft.motorTorque = maxMotorTorque;
             wheelColliderFrontRight.motorTorque = maxMotorTorque;
             wheelColliderFrontLeft.brakeTorque = 0;
             wheelColliderFrontRight.brakeTorque = 0;
         }
-
     }
 
     private void StopAtLineIfRedElseGo()
     {
-        if (currentNode == nodes.Count - 3 && trafficLightRed3.currentMaterial.color.Equals(redMaterial.color))
+
+        TrafficLight trafficLight = TrafficLightManager.GetInstance().GetTrafficLightFromStopNode(currentNode);
+
+        if(trafficLight != null && trafficLight.IsCurrentLightColour(TrafficLight.LightColour.RED))
         {
             wheelColliderFrontLeft.motorTorque = 0;
             wheelColliderFrontRight.motorTorque = 0;
@@ -112,7 +116,7 @@ public class VehicleEngine1 : MonoBehaviour
 
     private void GoIfSecondToLastNode()
     {
-        if (currentNode == nodes.Count - 2)
+        if (currentNodeNumber == nodes.Count - 2)
         {
             wheelColliderFrontLeft.motorTorque = maxMotorTorque;
             wheelColliderFrontRight.motorTorque = maxMotorTorque;
@@ -123,7 +127,7 @@ public class VehicleEngine1 : MonoBehaviour
 
     private void ApplySteer()
     {
-        Vector3 relativeVector = transform.InverseTransformPoint(nodes[currentNode].position);
+        Vector3 relativeVector = transform.InverseTransformPoint(currentNode.position);
         float newSteer = (relativeVector.x / relativeVector.magnitude) * maxSteerAngle;
         wheelColliderFrontLeft.steerAngle = newSteer;
         wheelColliderFrontRight.steerAngle = newSteer;
@@ -149,24 +153,16 @@ public class VehicleEngine1 : MonoBehaviour
 
     private void CheckWaypointDistance()
     {
-        if (Vector3.Distance(transform.position, nodes[currentNode].position) < 3f)
+        if (Vector3.Distance(transform.position, currentNode.position) < 3f)
         {
-            if (currentNode == nodes.Count - 1)
-            {
-                currentNode = 0;
-                lapCounter++;
-            }
-            else
-            {
-                currentNode++;
-            }
+            NextNode();
         }
     }
 
 
     private void Destroy()
     {
-        if (currentNode == nodes.Count - 1)
+        if (currentNodeNumber == nodes.Count - 1)
         {
             Destroy(this.gameObject);
             CarFactoryCounter3.DecrementCarCount();
@@ -177,14 +173,26 @@ public class VehicleEngine1 : MonoBehaviour
             k = Time.time - startTime;
             System.IO.File.AppendAllText("xFourjourneyTimeLatest.csv", k.ToString() + ",");
         }
-
-
     }
 
     private void LerpToSteerAngle()
     {
         wheelColliderFrontLeft.steerAngle = Mathf.Lerp(wheelColliderFrontLeft.steerAngle, targetSteerAngle, Time.deltaTime * turnSpeed);
         wheelColliderFrontRight.steerAngle = Mathf.Lerp(wheelColliderFrontRight.steerAngle, targetSteerAngle, Time.deltaTime * turnSpeed);
+    }
+
+    private void NextNode()
+    {
+        if (currentNodeNumber == nodes.Count - 1)
+        {
+            currentNodeNumber = 0;
+            lapCounter++;
+        }
+        else
+        {
+            currentNodeNumber++;
+            currentNode = nodes[currentNodeNumber];
+        }
     }
 
 }

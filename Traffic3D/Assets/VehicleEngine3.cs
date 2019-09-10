@@ -19,10 +19,11 @@ public class VehicleEngine3 : MonoBehaviour
     public Vector3 centerOfMass;
 
     public Material redMaterial;
-    public TrafficLightRed1 trafficLightRed1 = null;
+    public TrafficLight trafficLight = null;
 
     public List<Transform> nodes;
-    public int currentNode = 0;
+    public Transform currentNode;
+    public int currentNodeNumber;
     private int lapCounter = 0;
     private float targetSteerAngle = 0;
 
@@ -48,7 +49,7 @@ public class VehicleEngine3 : MonoBehaviour
         path1 = GameObject.Find("newpath2").GetComponent<Transform>();
         path2 = GameObject.Find("newpath21").GetComponent<Transform>();
 
-        trafficLightRed1 = GameObject.Find("SphereTL1").GetComponent<TrafficLightRed1>();
+        trafficLight = TrafficLightManager.GetInstance().GetTrafficLight(1);
 
         startTime = Time.time;
 
@@ -67,6 +68,9 @@ public class VehicleEngine3 : MonoBehaviour
                 nodes.Add(pathTransforms[i]);
             }
         }
+
+        currentNodeNumber = 0;
+        currentNode = nodes[currentNodeNumber];
 
     }
 
@@ -108,7 +112,7 @@ public class VehicleEngine3 : MonoBehaviour
 
     private void GoIfNotRed()
     {
-        if (!(trafficLightRed1.currentMaterial.color.Equals(redMaterial.color)))
+        if (!trafficLight.IsCurrentLightColour(TrafficLight.LightColour.RED))
         {
             wheelColliderFrontLeft.motorTorque = maxMotorTorque;
             wheelColliderFrontRight.motorTorque = maxMotorTorque;
@@ -131,7 +135,7 @@ public class VehicleEngine3 : MonoBehaviour
 
     private void ApplySteer()
     {
-        Vector3 relativeVector = transform.InverseTransformPoint(nodes[currentNode].position);
+        Vector3 relativeVector = transform.InverseTransformPoint(currentNode.position);
         float newSteer = (relativeVector.x / relativeVector.magnitude) * maxSteerAngle;
         wheelColliderFrontLeft.steerAngle = newSteer;
         wheelColliderFrontRight.steerAngle = newSteer;
@@ -157,34 +161,26 @@ public class VehicleEngine3 : MonoBehaviour
 
     private void CheckWaypointDistance()
     {
-        if (Vector3.Distance(transform.position, nodes[currentNode].position) < 1.5f)
+        if (Vector3.Distance(transform.position, currentNode.position) < 1.5f)
         {
-            if (currentNode == nodes.Count - 1)
-            {
-                currentNode = 0;
-                lapCounter++;
-            }
-            else
-            {
-                currentNode++;
-            }
+            NextNode();
         }
     }
 
     private void Destroy()
     {
-        if (currentNode == nodes.Count - 1)
+        if (currentNodeNumber == nodes.Count - 1)
         {
-            TrafficLightManagerWithAI.IncrementDensityCount1();
+            PythonManager.IncrementDensityCount1();
             endpos = transform.position;
             distancee = Vector3.Distance(startpos, endpos);
             t2 = (Time.time - t1);
             speedd = (distancee / t2);
-            TrafficLightManagerWithAI.speedlist.Add(speedd);
+            PythonManager.speedlist.Add(speedd);
 
             Destroy(this.gameObject);
             CarFactoryCounter1.DecrementCarCount();
-            TrafficLightManagerWithAI.IncrementRewardCount();
+            PythonManager.IncrementRewardCount();
 
             OverallCarCounter.IncrementOverallCarCount();    //to get generated car number
 
@@ -206,7 +202,10 @@ public class VehicleEngine3 : MonoBehaviour
 
     private void Stop()
     {
-        if ((trafficLightRed1.currentMaterial.color.Equals(redMaterial.color)) && (currentNode == nodes.Count - 3))
+
+        TrafficLight trafficLight = TrafficLightManager.GetInstance().GetTrafficLightFromStopNode(currentNode);
+
+        if (trafficLight != null && trafficLight.IsCurrentLightColour(TrafficLight.LightColour.RED))
         {
             wheelColliderFrontLeft.motorTorque = 0;
             wheelColliderFrontRight.motorTorque = 0;
@@ -220,6 +219,20 @@ public class VehicleEngine3 : MonoBehaviour
             wheelColliderFrontRight.motorTorque = maxMotorTorque;
             wheelColliderFrontLeft.brakeTorque = 0;
             wheelColliderFrontRight.brakeTorque = 0;
+        }
+    }
+
+    private void NextNode()
+    {
+        if (currentNodeNumber == nodes.Count - 1)
+        {
+            currentNodeNumber = 0;
+            lapCounter++;
+        }
+        else
+        {
+            currentNodeNumber++;
+            currentNode = nodes[currentNodeNumber];
         }
     }
 
