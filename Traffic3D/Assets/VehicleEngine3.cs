@@ -167,9 +167,6 @@ public class VehicleEngine3 : MonoBehaviour
             Destroy(this.gameObject);
             PythonManager.IncrementRewardCount();
 
-            OverallCarCounter.IncrementOverallCarCount();    //to get generated car number
-
-            JourneyCarCounter.IncrementJourneyCarCount();
             k = (Time.time - startTime);
 
 

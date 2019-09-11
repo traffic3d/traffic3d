@@ -148,8 +148,6 @@ public class VehicleEngine6 : MonoBehaviour
 
             PythonManager.IncrementRewardCount();
 
-            OverallCarCounter.IncrementOverallCarCount();
-
             k = (Time.time - startTime);
 
             System.IO.File.AppendAllText("negjourneyTimeLatest1.csv", k.ToString() + ",");

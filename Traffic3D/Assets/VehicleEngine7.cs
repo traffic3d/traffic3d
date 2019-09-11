@@ -165,8 +165,6 @@ public class VehicleEngine7 : MonoBehaviour
             Destroy(this.gameObject);
             PythonManager.IncrementRewardCount();
 
-            OverallCarCounter.IncrementOverallCarCount();
-
             k = (Time.time - startTime);
 
             System.IO.File.AppendAllText("negjourneyTimeLatest1.csv", k.ToString() + ",");

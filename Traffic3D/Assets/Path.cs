@@ -11,6 +11,11 @@ public class Path : MonoBehaviour
 
     void Awake()
     {
+        SetNodes();
+    }
+
+    private void SetNodes()
+    {
         Transform[] pathTransforms = GetComponentsInChildren<Transform>();
         nodes = new List<Transform>();
 
@@ -26,16 +31,7 @@ public class Path : MonoBehaviour
     void OnDrawGizmosSelected()
     {
         Gizmos.color = lineColor;
-        Transform[] pathTransforms = GetComponentsInChildren<Transform>();
-        nodes = new List<Transform>();
-
-        for (int i = 0; i < pathTransforms.Length; i++)
-        {
-            if (pathTransforms[i] != transform)
-            {
-                nodes.Add(pathTransforms[i]);
-            }
-        }
+        SetNodes();
         for (int i = 0; i < nodes.Count; i++)
         {
             Vector3 currentNode = nodes[i].position;

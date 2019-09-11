@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
-public class CarFactoryTests
+public class VehicleFactoryTests
 {
 
     public const int TEST_TIME = 500;
@@ -28,8 +28,46 @@ public class CarFactoryTests
     }
 
     [UnityTest]
+    public IEnumerator CarFactoryPathTest()
+    {
+
+        VehicleFactory vehicleFactory = (VehicleFactory)GameObject.FindObjectOfType(typeof(VehicleFactory));
+
+        foreach(Path path in vehicleFactory.paths) {
+
+            vehicleFactory.SpawnVehicle(vehicleFactory.GetRandomVehicle(), path);
+
+        }
+
+        Assert.AreEqual(null, vehicleFactory.GetRandomUnusedPath());
+
+        yield return null;
+
+    }
+
+    [UnityTest]
+    public IEnumerator CarFactoryVehicleTest()
+    {
+
+        VehicleFactory vehicleFactory = (VehicleFactory)GameObject.FindObjectOfType(typeof(VehicleFactory));
+
+        foreach (Rigidbody vehicle in vehicleFactory.vehicles)
+        {
+
+            vehicleFactory.SpawnVehicle(vehicle, vehicleFactory.GetRandomUnusedPath());
+
+        }
+
+        Assert.AreEqual(vehicleFactory.vehicles.Count, vehicleFactory.currentVehicles.Count);
+
+        yield return null;
+
+    }
+
+
+    [UnityTest]
     [Timeout((TEST_TIME * 1000 * 2))]
-    public IEnumerator CarFactorySpawnTest()
+    public IEnumerator CarFactoryGeneralSpawnTest()
     {
 
         // Optimize time by removing unneeded particles
@@ -62,7 +100,7 @@ public class CarFactoryTests
 
             engineTypeList.RemoveAll(engineType => GameObject.FindObjectsOfType(engineType).Length != 0);
 
-            if (engineTypeList.Count == AMOUNT_LEFT_FOR_PASS)
+            if (engineTypeList.Count <= AMOUNT_LEFT_FOR_PASS)
             {
                 mostCarsSpawned = true;
                 break;

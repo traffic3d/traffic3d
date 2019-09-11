@@ -7,6 +7,12 @@ using Random = UnityEngine.Random;
 public class VehicleFactory : MonoBehaviour
 {
 
+    public float highRangeRespawnTime = 5;
+    public float lowRangeRespawnTime = 3;
+
+    public float maximumVehicleCount = 8;
+    public float slowDownVehicleRateAt = 6;
+
     public List<Rigidbody> vehicles;
     public List<Path> paths;
 
@@ -34,18 +40,18 @@ public class VehicleFactory : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(Random.Range(19, 22));
+            yield return new WaitForSeconds(Random.Range(lowRangeRespawnTime, highRangeRespawnTime));
 
             CleanVehicles();
 
-            if (currentVehicles.Count < Random.Range(6, 10))
+            if (currentVehicles.Count < Random.Range(slowDownVehicleRateAt, maximumVehicleCount))
             {
 
                 Path path = GetRandomUnusedPath();
 
                 if (path != null)
                 {
-                    currentVehicles.Add(SpawnVehicle(GetRandomVehicle(), path), path);
+                    SpawnVehicle(GetRandomVehicle(), path);
                 }
 
             }
@@ -75,8 +81,8 @@ public class VehicleFactory : MonoBehaviour
     {
         Rigidbody spawnedVehicle = Instantiate(vehicle, path.nodes[0].position, path.nodes[0].rotation);
         SetPath(spawnedVehicle, path);
+        currentVehicles.Add(spawnedVehicle, path);
         return spawnedVehicle;
-
     }
 
     public Rigidbody SpawnVehicle(Type engineType, Path path)
@@ -88,6 +94,7 @@ public class VehicleFactory : MonoBehaviour
             {
                 spawnedVehicle = Instantiate(vehicle, path.nodes[0].position, path.nodes[0].rotation);
                 SetPath(spawnedVehicle, path);
+                currentVehicles.Add(spawnedVehicle, path);
             }
         }
         return spawnedVehicle;

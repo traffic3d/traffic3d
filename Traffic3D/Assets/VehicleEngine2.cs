@@ -156,9 +156,6 @@ public class VehicleEngine2 : MonoBehaviour
         {
             Destroy(this.gameObject);
 
-            //to get the generated car count
-            OverallCarCounter.IncrementOverallCarCount();
-
             k = Time.time - startTime;
             System.IO.File.AppendAllText("xFourjourneyTimeLatest.csv", k.ToString() + ",");
         }

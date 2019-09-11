@@ -43,12 +43,6 @@ public class VehicleEngineTests
 
     }
 
-    [TearDown]
-    public void TearDown()
-    {
-        SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(0));
-    }
-
     public Rigidbody SpawnCar(VehicleFactory vehicleFactory, Type carEngineScriptType)
     {
 

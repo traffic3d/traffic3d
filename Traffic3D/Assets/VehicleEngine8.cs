@@ -148,10 +148,6 @@ public class VehicleEngine8 : MonoBehaviour
             Destroy(this.gameObject);
             PythonManager.IncrementRewardCount();
 
-            //to get the generated car count
-            OverallCarCounter.IncrementOverallCarCount();
-
-            JourneyCarCounter.IncrementJourneyCarCount();
             k = (Time.time - startTime);
             System.IO.File.AppendAllText("negjourneyTimeLatest1.csv", k.ToString() + ",");
         }
