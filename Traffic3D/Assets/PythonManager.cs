@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
 
@@ -11,9 +9,9 @@ public class PythonManager : MonoBehaviour
 {
 
     public static int shotCount = 0;
-    public static int rewCount = 0;
+    public static int rewardCount = 0;
 
-    public static int finalrew = 0;
+    public static int finalReward = 0;
 
     public static int densityCount1;
     public static double densityPerkm;
@@ -142,12 +140,12 @@ public class PythonManager : MonoBehaviour
             }
         }
 
-        finalrew = (rewCount - waitingCars.Count);
+        finalReward = (rewardCount - waitingCars.Count);
 
-        System.IO.File.AppendAllText("truerewards.csv", finalrew.ToString() + ",");
-        System.IO.File.AppendAllText("throughput.csv", rewCount.ToString() + ",");
+        System.IO.File.AppendAllText("truerewards.csv", finalReward.ToString() + ",");
+        System.IO.File.AppendAllText("throughput.csv", rewardCount.ToString() + ",");
 
-        byte[] msg1 = Encoding.UTF8.GetBytes("" + finalrew);
+        byte[] msg1 = Encoding.UTF8.GetBytes("" + finalReward);
         SocketManager.GetInstance().Send(msg1);
         ResetRewardCount();
 
@@ -157,17 +155,17 @@ public class PythonManager : MonoBehaviour
 
     public static int GetRewardCount()
     {
-        return rewCount;
+        return rewardCount;
     }
 
     public static void IncrementRewardCount()
     {
-        rewCount++;
+        rewardCount++;
     }
 
     public static void ResetRewardCount()
     {
-        rewCount = 0;
+        rewardCount = 0;
     }
 
     public static int GetDensityCount1()

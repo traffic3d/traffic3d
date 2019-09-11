@@ -5,7 +5,7 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using System;
 
-public class TrafficLightManagerWithAITests
+public class PythonManagerTests
 {
 
     [SetUp]
@@ -27,13 +27,13 @@ public class TrafficLightManagerWithAITests
     public void TearDown()
     {
 
-        PythonManager.rewCount = 0;
+        PythonManager.rewardCount = 0;
         PythonManager.densityCount1 = 0;
 
     }
 
     [UnityTest]
-    public IEnumerator TrafficLightManagerWithAIRewCountTest()
+    public IEnumerator PythonManagerRewardCountTest()
     {
 
         int currentCount = PythonManager.GetRewardCount();
@@ -53,7 +53,7 @@ public class TrafficLightManagerWithAITests
     }
 
     [UnityTest]
-    public IEnumerator TrafficLightManagerWithAIDensityCountTest()
+    public IEnumerator PythonManagerDensityCountTest()
     {
 
         int currentCount = PythonManager.GetDensityCount1();

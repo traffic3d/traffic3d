@@ -5,9 +5,7 @@ using UnityEngine;
 public class VehicleEngine5 : MonoBehaviour
 {
 
-    public Transform path;
-    public Transform path1;
-    public Transform path2;
+    public Path path;
 
     public float maxSteerAngle = 45f;
     public float turnSpeed = 5f;
@@ -23,9 +21,6 @@ public class VehicleEngine5 : MonoBehaviour
 
     public Material redMaterial;
 
-    public TrafficLight trafficLight = null;
-
-    public List<Transform> nodes;
     public Transform currentNode;
     public int currentNodeNumber;
     private int lapCounter = 0;
@@ -39,29 +34,15 @@ public class VehicleEngine5 : MonoBehaviour
     {
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
 
-        path1 = GameObject.Find("mypath4").GetComponent<Transform>();
-        path2 = GameObject.Find("mypath41").GetComponent<Transform>();
-
-        trafficLight = TrafficLightManager.GetInstance().GetTrafficLight(4);
-
         startTime = Time.time;
 
-        path = path1;
+    }
 
-        Transform[] pathTransforms = path.GetComponentsInChildren<Transform>();
-        nodes = new List<Transform>();
-
-        for (int i = 0; i < pathTransforms.Length; i++)
-        {
-            if (pathTransforms[i] != path.transform)
-            {
-                nodes.Add(pathTransforms[i]);
-            }
-        }
-
+    public void SetPath(Path path)
+    {
+        this.path = path;
         currentNodeNumber = 0;
-        currentNode = nodes[currentNodeNumber];
-
+        currentNode = path.nodes[currentNodeNumber];
     }
 
     public void OnCollisionEnter(Collision other)
@@ -74,17 +55,18 @@ public class VehicleEngine5 : MonoBehaviour
 
     private void FixedUpdate()
     {
-
+        if (path == null)
+        {
+            return;
+        }
         ApplySteer();
         Drive(1);
         CheckWaypointDistance();
         Destroy();
         LerpToSteerAngle();
         StopAtLineIfRedElseGo();
-
         GoIfSecondToLastNode();
         TurnOff();
-
     }
 
     private void TurnOff()
@@ -123,7 +105,7 @@ public class VehicleEngine5 : MonoBehaviour
     private void GoIfSecondToLastNode()
     {
 
-        if (currentNodeNumber == nodes.Count - 2)
+        if (currentNodeNumber == path.nodes.Count - 2)
         {
             wheelColliderFrontLeft.motorTorque = maxMotorTorque;
             wheelColliderFrontRight.motorTorque = maxMotorTorque;
@@ -168,13 +150,9 @@ public class VehicleEngine5 : MonoBehaviour
 
     private void Destroy()
     {
-        if (currentNodeNumber == nodes.Count - 1)
+        if (currentNodeNumber == path.nodes.Count - 1)
         {
             Destroy(this.gameObject);
-            CarFactoryCounter4.DecrementCarCount();
-
-            //to get the generated car count
-            OverallCarCounter.IncrementOverallCarCount();
 
             k = Time.time - startTime;
             System.IO.File.AppendAllText("xFourjourneyTimeLatest.csv", k.ToString() + ",");
@@ -191,7 +169,7 @@ public class VehicleEngine5 : MonoBehaviour
 
     private void NextNode()
     {
-        if (currentNodeNumber == nodes.Count - 1)
+        if (currentNodeNumber == path.nodes.Count - 1)
         {
             currentNodeNumber = 0;
             lapCounter++;
@@ -199,7 +177,7 @@ public class VehicleEngine5 : MonoBehaviour
         else
         {
             currentNodeNumber++;
-            currentNode = nodes[currentNodeNumber];
+            currentNode = path.nodes[currentNodeNumber];
         }
     }
 

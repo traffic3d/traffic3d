@@ -11,6 +11,7 @@ public class VehicleEngineTests
 
     public const int STOP_LIGHT_TIME = 20;
     public const int TIME_OUT_DESTROY_TIME = 60;
+    public const int TIME_OUT_STOP_TIME = 60;
 
     private List<Type> engineTypeList;
 
@@ -42,49 +43,11 @@ public class VehicleEngineTests
 
     }
 
-    [TearDown]
-    public void TearDown()
-    {
-        SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(0));
-    }
-
-    public Rigidbody SpawnCar(CarFactory carFactory, CarFactory2 carFactory2, CarFactory3 carfactory3, CarFactory4 carfactory4, Type carEngineScriptType)
+    public Rigidbody SpawnCar(VehicleFactory vehicleFactory, Type carEngineScriptType)
     {
 
-        if (carFactory.car1.gameObject.GetComponent(carEngineScriptType) != null)
-        {
-            return GameObject.Instantiate(carFactory.car1, carFactory.spawnSpot1, Quaternion.Euler(Vector3.up * 90));
-        }
-        if (carFactory.car3.gameObject.GetComponent(carEngineScriptType) != null)
-        {
-            return GameObject.Instantiate(carFactory.car3, carFactory.spawnSpot3, Quaternion.Euler(Vector3.up * 90));
-        }
-        if (carFactory2.car1.gameObject.GetComponent(carEngineScriptType) != null)
-        {
-            return GameObject.Instantiate(carFactory2.car1, carFactory2.spawnSpot1, Quaternion.Euler(Vector3.up * 270));
-        }
-        if (carFactory2.car3.gameObject.GetComponent(carEngineScriptType) != null)
-        {
-            return GameObject.Instantiate(carFactory2.car3, carFactory2.spawnSpot3, Quaternion.Euler(Vector3.up * 270));
-        }
-        if (carfactory3.car1.gameObject.GetComponent(carEngineScriptType) != null)
-        {
-            return GameObject.Instantiate(carfactory3.car1, carfactory3.spawnSpot1, Quaternion.identity);
-        }
-        if (carfactory3.car3.gameObject.GetComponent(carEngineScriptType) != null)
-        {
-            return GameObject.Instantiate(carfactory3.car3, carfactory3.spawnSpot3, Quaternion.identity);
-        }
-        if (carfactory4.car1.gameObject.GetComponent(carEngineScriptType) != null)
-        {
-            return GameObject.Instantiate(carfactory4.car1, carfactory4.spawnSpot1, Quaternion.Euler(Vector3.up * 180));
-        }
-        if (carfactory4.car3.gameObject.GetComponent(carEngineScriptType) != null)
-        {
-            return GameObject.Instantiate(carfactory4.car3, carfactory4.spawnSpot3, Quaternion.Euler(Vector3.up * 180));
-        }
+        return vehicleFactory.SpawnVehicle(carEngineScriptType, vehicleFactory.GetRandomUnusedPath());
 
-        return null;
     }
 
     [UnityTest]
@@ -95,17 +58,14 @@ public class VehicleEngineTests
 
         DisableLoops();
 
-        CarFactory carFactory = (CarFactory)GameObject.FindObjectOfType(typeof(CarFactory));
-        CarFactory2 carFactory2 = (CarFactory2)GameObject.FindObjectOfType(typeof(CarFactory2));
-        CarFactory3 carfactory3 = (CarFactory3)GameObject.FindObjectOfType(typeof(CarFactory3));
-        CarFactory4 carfactory4 = (CarFactory4)GameObject.FindObjectOfType(typeof(CarFactory4));
+        VehicleFactory vehicleFactory = (VehicleFactory)GameObject.FindObjectOfType(typeof(VehicleFactory));
 
         foreach (Type engineType in engineTypeList)
         {
 
-            yield return null;
+            yield return new WaitForSeconds(1);
 
-            Rigidbody car = SpawnCar(carFactory, carFactory2, carfactory3, carfactory4, engineType);
+            Rigidbody car = SpawnCar(vehicleFactory, engineType);
 
             // Car may not be being used by factory.
             if (car == null)
@@ -125,48 +85,7 @@ public class VehicleEngineTests
     }
 
     [UnityTest]
-    public IEnumerator CarEngineEngineOffTest()
-    {
-
-        yield return null;
-
-        DisableLoops();
-
-        CarFactory carFactory = (CarFactory)GameObject.FindObjectOfType(typeof(CarFactory));
-        CarFactory2 carFactory2 = (CarFactory2)GameObject.FindObjectOfType(typeof(CarFactory2));
-        CarFactory3 carfactory3 = (CarFactory3)GameObject.FindObjectOfType(typeof(CarFactory3));
-        CarFactory4 carfactory4 = (CarFactory4)GameObject.FindObjectOfType(typeof(CarFactory4));
-
-        foreach (Type engineType in engineTypeList)
-        {
-
-            // Vehicle Engine Scripts do not support engine off method.
-            if (engineType == typeof(VehicleEngine2) || engineType == typeof(VehicleEngine1))
-            {
-                continue;
-            }
-
-            Rigidbody car = SpawnCar(carFactory, carFactory2, carfactory3, carfactory4, engineType);
-
-            // Car may not be being used by factory.
-            if (car == null)
-            {
-                continue;
-            }
-
-            car.tag = "hap";
-
-            yield return new WaitForFixedUpdate();
-
-            Assert.True(GetCarStatus(car, engineType) == CarStatus.STOPPED);
-
-            GameObject.Destroy(car);
-
-        }
-
-    }
-
-    [UnityTest]
+    [Timeout(TIME_OUT_DESTROY_TIME * 1000 * 20)]
     public IEnumerator CarEngineStopTest()
     {
 
@@ -174,19 +93,14 @@ public class VehicleEngineTests
 
         DisableLoops();
 
-        Debug.Log("CarEngineStopTest - start");
+        VehicleFactory carFactory = (VehicleFactory)GameObject.FindObjectOfType(typeof(VehicleFactory));
 
-        CarFactory carFactory = (CarFactory)GameObject.FindObjectOfType(typeof(CarFactory));
-        CarFactory2 carFactory2 = (CarFactory2)GameObject.FindObjectOfType(typeof(CarFactory2));
-        CarFactory3 carfactory3 = (CarFactory3)GameObject.FindObjectOfType(typeof(CarFactory3));
-        CarFactory4 carfactory4 = (CarFactory4)GameObject.FindObjectOfType(typeof(CarFactory4));
-
-        Dictionary<Type, Rigidbody> carList = new Dictionary<Type, Rigidbody>();
+        TrafficLightManager.GetInstance().SetAllToRed();
 
         foreach (Type engineType in engineTypeList)
         {
 
-            Rigidbody car = SpawnCar(carFactory, carFactory2, carfactory3, carfactory4, engineType);
+            Rigidbody car = SpawnCar(carFactory, engineType);
 
             yield return null;
 
@@ -196,72 +110,17 @@ public class VehicleEngineTests
                 continue;
             }
 
-            carList.Add(engineType, car);
+            yield return new WaitForSeconds(STOP_LIGHT_TIME);
 
-            if (engineType == typeof(VehicleEngine8))
-            {
-                VehicleEngine8 vehicleEngine9 = (VehicleEngine8)car.GetComponent(engineType);
-                vehicleEngine9.trafficLight.SetColour(TrafficLight.LightColour.RED);
-                vehicleEngine9.trafficLight.enabled = false;
-            }
-            else if (engineType == typeof(VehicleEngine3))
-            {
-                VehicleEngine3 vehicleEngine7 = (VehicleEngine3)car.GetComponent(engineType);
-                vehicleEngine7.trafficLight.SetColour(TrafficLight.LightColour.RED);
-                vehicleEngine7.trafficLight.enabled = false;
-            }
-            else if (engineType == typeof(VehicleEngine4))
-            {
-                VehicleEngine4 vehicleEngine4 = (VehicleEngine4)car.GetComponent(engineType);
-                vehicleEngine4.trafficLight.SetColour(TrafficLight.LightColour.RED);
-                vehicleEngine4.trafficLight.enabled = false;
-            }
-            else if (engineType == typeof(VehicleEngine5))
-            {
-                VehicleEngine5 vehicleEngine5 = (VehicleEngine5)car.GetComponent(engineType);
-                vehicleEngine5.trafficLight.SetColour(TrafficLight.LightColour.RED);
-                vehicleEngine5.trafficLight.enabled = false;
-            }
-            else if (engineType == typeof(VehicleEngine6))
-            {
-                VehicleEngine6 vehicleEngine6 = (VehicleEngine6)car.GetComponent(engineType);
-                vehicleEngine6.trafficLight.SetColour(TrafficLight.LightColour.RED);
-                vehicleEngine6.trafficLight.enabled = false;
-            }
-            else if (engineType == typeof(VehicleEngine7))
-            {
-                VehicleEngine7 VehicleEngine7 = (VehicleEngine7)car.GetComponent(engineType);
-                VehicleEngine7.trafficLight.SetColour(TrafficLight.LightColour.RED);
-                VehicleEngine7.trafficLight.enabled = false;
-            }
-            else if (engineType == typeof(VehicleEngine2))
-            {
-                VehicleEngine2 vehicleEngine2 = (VehicleEngine2)car.GetComponent(engineType);
-                vehicleEngine2.trafficLight.SetColour(TrafficLight.LightColour.RED);
-                vehicleEngine2.trafficLight.enabled = false;
-            }
-            else if (engineType == typeof(VehicleEngine1))
-            {
-                VehicleEngine1 vehicleEngine1 = (VehicleEngine1)car.GetComponent(engineType);
-                vehicleEngine1.trafficLight.SetColour(TrafficLight.LightColour.RED);
-                vehicleEngine1.trafficLight.enabled = false;
-            }
+            Assert.True(GetCarStatus(car, engineType) == CarStatus.STOPPED);
 
-            Debug.Log("First Status: " + GetCarStatus(car, engineType) + " - " + engineType);
+            // Move out of scene as destroy doesn't seem to destroy properly.
+            car.transform.position = new Vector3(0, -1000, 0);
+            GameObject.Destroy(car);
+
+            yield return new WaitForSeconds(5);
 
         }
-
-        yield return new WaitForSeconds(STOP_LIGHT_TIME);
-
-        foreach (KeyValuePair<Type, Rigidbody> entry in carList)
-        {
-            CarStatus carStatus = GetCarStatus(entry.Value, entry.Key);
-            Debug.Log("Last Status: " + carStatus + " - " + entry.Key);
-            Assert.True(carStatus == CarStatus.STOPPED);
-            GameObject.Destroy(entry.Value);
-        }
-
-        Debug.Log("CarEngineStopTest - end");
 
     }
 
@@ -274,17 +133,19 @@ public class VehicleEngineTests
 
         DisableLoops();
 
-        CarFactory carFactory = (CarFactory)GameObject.FindObjectOfType(typeof(CarFactory));
-        CarFactory2 carFactory2 = (CarFactory2)GameObject.FindObjectOfType(typeof(CarFactory2));
-        CarFactory3 carfactory3 = (CarFactory3)GameObject.FindObjectOfType(typeof(CarFactory3));
-        CarFactory4 carfactory4 = (CarFactory4)GameObject.FindObjectOfType(typeof(CarFactory4));
+        VehicleFactory vehicleFactory = (VehicleFactory)GameObject.FindObjectOfType(typeof(VehicleFactory));
 
         Dictionary<Type, Rigidbody> carList = new Dictionary<Type, Rigidbody>();
+
+        foreach(TrafficLight trafficLight in TrafficLightManager.GetInstance().trafficLights)
+        {
+            trafficLight.SetColour(TrafficLight.LightColour.GREEN);
+        }
 
         foreach (Type engineType in engineTypeList)
         {
 
-            Rigidbody car = SpawnCar(carFactory, carFactory2, carfactory3, carfactory4, engineType);
+            Rigidbody car = SpawnCar(vehicleFactory, engineType);
 
             yield return null;
 
@@ -295,55 +156,6 @@ public class VehicleEngineTests
             }
 
             carList.Add(engineType, car);
-
-            if (engineType == typeof(VehicleEngine8))
-            {
-                VehicleEngine8 vehicleEngine8 = (VehicleEngine8)car.GetComponent(engineType);
-                vehicleEngine8.trafficLight.SetColour(TrafficLight.LightColour.GREEN);
-                vehicleEngine8.trafficLight.enabled = false;
-            }
-            else if (engineType == typeof(VehicleEngine3))
-            {
-                VehicleEngine3 vehicleEngine3 = (VehicleEngine3)car.GetComponent(engineType);
-                vehicleEngine3.trafficLight.SetColour(TrafficLight.LightColour.GREEN);
-                vehicleEngine3.trafficLight.enabled = false;
-            }
-            else if (engineType == typeof(VehicleEngine4))
-            {
-                VehicleEngine4 vehicleEngine4 = (VehicleEngine4)car.GetComponent(engineType);
-                vehicleEngine4.trafficLight.SetColour(TrafficLight.LightColour.GREEN);
-                vehicleEngine4.trafficLight.enabled = false;
-            }
-            else if (engineType == typeof(VehicleEngine5))
-            {
-                VehicleEngine5 vehicleEngine5 = (VehicleEngine5)car.GetComponent(engineType);
-                vehicleEngine5.trafficLight.SetColour(TrafficLight.LightColour.GREEN);
-                vehicleEngine5.trafficLight.enabled = false;
-            }
-            else if (engineType == typeof(VehicleEngine6))
-            {
-                VehicleEngine6 vehicleEngine6 = (VehicleEngine6)car.GetComponent(engineType);
-                vehicleEngine6.trafficLight.SetColour(TrafficLight.LightColour.GREEN);
-                vehicleEngine6.trafficLight.enabled = false;
-            }
-            else if (engineType == typeof(VehicleEngine7))
-            {
-                VehicleEngine7 vehicleEngine7 = (VehicleEngine7)car.GetComponent(engineType);
-                vehicleEngine7.trafficLight.SetColour(TrafficLight.LightColour.GREEN);
-                vehicleEngine7.trafficLight.enabled = false;
-            }
-            else if (engineType == typeof(VehicleEngine2))
-            {
-                VehicleEngine2 vehicleEngine2 = (VehicleEngine2)car.GetComponent(engineType);
-                vehicleEngine2.trafficLight.SetColour(TrafficLight.LightColour.GREEN);
-                vehicleEngine2.trafficLight.enabled = false;
-            }
-            else if (engineType == typeof(VehicleEngine1))
-            {
-                VehicleEngine1 vehicleEngine1 = (VehicleEngine1)car.GetComponent(engineType);
-                vehicleEngine1.trafficLight.SetColour(TrafficLight.LightColour.GREEN);
-                vehicleEngine1.trafficLight.enabled = false;
-            }
 
             bool carIsDestroyed = false;
             for(int i = 0; i <= TIME_OUT_DESTROY_TIME; i = i + 5)
@@ -379,14 +191,8 @@ public class VehicleEngineTests
         trafficLightManager.enabled = false;
         trafficLightManager.StopAllCoroutines();
 
-        CarFactory carFactory = (CarFactory)GameObject.FindObjectOfType(typeof(CarFactory));
-        CarFactory2 carFactory2 = (CarFactory2)GameObject.FindObjectOfType(typeof(CarFactory2));
-        CarFactory3 carfactory3 = (CarFactory3)GameObject.FindObjectOfType(typeof(CarFactory3));
-        CarFactory4 carfactory4 = (CarFactory4)GameObject.FindObjectOfType(typeof(CarFactory4));
-        carFactory.StopAllCoroutines();
-        carFactory2.StopAllCoroutines();
-        carfactory3.StopAllCoroutines();
-        carfactory4.StopAllCoroutines();
+        VehicleFactory vehicleFactory = (VehicleFactory)GameObject.FindObjectOfType(typeof(VehicleFactory));
+        vehicleFactory.StopAllCoroutines();
 
     }
 

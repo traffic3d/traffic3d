@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class VehicleEngine7 : MonoBehaviour
 {
-    public Transform path;
-    public Transform path1;
-    public Transform path2;
+    public Path path;
 
     public float maxSteerAngle = 45f;
     public float turnSpeed = 5f;
@@ -19,15 +17,11 @@ public class VehicleEngine7 : MonoBehaviour
     public Vector3 centerOfMass;
 
     public Material redMaterial;
-    public TrafficLight trafficLight = null;
 
-    public List<Transform> nodes;
     public Transform currentNode;
     public int currentNodeNumber;
     private int lapCounter = 0;
     private float targetSteerAngle = 0;
-
-    public CarFactoryCounter1 carCount;
 
     public float k;
     public float startTime;
@@ -47,30 +41,15 @@ public class VehicleEngine7 : MonoBehaviour
     {
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
 
-        path1 = GameObject.Find("newpath3").GetComponent<Transform>();
-        path2 = GameObject.Find("newpath31").GetComponent<Transform>();
-
-        trafficLight = TrafficLightManager.GetInstance().GetTrafficLight(1);
-
         startTime = Time.time;
 
-        path = path1;
+    }
 
-        Transform[] pathTransforms = path.GetComponentsInChildren<Transform>();
-        nodes = new List<Transform>();
-
-        for (int i = 0; i < pathTransforms.Length; i++)
-        {
-            if (pathTransforms[i] != path.transform)
-            {
-
-                nodes.Add(pathTransforms[i]);
-            }
-        }
-
+    public void SetPath(Path path)
+    {
+        this.path = path;
         currentNodeNumber = 0;
-        currentNode = nodes[currentNodeNumber];
-
+        currentNode = path.nodes[currentNodeNumber];
     }
 
     void OnCollisionEnter(Collision other)
@@ -84,7 +63,10 @@ public class VehicleEngine7 : MonoBehaviour
 
     private void FixedUpdate()
     {
-
+        if (path == null)
+        {
+            return;
+        }
         ApplySteer();
         Drive(1);
         CheckWaypointDistance();
@@ -93,10 +75,7 @@ public class VehicleEngine7 : MonoBehaviour
         StopAtLineIfRedElseGo();
         TurnOff();
         GoIfNotRed();
-
         GoIfTagRid();
-
-
     }
 
     private void GoIfTagRid()
@@ -113,7 +92,9 @@ public class VehicleEngine7 : MonoBehaviour
 
     private void GoIfNotRed()
     {
-        if (!trafficLight.IsCurrentLightColour(TrafficLight.LightColour.RED))
+        TrafficLight trafficLight = TrafficLightManager.GetInstance().GetTrafficLightFromStopNode(currentNode);
+
+        if (trafficLight == null || !trafficLight.IsCurrentLightColour(TrafficLight.LightColour.RED))
         {
             wheelColliderFrontLeft.motorTorque = maxMotorTorque;
             wheelColliderFrontRight.motorTorque = maxMotorTorque;
@@ -171,7 +152,7 @@ public class VehicleEngine7 : MonoBehaviour
 
     private void Destroy()
     {
-        if (currentNodeNumber == nodes.Count - 1)
+        if (currentNodeNumber == path.nodes.Count - 1)
         {
 
             PythonManager.IncrementDensityCount1();
@@ -182,10 +163,7 @@ public class VehicleEngine7 : MonoBehaviour
             PythonManager.speedlist.Add(speedd);
 
             Destroy(this.gameObject);
-            CarFactoryCounter1.DecrementCarCount();
             PythonManager.IncrementRewardCount();
-
-            OverallCarCounter.IncrementOverallCarCount();
 
             k = (Time.time - startTime);
 
@@ -226,7 +204,7 @@ public class VehicleEngine7 : MonoBehaviour
 
     private void NextNode()
     {
-        if (currentNodeNumber == nodes.Count - 1)
+        if (currentNodeNumber == path.nodes.Count - 1)
         {
             currentNodeNumber = 0;
             lapCounter++;
@@ -234,7 +212,7 @@ public class VehicleEngine7 : MonoBehaviour
         else
         {
             currentNodeNumber++;
-            currentNode = nodes[currentNodeNumber];
+            currentNode = path.nodes[currentNodeNumber];
         }
     }
 
