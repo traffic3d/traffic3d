@@ -6,33 +6,26 @@ using Random = UnityEngine.Random;
 
 public class VehicleFactory : MonoBehaviour
 {
-
     public float highRangeRespawnTime = 5;
     public float lowRangeRespawnTime = 3;
-
     public float maximumVehicleCount = 8;
     public float slowDownVehicleRateAt = 6;
-
     public List<Rigidbody> vehicles;
     public List<Path> paths;
-
     public Dictionary<Rigidbody, Path> currentVehicles = new Dictionary<Rigidbody, Path>();
 
     // Use this for initialization
     void Start()
     {
         Random.InitState(123);
-
         if (vehicles.Count == 0)
         {
             throw new System.Exception("No vehicles to spawn.");
         }
-
         if (paths.Count == 0)
         {
             throw new System.Exception("No paths for vehicles to spawn on.");
         }
-
         StartCoroutine(GenerateCars());
     }
 
@@ -41,23 +34,16 @@ public class VehicleFactory : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(Random.Range(lowRangeRespawnTime, highRangeRespawnTime));
-
             CleanVehicles();
-
             if (currentVehicles.Count < Random.Range(slowDownVehicleRateAt, maximumVehicleCount))
             {
-
                 Path path = GetRandomUnusedPath();
-
                 if (path != null)
                 {
                     SpawnVehicle(GetRandomVehicle(), path);
                 }
-
             }
-
         }
-
     }
 
     public void CleanVehicles()
@@ -70,7 +56,6 @@ public class VehicleFactory : MonoBehaviour
                 vehiclesToRemove.Add(entry.Key);
             }
         }
-
         foreach (var key in vehiclesToRemove)
         {
             currentVehicles.Remove(key);
@@ -157,7 +142,6 @@ public class VehicleFactory : MonoBehaviour
     public Path GetRandomUnusedPath()
     {
         List<Path> unusedPaths = new List<Path>();
-
         foreach (Path path in paths)
         {
             if (!currentVehicles.ContainsValue(path))
@@ -165,14 +149,10 @@ public class VehicleFactory : MonoBehaviour
                 unusedPaths.Add(path);
             }
         }
-
         if (unusedPaths.Count == 0)
         {
             return null;
         }
-
         return unusedPaths[Random.Range(0, unusedPaths.Count - 1)];
-
     }
-
 }

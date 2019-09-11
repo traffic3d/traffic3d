@@ -27,13 +27,13 @@ public class PythonManagerTests
     public void TearDown()
     {
 
-        PythonManager.rewCount = 0;
+        PythonManager.rewardCount = 0;
         PythonManager.densityCount1 = 0;
 
     }
 
     [UnityTest]
-    public IEnumerator PythonManagerRewCountTest()
+    public IEnumerator PythonManagerRewardCountTest()
     {
 
         int currentCount = PythonManager.GetRewardCount();
