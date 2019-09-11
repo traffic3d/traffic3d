@@ -109,27 +109,4 @@ public class TrafficLightManager : MonoBehaviour
         }
     }
 
-    public void SetTrafficLightToGreen(int id)
-    {
-        foreach (TrafficLight trafficLight in trafficLights)
-        {
-            if (trafficLight.GetTrafficLightId() == id)
-            {
-                trafficLight.SetColour(TrafficLight.LightColour.GREEN);
-            }
-            else
-            {
-                trafficLight.SetColour(TrafficLight.LightColour.RED);
-            }
-        }
-    }
-
-    public void SetAllToRed()
-    {
-        foreach (TrafficLight trafficLight in trafficLights)
-        {
-            trafficLight.SetColour(TrafficLight.LightColour.RED);
-        }
-    }
-
 }

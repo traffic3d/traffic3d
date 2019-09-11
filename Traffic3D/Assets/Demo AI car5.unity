@@ -62847,30 +62847,6 @@ MonoBehaviour:
   - {fileID: 1295248545}
   - {fileID: 265006778}
   currentLightColour: 0
---- !u!1 &1503591364
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1502594120}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32b828f238dc02c4aa7c05633187e86a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  trafficLightId: 2
-  redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  amberMaterial: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
-  greenMaterial: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
-  blackMaterial: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
-  redLightObject: {fileID: 1908001069}
-  amberLightObject: {fileID: 1387098567}
-  greenLightObject: {fileID: 888414155}
-  stopNodes:
-  - {fileID: 1461020449}
-  - {fileID: 1103265016}
-  currentLightColour: 0
 --- !u!1 &1514699845
 GameObject:
   m_ObjectHideFlags: 0

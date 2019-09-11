@@ -28,7 +28,7 @@ public class VehicleFactoryTests
     }
 
     [UnityTest]
-    public IEnumerator CarFactoryPathTest()
+    public IEnumerator VehicleFactoryPathTest()
     {
 
         VehicleFactory vehicleFactory = (VehicleFactory)GameObject.FindObjectOfType(typeof(VehicleFactory));
@@ -46,7 +46,7 @@ public class VehicleFactoryTests
     }
 
     [UnityTest]
-    public IEnumerator CarFactoryVehicleTest()
+    public IEnumerator VehicleFactoryVehicleTest()
     {
 
         VehicleFactory vehicleFactory = (VehicleFactory)GameObject.FindObjectOfType(typeof(VehicleFactory));
@@ -54,7 +54,7 @@ public class VehicleFactoryTests
         foreach (Rigidbody vehicle in vehicleFactory.vehicles)
         {
 
-            vehicleFactory.SpawnVehicle(vehicle, vehicleFactory.GetRandomUnusedPath());
+            vehicleFactory.SpawnVehicle(vehicle, vehicleFactory.GetRandomPath());
 
         }
 
@@ -67,7 +67,7 @@ public class VehicleFactoryTests
 
     [UnityTest]
     [Timeout((TEST_TIME * 1000 * 2))]
-    public IEnumerator CarFactoryGeneralSpawnTest()
+    public IEnumerator VehicleFactoryGeneralSpawnTest()
     {
 
         // Optimize time by removing unneeded particles
