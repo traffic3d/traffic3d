@@ -254,7 +254,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4160181098955014}
   - component: {fileID: 54272025488572840}
-  - component: {fileID: 114107674518095062}
+  - component: {fileID: 6391961742705187922}
   m_Layer: 0
   m_Name: SUV
   m_TagString: Untagged
@@ -301,7 +301,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &114107674518095062
+--- !u!114 &6391961742705187922
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -310,34 +310,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 1310869725840042}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c1a0d0e6963ad44db4befa9b3814731, type: 3}
+  m_Script: {fileID: 11500000, guid: fc0239007d2b942b5b3a92891044d117, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   path: {fileID: 0}
-  path1: {fileID: 0}
-  path2: {fileID: 0}
-  trafficLight: {fileID: 0}
   maxSteerAngle: 45
   turnSpeed: 5
   wheelColliderFrontLeft: {fileID: 146655200263391466}
   wheelColliderFrontRight: {fileID: 146240499941219244}
   maxMotorTorque: 80
+  normalBrakeTorque: 100
   maxBrakeTorque: 100
-  maxBrakeTorque2: 1000
   currentSpeed: 0
   maxSpeed: 100
   centerOfMass: {x: 0, y: 0, z: 0}
-  vehicle: {fileID: 0}
-  vehicleCurrentPosition: {x: 0, y: 0, z: 0}
-  trafficLightPosition: {x: 0, y: 0, z: 0}
-  n: {fileID: 0}
-  redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  trafficLightRed3: {fileID: 0}
-  nodes: []
-  currentNode: 0
-  count: 0
+  currentNode: {fileID: 0}
+  currentNodeNumber: 0
   startTime: 0
+  frus: 0
   des: 0
+  engineStatus: 0
 --- !u!1 &1311078208310664
 GameObject:
   m_ObjectHideFlags: 0

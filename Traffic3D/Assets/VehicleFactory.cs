@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -65,68 +64,10 @@ public class VehicleFactory : MonoBehaviour
     public Rigidbody SpawnVehicle(Rigidbody vehicle, Path path)
     {
         Rigidbody spawnedVehicle = Instantiate(vehicle, path.nodes[0].position, path.nodes[0].rotation);
-        SetPath(spawnedVehicle, path);
+        VehicleEngine vehicleEngine = spawnedVehicle.GetComponent<VehicleEngine>();
+        vehicleEngine.SetPath(path);
         currentVehicles.Add(spawnedVehicle, path);
         return spawnedVehicle;
-    }
-
-    public Rigidbody SpawnVehicle(Type engineType, Path path)
-    {
-        Rigidbody spawnedVehicle = null;
-        foreach (Rigidbody vehicle in vehicles)
-        {
-            if (vehicle.gameObject.GetComponent(engineType) != null)
-            {
-                spawnedVehicle = Instantiate(vehicle, path.nodes[0].position, path.nodes[0].rotation);
-                SetPath(spawnedVehicle, path);
-                currentVehicles.Add(spawnedVehicle, path);
-            }
-        }
-        return spawnedVehicle;
-    }
-
-    public void SetPath(Rigidbody spawnedVehicle, Path path)
-    {
-        if (spawnedVehicle.GetComponent<VehicleEngine1>() != null)
-        {
-            VehicleEngine1 vehicleEngine = spawnedVehicle.GetComponent<VehicleEngine1>();
-            vehicleEngine.SetPath(path);
-        }
-        else if (spawnedVehicle.GetComponent<VehicleEngine2>() != null)
-        {
-            VehicleEngine2 vehicleEngine = spawnedVehicle.GetComponent<VehicleEngine2>();
-            vehicleEngine.SetPath(path);
-        }
-        else if (spawnedVehicle.GetComponent<VehicleEngine3>() != null)
-        {
-            VehicleEngine3 vehicleEngine = spawnedVehicle.GetComponent<VehicleEngine3>();
-            vehicleEngine.SetPath(path);
-        }
-        else if (spawnedVehicle.GetComponent<VehicleEngine4>() != null)
-        {
-            VehicleEngine4 vehicleEngine = spawnedVehicle.GetComponent<VehicleEngine4>();
-            vehicleEngine.SetPath(path);
-        }
-        else if (spawnedVehicle.GetComponent<VehicleEngine5>() != null)
-        {
-            VehicleEngine5 vehicleEngine = spawnedVehicle.GetComponent<VehicleEngine5>();
-            vehicleEngine.SetPath(path);
-        }
-        else if (spawnedVehicle.GetComponent<VehicleEngine6>() != null)
-        {
-            VehicleEngine6 vehicleEngine = spawnedVehicle.GetComponent<VehicleEngine6>();
-            vehicleEngine.SetPath(path);
-        }
-        else if (spawnedVehicle.GetComponent<VehicleEngine7>() != null)
-        {
-            VehicleEngine7 vehicleEngine = spawnedVehicle.GetComponent<VehicleEngine7>();
-            vehicleEngine.SetPath(path);
-        }
-        else if (spawnedVehicle.GetComponent<VehicleEngine8>() != null)
-        {
-            VehicleEngine8 vehicleEngine = spawnedVehicle.GetComponent<VehicleEngine8>();
-            vehicleEngine.SetPath(path);
-        }
     }
 
     public Rigidbody GetRandomVehicle()
