@@ -3,20 +3,15 @@ using UnityEngine;
 
 public class TrafficLight : MonoBehaviour
 {
-
     public int trafficLightId;
-
     public Material redMaterial;
     public Material amberMaterial;
     public Material greenMaterial;
     public Material blackMaterial;
-
     public GameObject redLightObject;
     public GameObject amberLightObject;
     public GameObject greenLightObject;
-
     public List<Transform> stopNodes;
-
     public LightColour currentLightColour = LightColour.RED;
 
     private Dictionary<LightColour, GameObject> lightObjects;
@@ -37,12 +32,9 @@ public class TrafficLight : MonoBehaviour
 
     public void SetColour(LightColour lightColour)
     {
-
         currentLightColour = lightColour;
-
         foreach (KeyValuePair<LightColour, GameObject> lightObjectEntry in lightObjects)
         {
-
             if (lightColour == lightObjectEntry.Key)
             {
                 ChangeMaterial(lightObjectEntry.Value, lightMaterials[lightObjectEntry.Key]);
@@ -51,9 +43,7 @@ public class TrafficLight : MonoBehaviour
             {
                 ChangeMaterial(lightObjectEntry.Value, blackMaterial);
             }
-
         }
-
     }
 
     private void ChangeMaterial(GameObject lightObject, Material material)
