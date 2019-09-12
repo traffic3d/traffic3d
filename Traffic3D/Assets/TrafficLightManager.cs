@@ -14,6 +14,7 @@ public class TrafficLightManager : MonoBehaviour
 
     void Awake()
     {
+        trafficLights = GameObject.FindObjectsOfType<TrafficLight>();
         instance = this;
     }
 
@@ -23,7 +24,6 @@ public class TrafficLightManager : MonoBehaviour
 
     void Start()
     {
-        trafficLights = GameObject.FindObjectsOfType<TrafficLight>();
         demoOrder = new int[4] { 1, 3, 2, 4 };
     }
 
@@ -46,7 +46,6 @@ public class TrafficLightManager : MonoBehaviour
 
     public IEnumerator FirstEvent()
     {
-        yield return new WaitForSeconds(1);
         SetAllToRed();
         yield return new WaitForSeconds(200);
     }
