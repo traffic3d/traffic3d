@@ -13,7 +13,6 @@ public class TrafficLight : MonoBehaviour
     public GameObject greenLightObject;
     public List<Transform> stopNodes;
     public LightColour currentLightColour = LightColour.RED;
-
     private Dictionary<LightColour, GameObject> lightObjects;
     private Dictionary<LightColour, Material> lightMaterials;
 
@@ -23,7 +22,6 @@ public class TrafficLight : MonoBehaviour
         lightObjects.Add(LightColour.RED, redLightObject);
         lightObjects.Add(LightColour.AMBER, amberLightObject);
         lightObjects.Add(LightColour.GREEN, greenLightObject);
-
         lightMaterials = new Dictionary<LightColour, Material>();
         lightMaterials.Add(LightColour.RED, redMaterial);
         lightMaterials.Add(LightColour.AMBER, amberMaterial);
@@ -84,5 +82,4 @@ public class TrafficLight : MonoBehaviour
         AMBER,
         GREEN
     }
-
 }

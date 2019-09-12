@@ -1,13 +1,12 @@
-﻿using UnityEngine;
-using UnityEngine.TestTools;
-using UnityEngine.SceneManagement;
-using NUnit.Framework;
-using System.Collections;
+﻿using NUnit.Framework;
 using System;
+using System.Collections;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.TestTools;
 
 public class CameraTests
 {
-
     [SetUp]
     public void SetUpTest()
     {
@@ -24,13 +23,8 @@ public class CameraTests
     [UnityTest]
     public IEnumerator FrameRateTest()
     {
-
         yield return null;
-
         FrameRate frameRate = (FrameRate)UnityEngine.Object.FindObjectOfType(typeof(FrameRate));
-
         Assert.AreEqual(Time.captureFramerate, frameRate.frameRate);
-
     }
-
 }

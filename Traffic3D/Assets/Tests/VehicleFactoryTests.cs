@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
@@ -27,7 +26,8 @@ public class VehicleFactoryTests
     public IEnumerator VehicleFactoryPathTest()
     {
         VehicleFactory vehicleFactory = (VehicleFactory)GameObject.FindObjectOfType(typeof(VehicleFactory));
-        foreach(Path path in vehicleFactory.paths) {
+        foreach (Path path in vehicleFactory.paths)
+        {
             vehicleFactory.SpawnVehicle(vehicleFactory.GetRandomVehicle(), path);
         }
         Assert.AreEqual(null, vehicleFactory.GetRandomUnusedPath());

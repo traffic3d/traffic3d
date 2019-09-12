@@ -1,12 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class Path : MonoBehaviour
 {
-
     public Color lineColor;
-
     public List<Transform> nodes = new List<Transform>();
 
     void Awake()
@@ -18,7 +15,6 @@ public class Path : MonoBehaviour
     {
         Transform[] pathTransforms = GetComponentsInChildren<Transform>();
         nodes = new List<Transform>();
-
         for (int i = 0; i < pathTransforms.Length; i++)
         {
             if (pathTransforms[i] != transform)
@@ -45,12 +41,8 @@ public class Path : MonoBehaviour
             {
                 currentNode = lastNode;
             }
-
             Gizmos.DrawLine(previousNode, currentNode);
             Gizmos.DrawWireSphere(currentNode, 0.25f);
-
         }
-
     }
-
 }

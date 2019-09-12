@@ -2,9 +2,7 @@
 
 public class CarWheel : MonoBehaviour
 {
-
     public WheelCollider targetWheel;
-
     private Vector3 WheelPosition = new Vector3();
     private Quaternion WheelRotation = new Quaternion();
 
@@ -14,5 +12,4 @@ public class CarWheel : MonoBehaviour
         transform.position = WheelPosition;
         transform.rotation = WheelRotation;
     }
-
 }

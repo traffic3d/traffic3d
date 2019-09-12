@@ -13,7 +13,6 @@ public class VehicleFactory : MonoBehaviour
     public List<Path> paths;
     public Dictionary<Rigidbody, Path> currentVehicles = new Dictionary<Rigidbody, Path>();
 
-    // Use this for initialization
     void Start()
     {
         Random.InitState(123);

@@ -64,7 +64,7 @@ public class VehicleEngineTests
         for (int i = 0; i <= TIME_OUT_DESTROY_TIME; i = i + 5)
         {
             yield return new WaitForSeconds(5);
-            // Check if car is destroyed
+
             if (vehicle == null)
             {
                 carIsDestroyed = true;

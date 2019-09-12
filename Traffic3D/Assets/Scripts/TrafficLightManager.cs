@@ -1,10 +1,8 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TrafficLightManager : MonoBehaviour
 {
-
     public static TrafficLightManager instance;
 
     public static TrafficLightManager GetInstance()
@@ -19,7 +17,6 @@ public class TrafficLightManager : MonoBehaviour
     }
 
     public TrafficLight[] trafficLights;
-
     public int[] demoOrder;
 
     void Start()
@@ -37,7 +34,7 @@ public class TrafficLightManager : MonoBehaviour
         while (true)
         {
             yield return StartCoroutine(FirstEvent());
-            foreach(int i in demoOrder)
+            foreach (int i in demoOrder)
             {
                 yield return StartCoroutine(FireEvent(i));
             }
@@ -107,5 +104,4 @@ public class TrafficLightManager : MonoBehaviour
             trafficLight.SetColour(TrafficLight.LightColour.RED);
         }
     }
-
 }
