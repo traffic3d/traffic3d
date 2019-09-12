@@ -74,6 +74,38 @@ public class VehicleEngineTests
         Assert.True(carIsDestroyed);
     }
 
+    [UnityTest]
+    [Timeout(TIME_OUT_DESTROY_TIME * 1000 * 5)]
+    public IEnumerator VehicleEngineSetStatusTest()
+    {
+        yield return null;
+        DisableLoops();
+        VehicleFactory vehicleFactory = (VehicleFactory)GameObject.FindObjectOfType(typeof(VehicleFactory));
+        Rigidbody vehicle = vehicleFactory.SpawnVehicle(vehicleFactory.GetRandomVehicle(), vehicleFactory.GetRandomUnusedPath());
+        VehicleEngine vehicleEngine = vehicle.GetComponent<VehicleEngine>();
+
+        vehicleEngine.SetEngineStatus(VehicleEngine.EngineStatus.ACCELERATE);
+
+        Assert.AreEqual(0, vehicleEngine.wheelColliderFrontLeft.brakeTorque);
+        Assert.AreEqual(0, vehicleEngine.wheelColliderFrontRight.brakeTorque);
+        Assert.AreEqual(vehicleEngine.maxMotorTorque, vehicleEngine.wheelColliderFrontLeft.motorTorque);
+        Assert.AreEqual(vehicleEngine.maxMotorTorque, vehicleEngine.wheelColliderFrontRight.motorTorque);
+
+        vehicleEngine.SetEngineStatus(VehicleEngine.EngineStatus.STOP);
+
+        Assert.AreEqual(vehicleEngine.normalBrakeTorque, vehicleEngine.wheelColliderFrontLeft.brakeTorque);
+        Assert.AreEqual(vehicleEngine.normalBrakeTorque, vehicleEngine.wheelColliderFrontRight.brakeTorque);
+        Assert.AreEqual(0, vehicleEngine.wheelColliderFrontLeft.motorTorque);
+        Assert.AreEqual(0, vehicleEngine.wheelColliderFrontRight.motorTorque);
+
+        vehicleEngine.SetEngineStatus(VehicleEngine.EngineStatus.HARD_STOP);
+
+        Assert.AreEqual(vehicleEngine.maxBrakeTorque, vehicleEngine.wheelColliderFrontLeft.brakeTorque);
+        Assert.AreEqual(vehicleEngine.maxBrakeTorque, vehicleEngine.wheelColliderFrontRight.brakeTorque);
+        Assert.AreEqual(0, vehicleEngine.wheelColliderFrontLeft.motorTorque);
+        Assert.AreEqual(0, vehicleEngine.wheelColliderFrontRight.motorTorque);
+    }
+
     private void DisableLoops()
     {
         // Optimize time by removing unneeded particles
