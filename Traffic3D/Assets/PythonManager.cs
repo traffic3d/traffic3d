@@ -7,12 +7,9 @@ using UnityEngine;
 
 public class PythonManager : MonoBehaviour
 {
-
     public static int shotCount = 0;
     public static int rewardCount = 0;
-
     public static int finalReward = 0;
-
     public static int densityCount1;
     public static double densityPerkm;
     public static double averageSpeed;
@@ -48,7 +45,6 @@ public class PythonManager : MonoBehaviour
 
     public IEnumerator Reset()
     {
-        yield return new WaitForSeconds(1);
         TrafficLightManager.GetInstance().SetAllToRed();
         yield return new WaitForSeconds(20);
         Time.timeScale = 0;
@@ -101,7 +97,6 @@ public class PythonManager : MonoBehaviour
     public IEnumerator CalculateDensity()
     {
         Time.timeScale = 0;
-        GetDensityCount1();
         densityPerkm = (densityCount1 / 34.0);
         System.IO.File.AppendAllText("densityperkm.csv", densityPerkm.ToString() + ",");
 
@@ -117,9 +112,6 @@ public class PythonManager : MonoBehaviour
 
     public IEnumerator SendRewards()
     {
-
-        GetRewardCount();
-
         List<GameObject> waitingCars = new List<GameObject>();
 
         GameObject[] waitcars1 = (GameObject.FindGameObjectsWithTag("hap"));

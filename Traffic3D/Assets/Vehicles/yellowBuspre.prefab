@@ -557,7 +557,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4552897400682038}
   - component: {fileID: 54240910825635966}
-  - component: {fileID: 114007018094250092}
+  - component: {fileID: 6798255963758476429}
   m_Layer: 0
   m_Name: yellowBuspre
   m_TagString: Untagged
@@ -604,7 +604,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &114007018094250092
+--- !u!114 &6798255963758476429
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -613,32 +613,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 1878293882199392}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 419539dcbad45e3428ba7be7303dab98, type: 3}
+  m_Script: {fileID: 11500000, guid: fc0239007d2b942b5b3a92891044d117, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   path: {fileID: 0}
-  path1: {fileID: 0}
-  path2: {fileID: 0}
-  trafficlight: {fileID: 0}
   maxSteerAngle: 45
   turnSpeed: 5
   wheelColliderFrontLeft: {fileID: 146353838976224590}
   wheelColliderFrontRight: {fileID: 146036045479180732}
   maxMotorTorque: 80
+  normalBrakeTorque: 100
   maxBrakeTorque: 100
-  maxBrakeTorque2: 1000
   currentSpeed: 0
   maxSpeed: 100
   centerOfMass: {x: 0, y: 0, z: 0}
-  vehicle: {fileID: 0}
-  trafficLightRed4: {fileID: 0}
-  redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  material4: {fileID: 0}
+  currentNode: {fileID: 0}
+  currentNodeNumber: 0
   startTime: 0
-  nodes: []
-  materialChange: []
-  currentNode: 0
+  frus: 0
   des: 0
+  engineStatus: 0
 --- !u!1 &1934155448739692
 GameObject:
   m_ObjectHideFlags: 0
