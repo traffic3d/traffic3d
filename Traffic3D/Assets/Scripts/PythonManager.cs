@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 
 public class PythonManager : MonoBehaviour
@@ -32,6 +31,7 @@ public class PythonManager : MonoBehaviour
         }
         else
         {
+            Debug.Log("Unable to connect to the Python Script. Running the demo instead.");
             TrafficLightManager.GetInstance().RunDemo();
         }
     }
