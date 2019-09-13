@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -13,7 +14,6 @@ public class VehicleFactory : MonoBehaviour
     public List<Path> paths;
     public Dictionary<Rigidbody, Path> currentVehicles = new Dictionary<Rigidbody, Path>();
 
-    // Use this for initialization
     void Start()
     {
         Random.InitState(123);
@@ -47,15 +47,7 @@ public class VehicleFactory : MonoBehaviour
 
     public void CleanVehicles()
     {
-        List<Rigidbody> vehiclesToRemove = new List<Rigidbody>();
-        foreach (KeyValuePair<Rigidbody, Path> entry in currentVehicles)
-        {
-            if (entry.Key == null)
-            {
-                vehiclesToRemove.Add(entry.Key);
-            }
-        }
-        foreach (var key in vehiclesToRemove)
+        foreach (Rigidbody key in currentVehicles.Keys.Where(vehicle => vehicle == null).ToList())
         {
             currentVehicles.Remove(key);
         }
@@ -82,14 +74,7 @@ public class VehicleFactory : MonoBehaviour
 
     public Path GetRandomUnusedPath()
     {
-        List<Path> unusedPaths = new List<Path>();
-        foreach (Path path in paths)
-        {
-            if (!currentVehicles.ContainsValue(path))
-            {
-                unusedPaths.Add(path);
-            }
-        }
+        List<Path> unusedPaths = paths.FindAll(path => !currentVehicles.ContainsValue(path));
         if (unusedPaths.Count == 0)
         {
             return null;

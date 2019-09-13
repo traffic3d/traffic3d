@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class VehicleEngine : MonoBehaviour
 {
@@ -86,14 +85,14 @@ public class VehicleEngine : MonoBehaviour
 
     private void Destroy()
     {
-        PythonManager.IncrementDensityCount1();
+        PythonManager.GetInstance().IncrementDensityCount();
         Vector3 endPos = transform.position;
         double distance = Vector3.Distance(startPos, endPos);
         double time = (Time.time - startTime);
         double speed = (distance / time);
-        PythonManager.speedlist.Add(speed);
+        PythonManager.GetInstance().speedList.Add(speed);
         Destroy(this.gameObject);
-        PythonManager.IncrementRewardCount();
+        PythonManager.GetInstance().IncrementRewardCount();
         System.IO.File.AppendAllText("VehicleTimes.csv", time.ToString() + ",");
     }
 

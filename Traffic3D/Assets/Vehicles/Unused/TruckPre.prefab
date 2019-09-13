@@ -71,7 +71,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4632543453034936}
   - component: {fileID: 54178074924247804}
-  - component: {fileID: 114085688026298872}
   m_Layer: 0
   m_Name: Truck
   m_TagString: Untagged
@@ -118,45 +117,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &114085688026298872
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1212845833812342}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 962436524e878ab41a04971cc184899a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  path: {fileID: 0}
-  path1: {fileID: 0}
-  path2: {fileID: 0}
-  trafficLight: {fileID: 0}
-  maxSteerAngle: 45
-  turnSpeed: 5
-  WheelFL: {fileID: 146097131370192476}
-  WheelFR: {fileID: 146052227965216526}
-  maxMotorTorque: 80
-  maxBrakeTorque: 100
-  currentSpeed: 0
-  maxSpeed: 100
-  centerOfMass: {x: 0, y: 0, z: 0}
-  VEHICLE: {fileID: 0}
-  range1: 2
-  range2: 12
-  material2: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  p: {fileID: 0}
-  n: {fileID: 0}
-  nodes: []
-  MaterialChange: []
-  currentNode: 0
-  carCount: {fileID: 0}
-  k: 0
-  startTime: 0
-  frus: 0
-  des: 0
 --- !u!1 &1280499407054274
 GameObject:
   m_ObjectHideFlags: 0
@@ -743,7 +703,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4659648973781228}
-  - component: {fileID: 114332469140748228}
   m_Layer: 0
   m_Name: TruckPre
   m_TagString: Untagged
@@ -766,45 +725,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
---- !u!114 &114332469140748228
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1912506694797606}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 962436524e878ab41a04971cc184899a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  path: {fileID: 0}
-  path1: {fileID: 0}
-  path2: {fileID: 0}
-  trafficLight: {fileID: 0}
-  maxSteerAngle: 45
-  turnSpeed: 5
-  WheelFL: {fileID: 0}
-  WheelFR: {fileID: 0}
-  maxMotorTorque: 80
-  maxBrakeTorque: 100
-  currentSpeed: 0
-  maxSpeed: 100
-  centerOfMass: {x: 0, y: 0, z: 0}
-  VEHICLE: {fileID: 0}
-  range1: 2
-  range2: 12
-  material2: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  p: {fileID: 0}
-  n: {fileID: 0}
-  nodes: []
-  MaterialChange: []
-  currentNode: 0
-  carCount: {fileID: 0}
-  k: 0
-  startTime: 0
-  frus: 0
-  des: 0
 --- !u!1 &1918570949449946
 GameObject:
   m_ObjectHideFlags: 0

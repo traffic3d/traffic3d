@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Demo AI car5.unity
+    path: Assets/SnowDemo.unity
     guid: 7c51985f7f0c048dc9d55660ac32ca8c
   - enabled: 1
     path: Assets/Demo AI car6.unity

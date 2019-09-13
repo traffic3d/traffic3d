@@ -2,20 +2,26 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 
 public class PythonManager : MonoBehaviour
 {
-    public static int shotCount = 0;
-    public static int rewardCount = 0;
-    public static int finalReward = 0;
-    public static int densityCount1;
-    public static double densityPerkm;
-    public static double averageSpeed;
-    public static double flow;
+    public static PythonManager instance;
 
-    public static List<double> speedlist = new List<double>();
+    public static PythonManager GetInstance()
+    {
+        return instance;
+    }
+
+    void Awake()
+    {
+        instance = this;
+    }
+
+    public int shotCount = 0;
+    public int rewardCount = 0;
+    public int densityCount;
+    public List<double> speedList = new List<double>();
 
     void Start()
     {
@@ -25,6 +31,7 @@ public class PythonManager : MonoBehaviour
         }
         else
         {
+            Debug.Log("Unable to connect to the Python Script. Running the demo instead.");
             TrafficLightManager.GetInstance().RunDemo();
         }
     }
@@ -37,7 +44,7 @@ public class PythonManager : MonoBehaviour
             yield return StartCoroutine(TakeScreenshot());
             yield return StartCoroutine(SendScreenshot());
             yield return StartCoroutine(GetAction());
-            yield return StartCoroutine(Wait20Seconds());
+            yield return new WaitForSeconds(20);
             yield return StartCoroutine(CalculateDensity());
             yield return StartCoroutine(SendRewards());
         }
@@ -53,131 +60,86 @@ public class PythonManager : MonoBehaviour
     public IEnumerator TakeScreenshot()
     {
         shotCount += 1;
-
         string screenshotPath = Application.dataPath + "/Screenshots";
         if (!Directory.Exists(screenshotPath))
         {
             Directory.CreateDirectory(screenshotPath);
         }
-
         ScreenCapture.CaptureScreenshot(screenshotPath + "/shot" + shotCount + ".png");
         yield return null;
     }
 
     public IEnumerator SendScreenshot()
     {
-        byte[] msg = Encoding.UTF8.GetBytes("shot" + shotCount + ".png");
-        SocketManager.GetInstance().Send(msg);
+        SocketManager.GetInstance().Send("shot" + shotCount + ".png");
         yield return null;
-
     }
 
     public IEnumerator GetAction()
     {
-        byte[] bytes = new byte[125];
-
-        SocketManager.GetInstance().Receive(bytes);
-
-        int trafficLightId = int.Parse(Encoding.UTF8.GetString(bytes)) + 1;
-
+        int trafficLightId = SocketManager.GetInstance().ReceiveInt() + 1;
         TrafficLightManager.GetInstance().SetAllToRed();
         Time.timeScale = 1;
         yield return new WaitForSeconds(10);
         TrafficLightManager.GetInstance().SetTrafficLightToGreen(trafficLightId);
-
         yield return null;
-    }
-
-    public IEnumerator Wait20Seconds()
-    {
-        yield return new WaitForSeconds(20);
-
     }
 
     public IEnumerator CalculateDensity()
     {
         Time.timeScale = 0;
-        densityPerkm = (densityCount1 / 34.0);
+        double densityPerkm = (densityCount / 34.0);
         System.IO.File.AppendAllText("densityperkm.csv", densityPerkm.ToString() + ",");
-
-        averageSpeed = (speedlist.Sum() / (densityCount1));
-
-        flow = (densityPerkm * averageSpeed);
+        double averageSpeed = (speedList.Sum() / (densityCount));
+        double flow = (densityPerkm * averageSpeed);
         System.IO.File.AppendAllText("flow.csv", flow.ToString() + ",");
-
-        ResetDensityCount1();
-        speedlist.Clear();
+        ResetDensityCount();
+        speedList.Clear();
         yield return null;
     }
 
     public IEnumerator SendRewards()
     {
-        List<GameObject> waitingCars = new List<GameObject>();
-
-        GameObject[] waitcars1 = (GameObject.FindGameObjectsWithTag("hap"));
-        foreach (GameObject obj in waitcars1)
-        {
-            if (!waitingCars.Contains(obj))
-            {
-                waitingCars.Add(obj);
-            }
-        }
-
-        GameObject[] waitcars2 = (GameObject.FindGameObjectsWithTag("car"));
-        foreach (GameObject obje in waitcars2)
-        {
-            if (!waitingCars.Contains(obje))
-            {
-                waitingCars.Add(obje);
-            }
-        }
-
-        finalReward = (rewardCount - waitingCars.Count);
-
+        int finalReward = rewardCount - (GameObject.FindGameObjectsWithTag("car").Length + GameObject.FindGameObjectsWithTag("hap").Length);
         System.IO.File.AppendAllText("truerewards.csv", finalReward.ToString() + ",");
         System.IO.File.AppendAllText("throughput.csv", rewardCount.ToString() + ",");
-
-        byte[] msg1 = Encoding.UTF8.GetBytes("" + finalReward);
-        SocketManager.GetInstance().Send(msg1);
+        SocketManager.GetInstance().Send("" + finalReward);
         ResetRewardCount();
-
-        waitingCars.Clear();
         yield return null;
     }
 
-    public static int GetRewardCount()
+    public int GetRewardCount()
     {
         return rewardCount;
     }
 
-    public static void IncrementRewardCount()
+    public void IncrementRewardCount()
     {
         rewardCount++;
     }
 
-    public static void ResetRewardCount()
+    public void ResetRewardCount()
     {
         rewardCount = 0;
     }
 
-    public static int GetDensityCount1()
+    public int GetDensityCount()
     {
-        return densityCount1;
+        return densityCount;
     }
 
-    public static void IncrementDensityCount1()
+    public void IncrementDensityCount()
     {
-        densityCount1++;
+        densityCount++;
     }
 
-    public static void DecrementDensityCount1()
+    public void DecrementDensityCount()
     {
-        densityCount1--;
+        densityCount--;
     }
 
-    public static void ResetDensityCount1()
+    public void ResetDensityCount()
     {
-        densityCount1 = 0;
+        densityCount = 0;
     }
-
 }
