@@ -46,9 +46,7 @@ public class TrafficLight : MonoBehaviour
 
     private void ChangeMaterial(GameObject lightObject, Material material)
     {
-        Material[] materials = lightObject.GetComponent<Renderer>().materials;
-        materials[0] = material;
-        lightObject.GetComponent<Renderer>().materials = materials;
+        lightObject.GetComponent<Renderer>().material = material;
     }
 
     public int GetTrafficLightId()

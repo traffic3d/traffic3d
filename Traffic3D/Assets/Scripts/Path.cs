@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Path : MonoBehaviour
@@ -13,15 +14,7 @@ public class Path : MonoBehaviour
 
     private void SetNodes()
     {
-        Transform[] pathTransforms = GetComponentsInChildren<Transform>();
-        nodes = new List<Transform>();
-        for (int i = 0; i < pathTransforms.Length; i++)
-        {
-            if (pathTransforms[i] != transform)
-            {
-                nodes.Add(pathTransforms[i]);
-            }
-        }
+        nodes = GetComponentsInChildren<Transform>().ToList().FindAll(node => node != transform);
     }
 
     void OnDrawGizmosSelected()

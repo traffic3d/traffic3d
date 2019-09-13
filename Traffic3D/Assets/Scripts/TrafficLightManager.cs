@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 public class TrafficLightManager : MonoBehaviour
@@ -60,26 +61,12 @@ public class TrafficLightManager : MonoBehaviour
 
     public TrafficLight GetTrafficLightFromStopNode(Transform node)
     {
-        foreach (TrafficLight trafficLight in trafficLights)
-        {
-            if (trafficLight.HasStopNode(node))
-            {
-                return trafficLight;
-            }
-        }
-        return null;
+        return trafficLights.ToList().Find(trafficLight => trafficLight.HasStopNode(node));
     }
 
     public TrafficLight GetTrafficLight(int id)
     {
-        foreach (TrafficLight trafficLight in trafficLights)
-        {
-            if (trafficLight.GetTrafficLightId() == id)
-            {
-                return trafficLight;
-            }
-        }
-        return null;
+        return trafficLights.ToList().Find(trafficLight => trafficLight.GetTrafficLightId() == id);
     }
 
     public void SetTrafficLightToGreen(int id)
@@ -99,9 +86,6 @@ public class TrafficLightManager : MonoBehaviour
 
     public void SetAllToRed()
     {
-        foreach (TrafficLight trafficLight in trafficLights)
-        {
-            trafficLight.SetColour(TrafficLight.LightColour.RED);
-        }
+        trafficLights.ToList().ForEach(trafficLight => trafficLight.SetColour(TrafficLight.LightColour.RED));
     }
 }
