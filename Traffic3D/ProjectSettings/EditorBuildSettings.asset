@@ -9,12 +9,12 @@ EditorBuildSettings:
     path: Assets/SnowDemo.unity
     guid: 7c51985f7f0c048dc9d55660ac32ca8c
   - enabled: 1
-    path: Assets/Demo AI car6.unity
+    path: Assets/RainDemo.unity
     guid: ab079854e6ab742c2810945e2b7a35f0
   - enabled: 1
-    path: Assets/Demo AI car8.unity
+    path: Assets/NightDemo.unity
     guid: 0cd08a24c6911456c8266827bb6f07e5
   - enabled: 1
-    path: Assets/Demo AI car11.unity
+    path: Assets/DayDemo.unity
     guid: 4ba7cc512972d4f3a97a25b5718b8afc
   m_configObjects: {}
