@@ -170,6 +170,104 @@ Traffic3DProcessor(IMAGES_PATH)
 
 To see an example of this look at the [Traffic3DProcessor](/backend/traffic3d_processor.py) within the `backend` folder.
 
+## Creating a Scene
+
+First, copy one of the **demo scenes** and save as your own scene. This will give a base to work on.
+
+Delete any unneeded **terrain** assets out of the scene and then start with creating the terrain that is needed for your road and traffic lights.
+
+![Creating the Scene](./docs/CreatingTheScene.png)
+
+Create your **traffic lights** which at minimum should have a main object, and 3 circle objects to light up as red, amber and green.
+On the main object, add the `TrafficLight.cs` script.
+
+![Traffic Light Configuration](./docs/TrafficLightConfiguration.png)
+
+This script has the following fields:
+
+* **Traffic Light Id** – The traffic light’s unique number that identifies the traffic light.
+* **Red Material** – The material of the red light when it is on.
+* **Amber Material** – The material of the amber light when it is on.
+* **Green Material** – The material of the green light when it is on.
+* **Black Material** – The material of all lights when off.
+* **Red Light Object** – The circle object for the red light (normally the top light).
+* **Amber Light Object** – The circle object for the amber light (normally the centre light).
+* **Green Light Object** – The circle object for the green light (normally the bottom light).
+* **Stop Nodes** (*List*) – The nodes on multiple paths where the traffic light stops the vehicles (more on this later).
+* **Current Light Colour** – The colour of the light that is currently on (e.g. `RED`, `AMBER`, `GREEN`).
+
+Fill in everything except the **Stop Nodes and Current Light Colour**.
+Repeat this for all the traffic lights in the scene while remembering to fill in the Traffic Light Id with **unique numbers that increment** starting from one.
+
+Next, paths for the vehicles to follow need implementing.
+Create a path by using one of the prefabs provided in the folder `Assets/Paths/ `.
+For example, `TrafficLightStraightPath.prefab` is a straight path with 5 nodes as shown here:
+
+![Creating a Path](./docs/CreatingAPath.png)
+
+Each node represents a **point where the vehicle will follow** in sequence. The vehicle will follow from `node1` (the spawn point) to the last node which in this case is `node5` where the vehicle will be destroyed.
+If there is a **traffic light on the path**, a node (also known as a stop node) will have to be placed at the traffic light
+which can be easily done by either **moving** an existing node or **creating** a new one by copying and pasting a node and moving
+that node to the correct location (make sure the nodes are still in the correct order and all following nodes are renamed to the correct number).
+This node will be where the **vehicle stops** for that traffic light. Make sure that all paths are **above ground but not too high** so first node can spawn the vehicle.
+
+Once all paths have been placed, all the nodes that were placed for the traffic lights (the stop nodes)
+will have to be placed within each of the traffic light scripts. For example,
+a node, node3, that was placed for traffic light 1 which is on path 1 would be placed into the list of Stop Nodes on traffic light 1’s script.
+
+Next, the `VehicleFactory` game object needs to have all the paths placed and vehicles that will be in this scene added to the configuration.
+
+![Vehicle Factory Configuration](./docs/VehicleFactoryConfiguration.png)
+
+The Vehicle Factory Script has the following fields:
+
+* **High Range Respawn Time** – The maximum time in seconds for the next vehicle to respawn.
+* **Low Range Respawn Time** – The minimum time in seconds for the next vehicle to respawn.
+* **Maximum Vehicle Count** – The maximum number of vehicles allowed to be in the scene at once.
+* **Slow Down Vehicle Rate At** – The number of vehicles in the scene where the rate of spawn will slow down after this number.
+* **Vehicles** (*List*) – The list of vehicles with the vehicle engine script that will be spawned into the scene.
+* **Paths** (*List*) – The list of paths that have been placed in the scene.
+
+### Creating a Vehicle
+
+To create a new vehicle, find a model online or create your own model and put wheel colliders on each of the wheels.
+
+![Creating a Vehicle](./docs/CreatingAVehicle.png)
+
+![Vehicle Engine Configuration](./docs/VehicleEngineConfiguration.png)
+
+The script has the following fields:
+
+* **Path** – The path that will be taken by the vehicle.
+* **Max Steer Angle** – The maximum angle of which the vehicle will turn at.
+* **Turn Speed** – The speed of which the wheels will turn at.
+* **Wheel Collider Front Left** – The collider of the front left wheel.
+* **Wheel Collider Front Right** – The collider of the front right wheel.
+* **Max Motor Torque** – The maximum torque of the engine in a forward direction.
+* **Normal Brake Torque** – The torque of which the vehicle will slow down.
+* **Max Brake Torque** – The maximum torque of which the vehicle will slow down.
+* **Current Speed** – The current speed of the vehicle.
+* **Max Speed** – The maximum speed of the vehicle.
+* **Centre Of Mass** – The centre of mass of the vehicle.
+* **Current Node** – The current node of the path the vehicle is at.
+* **Current Node Number** – The current node number of the path the vehicle is at.
+* **Start Time** – The time the vehicle is spawned in at.
+* **Start Pos** – The position the vehicle is spawned in at.
+* **Engine Status** – The status of the Engine currently (e.g. `ACCELERATE`, `STOP`, `HARD_STOP`)
+
+Only the following fields should be filled in, the rest of the fields are filled during the simulation:
+
+* Max Steer Angle
+* Turn Speed
+* Wheel Collider Front Left and Right
+* Max Motor Torque
+* Normal Brake Torque
+* Max Brake Torque
+* Max Speed
+* Centre Of Mass
+
+Most of these options can be left as its default.
+
 ## Testing
 
 ### Creating or Editing Tests
