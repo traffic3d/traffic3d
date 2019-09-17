@@ -540,8 +540,7 @@ MonoBehaviour:
   currentNode: {fileID: 0}
   currentNodeNumber: 0
   startTime: 0
-  frus: 0
-  des: 0
+  startPos: {x: 0, y: 0, z: 0}
   engineStatus: 0
 --- !u!1 &1727658810202796
 GameObject:

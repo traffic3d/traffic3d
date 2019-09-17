@@ -620,7 +620,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4980740417697046}
   - component: {fileID: 54662136268123646}
-  - component: {fileID: 114341083249887724}
   - component: {fileID: 95559249967839874}
   m_Layer: 0
   m_Name: carfac3
@@ -661,44 +660,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &114341083249887724
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1552940691830440}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c1a0d0e6963ad44db4befa9b3814731, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  path: {fileID: 0}
-  path1: {fileID: 0}
-  path2: {fileID: 0}
-  trafficLight: {fileID: 0}
-  maxSteerAngle: 45
-  turnSpeed: 5
-  WheelFL: {fileID: 146854639488377230}
-  WheelFR: {fileID: 146572823970285036}
-  maxMotorTorque: 80
-  maxBrakeTorque: 100
-  maxBrakeTorque2: 1000
-  currentSpeed: 0
-  maxSpeed: 100
-  centerOfMass: {x: 0, y: -0.2, z: 0}
-  VEHICLE: {fileID: 54377487784710336, guid: 9c09f05141b2c4b30b652a10adbb0d71, type: 3}
-  VehicleCurrentPosition: {x: 0, y: 0, z: 0}
-  TrafficLightPosition: {x: 0, y: 0, z: 0}
-  n: {fileID: 0}
-  material2: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  material4: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
-  u: {fileID: 0}
-  nodes: []
-  currentNode: 0
-  count: 0
-  startTime: 0
-  des: 0
 --- !u!95 &95559249967839874
 Animator:
   serializedVersion: 3
@@ -709,7 +670,7 @@ Animator:
   m_GameObject: {fileID: 1552940691830440}
   m_Enabled: 0
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: eb78da33630488c4888d0b134bd8de47, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

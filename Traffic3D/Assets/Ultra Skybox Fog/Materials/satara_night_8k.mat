@@ -4,70 +4,42 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: satara_night_8k
   m_Shader: {fileID: 4800000, guid: 5e444cd13928b274babcaedb447ba3ef, type: 3}
   m_ShaderKeywords: _FOGBOTTOM_ON
   m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
+  disabledShaderPasses: []
   m_SavedProperties:
-    serializedVersion: 2
+    serializedVersion: 3
     m_TexEnvs:
-    - first:
-        name: <noninit>
-      second:
+    - <noninit>:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - first:
-        name: _Tex
-      second:
+    - _Tex:
         m_Texture: {fileID: 8900000, guid: 6939f8161e0932c40871408aebe0e285, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - first:
-        name: <noninit>
-      second: 0
-    - first:
-        name: _Exposure
-      second: 0.8
-    - first:
-        name: _FogBottom
-      second: 0
-    - first:
-        name: _FogEnd
-      second: 0.343
-    - first:
-        name: _FogIntens
-      second: 1
-    - first:
-        name: _FogStart
-      second: 0.066
-    - first:
-        name: _MieIntens
-      second: 0.342
-    - first:
-        name: _MieSize
-      second: 0.237
-    - first:
-        name: _Rotation
-      second: 0
-    - first:
-        name: _SunDir
-      second: 48
+    - <noninit>: 0
+    - _Exposure: 0.8
+    - _FogBottom: 0
+    - _FogEnd: 0.343
+    - _FogIntens: 1
+    - _FogStart: 0.066
+    - _MieIntens: 0.342
+    - _MieSize: 0.237
+    - _Rotation: 0
+    - _SunDir: 48
     m_Colors:
-    - first:
-        name: <noninit>
-      second: {r: 0, g: 2.0182498, b: 1e-45, a: 1.2904559e-15}
-    - first:
-        name: _FogCol
-      second: {r: 0.184, g: 0.16727275, b: 0.16727275, a: 0.5}
-    - first:
-        name: _MieTint
-      second: {r: 0.506, g: 0.45674336, b: 0.38061944, a: 0.5}
-    - first:
-        name: _Tint
-      second: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+    - <noninit>: {r: 0, g: 2.0182498, b: 1e-45, a: 1.2904559e-15}
+    - _FogCol: {r: 0.184, g: 0.16727275, b: 0.16727275, a: 0.5}
+    - _MieTint: {r: 0.506, g: 0.45674336, b: 0.38061944, a: 0.5}
+    - _Tint: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
