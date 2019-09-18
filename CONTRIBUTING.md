@@ -222,3 +222,13 @@ when the play button is selected all changes during that time are reverted.
 For a full build, navigate to the top bar and click **File > Build & Run**,
 select the folder for the build.
 This should create a `.exe` and will automatically execute the `.exe` to play the simulation.
+
+## Past known issues
+
+#### The built software is not functioning properly
+
+**Problem**: The built software isn't spawning any vehicles into the scene and traffic lights are not working.
+
+**Solution**: Transfer all assets, except for scripts, from this project to a new project.
+The scripts can be transferred only by creating a new script and then copying and pasting the old contents of that particular script. 
+References will also have to be amended as they will be broken during the transfer.
