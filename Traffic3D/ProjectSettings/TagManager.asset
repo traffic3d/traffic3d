@@ -4,11 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - TrafficLight
-  - automobile
-  - car
   - drive
+  - car
   - hap
+  - unhap
   layers:
   - Default
   - TransparentFX
@@ -18,7 +17,7 @@ TagManager:
   - UI
   - 
   - 
-  - TrafficLight
+  - PostProcessing
   - 
   - 
   - 
@@ -45,7 +44,4 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: New Layer
-    uniqueID: 1430198475
     locked: 0

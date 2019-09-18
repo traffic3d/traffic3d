@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4277589713486906}
   - component: {fileID: 33179153208464548}
   - component: {fileID: 23200379123234280}
-  - component: {fileID: 114818985617532520}
+  - component: {fileID: 1799479354385055829}
   m_Layer: 0
   m_Name: WS1
   m_TagString: Untagged
@@ -78,7 +78,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &114818985617532520
+--- !u!114 &1799479354385055829
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87,7 +87,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1049402485663316}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 574a219412f05694aa421e96c080fa77, type: 3}
+  m_Script: {fileID: 11500000, guid: 77e730bab87546c45a8cf3ba4c7a409f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetWheel: {fileID: 146655200263391466}
@@ -254,7 +254,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4160181098955014}
   - component: {fileID: 54272025488572840}
-  - component: {fileID: 6391961742705187922}
+  - component: {fileID: 2670748517366013716}
   m_Layer: 0
   m_Name: SUV
   m_TagString: Untagged
@@ -301,7 +301,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &6391961742705187922
+--- !u!114 &2670748517366013716
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -310,7 +310,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1310869725840042}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc0239007d2b942b5b3a92891044d117, type: 3}
+  m_Script: {fileID: 11500000, guid: a84fd945f96726a4ea85aa1c60896077, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   path: {fileID: 0}
@@ -523,7 +523,7 @@ GameObject:
   - component: {fileID: 4030188893573430}
   - component: {fileID: 33557520468105452}
   - component: {fileID: 23501387019926522}
-  - component: {fileID: 114644563950022228}
+  - component: {fileID: 8541916497091877536}
   m_Layer: 0
   m_Name: WS1
   m_TagString: Untagged
@@ -590,7 +590,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &114644563950022228
+--- !u!114 &8541916497091877536
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -599,7 +599,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1684336733667146}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 574a219412f05694aa421e96c080fa77, type: 3}
+  m_Script: {fileID: 11500000, guid: 77e730bab87546c45a8cf3ba4c7a409f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetWheel: {fileID: 146276515646266260}
@@ -645,7 +645,7 @@ GameObject:
   - component: {fileID: 4181089157135240}
   - component: {fileID: 33650157004350060}
   - component: {fileID: 23659818538883060}
-  - component: {fileID: 114211545072117568}
+  - component: {fileID: 790878696852841554}
   m_Layer: 0
   m_Name: WS1
   m_TagString: Untagged
@@ -712,7 +712,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &114211545072117568
+--- !u!114 &790878696852841554
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -721,7 +721,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1821686485187442}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 574a219412f05694aa421e96c080fa77, type: 3}
+  m_Script: {fileID: 11500000, guid: 77e730bab87546c45a8cf3ba4c7a409f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetWheel: {fileID: 146240499941219244}
@@ -767,7 +767,7 @@ GameObject:
   - component: {fileID: 4316866184074354}
   - component: {fileID: 33442297014813480}
   - component: {fileID: 23608397386950004}
-  - component: {fileID: 114932774962184154}
+  - component: {fileID: 8380636826966481256}
   m_Layer: 0
   m_Name: WS1
   m_TagString: Untagged
@@ -834,7 +834,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &114932774962184154
+--- !u!114 &8380636826966481256
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -843,7 +843,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1867469867149330}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 574a219412f05694aa421e96c080fa77, type: 3}
+  m_Script: {fileID: 11500000, guid: 77e730bab87546c45a8cf3ba4c7a409f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetWheel: {fileID: 146864078100093186}
