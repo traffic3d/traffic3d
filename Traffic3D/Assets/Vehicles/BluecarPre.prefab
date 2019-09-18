@@ -194,7 +194,7 @@ GameObject:
   - component: {fileID: 4121819683121946}
   - component: {fileID: 33354315101734312}
   - component: {fileID: 23047030360055416}
-  - component: {fileID: 114813991336642796}
+  - component: {fileID: 9188430925975291827}
   m_Layer: 0
   m_Name: Object013
   m_TagString: Untagged
@@ -261,7 +261,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &114813991336642796
+--- !u!114 &9188430925975291827
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -270,7 +270,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1401527947155984}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 574a219412f05694aa421e96c080fa77, type: 3}
+  m_Script: {fileID: 11500000, guid: 77e730bab87546c45a8cf3ba4c7a409f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetWheel: {fileID: 146245371587509290}
@@ -377,7 +377,7 @@ GameObject:
   - component: {fileID: 4581712903812766}
   - component: {fileID: 33835847066969760}
   - component: {fileID: 23517011953713802}
-  - component: {fileID: 114480691728026708}
+  - component: {fileID: 1748228803591262341}
   m_Layer: 0
   m_Name: Object011
   m_TagString: Untagged
@@ -444,7 +444,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &114480691728026708
+--- !u!114 &1748228803591262341
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -453,7 +453,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1642804469608546}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 574a219412f05694aa421e96c080fa77, type: 3}
+  m_Script: {fileID: 11500000, guid: 77e730bab87546c45a8cf3ba4c7a409f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetWheel: {fileID: 146223782593504542}
@@ -467,7 +467,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4111913263539470}
   - component: {fileID: 54329891447940280}
-  - component: {fileID: 8402691440316884922}
+  - component: {fileID: 8588772200871737206}
   m_Layer: 0
   m_Name: BluecarPre
   m_TagString: Untagged
@@ -514,7 +514,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &8402691440316884922
+--- !u!114 &8588772200871737206
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -523,7 +523,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1717347129989908}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc0239007d2b942b5b3a92891044d117, type: 3}
+  m_Script: {fileID: 11500000, guid: a84fd945f96726a4ea85aa1c60896077, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   path: {fileID: 0}
@@ -540,8 +540,7 @@ MonoBehaviour:
   currentNode: {fileID: 0}
   currentNodeNumber: 0
   startTime: 0
-  frus: 0
-  des: 0
+  startPos: {x: 0, y: 0, z: 0}
   engineStatus: 0
 --- !u!1 &1727658810202796
 GameObject:
@@ -554,7 +553,7 @@ GameObject:
   - component: {fileID: 4226403031866404}
   - component: {fileID: 33506267561570706}
   - component: {fileID: 23277518892907606}
-  - component: {fileID: 114469498149994732}
+  - component: {fileID: 6777869676690624847}
   m_Layer: 0
   m_Name: Object014
   m_TagString: Untagged
@@ -621,7 +620,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &114469498149994732
+--- !u!114 &6777869676690624847
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -630,7 +629,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1727658810202796}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 574a219412f05694aa421e96c080fa77, type: 3}
+  m_Script: {fileID: 11500000, guid: 77e730bab87546c45a8cf3ba4c7a409f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetWheel: {fileID: 146862675977716504}
@@ -645,7 +644,7 @@ GameObject:
   - component: {fileID: 4230344285759150}
   - component: {fileID: 33943033557698908}
   - component: {fileID: 23068638935963366}
-  - component: {fileID: 114336711768644844}
+  - component: {fileID: 7237968795655498682}
   m_Layer: 0
   m_Name: Object012
   m_TagString: Untagged
@@ -712,7 +711,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &114336711768644844
+--- !u!114 &7237968795655498682
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -721,7 +720,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1851318465853612}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 574a219412f05694aa421e96c080fa77, type: 3}
+  m_Script: {fileID: 11500000, guid: 77e730bab87546c45a8cf3ba4c7a409f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetWheel: {fileID: 146853775395429868}

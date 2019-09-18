@@ -415,7 +415,6 @@ GameObject:
   - component: {fileID: 4491514859086888}
   - component: {fileID: 54698227090296036}
   - component: {fileID: 95763082798692592}
-  - component: {fileID: 114367428698489276}
   m_Layer: 0
   m_Name: CAR2
   m_TagString: Untagged
@@ -465,7 +464,7 @@ Animator:
   m_GameObject: {fileID: 1376672292148176}
   m_Enabled: 0
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: eb78da33630488c4888d0b134bd8de47, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -474,44 +473,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &114367428698489276
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1376672292148176}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31e03b034ce96694ab90902c49bd1986, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  path: {fileID: 4095781890522688, guid: 70b578d1b1327e24b8e757953a85203b, type: 3}
-  path1: {fileID: 0}
-  path2: {fileID: 0}
-  trafficLight: {fileID: 0}
-  maxSteerAngle: 45
-  turnSpeed: 5
-  WheelFL: {fileID: 146964239218003336}
-  WheelFR: {fileID: 146818903441730994}
-  maxMotorTorque: 80
-  maxBrakeTorque: 100
-  currentSpeed: 0
-  maxSpeed: 100
-  centerOfMass: {x: 0, y: 0, z: 0}
-  VEHICLE: {fileID: 54899244255199578, guid: 1fff74ba7c3af7a498ed2bee1938367a, type: 3}
-  material2: {fileID: 0}
-  m: {fileID: 0}
-  range1: 2
-  range2: 12
-  n: {fileID: 0}
-  nodes: []
-  currentNode: 0
-  carCount: {fileID: 0}
-  k: 0
-  startTime: 0
-  frus: 0
-  des: 0
 --- !u!1 &1385635636677604
 GameObject:
   m_ObjectHideFlags: 0

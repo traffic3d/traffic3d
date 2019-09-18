@@ -262,6 +262,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lineColor: {r: 1, g: 1, b: 1, a: 1}
+  nodes: []
 --- !u!1 &1814964718746048
 GameObject:
   m_ObjectHideFlags: 0

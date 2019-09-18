@@ -70,30 +70,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   path: {fileID: 0}
-  path1: {fileID: 0}
-  path2: {fileID: 0}
-  trafficLight: {fileID: 0}
   maxSteerAngle: 45
   turnSpeed: 5
   wheelColliderFrontLeft: {fileID: 146475711639651486}
   wheelColliderFrontRight: {fileID: 146161062344520970}
   maxMotorTorque: 80
+  normalBrakeTorque: 100
   maxBrakeTorque: 100
-  maxBrakeTorque2: 1000
   currentSpeed: 0
   maxSpeed: 100
   centerOfMass: {x: 0, y: 0, z: 0}
-  vehicle: {fileID: 0}
-  vehicleCurrentPosition: {x: 0, y: 0, z: 0}
-  trafficLightPosition: {x: 0, y: 0, z: 0}
-  counter: {fileID: 0}
-  redMaterial: {fileID: 2100000, guid: 9db7d4cd3654ea94f94932f36fce7fd3, type: 2}
-  trafficLightRed3: {fileID: 0}
-  nodes: []
-  currentNode: 0
-  count: 0
+  currentNode: {fileID: 0}
+  currentNodeNumber: 0
   startTime: 0
-  des: 0
+  startPos: {x: 0, y: 0, z: 0}
+  engineStatus: 0
 --- !u!1 &1441160205275844
 GameObject:
   m_ObjectHideFlags: 0

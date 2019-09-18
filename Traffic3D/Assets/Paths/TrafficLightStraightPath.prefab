@@ -69,7 +69,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3576773296163152046}
-  - component: {fileID: 3576773296199874744}
+  - component: {fileID: 7418261687385785448}
   m_Layer: 0
   m_Name: TrafficLightStraightPath
   m_TagString: Untagged
@@ -96,7 +96,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3576773296199874744
+--- !u!114 &7418261687385785448
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -105,10 +105,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3576773296199874745}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53b8fe64bdcb500438480ecb7468afba, type: 3}
+  m_Script: {fileID: 11500000, guid: bfd29d160d2a77946a8f5bd29e2178aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineColor: {r: 0.9705882, g: 0.94917816, b: 0.94917816, a: 1}
+  lineColor: {r: 1, g: 1, b: 1, a: 1}
   nodes:
   - {fileID: 3576773295752286289}
   - {fileID: 3576773296341020176}

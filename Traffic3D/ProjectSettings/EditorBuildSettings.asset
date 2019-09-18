@@ -6,15 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/SnowDemo.unity
-    guid: 7c51985f7f0c048dc9d55660ac32ca8c
+    path: Assets/Scenes/SnowDemo.unity
+    guid: 8ed3256e5f305ce419c3d654883c0079
   - enabled: 1
-    path: Assets/Demo AI car6.unity
-    guid: ab079854e6ab742c2810945e2b7a35f0
+    path: Assets/Scenes/DayDemo.unity
+    guid: 1baa81ffbaccbbf4dabb4a71959b04e6
   - enabled: 1
-    path: Assets/Demo AI car8.unity
-    guid: 0cd08a24c6911456c8266827bb6f07e5
+    path: Assets/Scenes/NightDemo.unity
+    guid: 0d273ba15245e3749ab279c0a2c30143
   - enabled: 1
-    path: Assets/Demo AI car11.unity
-    guid: 4ba7cc512972d4f3a97a25b5718b8afc
+    path: Assets/Scenes/RainDemo.unity
+    guid: 248e72bd19c16ee4c8984a5d2fac5add
   m_configObjects: {}

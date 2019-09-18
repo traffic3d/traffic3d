@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 4994594256491314}
   - component: {fileID: 33746027614214388}
   - component: {fileID: 23445651902945072}
-  - component: {fileID: 114223159135886270}
+  - component: {fileID: 5603298185254969558}
   m_Layer: 0
   m_Name: SmallTruck_Tyre_F_R
   m_TagString: Untagged
@@ -139,7 +139,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &114223159135886270
+--- !u!114 &5603298185254969558
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -148,7 +148,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1113059855668616}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 574a219412f05694aa421e96c080fa77, type: 3}
+  m_Script: {fileID: 11500000, guid: 77e730bab87546c45a8cf3ba4c7a409f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetWheel: {fileID: 146654491412983148}
@@ -163,7 +163,7 @@ GameObject:
   - component: {fileID: 4477951615416040}
   - component: {fileID: 33349618676789444}
   - component: {fileID: 23874143223191034}
-  - component: {fileID: 114840731444666280}
+  - component: {fileID: 9036704976413315301}
   m_Layer: 0
   m_Name: SmallTruck_Tyre_B_L
   m_TagString: Untagged
@@ -230,7 +230,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &114840731444666280
+--- !u!114 &9036704976413315301
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -239,7 +239,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1171785680328002}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 574a219412f05694aa421e96c080fa77, type: 3}
+  m_Script: {fileID: 11500000, guid: 77e730bab87546c45a8cf3ba4c7a409f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetWheel: {fileID: 146880421441539852}
@@ -253,7 +253,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4565883152635052}
   - component: {fileID: 54162081345283232}
-  - component: {fileID: 5783623277294382532}
+  - component: {fileID: 2858257825132716182}
   m_Layer: 0
   m_Name: Trucpre
   m_TagString: Untagged
@@ -300,7 +300,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &5783623277294382532
+--- !u!114 &2858257825132716182
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -309,7 +309,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1181654110177340}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc0239007d2b942b5b3a92891044d117, type: 3}
+  m_Script: {fileID: 11500000, guid: a84fd945f96726a4ea85aa1c60896077, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   path: {fileID: 0}
@@ -326,8 +326,7 @@ MonoBehaviour:
   currentNode: {fileID: 0}
   currentNodeNumber: 0
   startTime: 0
-  frus: 0
-  des: 0
+  startPos: {x: 0, y: 0, z: 0}
   engineStatus: 0
 --- !u!1 &1221545532200992
 GameObject:
@@ -401,7 +400,7 @@ GameObject:
   - component: {fileID: 4324069728037228}
   - component: {fileID: 33355119043498960}
   - component: {fileID: 23751436868093528}
-  - component: {fileID: 114860705668853344}
+  - component: {fileID: 7321417771607038722}
   m_Layer: 0
   m_Name: SmallTruck_Tyre_F_L
   m_TagString: Untagged
@@ -468,7 +467,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &114860705668853344
+--- !u!114 &7321417771607038722
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -477,7 +476,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1460079052362594}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 574a219412f05694aa421e96c080fa77, type: 3}
+  m_Script: {fileID: 11500000, guid: 77e730bab87546c45a8cf3ba4c7a409f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetWheel: {fileID: 146121656679790344}
@@ -553,7 +552,7 @@ GameObject:
   - component: {fileID: 4443154649973692}
   - component: {fileID: 33238163514237082}
   - component: {fileID: 23252854088259438}
-  - component: {fileID: 114867063226392306}
+  - component: {fileID: 6365195431807528073}
   m_Layer: 0
   m_Name: SmallTruck_Tyre_B_R
   m_TagString: Untagged
@@ -620,7 +619,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &114867063226392306
+--- !u!114 &6365195431807528073
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -629,7 +628,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1670461431721458}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 574a219412f05694aa421e96c080fa77, type: 3}
+  m_Script: {fileID: 11500000, guid: 77e730bab87546c45a8cf3ba4c7a409f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetWheel: {fileID: 146374555519514690}
