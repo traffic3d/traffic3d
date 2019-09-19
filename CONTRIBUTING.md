@@ -17,9 +17,9 @@ cd traffic3d
 
 ### Installation and set-up
 
-The project runs on Unity 2017.2.0f1 and up.
+The project runs on Unity 2018.3.11f1 and up.
 Download the latest of Unity from the following link: [https://unity3d.com/get-unity/download/](https://unity3d.com/get-unity/download/)
-Or download Unity 2017.2.0f1 from the following link: [https://unity3d.com/get-unity/download/archive](https://unity3d.com/get-unity/download/archive)
+Or download Unity 2018.3.11f1 from the following link: [https://unity3d.com/get-unity/download/archive](https://unity3d.com/get-unity/download/archive)
 
 Use a preferred C# IDE or download Visual Studio using the following link: [https://visualstudio.microsoft.com/vs/](https://visualstudio.microsoft.com/vs/)
 
