@@ -330,3 +330,8 @@ This should create a `.exe` and will automatically execute the `.exe` to play th
 **Solution**: Transfer all assets, except for scripts, from this project to a new project.
 The scripts can be transferred only by creating a new script and then copying and pasting the old contents of that particular script.
 References will also have to be amended as they will be broken during the transfer.
+
+## Notes
+
+Currently, we do **not** support **autonomous vehicles**, but might in future versions. 
+All vehicles use preset paths and get the current traffic light's status directly from the script.
