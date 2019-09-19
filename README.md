@@ -13,6 +13,10 @@ The client is [Dr Maria Chli](http://www.maria-chli.org/).
 * Deepeka Garg
 * Callum Bugajski (2019)
 
+## License
+
+This software is licensed under the [Mozilla Public License Version 2.0](/LICENSE).
+
 ## Getting Started with Development
 
 Please read [CONTRIBUTING.md](/CONTRIBUTING.md) before you start working on this repository.
