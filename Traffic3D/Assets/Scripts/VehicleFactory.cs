@@ -10,6 +10,7 @@ public class VehicleFactory : MonoBehaviour
     public float lowRangeRespawnTime = 3;
     public float maximumVehicleCount = 8;
     public float slowDownVehicleRateAt = 6;
+    public float timeOfStartInvisibility = 1;
     public List<Rigidbody> vehicles;
     public List<Path> paths;
     public Dictionary<Rigidbody, Path> currentVehicles = new Dictionary<Rigidbody, Path>();
@@ -25,10 +26,10 @@ public class VehicleFactory : MonoBehaviour
         {
             throw new System.Exception("No paths for vehicles to spawn on.");
         }
-        StartCoroutine(GenerateCars());
+        StartCoroutine(GenerateVehicle());
     }
 
-    IEnumerator GenerateCars()
+    IEnumerator GenerateVehicle()
     {
         while (true)
         {
@@ -56,6 +57,7 @@ public class VehicleFactory : MonoBehaviour
     public Rigidbody SpawnVehicle(Rigidbody vehicle, Path path)
     {
         Rigidbody spawnedVehicle = Instantiate(vehicle, path.nodes[0].position, path.nodes[0].rotation);
+        TemporarilyHideVehicle(spawnedVehicle, timeOfStartInvisibility);
         VehicleEngine vehicleEngine = spawnedVehicle.GetComponent<VehicleEngine>();
         vehicleEngine.SetPath(path);
         currentVehicles.Add(spawnedVehicle, path);
@@ -80,5 +82,17 @@ public class VehicleFactory : MonoBehaviour
             return null;
         }
         return unusedPaths[Random.Range(0, unusedPaths.Count - 1)];
+    }
+
+    public void TemporarilyHideVehicle(Rigidbody vehicle, float hideForSeconds)
+    {
+        vehicle.GetComponentsInChildren<Renderer>().ToList().ForEach(renderer => renderer.enabled = false);
+        StartCoroutine(WaitAndShowVehicle(vehicle, hideForSeconds));
+    }
+
+    IEnumerator WaitAndShowVehicle(Rigidbody vehicle, float hideForSeconds)
+    {
+        yield return new WaitForSeconds(hideForSeconds);
+        vehicle.GetComponentsInChildren<Renderer>().ToList().ForEach(renderer => renderer.enabled = true);
     }
 }
