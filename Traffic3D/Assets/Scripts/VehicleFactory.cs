@@ -57,7 +57,7 @@ public class VehicleFactory : MonoBehaviour
     public Rigidbody SpawnVehicle(Rigidbody vehicle, Path path)
     {
         Rigidbody spawnedVehicle = Instantiate(vehicle, path.nodes[0].position, path.nodes[0].rotation);
-        TemporarilyHideVehicle(spawnedVehicle);
+        TemporarilyHideVehicle(spawnedVehicle, timeOfStartInvisibility);
         VehicleEngine vehicleEngine = spawnedVehicle.GetComponent<VehicleEngine>();
         vehicleEngine.SetPath(path);
         currentVehicles.Add(spawnedVehicle, path);
@@ -84,15 +84,15 @@ public class VehicleFactory : MonoBehaviour
         return unusedPaths[Random.Range(0, unusedPaths.Count - 1)];
     }
 
-    public void TemporarilyHideVehicle(Rigidbody vehicle)
+    public void TemporarilyHideVehicle(Rigidbody vehicle, float hideForSeconds)
     {
         vehicle.GetComponentsInChildren<Renderer>().ToList().ForEach(renderer => renderer.enabled = false);
-        StartCoroutine(ShowVehicle(vehicle));
+        StartCoroutine(WaitAndShowVehicle(vehicle, hideForSeconds));
     }
 
-    IEnumerator ShowVehicle(Rigidbody vehicle)
+    IEnumerator WaitAndShowVehicle(Rigidbody vehicle, float hideForSeconds)
     {
-        yield return new WaitForSeconds(timeOfStartInvisibility);
+        yield return new WaitForSeconds(hideForSeconds);
         vehicle.GetComponentsInChildren<Renderer>().ToList().ForEach(renderer => renderer.enabled = true);
     }
 }
