@@ -36,6 +36,9 @@ public class PythonManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// The main loop for the Python script.
+    /// </summary>
     public IEnumerator MainLoop()
     {
         yield return StartCoroutine(Reset());
@@ -50,6 +53,9 @@ public class PythonManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Resets all the traffic lights to red and then waits.
+    /// </summary>
     public IEnumerator Reset()
     {
         TrafficLightManager.GetInstance().SetAllToRed();
@@ -57,6 +63,9 @@ public class PythonManager : MonoBehaviour
         Time.timeScale = 0;
     }
 
+    /// <summary>
+    /// Takes a screen shot and then stores it in within the data folder and then within "Screenshots/". If this is ran within unity, it will be located within "Assets/Screenshots/".
+    /// </summary>
     public IEnumerator TakeScreenshot()
     {
         shotCount += 1;
@@ -69,12 +78,21 @@ public class PythonManager : MonoBehaviour
         yield return null;
     }
 
+    /// <summary>
+    /// Sends the file path as a string to the socket using the SocketManager.
+    /// </summary>
     public IEnumerator SendScreenshot()
     {
         SocketManager.GetInstance().Send("shot" + shotCount + ".png");
         yield return null;
     }
 
+    /// <summary>
+    /// Gets the action which is an int sent by the python script.
+    /// It uses the int by converting it into a traffic light id.
+    /// All traffic lights are then set to red and it waits.
+    /// Once the wait is over that traffic light with the specified ID is then changed to green.
+    /// </summary>
     public IEnumerator GetAction()
     {
         int trafficLightId = SocketManager.GetInstance().ReceiveInt() + 1;
@@ -85,6 +103,9 @@ public class PythonManager : MonoBehaviour
         yield return null;
     }
 
+    /// <summary>
+    /// Calculates the density of the traffic and the flow and records it in .csv files.
+    /// </summary>
     public IEnumerator CalculateDensity()
     {
         Time.timeScale = 0;
@@ -98,6 +119,9 @@ public class PythonManager : MonoBehaviour
         yield return null;
     }
 
+    /// <summary>
+    /// Sends the rewards calculated by Unity to the python script using the SocketManager.
+    /// </summary>
     public IEnumerator SendRewards()
     {
         int finalReward = rewardCount - (GameObject.FindGameObjectsWithTag("car").Length + GameObject.FindGameObjectsWithTag("hap").Length);

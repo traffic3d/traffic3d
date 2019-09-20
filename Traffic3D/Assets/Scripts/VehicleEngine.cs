@@ -28,6 +28,10 @@ public class VehicleEngine : MonoBehaviour
         engineStatus = EngineStatus.STOP;
     }
 
+    /// <summary>
+    /// Sets the path for the vehicle to use.
+    /// </summary>
+    /// <param name="path">The path for the vehicle to use.</param>
     public void SetPath(Path path)
     {
         this.path = path;
@@ -43,6 +47,9 @@ public class VehicleEngine : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// The update method to check and update values for the vehicle.
+    /// </summary>
     private void FixedUpdate()
     {
         if (path == null)
@@ -75,6 +82,9 @@ public class VehicleEngine : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Applies the steer of the vehicle for this current period of time.
+    /// </summary>
     private void ApplySteer()
     {
         Vector3 relativeVector = transform.InverseTransformPoint(currentNode.position);
@@ -83,6 +93,9 @@ public class VehicleEngine : MonoBehaviour
         wheelColliderFrontRight.steerAngle = Mathf.Lerp(newSteer, targetSteerAngle, Time.deltaTime * turnSpeed);
     }
 
+    /// <summary>
+    /// Destroys the vehicle and passes information to the Python Manager.
+    /// </summary>
     private void Destroy()
     {
         PythonManager.GetInstance().IncrementDensityCount();
@@ -96,6 +109,9 @@ public class VehicleEngine : MonoBehaviour
         System.IO.File.AppendAllText("VehicleTimes.csv", time.ToString() + ",");
     }
 
+    /// <summary>
+    /// Sets the vehicle to the next node in the path.
+    /// </summary>
     private void NextNode()
     {
         if (currentNodeNumber == path.nodes.Count - 1)
@@ -109,11 +125,19 @@ public class VehicleEngine : MonoBehaviour
         currentNode = path.nodes[currentNodeNumber];
     }
 
+    /// <summary>
+    /// Gets the current engine status of the vehicle.
+    /// </summary>
+    /// <returns>The current engine status enum of the vehicle.</returns>
     public EngineStatus GetEngineStatus()
     {
         return engineStatus;
     }
 
+    /// <summary>
+    /// Set the current engine status of the vehicle.
+    /// </summary>
+    /// <param name="engineStatus">The status that the vehicle engine should be in.</param>
     public void SetEngineStatus(EngineStatus engineStatus)
     {
         this.engineStatus = engineStatus;
