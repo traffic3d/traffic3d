@@ -53,3 +53,8 @@ build-StandaloneWindows64:
   <<: *build
   variables:
     BUILD_TARGET: StandaloneWindows64
+
+build-StandaloneOSX:
+  <<: *build
+  variables:
+    BUILD_TARGET: StandaloneOSX
