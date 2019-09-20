@@ -1696,6 +1696,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 9158868648300940004, guid: bc6b90473cc78e94dbea98afa4e22202,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 4931788292363712200, guid: bc6b90473cc78e94dbea98afa4e22202,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 3202532206508294145, guid: bc6b90473cc78e94dbea98afa4e22202,
         type: 3}
       propertyPath: m_Name
@@ -5032,13 +5042,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1086232811}
-  m_LocalRotation: {x: 0, y: -0.043619405, z: 0, w: 0.9990483}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.07, y: 0.010000198, z: -2.6}
   m_LocalScale: {x: 0.42698246, y: 0.69529, z: 0.0110762715}
   m_Children: []
   m_Father: {fileID: 931275463}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: -5, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1086232813
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6096,6 +6106,7 @@ MonoBehaviour:
   lowRangeRespawnTime: 3
   maximumVehicleCount: 8
   slowDownVehicleRateAt: 6
+  timeOfStartInvisibility: 1
   vehicles:
   - {fileID: 54329891447940280, guid: 389154cd7472f41a7b5ad5e90e564a2b, type: 3}
   - {fileID: 54530616890679596, guid: 1033c1a7523064cd79e138342dd09237, type: 3}
@@ -11068,16 +11079,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 782192638117454490, guid: d8da4e2b95ee297449a0cd260d933b70,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 782192636591987297, guid: d8da4e2b95ee297449a0cd260d933b70,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 120
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d8da4e2b95ee297449a0cd260d933b70, type: 3}
