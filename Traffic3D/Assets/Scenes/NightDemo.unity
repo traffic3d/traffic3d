@@ -418,6 +418,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 9158868648300940004, guid: bc6b90473cc78e94dbea98afa4e22202,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 4931788292363712200, guid: bc6b90473cc78e94dbea98afa4e22202,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 85
+      objectReference: {fileID: 0}
     - target: {fileID: 3202532206508294145, guid: bc6b90473cc78e94dbea98afa4e22202,
         type: 3}
       propertyPath: m_Name
@@ -5638,7 +5648,7 @@ PrefabInstance:
     - target: {fileID: 9021247717988128046, guid: c8983f0a8655cef4a80fe9217810e50e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 140
+      value: 145
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c8983f0a8655cef4a80fe9217810e50e, type: 3}
@@ -6771,6 +6781,7 @@ MonoBehaviour:
   lowRangeRespawnTime: 3
   maximumVehicleCount: 8
   slowDownVehicleRateAt: 6
+  timeOfStartInvisibility: 1
   vehicles:
   - {fileID: 54329891447940280, guid: 389154cd7472f41a7b5ad5e90e564a2b, type: 3}
   - {fileID: 54530616890679596, guid: 1033c1a7523064cd79e138342dd09237, type: 3}
@@ -10577,11 +10588,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 782192638117454490, guid: d8da4e2b95ee297449a0cd260d933b70,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 120
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d8da4e2b95ee297449a0cd260d933b70, type: 3}
