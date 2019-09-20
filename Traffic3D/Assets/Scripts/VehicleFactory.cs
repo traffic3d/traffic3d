@@ -29,6 +29,9 @@ public class VehicleFactory : MonoBehaviour
         StartCoroutine(GenerateVehicle());
     }
 
+    /// <summary>
+    /// A loop that generates vehicles in a random way.
+    /// </summary>
     IEnumerator GenerateVehicle()
     {
         while (true)
@@ -46,6 +49,9 @@ public class VehicleFactory : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Remove vehicles that are no longer being used in the currentVehicles dictionary.
+    /// </summary>
     public void CleanVehicles()
     {
         foreach (Rigidbody key in currentVehicles.Keys.Where(vehicle => vehicle == null).ToList())
@@ -54,6 +60,12 @@ public class VehicleFactory : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Create the vehicle with the path inputted.
+    /// </summary>
+    /// <param name="vehicle">The vehicle to create.</param>
+    /// <param name="path">The path to set the vehicle on.</param>
+    /// <returns>The created vehicle.</returns>
     public Rigidbody SpawnVehicle(Rigidbody vehicle, Path path)
     {
         Rigidbody spawnedVehicle = Instantiate(vehicle, path.nodes[0].position, path.nodes[0].rotation);
@@ -64,16 +76,28 @@ public class VehicleFactory : MonoBehaviour
         return spawnedVehicle;
     }
 
+    /// <summary>
+    /// Gets a random vehicle from the vehicles list that is inputted by the user in Unity.
+    /// </summary>
+    /// <returns>The vehicle template.</returns>
     public Rigidbody GetRandomVehicle()
     {
         return vehicles[Random.Range(0, vehicles.Count - 1)];
     }
 
+    /// <summary>
+    /// Gets a random path for the vehicles to use.
+    /// </summary>
+    /// <returns>The path chosen.</returns>
     public Path GetRandomPath()
     {
         return paths[Random.Range(0, paths.Count - 1)];
     }
 
+    /// <summary>
+    /// Gets a random path that is not currently used by any vehicles.
+    /// </summary>
+    /// <returns>The path chosen which is unused.</returns>
     public Path GetRandomUnusedPath()
     {
         List<Path> unusedPaths = paths.FindAll(path => !currentVehicles.ContainsValue(path));
@@ -84,6 +108,12 @@ public class VehicleFactory : MonoBehaviour
         return unusedPaths[Random.Range(0, unusedPaths.Count - 1)];
     }
 
+    /// <summary>
+    /// Temporarily hide a selected vehicle. 
+    /// Mainly used at the start of a vehicle's life so it looks like they spawn in smoother.
+    /// </summary>
+    /// <param name="vehicle">The vehicle to temporarily hide.</param>
+    /// <param name="hideForSeconds">The amount of seconds as a float to hide the vehicle for.</param>
     public void TemporarilyHideVehicle(Rigidbody vehicle, float hideForSeconds)
     {
         vehicle.GetComponentsInChildren<Renderer>().ToList().ForEach(renderer => renderer.enabled = false);
