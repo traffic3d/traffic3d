@@ -19,11 +19,11 @@ public class SocketManager
     /// <value>The port of the socket.</value>
     public const int PORT = 13000;
 
-    private Socket socket;
+    private ISocket socket;
 
     private SocketManager()
     {
-        socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        socket = new RealSocket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
     }
 
     /// <summary>
@@ -49,9 +49,19 @@ public class SocketManager
     /// Get the socket.
     /// </summary>
     /// <returns>Returns the socket.</returns>
-    public Socket GetSocket()
+    public ISocket GetSocket()
     {
         return socket;
+    }
+
+    /// <summary>
+    /// Sets the main socket.
+    /// Used to make mock sockets if needed for tests.
+    /// </summary>
+    /// <param name="socket">The socket to set.</param>
+    public void SetSocket(ISocket socket)
+    {
+        this.socket = socket;
     }
 
     /// <summary>

@@ -12,6 +12,7 @@ public class TrafficLightManagerTests
     {
         try
         {
+            SocketManager.GetInstance().SetSocket(new FakeSocket());
             SceneManager.LoadScene(0);
         }
         catch (Exception e)
@@ -23,6 +24,7 @@ public class TrafficLightManagerTests
     [UnityTest]
     public IEnumerator TrafficLightFirstEventTest()
     {
+        DisableLoops();
         TrafficLightManager trafficLightManager = (TrafficLightManager)GameObject.FindObjectOfType(typeof(TrafficLightManager));
         trafficLightManager.StartCoroutine(trafficLightManager.FirstEvent());
         yield return null;
@@ -51,6 +53,7 @@ public class TrafficLightManagerTests
     {
         TrafficLightManager trafficLightManager = (TrafficLightManager)GameObject.FindObjectOfType(typeof(TrafficLightManager));
         trafficLightManager.StopAllCoroutines();
+        PythonManager.GetInstance().StopAllCoroutines();
     }
 
     private void CheckTrafficLightIsGreen(int id)

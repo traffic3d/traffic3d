@@ -14,6 +14,7 @@ public class VehicleFactoryTests
     {
         try
         {
+            SocketManager.GetInstance().SetSocket(new FakeSocket());
             SceneManager.LoadScene(0);
         }
         catch (Exception e)
