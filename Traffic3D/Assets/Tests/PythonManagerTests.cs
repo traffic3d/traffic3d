@@ -12,6 +12,7 @@ public class PythonManagerTests
     {
         try
         {
+            SocketManager.GetInstance().SetSocket(new MockSocket());
             SceneManager.LoadScene(0);
         }
         catch (Exception e)

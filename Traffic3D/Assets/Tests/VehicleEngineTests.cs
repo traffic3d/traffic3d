@@ -16,6 +16,7 @@ public class VehicleEngineTests
     {
         try
         {
+            SocketManager.GetInstance().SetSocket(new MockSocket());
             SceneManager.LoadScene(0);
         }
         catch (Exception e)
@@ -118,6 +119,7 @@ public class VehicleEngineTests
         trafficLightManager.StopAllCoroutines();
         VehicleFactory vehicleFactory = (VehicleFactory)GameObject.FindObjectOfType(typeof(VehicleFactory));
         vehicleFactory.StopAllCoroutines();
+        PythonManager.GetInstance().StopAllCoroutines();
     }
 
 }
