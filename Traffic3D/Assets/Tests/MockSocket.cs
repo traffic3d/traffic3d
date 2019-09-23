@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-class FakeSocket : ISocket
+class MockSocket : ISocket
 {
     public void Connect(string host, int port)
     {
