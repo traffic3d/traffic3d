@@ -12,7 +12,7 @@ Traffic3D is tested and supported on 64-bit Windows and Linux.
 To get the Traffic3D source code, from the command line, run:
 
 ```sh
-git clone git@gitlab.com:beautifulcanoe/developers/traffic3d.git
+git clone git@gitlab.com:traffic3d/traffic3d.git
 cd traffic3d
 ```
 

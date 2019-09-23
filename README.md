@@ -1,6 +1,6 @@
 # Traffic 3D
 
-[![pipeline status](https://gitlab.com/beautifulcanoe/developers/traffic3d/badges/develop/pipeline.svg)](https://gitlab.com/beautifulcanoe/developers/traffic3d/commits/develop)
+[![pipeline status](https://gitlab.com/traffic3d/traffic3d/badges/develop/pipeline.svg)](https://gitlab.com/traffic3d/traffic3d/commits/develop)
 
 This project is a photo-realistic simulator for traffic junctions, based on the [Unity 3d](https://unity3d.com/unity) platform.
 
