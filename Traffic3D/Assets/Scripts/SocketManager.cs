@@ -80,7 +80,7 @@ public class SocketManager
     /// <returns>The string that has been converted from the byte array.</returns>
     public string ReceiveString()
     {
-        byte[] bytes = new byte[128];
+        byte[] bytes = new byte[512];
         Receive(bytes);
         return Encoding.UTF8.GetString(bytes);
     }
