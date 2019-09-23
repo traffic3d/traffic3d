@@ -36,9 +36,9 @@ public class TrafficLightManager : MonoBehaviour
 
     public IEnumerator DemoLoop()
     {
+        yield return StartCoroutine(FirstEvent());
         while (true)
         {
-            yield return StartCoroutine(FirstEvent());
             foreach (int i in demoOrder)
             {
                 yield return StartCoroutine(FireEvent(i));
@@ -49,7 +49,7 @@ public class TrafficLightManager : MonoBehaviour
     public IEnumerator FirstEvent()
     {
         SetAllToRed();
-        yield return new WaitForSeconds(200);
+        yield return new WaitForSeconds(20);
     }
 
     /// <summary>
