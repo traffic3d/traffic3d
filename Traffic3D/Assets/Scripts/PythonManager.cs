@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -18,15 +19,20 @@ public class PythonManager : MonoBehaviour
         instance = this;
     }
 
+    private string screenshotPath;
     public int shotCount = 0;
     public int rewardCount = 0;
     public int densityCount;
     public List<double> speedList = new List<double>();
 
+    /// <summary>
+    /// If connected, get the screenshot file path from the python script over the socket and remove any invalid characters from the path.
+    /// </summary>
     void Start()
     {
         if (SocketManager.GetInstance().Connect())
         {
+            screenshotPath = string.Concat(SocketManager.GetInstance().ReceiveString().Replace('\\', '/').Split(System.IO.Path.GetInvalidPathChars()));
             StartCoroutine(MainLoop());
         }
         else
@@ -64,17 +70,12 @@ public class PythonManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Takes a screen shot and then stores it in within the data folder and then within "Screenshots/". If this is ran within unity, it will be located within "Assets/Screenshots/".
+    /// Takes a screen shot and then stores it in within the screenshots folder.
     /// </summary>
     public IEnumerator TakeScreenshot()
     {
         shotCount += 1;
-        string screenshotPath = Application.dataPath + "/Screenshots";
-        if (!Directory.Exists(screenshotPath))
-        {
-            Directory.CreateDirectory(screenshotPath);
-        }
-        ScreenCapture.CaptureScreenshot(screenshotPath + "/shot" + shotCount + ".png");
+        ScreenCapture.CaptureScreenshot(System.IO.Path.Combine(screenshotPath, "shot" + shotCount + ".png"));
         yield return null;
     }
 
