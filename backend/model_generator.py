@@ -13,6 +13,7 @@ class ModelGenerator(ABC):
         self.client_socket = None
         self.images_path = os.path.join(tempfile.gettempdir(), "Traffic3D_Screenshots", datetime.now().strftime("%Y-%m-%d_%H_%M_%S_%f"))
         os.makedirs(self.images_path, exist_ok=True)
+        print("Screenshots are located at: " + self.images_path)
         self.setup_socket()
         self.enable()
 
