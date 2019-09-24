@@ -21,11 +21,11 @@ class MockSocket : ISocket
     {
         if (receiveCounter == 0)
         {
-            buffer = Encoding.UTF8.GetBytes(System.IO.Path.Combine(Application.dataPath, "Screenshots"));
+            PushDataIntoBuffer(buffer, System.IO.Path.Combine(Application.dataPath, "Screenshots"));
         }
         else
         {
-            buffer = Encoding.UTF8.GetBytes("0");
+            PushDataIntoBuffer(buffer, "0");
         }
         receiveCounter++;
         return buffer.Length;
@@ -34,7 +34,19 @@ class MockSocket : ISocket
     public int Send(byte[] buffer)
     {
         sendCounter++;
-        buffer = Encoding.UTF8.GetBytes("shot" + sendCounter + ".png");
         return buffer.Length;
     }
+
+    private void PushDataIntoBuffer(byte[] buffer, string dataString)
+    {
+        byte[] data = Encoding.UTF8.GetBytes(dataString);
+        for (int i = 0; i < data.Length; i++)
+        {
+            if(buffer.Length > i)
+            {
+                buffer[i] = data[i];
+            }
+        }
+    }
+
 }
