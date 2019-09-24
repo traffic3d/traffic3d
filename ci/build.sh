@@ -17,6 +17,7 @@ ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x2
   -customBuildName $BUILD_NAME \
   -customBuildPath $BUILD_PATH \
   -customBuildOptions AcceptExternalModificationsToPlayer \
+  -CacheServerIPAddress 172.17.0.1:8126 \
   -executeMethod BuildCommand.PerformBuild \
   -logFile |  ts '[%Y-%m-%d %H:%M:%S]'
 
