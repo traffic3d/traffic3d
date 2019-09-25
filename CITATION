@@ -1,0 +1,18 @@
+Please use one of the following samples to cite the Traffic3D version (change
+VERSION to the version you are using) from this installation.
+You may wish to include the DOI: 10.5281/zenodo.3460497
+
+Text:
+
+[Traffic3D]  Traffic3D VERSION, 2019
+Deepeka Garg, et al., https://gitlab.com/traffic3d/traffic3d
+
+
+BibTeX:
+
+@misc{Traffic3D.VERSION,
+    title = {{T}raffic3{D} VERSION},
+    author = {{G}arg, {D}eepeka and {B}ugajski, {C}allum and {V}ogiatzis, {G}eorge and {C}hli, {M}aria and {M}ount, {S}arah},
+    year = {2019},
+    howpublished = {\href{https://gitlab.com/traffic3d/traffic3d/}{\texttt{https://gitlab.com/traffic3d/traffic3d/}}},
+}

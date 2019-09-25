@@ -9,6 +9,13 @@ Traffic3D/[Bb]uild/
 Traffic3D/[Bb]uilds/
 Traffic3D/[Ll]ogs/
 Traffic3D/[Mm]emoryCaptures/
+Traffic3D/[Aa]ssets/Screenshots/
+
+# Python ignores
+venv/
+backend/venv/
+__pycache__
+backend/__pycache__
 
 # Never ignore Asset meta data
 !/[Aa]ssets/**/*.meta
