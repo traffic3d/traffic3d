@@ -22,6 +22,8 @@ stages:
     - chmod +x ./ci/before_script.sh && ./ci/before_script.sh
 
 .test: &test
+  except:
+    - tags
   stage: test
   <<: *unity_before_script
   script:
@@ -38,6 +40,8 @@ test-playmode:
     TEST_PLATFORM: playmode
 
 .build: &build
+  except:
+    - tags
   stage: build
   <<: *unity_before_script
   script:
