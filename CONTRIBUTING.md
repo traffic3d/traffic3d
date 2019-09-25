@@ -24,6 +24,6 @@ Or download Unity 2018.3.11f1 from the following link: [https://unity3d.com/get-
 
 Use a preferred C# IDE or download Visual Studio using the following link: [https://visualstudio.microsoft.com/vs/](https://visualstudio.microsoft.com/vs/)
 
-## Further support
+## Further documentation
 
-Detailed documentation, including how to use the Unity editor, how to extend Traffic3D with new assets and scenes, can be found on the [Traffic3D documentation site](https://traffic3d.org).
+Detailed documentation, including how to use the Unity editor, how to extend Traffic3D with new assets and scenes, can be found in the [Traffic3D documentation](https://traffic3d.org).
