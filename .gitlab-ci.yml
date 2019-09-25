@@ -17,6 +17,8 @@ stages:
 
 .unity_before_script: &unity_before_script
   before_script:
+    - apt-get update -qq -y
+    - apt-get install -y moreutils
     - chmod +x ./ci/before_script.sh && ./ci/before_script.sh
 
 .test: &test
