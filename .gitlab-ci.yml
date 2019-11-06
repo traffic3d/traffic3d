@@ -1,5 +1,3 @@
-image: gableroux/unity3d:2018.3.11f1
-
 variables:
   # Use a shallow clone depth to speed up the CI build.
   # See: https://docs.gitlab.com/ee/ci/large_repositories/
@@ -12,16 +10,30 @@ cache:
     - $BUILD_NAME/Library/
 
 stages:
+  - prepare
   - test
   - build
 
+meta-build-image:
+  stage: prepare
+  image: docker:stable
+  services:
+    - docker:dind
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - cd .meta
+    - docker build -t $CI_REGISTRY/traffic3d/traffic3d/buildimage:latest .
+    - docker push $CI_REGISTRY/traffic3d/traffic3d/buildimage:latest
+  only:
+    changes:
+      - .meta/Dockerfile
+
 .unity_before_script: &unity_before_script
   before_script:
-    - apt-get update -qq -y
-    - apt-get install -y moreutils
     - chmod +x ./ci/before_script.sh && ./ci/before_script.sh
 
 .test: &test
+  image: registry.gitlab.com/traffic3d/traffic3d/buildimage
   except:
     - tags
   stage: test
@@ -40,6 +52,7 @@ test-playmode:
     TEST_PLATFORM: playmode
 
 .build: &build
+  image: registry.gitlab.com/traffic3d/traffic3d/buildimage
   except:
     - tags
   stage: build
