@@ -49,6 +49,8 @@ meta-build-image:
     when: always
     paths:
       - $(pwd)/$TEST_PLATFORM-results.xml
+  tags:
+    - test
 
 test-playmode:
   <<: *test
@@ -66,6 +68,8 @@ test-playmode:
   artifacts:
     paths:
       - ./$BUILD_NAME/Builds/
+  tags:
+    - build
 
 build-StandaloneLinux64:
   <<: *build
