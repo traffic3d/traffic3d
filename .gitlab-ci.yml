@@ -29,6 +29,8 @@ meta-build-image:
   only:
     changes:
       - .meta/Dockerfile
+  tags:
+    - dind
 
 .unity_before_script: &unity_before_script
   before_script:
