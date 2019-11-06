@@ -17,6 +17,8 @@ stages:
 meta-build-image:
   stage: prepare
   image: docker:stable
+  variables:
+    DOCKER_TLS_CERTDIR: ""
   services:
     - docker:dind
   script:
