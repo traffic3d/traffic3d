@@ -26,6 +26,7 @@ public class PythonManager : MonoBehaviour
     /// <summary>
     /// If connected, get the screenshot file path from the python script over the socket and remove any invalid characters from the path.
     /// </summary>
+    /// /// <param name="vehicle">The vehicle to create.</param>
     void Start()
     {
         if (SocketManager.GetInstance().Connect())
@@ -37,6 +38,10 @@ public class PythonManager : MonoBehaviour
         {
             Debug.Log("Unable to connect to the Python Script. Running the demo instead.");
             TrafficLightManager.GetInstance().RunDemo();
+        }
+        if (Settings.IsBenchmark())
+        {
+            StartCoroutine(EndSimulation(300));
         }
     }
 
@@ -55,6 +60,17 @@ public class PythonManager : MonoBehaviour
             yield return StartCoroutine(CalculateDensity());
             yield return StartCoroutine(SendRewards());
         }
+    }
+
+    /// <summary>
+    /// End the simulation, normally used for benchmarking.
+    /// </summary>
+    /// <param name="afterTime">The amount of seconds until the simulation ends.</param>
+    public IEnumerator EndSimulation(int afterTime)
+    {
+        yield return new WaitForSeconds(afterTime);
+        Application.Quit();
+        yield return null;
     }
 
     /// <summary>

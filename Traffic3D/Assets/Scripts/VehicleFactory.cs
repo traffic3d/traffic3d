@@ -17,6 +17,10 @@ public class VehicleFactory : MonoBehaviour
 
     void Start()
     {
+        if (Settings.IsBenchmark())
+        {
+            Random.InitState(123);
+        }
         Random.InitState(123);
         if (vehicles.Count == 0)
         {
