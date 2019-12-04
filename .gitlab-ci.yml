@@ -12,6 +12,7 @@ cache:
 stages:
   - prepare
   - test
+  - benchmark
   - build
 
 meta-build-image:
@@ -31,6 +32,12 @@ meta-build-image:
       - .meta/Dockerfile
   tags:
     - dind
+
+benchmark:
+  stage: benchmark
+  script: 
+    - chmod +x ./ci/benchmark.sh && ./ci/benchmark.sh
+  when: manual
 
 .unity_before_script: &unity_before_script
   before_script:
