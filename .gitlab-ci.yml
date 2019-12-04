@@ -12,8 +12,8 @@ cache:
 stages:
   - prepare
   - test
-  - benchmark
   - build
+  - benchmark
 
 meta-build-image:
   stage: prepare
@@ -32,13 +32,6 @@ meta-build-image:
       - .meta/Dockerfile
   tags:
     - dind
-
-benchmark:
-  stage: benchmark
-  image: registry.gitlab.com/traffic3d/traffic3d/buildimage:latest
-  script:
-    - chmod +x ./ci/benchmark.sh && ./ci/benchmark.sh
-  when: manual
 
 .unity_before_script: &unity_before_script
   before_script:
@@ -93,3 +86,12 @@ build-StandaloneOSX:
   <<: *build
   variables:
     BUILD_TARGET: StandaloneOSX
+
+benchmark:
+  stage: benchmark
+  image: registry.gitlab.com/traffic3d/traffic3d/buildimage:latest
+  dependencies:
+    - build-StandaloneLinux64
+  script:
+    - chmod +x ./ci/benchmark.sh && ./ci/benchmark.sh
+  when: manual
