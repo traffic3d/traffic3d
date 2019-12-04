@@ -35,7 +35,7 @@ meta-build-image:
 
 benchmark:
   stage: benchmark
-  image: registry.gitlab.com/traffic3d/traffic3d/buildimage
+  image: .../buildimage:latest
   script: 
     - chmod +x ./ci/benchmark.sh && ./ci/benchmark.sh
   when: manual
