@@ -5,7 +5,8 @@ set -x
 
 echo "Running Benchmark"
 
-multitime -n 5 "${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' /opt/Unity/Editor/Unity} \
+echo $PATH
+/usr/local/bin/multitime -n 5 "${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' /opt/Unity/Editor/Unity} \
   -projectPath $(pwd)/Traffic3D \
   -executeMethod Benchmark.RunBenchmark \ \
   -CacheServerIPAddress 172.17.0.1:8126 \
