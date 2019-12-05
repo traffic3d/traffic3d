@@ -1,6 +1,7 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public class PythonManager : MonoBehaviour
@@ -69,7 +70,8 @@ public class PythonManager : MonoBehaviour
     public IEnumerator EndSimulation(int afterTime)
     {
         yield return new WaitForSeconds(afterTime);
-        Application.Quit();
+        Debug.Log("Application Ending");
+        EditorApplication.Exit(0);
         yield return null;
     }
 
