@@ -90,6 +90,7 @@ build-StandaloneOSX:
 benchmark:
   stage: benchmark
   image: registry.gitlab.com/traffic3d/traffic3d/buildimage:latest
+  <<: *unity_before_script
   dependencies:
     - build-StandaloneLinux64
   script:
