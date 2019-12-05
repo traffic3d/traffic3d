@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+set -e
+set -x
 echo "Running batch file"
 ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' /opt/Unity/Editor/Unity} \
   -projectPath $(pwd)/Traffic3D \
