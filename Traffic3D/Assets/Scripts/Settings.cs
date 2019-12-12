@@ -6,7 +6,6 @@ public static class Settings
 
     public static void SetBenchmark()
     {
-        Console.WriteLine("Running Benchmark");
         isBenchmark = true;
     }
 

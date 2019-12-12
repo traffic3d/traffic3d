@@ -25,7 +25,7 @@ class MockSocket : ISocket
         }
         else
         {
-            PushDataIntoBuffer(buffer, "0");
+            PushDataIntoBuffer(buffer, "" + (receiveCounter % TrafficLightManager.GetInstance().GetTrafficLights().Length));
         }
         receiveCounter++;
         return buffer.Length;

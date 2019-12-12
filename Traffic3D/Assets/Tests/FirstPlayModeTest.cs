@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.TestTools;
 
+[Category("Tests")]
 public class FirstPlayModeTest
 {
     [Test]

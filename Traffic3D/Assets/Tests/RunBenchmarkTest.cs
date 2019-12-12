@@ -1,12 +1,11 @@
-﻿using NUnit.Framework;
-using System;
-using System.Collections;
+﻿using System.Collections;
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
+using System;
 
-[Category("Tests")]
-public class CameraTests
+public class RunBenchmarkTest
 {
     [SetUp]
     public void SetUpTest()
@@ -15,18 +14,17 @@ public class CameraTests
         {
             SocketManager.GetInstance().SetSocket(new MockSocket());
             SceneManager.LoadScene(0);
+            Settings.SetBenchmark();
         }
         catch (Exception e)
         {
             Debug.Log(e);
         }
     }
-
     [UnityTest]
-    public IEnumerator FrameRateTest()
+    [Timeout(int.MaxValue)]
+    public IEnumerator RunBenchmarkTestWithEnumeratorPasses()
     {
-        yield return null;
-        FrameRate frameRate = (FrameRate)UnityEngine.Object.FindObjectOfType(typeof(FrameRate));
-        Assert.AreEqual(Time.captureFramerate, frameRate.frameRate);
+        yield return new WaitForSeconds(300);
     }
 }

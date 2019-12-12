@@ -40,10 +40,6 @@ public class PythonManager : MonoBehaviour
             Debug.Log("Unable to connect to the Python Script. Running the demo instead.");
             TrafficLightManager.GetInstance().RunDemo();
         }
-        if (Settings.IsBenchmark())
-        {
-            StartCoroutine(EndSimulation(300));
-        }
     }
 
     /// <summary>
@@ -61,18 +57,6 @@ public class PythonManager : MonoBehaviour
             yield return StartCoroutine(CalculateDensity());
             yield return StartCoroutine(SendRewards());
         }
-    }
-
-    /// <summary>
-    /// End the simulation, normally used for benchmarking.
-    /// </summary>
-    /// <param name="afterTime">The amount of seconds until the simulation ends.</param>
-    public IEnumerator EndSimulation(int afterTime)
-    {
-        yield return new WaitForSeconds(afterTime);
-        Debug.Log("Application Ending");
-        EditorApplication.Exit(0);
-        yield return null;
     }
 
     /// <summary>
