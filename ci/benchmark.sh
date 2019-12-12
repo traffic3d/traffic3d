@@ -1,5 +1,9 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
+
 set -e
 set -x
+
+chmod +x ./ci/benchmarkrun.sh
+
 echo "Running Benchmark"
-/usr/local/bin/multitime -n 5 sh benchmarkrun.sh
+multitime -n 5 ./ci//benchmarkrun.sh
