@@ -1,6 +1,7 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public class PythonManager : MonoBehaviour
@@ -26,6 +27,7 @@ public class PythonManager : MonoBehaviour
     /// <summary>
     /// If connected, get the screenshot file path from the python script over the socket and remove any invalid characters from the path.
     /// </summary>
+    /// /// <param name="vehicle">The vehicle to create.</param>
     void Start()
     {
         if (SocketManager.GetInstance().Connect())

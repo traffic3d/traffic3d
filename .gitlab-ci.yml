@@ -13,6 +13,7 @@ stages:
   - prepare
   - test
   - build
+  - benchmark
 
 meta-build-image:
   stage: prepare
@@ -85,3 +86,13 @@ build-StandaloneOSX:
   <<: *build
   variables:
     BUILD_TARGET: StandaloneOSX
+
+benchmark:
+  stage: benchmark
+  image: registry.gitlab.com/traffic3d/traffic3d/buildimage:latest
+  <<: *unity_before_script
+  dependencies:
+    - build-StandaloneLinux64
+  script:
+    - chmod +x ./ci/benchmark.sh && ./ci/benchmark.sh
+  when: manual

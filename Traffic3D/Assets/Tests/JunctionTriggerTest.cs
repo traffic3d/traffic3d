@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
+[Category("Tests")]
 public class JunctionTriggerTest
 {
     [SetUp]
