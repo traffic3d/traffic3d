@@ -59,4 +59,13 @@ public class PythonManagerTests
         Assert.AreEqual(PythonManager.GetInstance().GetDensityCount(), currentCount);
         yield return null;
     }
+
+    [UnityTest]
+    public IEnumerator PythonManagerGetScreenshotFilePathTest()
+    {
+        string path = PythonManager.GetInstance().GetScreenshotFilePath("screenshots/", 5);
+        Assert.AreEqual("screenshots/shot5.png", path);
+        yield return null;
+    }
+
 }

@@ -26,7 +26,7 @@ public class CameraTests
     public IEnumerator FrameRateTest()
     {
         yield return null;
-        FrameRate frameRate = (FrameRate)UnityEngine.Object.FindObjectOfType(typeof(FrameRate));
-        Assert.AreEqual(Time.captureFramerate, frameRate.frameRate);
+        CameraManager cameraManager = (CameraManager)UnityEngine.Object.FindObjectOfType(typeof(CameraManager));
+        Assert.AreEqual(Time.captureFramerate, cameraManager.frameRate);
     }
 }

@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
 public class PythonManager : MonoBehaviour
 {
+    private static bool headlessMode = false;
     public static PythonManager instance;
 
     public static PythonManager GetInstance()
@@ -18,6 +20,8 @@ public class PythonManager : MonoBehaviour
         instance = this;
     }
 
+    private Camera camera;
+    private bool hasScreenshot = false;
     private string screenshotPath;
     public int shotCount = 0;
     public int rewardCount = 0;
@@ -30,6 +34,11 @@ public class PythonManager : MonoBehaviour
     /// /// <param name="vehicle">The vehicle to create.</param>
     void Start()
     {
+        if (IsHeadlessMode())
+        {
+            camera = GameObject.FindObjectOfType<Camera>();
+            camera.enabled = false;
+        }
         if (SocketManager.GetInstance().Connect())
         {
             screenshotPath = string.Concat(SocketManager.GetInstance().ReceiveString().Replace('\\', '/').Split(System.IO.Path.GetInvalidPathChars()));
@@ -75,8 +84,23 @@ public class PythonManager : MonoBehaviour
     public IEnumerator TakeScreenshot()
     {
         shotCount += 1;
-        ScreenCapture.CaptureScreenshot(System.IO.Path.Combine(screenshotPath, "shot" + shotCount + ".png"));
+        if (!IsHeadlessMode())
+        {
+            ScreenCapture.CaptureScreenshot(GetScreenshotFilePath(screenshotPath, shotCount));
+        }
+        else
+        {
+            camera.Render();
+        }
+
         yield return null;
+    }
+
+    public void SetScreenshot(Texture2D screenshot)
+    {
+        byte[] bytes = screenshot.EncodeToPNG();
+        File.WriteAllBytes(GetScreenshotFilePath(screenshotPath, shotCount), bytes);
+        hasScreenshot = true;
     }
 
     /// <summary>
@@ -84,7 +108,15 @@ public class PythonManager : MonoBehaviour
     /// </summary>
     public IEnumerator SendScreenshot()
     {
-        SocketManager.GetInstance().Send("shot" + shotCount + ".png");
+        if (headlessMode)
+        {
+            while (!hasScreenshot)
+            {
+                yield return new WaitForEndOfFrame();
+            }
+        }
+        SocketManager.GetInstance().Send(GetScreenshotFilePath("", shotCount));
+        hasScreenshot = false;
         yield return null;
     }
 
@@ -130,6 +162,21 @@ public class PythonManager : MonoBehaviour
         yield return null;
     }
 
+    public string GetScreenshotFilePath(string screenshotFilePath, int screenshotNumber)
+    {
+        return System.IO.Path.Combine(screenshotFilePath, "shot" + screenshotNumber + ".png");
+    }
+
+    public static bool IsHeadlessMode()
+    {
+        return headlessMode;
+    }
+
+    public static void SetHeadlessMode(bool isHeadlessMode)
+    {
+        headlessMode = isHeadlessMode;
+    }
+
     public int GetRewardCount()
     {
         return rewardCount;
@@ -164,4 +211,5 @@ public class PythonManager : MonoBehaviour
     {
         densityCount = 0;
     }
+
 }
