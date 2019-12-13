@@ -86,7 +86,7 @@ public class PythonManager : MonoBehaviour
         shotCount += 1;
         if (!IsHeadlessMode())
         {
-            ScreenCapture.CaptureScreenshot(System.IO.Path.Combine(screenshotPath, "shot" + shotCount + ".png"));
+            ScreenCapture.CaptureScreenshot(GetScreenshotFilePath(screenshotPath, shotCount));
         }
         else
         {
@@ -99,7 +99,7 @@ public class PythonManager : MonoBehaviour
     public void SetScreenshot(Texture2D screenshot)
     {
         byte[] bytes = screenshot.EncodeToPNG();
-        File.WriteAllBytes(System.IO.Path.Combine(screenshotPath, "shot" + shotCount + ".png"), bytes);
+        File.WriteAllBytes(GetScreenshotFilePath(screenshotPath, shotCount), bytes);
         hasScreenshot = true;
     }
 
@@ -115,7 +115,7 @@ public class PythonManager : MonoBehaviour
                 yield return new WaitForEndOfFrame();
             }
         }
-        SocketManager.GetInstance().Send("shot" + shotCount + ".png");
+        SocketManager.GetInstance().Send(GetScreenshotFilePath("", shotCount));
         hasScreenshot = false;
         yield return null;
     }
@@ -162,6 +162,11 @@ public class PythonManager : MonoBehaviour
         yield return null;
     }
 
+    public string GetScreenshotFilePath(string screenshotFilePath, int screenshotNumber)
+    {
+        return System.IO.Path.Combine(screenshotFilePath, "shot" + screenshotNumber + ".png");
+    }
+
     public static bool IsHeadlessMode()
     {
         return headlessMode;
@@ -206,4 +211,5 @@ public class PythonManager : MonoBehaviour
     {
         densityCount = 0;
     }
+
 }
