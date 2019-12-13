@@ -17,10 +17,9 @@ public class VehicleFactory : MonoBehaviour
 
     void Start()
     {
-        if (Settings.IsBenchmark())
-        {
-            Random.InitState(123);
-        }
+        // This seed is needed for running benchmarks so if its removed
+        // add an if statement to add the seed back with the following condition:
+        // Settings.IsBenchmark()
         Random.InitState(123);
         if (vehicles.Count == 0)
         {
