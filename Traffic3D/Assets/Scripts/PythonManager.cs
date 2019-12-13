@@ -105,16 +105,14 @@ public class PythonManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Calculates the density of the traffic and the flow and records it in .csv files.
+    /// Calculates the density of the traffic and the flow.
     /// </summary>
     public IEnumerator CalculateDensity()
     {
         Time.timeScale = 0;
         double densityPerkm = (densityCount / 34.0);
-        System.IO.File.AppendAllText("densityperkm.csv", densityPerkm.ToString() + ",");
         double averageSpeed = (speedList.Sum() / (densityCount));
         double flow = (densityPerkm * averageSpeed);
-        System.IO.File.AppendAllText("flow.csv", flow.ToString() + ",");
         ResetDensityCount();
         speedList.Clear();
         yield return null;
@@ -125,9 +123,8 @@ public class PythonManager : MonoBehaviour
     /// </summary>
     public IEnumerator SendRewards()
     {
+        // Both "car" and "hap" tags are cars that are waiting.
         int finalReward = rewardCount - (GameObject.FindGameObjectsWithTag("car").Length + GameObject.FindGameObjectsWithTag("hap").Length);
-        System.IO.File.AppendAllText("truerewards.csv", finalReward.ToString() + ",");
-        System.IO.File.AppendAllText("throughput.csv", rewardCount.ToString() + ",");
         SocketManager.GetInstance().Send("" + finalReward);
         ResetRewardCount();
         yield return null;
