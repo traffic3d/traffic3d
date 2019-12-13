@@ -560,7 +560,7 @@ GameObject:
   - component: {fileID: 8276394593898460683}
   m_Layer: 0
   m_Name: yellowBuspre
-  m_TagString: Untagged
+  m_TagString: car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
