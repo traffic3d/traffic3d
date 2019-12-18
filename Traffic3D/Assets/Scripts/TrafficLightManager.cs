@@ -53,11 +53,13 @@ public class TrafficLightManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Changes the colour of the inputted traffic light ID to green and waits.
+    /// Sets all to red, waits 5 seconds then changes the colour of the inputted traffic light ID to green and waits.
     /// </summary>
     /// <param name="trafficLightId">The traffic light int ID which needs changing.</param>
     public IEnumerator FireEvent(int trafficLightId)
     {
+        SetAllToRed();
+        yield return new WaitForSeconds(5);
         SetTrafficLightToGreen(trafficLightId);
         yield return new WaitForSeconds(19);
     }
