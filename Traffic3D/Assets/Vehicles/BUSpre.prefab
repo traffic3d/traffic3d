@@ -547,7 +547,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4, y: 2.3773818, z: 14}
+  m_Size: {x: 2.5, y: 2.5, z: 11.9}
   m_Center: {x: 0.00000005960466, y: 0.00000011920929, z: 0}
 --- !u!1 &1496974738235772
 GameObject:
@@ -576,7 +576,7 @@ Transform:
   m_GameObject: {fileID: 1496974738235772}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -51.8, y: 11.29, z: 10.4}
-  m_LocalScale: {x: 1, y: 1.4, z: 0.699848}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4788853999963440}
   - {fileID: 4562267163249790}
@@ -623,9 +623,9 @@ MonoBehaviour:
   turnSpeed: 5
   wheelColliderFrontLeft: {fileID: 146820637187476694}
   wheelColliderFrontRight: {fileID: 146720879009584224}
-  maxMotorTorque: 80
-  normalBrakeTorque: 100
-  maxBrakeTorque: 100
+  maxMotorTorque: 200
+  normalBrakeTorque: 200
+  maxBrakeTorque: 400
   currentSpeed: 0
   maxSpeed: 100
   centerOfMass: {x: 0, y: 0, z: 0}

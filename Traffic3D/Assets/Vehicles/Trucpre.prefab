@@ -39,7 +39,7 @@ WheelCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1019531178651592}
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.9
+  m_Radius: 0.7
   m_SuspensionSpring:
     spring: 35000
     damper: 4500
@@ -269,8 +269,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1181654110177340}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1.3, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_Children:
   - {fileID: 4108132534603772}
   - {fileID: 4477951615416040}
@@ -317,9 +317,9 @@ MonoBehaviour:
   turnSpeed: 5
   wheelColliderFrontLeft: {fileID: 146121656679790344}
   wheelColliderFrontRight: {fileID: 146654491412983148}
-  maxMotorTorque: 80
-  normalBrakeTorque: 100
-  maxBrakeTorque: 100
+  maxMotorTorque: 200
+  normalBrakeTorque: 200
+  maxBrakeTorque: 400
   currentSpeed: 0
   maxSpeed: 100
   centerOfMass: {x: 0, y: 0, z: 0}
@@ -367,7 +367,7 @@ WheelCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1221545532200992}
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.9
+  m_Radius: 0.7
   m_SuspensionSpring:
     spring: 35000
     damper: 4500
@@ -519,7 +519,7 @@ WheelCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1525877217525732}
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.9
+  m_Radius: 0.7
   m_SuspensionSpring:
     spring: 35000
     damper: 4500
@@ -671,7 +671,7 @@ WheelCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1991957423690144}
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.9
+  m_Radius: 0.7
   m_SuspensionSpring:
     spring: 35000
     damper: 4500
@@ -782,5 +782,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 5, y: 10, z: 2}
+  m_Size: {x: 2.7, y: 8, z: 2}
   m_Center: {x: 0.0000014901161, y: 4.7665485e-14, z: 1.6770799}
