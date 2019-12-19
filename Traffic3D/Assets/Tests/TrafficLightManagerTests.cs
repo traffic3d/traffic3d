@@ -44,7 +44,7 @@ public class TrafficLightManagerTests
         foreach (int i in trafficLightManager.demoOrder)
         {
             trafficLightManager.StartCoroutine(trafficLightManager.FireEvent(i));
-            yield return null;
+            yield return new WaitForSeconds(6);
             CheckTrafficLightIsGreen(i);
         }
         trafficLightManager.StopAllCoroutines();

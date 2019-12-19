@@ -85,7 +85,7 @@ public class VehicleFactory : MonoBehaviour
     /// <returns>The vehicle template.</returns>
     public Rigidbody GetRandomVehicle()
     {
-        return vehicles[Random.Range(0, vehicles.Count - 1)];
+        return vehicles[Random.Range(0, vehicles.Count)];
     }
 
     /// <summary>

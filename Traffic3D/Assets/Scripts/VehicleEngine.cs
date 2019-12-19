@@ -18,6 +18,7 @@ public class VehicleEngine : MonoBehaviour
     private float targetSteerAngle = 0;
     public float startTime;
     public Vector3 startPos;
+    public float nodeReadingOffset;
     public EngineStatus engineStatus;
 
     void Start()
@@ -35,7 +36,7 @@ public class VehicleEngine : MonoBehaviour
     public void SetPath(Path path)
     {
         this.path = path;
-        currentNodeNumber = 0;
+        currentNodeNumber = 1;
         currentNode = path.nodes[currentNodeNumber];
     }
 
@@ -56,7 +57,7 @@ public class VehicleEngine : MonoBehaviour
         {
             return;
         }
-        if (Vector3.Distance(transform.position, currentNode.position) < 3f)
+        if (Vector3.Distance(transform.TransformPoint(0, 0, nodeReadingOffset), currentNode.position) < 3f)
         {
             NextNode();
         }
