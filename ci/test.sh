@@ -34,4 +34,11 @@ else
 fi
 
 cat $(pwd)/$TEST_PLATFORM-results.xml | grep test-run | grep Passed
-exit $UNITY_TEST_EXIT_CODE
+HAS_PASSED=$?
+if [ $HAS_PASSED -eq 0 ]; then
+  echo "All tests passed.";
+else
+  echo "Tests failed.";
+fi
+
+exit $UNITY_EXIT_CODE && $HAS_PASSED
