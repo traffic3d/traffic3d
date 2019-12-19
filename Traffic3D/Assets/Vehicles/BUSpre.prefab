@@ -574,8 +574,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1496974738235772}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -51.8, y: 11.29, z: 10.4}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4788853999963440}
@@ -589,7 +589,7 @@ Transform:
   - {fileID: 4769480158880504}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &54530616890679596
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -619,7 +619,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   path: {fileID: 0}
-  maxSteerAngle: 45
+  maxSteerAngle: 75
   turnSpeed: 5
   wheelColliderFrontLeft: {fileID: 146820637187476694}
   wheelColliderFrontRight: {fileID: 146720879009584224}
@@ -633,6 +633,7 @@ MonoBehaviour:
   currentNodeNumber: 0
   startTime: 0
   startPos: {x: 0, y: 0, z: 0}
+  nodeReadingOffset: 2
   engineStatus: 0
 --- !u!1 &1592329904448136
 GameObject:
