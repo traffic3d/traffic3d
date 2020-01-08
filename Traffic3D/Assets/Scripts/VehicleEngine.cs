@@ -98,10 +98,13 @@ public class VehicleEngine : MonoBehaviour
         wheelColliderFrontRight.steerAngle = Mathf.Lerp(newSteer, targetSteerAngle, Time.deltaTime * turnSpeed);
     }
 
+    /// <summary>
+    /// Checks and adjusts the speed accordingly.
+    /// </summary>
     private void SpeedCheck()
     {
         // If starting to turn
-        if (Math.Abs(wheelColliderFrontLeft.steerAngle) > 5)
+        if (Math.Abs(wheelColliderFrontLeft.steerAngle) > 2)
         {
             SetTargetSpeed(20);
         }
@@ -109,12 +112,20 @@ public class VehicleEngine : MonoBehaviour
         {
             SetTargetSpeed(maxSpeed);
         }
-        if (currentNodeNumber + 1 <= path.nodes.Count)
+        if (currentNodeNumber + 1 < path.nodes.Count)
         {
-            // If next node is traffic lights
+            // If next node is a traffic light
             if (TrafficLightManager.GetInstance().GetTrafficLightFromStopNode(path.nodes[currentNodeNumber + 1]) != null)
             {
                 SetTargetSpeed(7);
+            }
+        }
+        if (currentNodeNumber + 2 < path.nodes.Count)
+        {
+            // If 2nd to next node is a traffic light
+            if (TrafficLightManager.GetInstance().GetTrafficLightFromStopNode(path.nodes[currentNodeNumber + 2]) != null)
+            {
+                SetTargetSpeed(30);
             }
         }
     }
@@ -150,6 +161,10 @@ public class VehicleEngine : MonoBehaviour
         currentNode = path.nodes[currentNodeNumber];
     }
 
+    /// <summary>
+    /// Set the target speed of the vehicle
+    /// </summary>
+    /// <param name="targetSpeed">Speed in kilometers per hour</param>
     public void SetTargetSpeed(float targetSpeed)
     {
         this.targetSpeed = targetSpeed;
