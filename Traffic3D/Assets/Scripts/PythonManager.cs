@@ -7,7 +7,6 @@ using UnityEngine;
 
 public class PythonManager : MonoBehaviour
 {
-    private static bool headlessMode = false;
     public static PythonManager instance;
 
     public static PythonManager GetInstance()
@@ -34,8 +33,10 @@ public class PythonManager : MonoBehaviour
     /// /// <param name="vehicle">The vehicle to create.</param>
     void Start()
     {
-        if (IsHeadlessMode())
+        Debug.Log("Headless Mode: " + Settings.IsHeadlessMode());
+        if (Settings.IsHeadlessMode())
         {
+            Debug.Log("Headless Mode Active");
             camera = GameObject.FindObjectOfType<Camera>();
             camera.enabled = false;
         }
@@ -84,7 +85,7 @@ public class PythonManager : MonoBehaviour
     public IEnumerator TakeScreenshot()
     {
         shotCount += 1;
-        if (!IsHeadlessMode())
+        if (!Settings.IsHeadlessMode())
         {
             ScreenCapture.CaptureScreenshot(GetScreenshotFilePath(screenshotPath, shotCount));
         }
@@ -108,7 +109,7 @@ public class PythonManager : MonoBehaviour
     /// </summary>
     public IEnumerator SendScreenshot()
     {
-        if (headlessMode)
+        if (Settings.IsHeadlessMode())
         {
             while (!hasScreenshot)
             {
@@ -165,16 +166,6 @@ public class PythonManager : MonoBehaviour
     public string GetScreenshotFilePath(string screenshotFilePath, int screenshotNumber)
     {
         return System.IO.Path.Combine(screenshotFilePath, "shot" + screenshotNumber + ".png");
-    }
-
-    public static bool IsHeadlessMode()
-    {
-        return headlessMode;
-    }
-
-    public static void SetHeadlessMode(bool isHeadlessMode)
-    {
-        headlessMode = isHeadlessMode;
     }
 
     public int GetRewardCount()
