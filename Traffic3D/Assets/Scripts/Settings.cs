@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public static class Settings
+﻿public static class Settings
 {
     private static bool isBenchmark = false;
     private static bool headlessMode = false;
@@ -17,7 +15,6 @@ public static class Settings
 
     public static void SetHeadlessMode(bool input)
     {
-        Debug.Log("Headless Set To " + input);
         headlessMode = input;
     }
 

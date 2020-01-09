@@ -1,4 +1,8 @@
-﻿using System;
+﻿
+using System;
+using System.Reflection;
+using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public static class CustomCommandLineArguments
@@ -7,6 +11,8 @@ public static class CustomCommandLineArguments
     {
         CheckHeadless();
         CheckJSONConfigFile();
+        EditorSceneManager.OpenScene(System.IO.Path.Combine(Application.dataPath, "Scenes/DayDemo.unity"));
+        EditorApplication.isPlaying = true;
     }
 
     public static string GetArgument(string name)

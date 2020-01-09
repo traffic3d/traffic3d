@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
 
 public class PythonManager : MonoBehaviour
@@ -33,10 +32,8 @@ public class PythonManager : MonoBehaviour
     /// /// <param name="vehicle">The vehicle to create.</param>
     void Start()
     {
-        Debug.Log("Headless Mode: " + Settings.IsHeadlessMode());
         if (Settings.IsHeadlessMode())
         {
-            Debug.Log("Headless Mode Active");
             camera = GameObject.FindObjectOfType<Camera>();
             camera.enabled = false;
         }
