@@ -22,7 +22,6 @@ public class JSONConfigParser
     public static void UpdateObjects(Scene scene, OpenSceneMode mode)
     {
         SetUpVehicleFactory((VehicleFactory) GameObject.FindObjectOfType(typeof(VehicleFactory)));
-        EditorApplication.isPlaying = true;
     }
 
     public static void SetUpVehicleFactory(VehicleFactory vehicleFactory)
