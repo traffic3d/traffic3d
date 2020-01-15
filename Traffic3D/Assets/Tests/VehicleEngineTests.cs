@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
@@ -74,6 +75,77 @@ public class VehicleEngineTests
             }
         }
         Assert.True(carIsDestroyed);
+    }
+
+    [UnityTest]
+    [Timeout(TIME_OUT_DESTROY_TIME * 1000 * 5)]
+    public IEnumerator VehicleEngineSpeedTest()
+    {
+        yield return null;
+        DisableLoops();
+        VehicleFactory vehicleFactory = (VehicleFactory)GameObject.FindObjectOfType(typeof(VehicleFactory));
+        foreach (TrafficLight trafficLight in TrafficLightManager.GetInstance().trafficLights)
+        {
+            trafficLight.SetColour(TrafficLight.LightColour.GREEN);
+        }
+        Path pathWithTurning = null;
+        foreach (Path path in vehicleFactory.paths)
+        {
+            float xRange = path.nodes.Select(node => node.position.x).Max() - path.nodes.Select(node => node.position.x).Min();
+            float zRange = path.nodes.Select(node => node.position.z).Max() - path.nodes.Select(node => node.position.z).Min();
+            // Path has turning
+            if (xRange != 0 && zRange != 0)
+            {
+                pathWithTurning = path;
+                break;
+            }
+        }
+        if(pathWithTurning == null)
+        {
+            Assert.Inconclusive("Unable to test. No paths with turnings.");
+        }
+        Rigidbody vehicle = vehicleFactory.SpawnVehicle(vehicleFactory.GetRandomVehicle(), pathWithTurning);
+        VehicleEngine vehicleEngine = vehicle.GetComponent<VehicleEngine>();
+        bool carIsDestroyed = false;
+        bool passedTest = false;
+        for (int i = 0; i <= TIME_OUT_DESTROY_TIME; i = i + 5)
+        {
+            yield return new WaitForSeconds(5);
+
+            if (vehicle == null)
+            {
+                carIsDestroyed = true;
+                break;
+            }
+
+            if (Math.Abs(vehicleEngine.wheelColliderFrontLeft.steerAngle) > 2)
+            {
+                passedTest = vehicleEngine.maxSpeedTurning == vehicleEngine.targetSpeed;
+            }
+
+            if (vehicleEngine.currentNodeNumber + 1 < vehicleEngine.path.nodes.Count)
+            {
+                // If next node is a traffic light
+                if (TrafficLightManager.GetInstance().IsStopNode(vehicleEngine.path.nodes[vehicleEngine.currentNodeNumber + 1]))
+                {
+                    passedTest = vehicleEngine.maxSpeedAproachingLightsLastNode == vehicleEngine.targetSpeed;
+                }
+            }
+            if (vehicleEngine.currentNodeNumber + 2 < vehicleEngine.path.nodes.Count)
+            {
+                // If 2nd to next node is a traffic light
+                if (TrafficLightManager.GetInstance().IsStopNode(vehicleEngine.path.nodes[vehicleEngine.currentNodeNumber + 2]))
+                {
+                    passedTest = vehicleEngine.maxSpeedAproachingLightsSecondLastNode == vehicleEngine.targetSpeed;
+                }
+            }
+
+            if (!passedTest)
+            {
+                Assert.Fail("Speed test failed, current target speed: " + vehicleEngine.targetSpeed);
+            }
+        }
+        Assert.True(passedTest && carIsDestroyed);
     }
 
     [UnityTest]

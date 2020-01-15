@@ -80,6 +80,16 @@ public class TrafficLightManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Is the node a stop node.
+    /// </summary>
+    /// <param name="node">The path node to check.</param>
+    /// <returns>true if its a stop node.</returns>
+    public bool IsStopNode(Transform node)
+    {
+        return GetTrafficLightFromStopNode(node) != null;
+    }
+
+    /// <summary>
     /// Get traffic light from the inputted ID.
     /// </summary>
     /// <param name="id">The ID of the traffic light needed.</param>

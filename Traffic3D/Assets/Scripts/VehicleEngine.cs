@@ -13,11 +13,14 @@ public class VehicleEngine : MonoBehaviour
     public float maxBrakeTorque = 400f;
     public float currentSpeed;
     public float maxSpeed = 100f;
+    public float maxSpeedTurning = 20f;
+    public float maxSpeedAproachingLightsLastNode = 7f;
+    public float maxSpeedAproachingLightsSecondLastNode = 30f;
     public Vector3 centerOfMass;
     public Transform currentNode;
     public int currentNodeNumber;
     private float targetSteerAngle = 0;
-    private float targetSpeed;
+    public float targetSpeed;
     public float startTime;
     public Vector3 startPos;
     public float nodeReadingOffset;
@@ -100,13 +103,14 @@ public class VehicleEngine : MonoBehaviour
 
     /// <summary>
     /// Checks and adjusts the speed accordingly.
+    /// Speed in kilometers per hour
     /// </summary>
     private void SpeedCheck()
     {
         // If starting to turn
         if (Math.Abs(wheelColliderFrontLeft.steerAngle) > 2)
         {
-            SetTargetSpeed(20);
+            SetTargetSpeed(maxSpeedTurning);
         }
         else
         {
@@ -115,17 +119,17 @@ public class VehicleEngine : MonoBehaviour
         if (currentNodeNumber + 1 < path.nodes.Count)
         {
             // If next node is a traffic light
-            if (TrafficLightManager.GetInstance().GetTrafficLightFromStopNode(path.nodes[currentNodeNumber + 1]) != null)
+            if (TrafficLightManager.GetInstance().IsStopNode(path.nodes[currentNodeNumber + 1]))
             {
-                SetTargetSpeed(7);
+                SetTargetSpeed(maxSpeedAproachingLightsLastNode);
             }
         }
         if (currentNodeNumber + 2 < path.nodes.Count)
         {
             // If 2nd to next node is a traffic light
-            if (TrafficLightManager.GetInstance().GetTrafficLightFromStopNode(path.nodes[currentNodeNumber + 2]) != null)
+            if (TrafficLightManager.GetInstance().IsStopNode(path.nodes[currentNodeNumber + 2]))
             {
-                SetTargetSpeed(30);
+                SetTargetSpeed(maxSpeedAproachingLightsSecondLastNode);
             }
         }
     }
