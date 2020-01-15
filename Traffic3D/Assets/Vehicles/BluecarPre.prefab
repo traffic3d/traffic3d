@@ -531,8 +531,8 @@ MonoBehaviour:
   turnSpeed: 5
   wheelColliderFrontLeft: {fileID: 146223782593504542}
   wheelColliderFrontRight: {fileID: 146245371587509290}
-  maxMotorTorque: 200
-  normalBrakeTorque: 200
+  maxMotorTorque: 400
+  normalBrakeTorque: 400
   maxBrakeTorque: 600
   currentSpeed: 0
   maxSpeed: 100
@@ -541,6 +541,7 @@ MonoBehaviour:
   currentNodeNumber: 0
   startTime: 0
   startPos: {x: 0, y: 0, z: 0}
+  nodeReadingOffset: 0
   engineStatus: 0
 --- !u!1 &1727658810202796
 GameObject:

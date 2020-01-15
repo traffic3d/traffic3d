@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class VehicleEngine : MonoBehaviour
 {
@@ -7,15 +8,19 @@ public class VehicleEngine : MonoBehaviour
     public float turnSpeed = 5f;
     public WheelCollider wheelColliderFrontLeft;
     public WheelCollider wheelColliderFrontRight;
-    public float maxMotorTorque = 80f;
-    public float normalBrakeTorque = 100f;
-    public float maxBrakeTorque = 100f;
+    public float maxMotorTorque = 200f;
+    public float normalBrakeTorque = 200f;
+    public float maxBrakeTorque = 400f;
     public float currentSpeed;
     public float maxSpeed = 100f;
+    public float maxSpeedTurning = 20f;
+    public float maxSpeedAproachingLightsLastNode = 7f;
+    public float maxSpeedAproachingLightsSecondLastNode = 30f;
     public Vector3 centerOfMass;
     public Transform currentNode;
     public int currentNodeNumber;
     private float targetSteerAngle = 0;
+    public float targetSpeed;
     public float startTime;
     public Vector3 startPos;
     public float nodeReadingOffset;
@@ -27,6 +32,7 @@ public class VehicleEngine : MonoBehaviour
         startTime = Time.time;
         startPos = transform.position;
         engineStatus = EngineStatus.STOP;
+        targetSpeed = maxSpeed;
     }
 
     /// <summary>
@@ -68,12 +74,13 @@ public class VehicleEngine : MonoBehaviour
         }
         ApplySteer();
         currentSpeed = 2 * Mathf.PI * wheelColliderFrontLeft.radius * wheelColliderFrontLeft.rpm * 60 / 1000;
+        SpeedCheck();
         TrafficLight trafficLight = TrafficLightManager.GetInstance().GetTrafficLightFromStopNode(currentNode);
         if ((trafficLight != null && trafficLight.IsCurrentLightColour(TrafficLight.LightColour.RED)) || this.gameObject.tag == "hap")
         {
             SetEngineStatus(EngineStatus.HARD_STOP);
         }
-        else if (currentSpeed < maxSpeed)
+        else if (currentSpeed < targetSpeed && currentSpeed < maxSpeed)
         {
             SetEngineStatus(EngineStatus.ACCELERATE);
         }
@@ -92,6 +99,39 @@ public class VehicleEngine : MonoBehaviour
         float newSteer = (relativeVector.x / relativeVector.magnitude) * maxSteerAngle;
         wheelColliderFrontLeft.steerAngle = Mathf.Lerp(newSteer, targetSteerAngle, Time.deltaTime * turnSpeed);
         wheelColliderFrontRight.steerAngle = Mathf.Lerp(newSteer, targetSteerAngle, Time.deltaTime * turnSpeed);
+    }
+
+    /// <summary>
+    /// Checks and adjusts the speed accordingly.
+    /// Speed in kilometers per hour
+    /// </summary>
+    private void SpeedCheck()
+    {
+        // If starting to turn
+        if (Math.Abs(wheelColliderFrontLeft.steerAngle) > 2)
+        {
+            SetTargetSpeed(maxSpeedTurning);
+        }
+        else
+        {
+            SetTargetSpeed(maxSpeed);
+        }
+        if (currentNodeNumber + 1 < path.nodes.Count)
+        {
+            // If next node is a traffic light
+            if (TrafficLightManager.GetInstance().IsStopNode(path.nodes[currentNodeNumber + 1]))
+            {
+                SetTargetSpeed(maxSpeedAproachingLightsLastNode);
+            }
+        }
+        if (currentNodeNumber + 2 < path.nodes.Count)
+        {
+            // If 2nd to next node is a traffic light
+            if (TrafficLightManager.GetInstance().IsStopNode(path.nodes[currentNodeNumber + 2]))
+            {
+                SetTargetSpeed(maxSpeedAproachingLightsSecondLastNode);
+            }
+        }
     }
 
     /// <summary>
@@ -123,6 +163,15 @@ public class VehicleEngine : MonoBehaviour
             currentNodeNumber++;
         }
         currentNode = path.nodes[currentNodeNumber];
+    }
+
+    /// <summary>
+    /// Set the target speed of the vehicle
+    /// </summary>
+    /// <param name="targetSpeed">Speed in kilometers per hour</param>
+    public void SetTargetSpeed(float targetSpeed)
+    {
+        this.targetSpeed = targetSpeed;
     }
 
     /// <summary>

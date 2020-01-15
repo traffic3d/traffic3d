@@ -623,9 +623,9 @@ MonoBehaviour:
   turnSpeed: 5
   wheelColliderFrontLeft: {fileID: 146820637187476694}
   wheelColliderFrontRight: {fileID: 146720879009584224}
-  maxMotorTorque: 200
-  normalBrakeTorque: 200
-  maxBrakeTorque: 400
+  maxMotorTorque: 400
+  normalBrakeTorque: 400
+  maxBrakeTorque: 600
   currentSpeed: 0
   maxSpeed: 100
   centerOfMass: {x: 0, y: 0, z: 0}
