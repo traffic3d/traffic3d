@@ -1,7 +1,8 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class JSONConfigParser
 {
@@ -15,19 +16,17 @@ public class JSONConfigParser
         }
         string fileData = File.ReadAllText(filePath);
         config = JsonUtility.FromJson<JSONConfig>(fileData);
-        EditorApplication.playModeStateChanged += UpdateObjects;
+        EditorSceneManager.sceneOpened += UpdateObjects;
     }
 
-    public static void UpdateObjects(PlayModeStateChange playModeStateChange)
+    public static void UpdateObjects(Scene scene, OpenSceneMode mode)
     {
-        Debug.Log("Updating Objects");
-        SetUpVehicleFactory(GameObject.FindObjectOfType<VehicleFactory>());
+        SetUpVehicleFactory((VehicleFactory) GameObject.FindObjectOfType(typeof(VehicleFactory)));
+        EditorApplication.isPlaying = true;
     }
 
     public static void SetUpVehicleFactory(VehicleFactory vehicleFactory)
     {
-        Debug.Log("Object is: ");
-        Debug.Log(vehicleFactory);
         vehicleFactory.highRangeRespawnTime = config.vehicleFactoryConfig.highRangeRespawnTime;
         vehicleFactory.lowRangeRespawnTime = config.vehicleFactoryConfig.lowRangeRespawnTime;
         vehicleFactory.maximumVehicleCount = config.vehicleFactoryConfig.maximumVehicleCount;
@@ -35,11 +34,13 @@ public class JSONConfigParser
         vehicleFactory.timeOfStartInvisibility = config.vehicleFactoryConfig.timeOfStartInvisibility;
     }
 
+    [System.Serializable]
     public class JSONConfig
     {
         public VehicleFactoryConfig vehicleFactoryConfig;
     }
 
+    [System.Serializable]
     public class VehicleFactoryConfig
     {
         public float highRangeRespawnTime;

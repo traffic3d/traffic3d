@@ -11,8 +11,7 @@ public static class CustomCommandLineArguments
     {
         CheckHeadless();
         CheckJSONConfigFile();
-        EditorSceneManager.OpenScene(System.IO.Path.Combine(Application.dataPath, "Scenes/DayDemo.unity"));
-        EditorApplication.isPlaying = true;
+        CheckOpenScene();
     }
 
     public static string GetArgument(string name)
@@ -47,6 +46,15 @@ public static class CustomCommandLineArguments
         if (configPath != null)
         {
             JSONConfigParser.Parse(configPath);
+        }
+    }
+
+    private static void CheckOpenScene()
+    {
+        string openScene = GetArgument("OpenScene");
+        if (openScene != null)
+        {
+            EditorSceneManager.OpenScene(System.IO.Path.Combine(Application.dataPath, openScene));
         }
     }
 

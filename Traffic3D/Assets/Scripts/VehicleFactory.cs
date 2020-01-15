@@ -29,11 +29,6 @@ public class VehicleFactory : MonoBehaviour
         {
             throw new System.Exception("No paths for vehicles to spawn on.");
         }
-        // Debug
-        if(highRangeRespawnTime == 10)
-        {
-            Debug.Log("VehicleFactory has been updated");
-        }
         StartCoroutine(GenerateVehicle());
     }
 
