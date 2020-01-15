@@ -11,7 +11,7 @@ public class CameraManager : MonoBehaviour
 
     private void OnPostRender()
     {
-        if (PythonManager.IsHeadlessMode())
+        if (Settings.IsHeadlessMode())
         {
             Texture2D texture = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
             texture.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0, false);
