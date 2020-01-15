@@ -1,12 +1,12 @@
 ﻿
 using System;
-using System.Reflection;
-using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public static class CustomCommandLineArguments
 {
+    private static string[] arguments = Environment.GetCommandLineArgs();
+
     public static void Run()
     {
         CheckHeadless();
@@ -16,15 +16,19 @@ public static class CustomCommandLineArguments
 
     public static string GetArgument(string name)
     {
-        string[] args = Environment.GetCommandLineArgs();
-        for (int i = 0; i < args.Length; i++)
+        for (int i = 0; i < arguments.Length; i++)
         {
-            if (args[i].Contains(name))
+            if (arguments[i].Contains(name))
             {
-                return args[i + 1];
+                return arguments[i + 1];
             }
         }
         return null;
+    }
+
+    public static void SetMockArgument(string[] mockArguments)
+    {
+        arguments = mockArguments;
     }
 
     private static void CheckHeadless()

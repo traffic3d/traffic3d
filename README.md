@@ -30,9 +30,26 @@ Traffic3D has custom command line options using following flag:
 
 The custom options are:
 
-*  `-JSONConfigFile "filename.json"` - *Import settings from a JSON file*
-*  `-OpenScene "Scenes/sceneName.unity"` - *Open a scene*
-*  `-RunHeadless (true|false)` - *Run in headless mode*
+*  `-JSONConfigFile "filename.json"` - Import settings from a JSON file
+*  `-OpenScene "Scenes/sceneName.unity"` - Open a scene
+*  `-RunHeadless (true|false)` - Run in headless mode
+
+### Examples
+
+```
+# Using all custom options.
+${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' /opt/Unity/Editor/Unity} \
+  -projectPath $(pwd)/Traffic3D \
+  -testPlatform playmode \
+  -testResults $(pwd)/playmode-results.xml \
+  -CacheServerIPAddress 172.17.0.1:8126 \
+  -executeMethod CustomCommandLineArguments.Run \
+  -JSONConfigFile "config.json" \
+  -OpenScene "Scenes/NightDemo.unity" \
+  -RunHeadless true \
+  -logFile \
+  -batchmode
+```
 
 ## Citing the Traffi3D software
 

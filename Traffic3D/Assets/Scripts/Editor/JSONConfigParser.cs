@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,6 +6,20 @@ using UnityEngine.SceneManagement;
 public class JSONConfigParser
 {
     private static JSONConfig config;
+
+    public static JSONConfig GetConfig()
+    {
+        return config;
+    }
+
+    public static void SetConfig(JSONConfig input)
+    {
+        config = input;
+        if (config == null)
+        {
+            EditorSceneManager.sceneOpened -= UpdateObjects;
+        }
+    }
 
     public static void Parse(string filePath)
     {
@@ -21,7 +34,7 @@ public class JSONConfigParser
 
     public static void UpdateObjects(Scene scene, OpenSceneMode mode)
     {
-        SetUpVehicleFactory((VehicleFactory) GameObject.FindObjectOfType(typeof(VehicleFactory)));
+        SetUpVehicleFactory((VehicleFactory)GameObject.FindObjectOfType(typeof(VehicleFactory)));
     }
 
     public static void SetUpVehicleFactory(VehicleFactory vehicleFactory)

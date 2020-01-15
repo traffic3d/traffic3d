@@ -1,0 +1,1 @@
+{ "vehicleFactoryConfig" : { "highRangeRespawnTime" : 1, "lowRangeRespawnTime" : 1, "maximumVehicleCount" : 1, "slowDownVehicleRateAt" : 1, "timeOfStartInvisibility" : 1 } }
