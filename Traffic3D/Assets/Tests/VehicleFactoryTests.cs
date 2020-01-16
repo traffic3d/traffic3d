@@ -40,11 +40,11 @@ public class VehicleFactoryTests
     public IEnumerator VehicleFactoryVehicleTest()
     {
         VehicleFactory vehicleFactory = (VehicleFactory)GameObject.FindObjectOfType(typeof(VehicleFactory));
-        foreach (Rigidbody vehicle in vehicleFactory.vehicles)
+        foreach (VehicleFactory.VehicleProbability vehicleProbability in vehicleFactory.vehicleProbabilities)
         {
-            vehicleFactory.SpawnVehicle(vehicle, vehicleFactory.GetRandomPath());
+            vehicleFactory.SpawnVehicle(vehicleProbability.vehicle, vehicleFactory.GetRandomPath());
         }
-        Assert.AreEqual(vehicleFactory.vehicles.Count, vehicleFactory.currentVehicles.Count);
+        Assert.AreEqual(vehicleFactory.vehicleProbabilities.Count, vehicleFactory.currentVehicles.Count);
         yield return null;
     }
 }

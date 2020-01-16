@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -6,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class JSONConfigParser
 {
     private static JSONConfig config;
+    private static int currentBuildScene = -1;
 
     public static JSONConfig GetConfig()
     {
@@ -17,7 +20,8 @@ public class JSONConfigParser
         config = input;
         if (config == null)
         {
-            EditorSceneManager.sceneOpened -= UpdateObjects;
+            EditorSceneManager.sceneOpened -= EditorSceneManagerUpdateObjects;
+            SceneManager.sceneLoaded -= SceneManagerUpdateObjects;
         }
     }
 
@@ -29,11 +33,30 @@ public class JSONConfigParser
         }
         string fileData = File.ReadAllText(filePath);
         config = JsonUtility.FromJson<JSONConfig>(fileData);
-        EditorSceneManager.sceneOpened += UpdateObjects;
+        EditorSceneManager.sceneOpened += EditorSceneManagerUpdateObjects;
+        SceneManager.sceneLoaded += SceneManagerUpdateObjects;
     }
 
-    public static void UpdateObjects(Scene scene, OpenSceneMode mode)
+    public static void SceneManagerUpdateObjects(Scene scene, LoadSceneMode mode)
     {
+        UpdateObjects(scene.buildIndex);
+    }
+
+    public static void EditorSceneManagerUpdateObjects(Scene scene, OpenSceneMode mode)
+    {
+        UpdateObjects(scene.buildIndex);
+    }
+
+    public static void UpdateObjects(int scene)
+    {
+        if (currentBuildScene == scene)
+        {
+            return;
+        }
+        else
+        {
+            currentBuildScene = scene;
+        }
         SetUpVehicleFactory((VehicleFactory)GameObject.FindObjectOfType(typeof(VehicleFactory)));
     }
 
@@ -44,6 +67,15 @@ public class JSONConfigParser
         vehicleFactory.maximumVehicleCount = config.vehicleFactoryConfig.maximumVehicleCount;
         vehicleFactory.slowDownVehicleRateAt = config.vehicleFactoryConfig.slowDownVehicleRateAt;
         vehicleFactory.timeOfStartInvisibility = config.vehicleFactoryConfig.timeOfStartInvisibility;
+        vehicleFactory.vehicleProbabilities.Clear();
+
+        foreach (VehicleProbabilityConfig vehicleProbabilityConfig in config.vehicleFactoryConfig.vehicleProbabilities)
+        {
+            VehicleFactory.VehicleProbability vehicleProbability = new VehicleFactory.VehicleProbability();
+            vehicleProbability.vehicle = (Rigidbody)AssetDatabase.LoadAssetAtPath(vehicleProbabilityConfig.vehiclePath, typeof(Rigidbody));
+            vehicleProbability.probability = vehicleProbabilityConfig.probability;
+            vehicleFactory.vehicleProbabilities.Add(vehicleProbability);
+        }
     }
 
     [System.Serializable]
@@ -60,5 +92,13 @@ public class JSONConfigParser
         public float maximumVehicleCount;
         public float slowDownVehicleRateAt;
         public float timeOfStartInvisibility;
+        public List<VehicleProbabilityConfig> vehicleProbabilities;
+    }
+
+    [System.Serializable]
+    public class VehicleProbabilityConfig
+    {
+        public string vehiclePath;
+        public float probability;
     }
 }
