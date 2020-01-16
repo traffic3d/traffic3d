@@ -54,6 +54,9 @@ ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x2
 ## Config
 
 Configuration is used to bulk import initialisation values into the Traffic3D system.
+Normally the values are direct mappings of the values that can be changed within the Unity UI.
+For example the `vehicleFactoryConfig` object within the config example below allows us to pass data directly to the specified fields.
+e.g. The `highRangeRespawnTime` field in the config maps to the `highRangeRespawnTime` field in the game object.
 
 ### Examples
 
