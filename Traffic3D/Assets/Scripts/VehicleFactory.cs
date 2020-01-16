@@ -25,7 +25,7 @@ public class VehicleFactory : MonoBehaviour
         {
             throw new System.Exception("No vehicles to spawn.");
         }
-        if (vehicleProbabilities.Select(p => p.probability).Sum() != 1)
+        if (vehicleProbabilities.Select(p => p.probability).Sum() != 1.0)
         {
             throw new System.Exception("Vehicle Probabilities do not sum to 100%");
         }

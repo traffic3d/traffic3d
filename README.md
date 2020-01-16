@@ -30,7 +30,7 @@ Traffic3D has custom command line options using following flag:
 
 The custom options are:
 
-*  `-JSONConfigFile "filename.json"` - Import settings from a JSON file
+*  `-JSONConfigFile "filename.json"` - Import settings from a JSON file (see below for config details)
 *  `-OpenScene "Scenes/sceneName.unity"` - Open a scene
 *  `-RunHeadless (true|false)` - Run in headless mode
 
@@ -50,6 +50,14 @@ ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x2
   -logFile \
   -batchmode
 ```
+
+## Config
+
+Configuration is used to bulk import initialisation values into the Traffic3D system.
+
+### Examples
+
+See the [Test Config](/Traffic3D/Assets/Tests/TestFiles/test_config.json) for an example of how to structure the file.
 
 ## Citing the Traffi3D software
 
