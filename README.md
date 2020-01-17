@@ -32,7 +32,7 @@ The custom options are:
 
 *  `-JSONConfigFile "filename.json"` - Import settings from a JSON file (see below for config details)
 *  `-OpenScene "Scenes/sceneName.unity"` - Open a scene
-*  `-RunHeadless (true|false)` - Run in headless mode
+*  `-RunHeadless true|false` - Run in headless mode
 
 ### Examples
 
@@ -60,7 +60,7 @@ e.g. The `highRangeRespawnTime` field in the config maps to the `highRangeRespaw
 
 ### Examples
 
-See the [Test Config](/Traffic3D/Assets/Tests/TestFiles/test_config.json) for an example of how to structure the file.
+See [test_config.json](/Traffic3D/Assets/Tests/TestFiles/test_config.json) for an example of how to structure the file.
 
 ## Citing the Traffi3D software
 
