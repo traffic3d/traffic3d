@@ -3,29 +3,14 @@ using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
 [Category("Tests")]
-public class VehicleEngineTests
+public class VehicleEngineTests : CommonSceneTest
 {
     public const int STOP_LIGHT_TIME = 20;
     public const int TIME_OUT_DESTROY_TIME = 60;
     public const int TIME_OUT_STOP_TIME = 60;
-
-    [SetUp]
-    public void SetUpTest()
-    {
-        try
-        {
-            SocketManager.GetInstance().SetSocket(new MockSocket());
-            SceneManager.LoadScene(0);
-        }
-        catch (Exception e)
-        {
-            Debug.Log(e);
-        }
-    }
 
     [UnityTest]
     public IEnumerator VehicleEngineGoTest()
@@ -100,7 +85,7 @@ public class VehicleEngineTests
                 break;
             }
         }
-        if(pathWithTurning == null)
+        if (pathWithTurning == null)
         {
             Assert.Inconclusive("Unable to test. No paths with turnings.");
         }
