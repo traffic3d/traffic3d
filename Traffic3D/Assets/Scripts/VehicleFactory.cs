@@ -25,7 +25,8 @@ public class VehicleFactory : MonoBehaviour
         {
             throw new System.Exception("No vehicles to spawn.");
         }
-        if (vehicleProbabilities.Select(p => p.probability).Sum() != 1.0)
+        float probabilitySum = vehicleProbabilities.Select(p => p.probability).Sum();
+        if (probabilitySum < 0.999999 || probabilitySum > 1.000001)
         {
             throw new System.Exception("Vehicle Probabilities do not sum to 100%");
         }
@@ -100,7 +101,7 @@ public class VehicleFactory : MonoBehaviour
             }
         }
 
-        return null;
+        return vehicleProbabilities.Aggregate((highest, next) => highest.probability > next.probability ? highest : next).vehicle;
     }
 
     /// <summary>
