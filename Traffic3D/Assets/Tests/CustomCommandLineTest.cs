@@ -1,12 +1,10 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Collections;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.TestTools;
 
 [Category("Tests")]
-public class CustomCommandLineTest
+public class CustomCommandLineTest : CommonSceneTest
 {
     private bool originalHeadlessMode;
     private JSONConfigParser.JSONConfig originalConfig;
@@ -22,20 +20,6 @@ public class CustomCommandLineTest
         yield return new EnterPlayMode();
     }
 
-    [SetUp]
-    public void SetUpTest()
-    {
-        try
-        {
-            SocketManager.GetInstance().SetSocket(new MockSocket());
-            EditorSceneManager.LoadScene(0);
-        }
-        catch (Exception e)
-        {
-            Debug.Log(e);
-        }
-    }
-
     [UnityTearDown]
     public IEnumerator UnityTearDown()
     {
@@ -49,7 +33,6 @@ public class CustomCommandLineTest
     {
         yield return null;
         VehicleFactory vehicleFactory = (VehicleFactory)GameObject.FindObjectOfType(typeof(VehicleFactory));
-        Debug.Log(vehicleFactory);
         Assert.AreEqual(1, vehicleFactory.highRangeRespawnTime);
         Assert.AreEqual(1, vehicleFactory.lowRangeRespawnTime);
         Assert.AreEqual(1, vehicleFactory.maximumVehicleCount);

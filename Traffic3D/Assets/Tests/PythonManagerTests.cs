@@ -1,27 +1,10 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Collections;
-using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
 [Category("Tests")]
-public class PythonManagerTests
+public class PythonManagerTests : CommonSceneTest
 {
-    [SetUp]
-    public void SetUpTest()
-    {
-        try
-        {
-            SocketManager.GetInstance().SetSocket(new MockSocket());
-            SceneManager.LoadScene(0);
-        }
-        catch (Exception e)
-        {
-            Debug.Log(e);
-        }
-    }
-
     [TearDown]
     public void TearDown()
     {

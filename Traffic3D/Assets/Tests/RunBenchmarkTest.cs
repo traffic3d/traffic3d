@@ -1,26 +1,17 @@
-﻿using System.Collections;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
-using System;
 
-public class RunBenchmarkTest
+public class RunBenchmarkTest : CommonSceneTest
 {
     [SetUp]
-    public void SetUpTest()
+    public override void SetUpTest()
     {
-        try
-        {
-            SocketManager.GetInstance().SetSocket(new MockSocket());
-            SceneManager.LoadScene(0);
-            Settings.SetBenchmark();
-        }
-        catch (Exception e)
-        {
-            Debug.Log(e);
-        }
+        Settings.SetBenchmark();
+        base.SetUpTest();
     }
+
     [UnityTest]
     [Timeout(int.MaxValue)]
     public IEnumerator RunBenchmarkTestWithEnumeratorPasses()
