@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.TestTools;
 
 [Category("Tests")]
-public class InvalidJSONConfigTest
+public class InvalidJSONConfigTest : CommonSceneTest
 {
     private bool originalHeadlessMode;
     private JSONConfigParser.JSONConfig originalConfig;
@@ -17,20 +17,6 @@ public class InvalidJSONConfigTest
         originalHeadlessMode = Settings.IsHeadlessMode();
         originalConfig = JSONConfigParser.GetConfig();
         yield return new EnterPlayMode();
-    }
-
-    [SetUp]
-    public void SetUpTest()
-    {
-        try
-        {
-            SocketManager.GetInstance().SetSocket(new MockSocket());
-            EditorSceneManager.LoadScene(0);
-        }
-        catch (Exception e)
-        {
-            Debug.Log(e);
-        }
     }
 
     [UnityTearDown]
