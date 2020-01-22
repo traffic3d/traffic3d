@@ -11,7 +11,7 @@ public class VehicleFactory : MonoBehaviour
     public float maximumVehicleCount = 8;
     public float slowDownVehicleRateAt = 6;
     public float timeOfStartInvisibility = 1;
-    public List<Rigidbody> vehicles;
+    public List<VehicleProbability> vehicleProbabilities;
     public List<Path> paths;
     public Dictionary<Rigidbody, Path> currentVehicles = new Dictionary<Rigidbody, Path>();
 
@@ -21,9 +21,14 @@ public class VehicleFactory : MonoBehaviour
         // add an if statement to add the seed back with the following condition:
         // Settings.IsBenchmark()
         Random.InitState(123);
-        if (vehicles.Count == 0)
+        if (vehicleProbabilities.Count == 0)
         {
             throw new System.Exception("No vehicles to spawn.");
+        }
+        float probabilitySum = vehicleProbabilities.Select(p => p.probability).Sum();
+        if (probabilitySum < 0.999999 || probabilitySum > 1.000001)
+        {
+            throw new System.Exception("Vehicle Probabilities do not sum to 100%");
         }
         if (paths.Count == 0)
         {
@@ -85,7 +90,18 @@ public class VehicleFactory : MonoBehaviour
     /// <returns>The vehicle template.</returns>
     public Rigidbody GetRandomVehicle()
     {
-        return vehicles[Random.Range(0, vehicles.Count)];
+        float finalProbability = Random.value;
+        float cumulativeProbability = 0.0F;
+        foreach (VehicleProbability vehicleProbability in vehicleProbabilities)
+        {
+            cumulativeProbability += vehicleProbability.probability;
+            if (finalProbability <= cumulativeProbability)
+            {
+                return vehicleProbability.vehicle;
+            }
+        }
+
+        return vehicleProbabilities.Aggregate((highest, next) => highest.probability > next.probability ? highest : next).vehicle;
     }
 
     /// <summary>
@@ -128,4 +144,12 @@ public class VehicleFactory : MonoBehaviour
         yield return new WaitForSeconds(hideForSeconds);
         vehicle.GetComponentsInChildren<Renderer>().ToList().ForEach(renderer => renderer.enabled = true);
     }
+
+    [System.Serializable]
+    public class VehicleProbability
+    {
+        public Rigidbody vehicle;
+        public float probability;
+    }
+
 }

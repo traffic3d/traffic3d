@@ -1,5 +1,8 @@
 ﻿using NUnit.Framework;
+using System;
 using System.Collections;
+using UnityEditor.SceneManagement;
+using UnityEngine;
 using UnityEngine.TestTools;
 
 [Category("Tests")]
@@ -19,6 +22,20 @@ public class CustomCommandLineTest
         yield return new EnterPlayMode();
     }
 
+    [SetUp]
+    public void SetUpTest()
+    {
+        try
+        {
+            SocketManager.GetInstance().SetSocket(new MockSocket());
+            EditorSceneManager.LoadScene(0);
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e);
+        }
+    }
+
     [UnityTearDown]
     public IEnumerator UnityTearDown()
     {
@@ -31,11 +48,17 @@ public class CustomCommandLineTest
     public IEnumerator JSONParserTest()
     {
         yield return null;
-        Assert.AreEqual(1, JSONConfigParser.GetConfig().vehicleFactoryConfig.highRangeRespawnTime);
-        Assert.AreEqual(1, JSONConfigParser.GetConfig().vehicleFactoryConfig.lowRangeRespawnTime);
-        Assert.AreEqual(1, JSONConfigParser.GetConfig().vehicleFactoryConfig.maximumVehicleCount);
-        Assert.AreEqual(1, JSONConfigParser.GetConfig().vehicleFactoryConfig.slowDownVehicleRateAt);
-        Assert.AreEqual(1, JSONConfigParser.GetConfig().vehicleFactoryConfig.timeOfStartInvisibility);
+        VehicleFactory vehicleFactory = (VehicleFactory)GameObject.FindObjectOfType(typeof(VehicleFactory));
+        Debug.Log(vehicleFactory);
+        Assert.AreEqual(1, vehicleFactory.highRangeRespawnTime);
+        Assert.AreEqual(1, vehicleFactory.lowRangeRespawnTime);
+        Assert.AreEqual(1, vehicleFactory.maximumVehicleCount);
+        Assert.AreEqual(1, vehicleFactory.slowDownVehicleRateAt);
+        Assert.AreEqual(1, vehicleFactory.timeOfStartInvisibility);
+        foreach (VehicleFactory.VehicleProbability vehicleProbability in vehicleFactory.vehicleProbabilities)
+        {
+            Assert.AreEqual(0.125, vehicleProbability.probability);
+        }
     }
 
     [UnityTest]

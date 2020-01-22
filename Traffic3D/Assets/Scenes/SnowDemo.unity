@@ -16078,7 +16078,7 @@ PrefabInstance:
     - target: {fileID: 1425347654932612908, guid: 0b5f1625cee12aa4da536c7e63249b18,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -18.8
+      value: -17.93
       objectReference: {fileID: 0}
     - target: {fileID: 1425347654932612908, guid: 0b5f1625cee12aa4da536c7e63249b18,
         type: 3}
@@ -30030,15 +30030,23 @@ MonoBehaviour:
   maximumVehicleCount: 8
   slowDownVehicleRateAt: 6
   timeOfStartInvisibility: 1
-  vehicles:
-  - {fileID: 54329891447940280, guid: 389154cd7472f41a7b5ad5e90e564a2b, type: 3}
-  - {fileID: 54530616890679596, guid: 1033c1a7523064cd79e138342dd09237, type: 3}
-  - {fileID: 54280346119316502, guid: d2d21d8010c1c40e3a775968e254b2de, type: 3}
-  - {fileID: 54468209761808050, guid: 24b06f08c08444941b85f74d4b008933, type: 3}
-  - {fileID: 54272025488572840, guid: 7e18cdb9eeaed4a66b40612cc522f29d, type: 3}
-  - {fileID: 54162081345283232, guid: 14eab376b0a144867a1e547c112cebfe, type: 3}
-  - {fileID: 54227283394439278, guid: 6a50b2b7eef3d4c058c762652655491e, type: 3}
-  - {fileID: 54240910825635966, guid: e0552afcd8441481fa7c886f6daa3d76, type: 3}
+  vehicleProbabilities:
+  - vehicle: {fileID: 54329891447940280, guid: 389154cd7472f41a7b5ad5e90e564a2b, type: 3}
+    probability: 0.15
+  - vehicle: {fileID: 54530616890679596, guid: 1033c1a7523064cd79e138342dd09237, type: 3}
+    probability: 0.1
+  - vehicle: {fileID: 54280346119316502, guid: d2d21d8010c1c40e3a775968e254b2de, type: 3}
+    probability: 0.1
+  - vehicle: {fileID: 54468209761808050, guid: 24b06f08c08444941b85f74d4b008933, type: 3}
+    probability: 0.15
+  - vehicle: {fileID: 54272025488572840, guid: 7e18cdb9eeaed4a66b40612cc522f29d, type: 3}
+    probability: 0.15
+  - vehicle: {fileID: 54162081345283232, guid: 14eab376b0a144867a1e547c112cebfe, type: 3}
+    probability: 0.1
+  - vehicle: {fileID: 54227283394439278, guid: 6a50b2b7eef3d4c058c762652655491e, type: 3}
+    probability: 0.15
+  - vehicle: {fileID: 54240910825635966, guid: e0552afcd8441481fa7c886f6daa3d76, type: 3}
+    probability: 0.1
   paths:
   - {fileID: 1659272554}
   - {fileID: 1484633025}
