@@ -25,7 +25,7 @@ public class CustomCommandLineTest : CommonSceneTest
     {
         JSONConfigParser.SetConfig(originalConfig);
         Settings.SetHeadlessMode(originalHeadlessMode);
-        yield return new EnterPlayMode();
+        yield return new ExitPlayMode();
     }
 
     [UnityTest]
