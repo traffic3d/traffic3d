@@ -44,16 +44,7 @@ public class InvalidJSONConfigTest
     [UnityTest]
     public IEnumerator InvalidJSONParserTest()
     {
-        try
-        {
-            JSONConfigParser.Parse("Assets/Tests/TestFiles/test_config_invalid.json");
-            Assert.Fail("Exception not thrown");
-        }
-        catch (ArgumentException e)
-        {
-            Assert.Pass("Passed: Exception thrown: " + e.Message);
-        }
-
+        Assert.Throws(typeof(ArgumentException), () => JSONConfigParser.Parse("Assets/Tests/TestFiles/test_config_invalid.json"));
         yield return null;
     }
 }
