@@ -1,0 +1,43 @@
+{
+    "notvalid":
+        "highRangeRespawnTime": 1,
+        "lowRangeRespawnTime": 1,
+        "maximumVehicleCount": 1,
+        "slowDownVehicleRateAt": 1,
+        "timeOfStartInvisibility": 1,
+        "vehicleProbabilities": [
+            {
+                "vehiclePath": "Assets/Vehicles/BluecarPre.prefab",
+                "probability": 0.125
+            },
+            {
+                "vehiclePath": "Assets/Vehicles/BUSpre.prefab",
+                "probability": 0.125
+            },
+            {
+                "vehiclePath": "Assets/Vehicles/PoliceCarPre.prefab",
+                "probability": 0.125
+            },
+            {
+                "vehiclePath": "Assets/Vehicles/REDcarpre.prefab",
+                "probability": 0.125
+            },
+            {
+                "vehiclePath": "Assets/Vehicles/SUV.prefab",
+                "probability": 0.125
+            },
+            {
+                "vehiclePath": "Assets/Vehicles/Trucpre.prefab",
+                "probability": 0.125
+            },
+            {
+                "vehiclePath": "Assets/Vehicles/yellocarpre.prefab",
+                "probability": 0.125
+            },
+            {
+                "vehiclePath": "Assets/Vehicles/yellowBuspre.prefab",
+                "probability": 0.125
+            }
+        ]
+    }
+}
