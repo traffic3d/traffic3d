@@ -624,13 +624,17 @@ MonoBehaviour:
   wheelColliderFrontLeft: {fileID: 146820637187476694}
   wheelColliderFrontRight: {fileID: 146720879009584224}
   maxMotorTorque: 400
-  normalBrakeTorque: 400
+  normalBrakeTorque: 600
   maxBrakeTorque: 600
   currentSpeed: 0
   maxSpeed: 100
+  maxSpeedTurning: 20
+  maxSpeedAproachingLightsLastNode: 7
+  maxSpeedAproachingLightsSecondLastNode: 30
   centerOfMass: {x: 0, y: 0, z: 0}
   currentNode: {fileID: 0}
   currentNodeNumber: 0
+  targetSpeed: 0
   startTime: 0
   startPos: {x: 0, y: 0, z: 0}
   nodeReadingOffset: 2

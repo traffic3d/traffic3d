@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -105,9 +106,18 @@ public class TrafficLightManager : MonoBehaviour
     /// <param name="id">The ID of the traffic light to turn green.</param>
     public void SetTrafficLightToGreen(int id)
     {
+        SetTrafficLightsToGreen(new List<int>() { id });
+    }
+
+    /// <summary>
+    /// Set all specified traffic lights to green and set the rest to red.
+    /// </summary>
+    /// <param name="id">The ID of the traffic light to turn green.</param>
+    public void SetTrafficLightsToGreen(List<int> ids)
+    {
         foreach (TrafficLight trafficLight in trafficLights)
         {
-            if (trafficLight.GetTrafficLightId() == id)
+            if (ids.Contains(trafficLight.GetTrafficLightId()))
             {
                 trafficLight.SetColour(TrafficLight.LightColour.GREEN);
             }
