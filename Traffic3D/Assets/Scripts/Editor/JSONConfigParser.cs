@@ -78,10 +78,26 @@ public class JSONConfigParser
         }
     }
 
+    public static void SetUpSumo(SumoManager sumoManager)
+    {
+        if (sumoManager == null)
+        {
+            return;
+        }
+        sumoManager.sumoControlSettings = config.sumoConfig.sumoControlSettings;
+    }
+
     [System.Serializable]
     public class JSONConfig
     {
         public VehicleFactoryConfig vehicleFactoryConfig;
+        public SumoConfig sumoConfig;
+    }
+
+    [System.Serializable]
+    public class SumoConfig
+    {
+        public List<SumoManager.SumoLinkControlPointObject> sumoControlSettings;
     }
 
     [System.Serializable]

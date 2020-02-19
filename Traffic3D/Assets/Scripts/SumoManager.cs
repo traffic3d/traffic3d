@@ -1,10 +1,14 @@
 ﻿using CodingConnected.TraCI.NET;
 using CodingConnected.TraCI.NET.Types;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SumoManager : MonoBehaviour
 {
+    public List<SumoLinkControlPointObject> sumoControlSettings = new List<SumoLinkControlPointObject>();
+
     private TraCIClient client;
     private VehicleFactory vehicleFactory;
     private Dictionary<string, Rigidbody> renderedVehicles = new Dictionary<string, Rigidbody>();
@@ -24,12 +28,48 @@ public class SumoManager : MonoBehaviour
         {
             Debug.Log("Unable to connect to Sumo");
             this.enabled = false;
+            return;
+        }
+        StartCoroutine(Run());
+        vehicleFactory.StopAllCoroutines();
+        if (!IsControlledBySumo(SumoLinkControlPoint.TRAFFIC_FLOW))
+        {
+            StartCoroutine(RunTraffic3DTrafficFlow());
         }
     }
 
-    void FixedUpdate()
+    IEnumerator Run()
     {
-        client.Control.SimStep(0.0);
+        while (true)
+        {
+            yield return new WaitForSeconds(1/60F);
+            long start = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            client.Control.SimStep(0.0);
+            long end = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            Debug.Log("Step took: " + (end - start));
+        }
+    }
+
+    IEnumerator RunTraffic3DTrafficFlow()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(UnityEngine.Random.Range(vehicleFactory.lowRangeRespawnTime, vehicleFactory.highRangeRespawnTime));
+            if (renderedVehicles.Count < UnityEngine.Random.Range(vehicleFactory.slowDownVehicleRateAt, vehicleFactory.maximumVehicleCount))
+            {
+                AddVehicle();
+            }
+        }
+    }
+
+    public void AddVehicle()
+    {
+        client.Vehicle.Add(Guid.NewGuid().ToString(), "DEFAULT_VEHTYPE", "route_0", 0, 0, 0, 0);
+    }
+
+    void Update()
+    {
+        long start = DateTimeOffset.Now.ToUnixTimeMilliseconds();
         TraCIResponse<List<string>> vehicleIDs = client.Vehicle.GetIdList();
         foreach (string vehicleId in vehicleIDs.Content)
         {
@@ -53,7 +93,7 @@ public class SumoManager : MonoBehaviour
         {
             DestroyRenderedVehicle(id);
         }
-
+        long end = DateTimeOffset.Now.ToUnixTimeMilliseconds();
     }
 
     public void DestroyRenderedVehicle(string id)
@@ -65,6 +105,12 @@ public class SumoManager : MonoBehaviour
     public void CreateRenderedVehicle(string id)
     {
         Rigidbody vehicle = Instantiate(vehicleFactory.GetRandomVehicle());
+        vehicle.isKinematic = true;
+        vehicle.GetComponent<VehicleEngine>().enabled = false;
+        foreach (BoxCollider boxCollider in vehicle.GetComponentsInChildren<BoxCollider>())
+        {
+            boxCollider.enabled = false;
+        }
         renderedVehicles.Add(id, vehicle);
     }
 
@@ -72,6 +118,26 @@ public class SumoManager : MonoBehaviour
     {
         renderedVehicles[id].transform.position = new Vector3((float)position3D.X, (float)position3D.Z, (float)position3D.Y);
         renderedVehicles[id].transform.rotation = Quaternion.Euler(0, angle, 0);
+    }
+
+    public bool IsControlledBySumo(SumoLinkControlPoint sumoLinkControlPoint)
+    {
+        SumoLinkControlPointObject controlPoint = sumoControlSettings.Find(controlSetting => controlSetting.sumoLinkControlPoint == sumoLinkControlPoint);
+        if (controlPoint == null || !controlPoint.controlledBySumo)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    [System.Serializable]
+    public class SumoLinkControlPointObject
+    {
+        public SumoLinkControlPoint sumoLinkControlPoint;
+        public bool controlledBySumo;
     }
 
 }
