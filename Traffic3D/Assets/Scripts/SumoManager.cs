@@ -3,6 +3,7 @@ using CodingConnected.TraCI.NET.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SumoManager : MonoBehaviour
@@ -43,10 +44,7 @@ public class SumoManager : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(1/60F);
-            long start = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             client.Control.SimStep(0.0);
-            long end = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-            Debug.Log("Step took: " + (end - start));
         }
     }
 
@@ -64,7 +62,7 @@ public class SumoManager : MonoBehaviour
 
     public void AddVehicle()
     {
-        client.Vehicle.Add(Guid.NewGuid().ToString(), "DEFAULT_VEHTYPE", "route_0", 0, 0, 0, 0);
+        client.Vehicle.Add(Guid.NewGuid().ToString(), "DEFAULT_VEHTYPE", GetRandomSumoRoute(), 0, 0, 0, 0);
     }
 
     void Update()
@@ -118,6 +116,11 @@ public class SumoManager : MonoBehaviour
     {
         renderedVehicles[id].transform.position = new Vector3((float)position3D.X, (float)position3D.Z, (float)position3D.Y);
         renderedVehicles[id].transform.rotation = Quaternion.Euler(0, angle, 0);
+    }
+
+    public string GetRandomSumoRoute()
+    {
+        return ImportAndGenerate.routes.Keys.ToArray()[UnityEngine.Random.Range(0, ImportAndGenerate.routes.Count)];
     }
 
     public bool IsControlledBySumo(SumoLinkControlPoint sumoLinkControlPoint)
