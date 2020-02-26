@@ -141,6 +141,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9186c63d58583149aadb84e641e7987, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ip: 127.0.0.1
+  port: 4001
   sumoControlSettings:
   - sumoLinkControlPoint: 0
     controlledBySumo: 0

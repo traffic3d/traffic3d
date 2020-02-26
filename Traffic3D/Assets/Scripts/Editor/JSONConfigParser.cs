@@ -58,6 +58,7 @@ public class JSONConfigParser
             currentBuildScene = scene;
         }
         SetUpVehicleFactory((VehicleFactory)GameObject.FindObjectOfType(typeof(VehicleFactory)));
+        SetUpSumo((SumoManager)GameObject.FindObjectOfType(typeof(SumoManager)));
     }
 
     public static void SetUpVehicleFactory(VehicleFactory vehicleFactory)

@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
 [Category("Tests")]
@@ -32,6 +33,7 @@ public class CustomCommandLineTest : CommonSceneTest
     public IEnumerator JSONParserTest()
     {
         yield return null;
+        DisableLoops();
         VehicleFactory vehicleFactory = (VehicleFactory)GameObject.FindObjectOfType(typeof(VehicleFactory));
         Assert.AreEqual(1, vehicleFactory.highRangeRespawnTime);
         Assert.AreEqual(1, vehicleFactory.lowRangeRespawnTime);
@@ -42,6 +44,14 @@ public class CustomCommandLineTest : CommonSceneTest
         {
             Assert.AreEqual(0.125, vehicleProbability.probability);
         }
+        SceneManager.LoadScene("Sumo");
+        yield return new WaitUntil(() => GameObject.FindObjectOfType(typeof(SumoManager)) != null);
+        DisableLoops();
+        SumoManager sumoManager = (SumoManager)GameObject.FindObjectOfType(typeof(SumoManager));
+        Assert.AreEqual(12345, sumoManager.port);
+        Assert.AreEqual("0.0.0.0", sumoManager.ip);
+        SumoManager.SumoLinkControlPointObject sumoLinkControlPointObject = sumoManager.sumoControlSettings.Find(o => o.sumoLinkControlPoint == SumoLinkControlPoint.TRAFFIC_FLOW);
+        Assert.AreEqual(true, sumoLinkControlPointObject.controlledBySumo);
     }
 
     [UnityTest]
@@ -50,4 +60,5 @@ public class CustomCommandLineTest : CommonSceneTest
         yield return null;
         Assert.True(Settings.IsHeadlessMode());
     }
+
 }
