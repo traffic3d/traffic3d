@@ -165,7 +165,7 @@ public class VehicleEngineTests : CommonSceneTest
         Assert.AreEqual(0, vehicleEngine.wheelColliderFrontRight.motorTorque);
     }
 
-    private void DisableLoops()
+    private new void DisableLoops()
     {
         // Optimize time by removing unneeded particles
         foreach (ParticleSystem particleSystem in GameObject.FindObjectsOfType<ParticleSystem>())

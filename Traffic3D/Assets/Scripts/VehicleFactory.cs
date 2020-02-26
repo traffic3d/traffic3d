@@ -30,10 +30,6 @@ public class VehicleFactory : MonoBehaviour
         {
             throw new System.Exception("Vehicle Probabilities do not sum to 100%");
         }
-        if (paths.Count == 0)
-        {
-            throw new System.Exception("No paths for vehicles to spawn on.");
-        }
         StartCoroutine(GenerateVehicle());
     }
 

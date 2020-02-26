@@ -25,7 +25,13 @@ class MockSocket : ISocket
         }
         else
         {
-            PushDataIntoBuffer(buffer, "" + (receiveCounter % TrafficLightManager.GetInstance().GetTrafficLights().Length));
+            int trafficLightAmount = TrafficLightManager.GetInstance().GetTrafficLights().Length;
+            int trafficLightToChange = 0;
+            if (trafficLightAmount != 0)
+            {
+                trafficLightToChange = receiveCounter % TrafficLightManager.GetInstance().GetTrafficLights().Length;
+            }
+            PushDataIntoBuffer(buffer, "" + trafficLightToChange);
         }
         receiveCounter++;
         return buffer.Length;
@@ -42,7 +48,7 @@ class MockSocket : ISocket
         byte[] data = Encoding.UTF8.GetBytes(dataString);
         for (int i = 0; i < data.Length; i++)
         {
-            if(buffer.Length > i)
+            if (buffer.Length > i)
             {
                 buffer[i] = data[i];
             }

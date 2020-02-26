@@ -60,13 +60,6 @@ public class TrafficLightManagerTests : CommonSceneTest
 
     }
 
-    private void DisableLoops()
-    {
-        TrafficLightManager trafficLightManager = (TrafficLightManager)GameObject.FindObjectOfType(typeof(TrafficLightManager));
-        trafficLightManager.StopAllCoroutines();
-        PythonManager.GetInstance().StopAllCoroutines();
-    }
-
     private void CheckTrafficLightIsGreen(int id)
     {
         foreach (TrafficLight trafficLight in TrafficLightManager.GetInstance().GetTrafficLights())

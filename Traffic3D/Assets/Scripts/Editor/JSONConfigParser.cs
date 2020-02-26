@@ -58,6 +58,7 @@ public class JSONConfigParser
             currentBuildScene = scene;
         }
         SetUpVehicleFactory((VehicleFactory)GameObject.FindObjectOfType(typeof(VehicleFactory)));
+        SetUpSumo((SumoManager)GameObject.FindObjectOfType(typeof(SumoManager)));
     }
 
     public static void SetUpVehicleFactory(VehicleFactory vehicleFactory)
@@ -78,10 +79,30 @@ public class JSONConfigParser
         }
     }
 
+    public static void SetUpSumo(SumoManager sumoManager)
+    {
+        if (sumoManager == null)
+        {
+            return;
+        }
+        sumoManager.sumoControlSettings = config.sumoConfig.sumoControlSettings;
+        sumoManager.ip = config.sumoConfig.ip;
+        sumoManager.port = config.sumoConfig.port;
+    }
+
     [System.Serializable]
     public class JSONConfig
     {
         public VehicleFactoryConfig vehicleFactoryConfig;
+        public SumoConfig sumoConfig;
+    }
+
+    [System.Serializable]
+    public class SumoConfig
+    {
+        public string ip;
+        public int port;
+        public List<SumoManager.SumoLinkControlPointObject> sumoControlSettings;
     }
 
     [System.Serializable]

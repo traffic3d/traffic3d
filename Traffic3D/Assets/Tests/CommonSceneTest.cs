@@ -18,4 +18,11 @@ public class CommonSceneTest
             Debug.Log(e);
         }
     }
+
+    public void DisableLoops()
+    {
+        TrafficLightManager trafficLightManager = (TrafficLightManager)GameObject.FindObjectOfType(typeof(TrafficLightManager));
+        trafficLightManager.StopAllCoroutines();
+        PythonManager.GetInstance().StopAllCoroutines();
+    }
 }

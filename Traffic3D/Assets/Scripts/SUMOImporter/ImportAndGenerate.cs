@@ -152,7 +152,6 @@ public class ImportAndGenerate
         }
 
         // Import all routes
-        /*
         XmlDocument routeXmlFile = new XmlDocument();
         routeXmlFile.Load(routesFilePath);
 
@@ -164,7 +163,6 @@ public class ImportAndGenerate
             string id = route.Attributes["id"].Value;
             routes.Add(id, edges.ToList());
         }
-        */
 
     }
 
@@ -378,26 +376,6 @@ public class ImportAndGenerate
                     GameObject TLindexVal = new GameObject(Convert.ToString(index++));
                     TLindexVal.transform.SetParent(TLindex.transform);
                     TLindex.transform.SetParent(trafficLight.transform);
-                }
-            }
-        }
-
-        // Create Routes
-        MonoBehaviour.print("Creating Routes");
-
-        foreach (KeyValuePair<string, List<string>> route in routes)
-        {
-            GameObject path = new GameObject("Path_" + route.Key);
-            path.AddComponent<Path>().lineColor = Color.white;
-            int nodeCounter = 1;
-            foreach (string edgeId in route.Value)
-            {
-                GameObject edge = GameObject.FindGameObjectWithTag("LaneSegment_" + edgeId);
-                foreach (Transform edgeNode in edge.GetComponentsInChildren<Transform>().ToList().FindAll(node => node.name.ToLower().Contains("node")))
-                {
-                    GameObject node = new GameObject("Node_" + nodeCounter);
-                    node.transform.position = edgeNode.position;
-                    nodeCounter++;
                 }
             }
         }
