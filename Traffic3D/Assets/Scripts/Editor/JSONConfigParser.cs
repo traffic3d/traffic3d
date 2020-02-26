@@ -85,6 +85,8 @@ public class JSONConfigParser
             return;
         }
         sumoManager.sumoControlSettings = config.sumoConfig.sumoControlSettings;
+        sumoManager.ip = config.sumoConfig.ip;
+        sumoManager.port = config.sumoConfig.port;
     }
 
     [System.Serializable]
@@ -97,6 +99,8 @@ public class JSONConfigParser
     [System.Serializable]
     public class SumoConfig
     {
+        public string ip;
+        public int port;
         public List<SumoManager.SumoLinkControlPointObject> sumoControlSettings;
     }
 

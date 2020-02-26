@@ -8,6 +8,8 @@ using UnityEngine;
 
 public class SumoManager : MonoBehaviour
 {
+    public string ip = "127.0.0.1";
+    public int port = 4001;
     public List<SumoLinkControlPointObject> sumoControlSettings = new List<SumoLinkControlPointObject>();
 
     private TraCIClient client;
@@ -21,7 +23,7 @@ public class SumoManager : MonoBehaviour
         ImportAndGenerate.parseXMLfiles(filePath);
         ImportAndGenerate.CreateStreetNetwork();
         client = new TraCIClient();
-        if (client.Connect("127.0.0.1", 4001))
+        if (client.Connect(ip, port))
         {
             Debug.Log("Connected to Sumo");
         }
@@ -43,7 +45,7 @@ public class SumoManager : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(1/60F);
+            yield return new WaitForSeconds(1 / 60F);
             client.Control.SimStep(0.0);
         }
     }
@@ -130,10 +132,7 @@ public class SumoManager : MonoBehaviour
         {
             return false;
         }
-        else
-        {
-            return true;
-        }
+        return true;
     }
 
     [System.Serializable]
