@@ -133,7 +133,7 @@ public class PythonManager : MonoBehaviour
         TrafficLightManager.GetInstance().SetAllToRed();
         Time.timeScale = 1;
         yield return new WaitForSeconds(10);
-        TrafficLightManager.GetInstance().SetTrafficLightToGreen(trafficLightId);
+        TrafficLightManager.GetInstance().SetTrafficLightToGreen(trafficLightId + "");
         yield return null;
     }
 

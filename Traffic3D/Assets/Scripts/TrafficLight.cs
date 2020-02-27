@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class TrafficLight : MonoBehaviour
 {
-    public int trafficLightId;
+    public string trafficLightId;
     public Material redMaterial;
     public Material amberMaterial;
     public Material greenMaterial;
@@ -62,7 +62,7 @@ public class TrafficLight : MonoBehaviour
     /// Returns the ID of the traffic light.
     /// </summary>
     /// <returns>The int ID of the traffic light.</returns>
-    public int GetTrafficLightId()
+    public string GetTrafficLightId()
     {
         return trafficLightId;
     }

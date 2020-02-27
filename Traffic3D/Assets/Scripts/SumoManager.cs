@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class SumoManager : MonoBehaviour
@@ -15,6 +16,8 @@ public class SumoManager : MonoBehaviour
     private TraCIClient client;
     private VehicleFactory vehicleFactory;
     private Dictionary<string, Rigidbody> renderedVehicles = new Dictionary<string, Rigidbody>();
+
+    private List<SumoTrafficLight> sumoTrafficLights = new List<SumoTrafficLight>();
 
     void Start()
     {
@@ -39,6 +42,24 @@ public class SumoManager : MonoBehaviour
         {
             StartCoroutine(RunTraffic3DTrafficFlow());
         }
+        if (IsControlledBySumo(SumoLinkControlPoint.TRAFFIC_LIGHTS))
+        {
+            TrafficLightManager.GetInstance().enabled = false;
+            TrafficLightManager.GetInstance().StopAllCoroutines();
+            foreach (string id in client.TrafficLight.GetIdList().Content)
+            {
+                List<string> controlledLanes = client.TrafficLight.GetControlledLanes(id).Content;
+                string currentState = client.TrafficLight.GetState(id).Content;
+                for (int i = 0; i > controlledLanes.Count; i++)
+                {
+                    TrafficLight trafficLight = TrafficLightManager.GetInstance().GetTrafficLights().First(t => t.gameObject.name.EndsWith(controlledLanes[i]));
+                    if (trafficLight != null)
+                    {
+                        sumoTrafficLights.Add(new SumoTrafficLight(trafficLight, id, i));
+                    }
+                }
+            }
+        }
     }
 
     IEnumerator Run()
@@ -46,7 +67,11 @@ public class SumoManager : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(1 / 60F);
-            client.Control.SimStep(0.0);
+            var task = Task.Run(() => client.Control.SimStep(0.0));
+            if (task.Wait(TimeSpan.FromSeconds(1)))
+                Debug.Log("Completed Step");
+            else
+                throw new Exception("Timed out");
         }
     }
 
@@ -69,6 +94,8 @@ public class SumoManager : MonoBehaviour
 
     void Update()
     {
+        /*
+        Debug.Log("Start Update");
         long start = DateTimeOffset.Now.ToUnixTimeMilliseconds();
         TraCIResponse<List<string>> vehicleIDs = client.Vehicle.GetIdList();
         foreach (string vehicleId in vehicleIDs.Content)
@@ -93,7 +120,13 @@ public class SumoManager : MonoBehaviour
         {
             DestroyRenderedVehicle(id);
         }
+        foreach (string id in client.TrafficLight.GetIdList().Content)
+        {
+            sumoTrafficLights.FindAll(t => t.junctionId.Equals(id)).ForEach(t => t.UpdateTrafficLight(client.TrafficLight.GetState(id).Content));
+        }
         long end = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+        Debug.Log("Update: " + (end - start));
+        */
     }
 
     public void DestroyRenderedVehicle(string id)

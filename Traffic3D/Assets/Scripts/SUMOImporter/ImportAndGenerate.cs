@@ -363,19 +363,22 @@ public class ImportAndGenerate
                     float xDest = (float)((1 - ratio) * x1 + ratio * x2);
                     float yDest = (float)((1 - ratio) * y1 + ratio * y2);
 
+                    string trafficLightId = j.id + "_" + l.id;
                     // Insert the 3d object, rotate from lane 90° to the right side and then orientate the traffic light towards the vehicles
                     GameObject trafficLightPrefab = Resources.Load<GameObject>("Models/TrafficLight");
                     GameObject trafficLight = GameObject.Instantiate(trafficLightPrefab, new Vector3(xDest, 0, yDest), Quaternion.Euler(new Vector3(0, 0, 0)));
-                    trafficLight.name = "TrafficLight_" + j.id;
+                    trafficLight.name = "TrafficLight_" + trafficLightId;
+                    trafficLight.GetComponentInChildren<TrafficLight>().trafficLightId = trafficLightId;
                     trafficLight.transform.SetParent(network.transform);
                     trafficLight.transform.RotateAround(new Vector3(x2, 0, y2), Vector3.up, -90.0f);
                     trafficLight.transform.Rotate(Vector3.up, -angle);
 
                     // Insert traffic light index as empty GameObject into traffic light
                     GameObject TLindex = new GameObject("index");
-                    GameObject TLindexVal = new GameObject(Convert.ToString(index++));
+                    GameObject TLindexVal = new GameObject(Convert.ToString(index));
                     TLindexVal.transform.SetParent(TLindex.transform);
                     TLindex.transform.SetParent(trafficLight.transform);
+                    index++;
                 }
             }
         }

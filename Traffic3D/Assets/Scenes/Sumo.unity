@@ -146,6 +146,8 @@ MonoBehaviour:
   sumoControlSettings:
   - sumoLinkControlPoint: 0
     controlledBySumo: 0
+  - sumoLinkControlPoint: 1
+    controlledBySumo: 1
 --- !u!4 &164648223
 Transform:
   m_ObjectHideFlags: 0

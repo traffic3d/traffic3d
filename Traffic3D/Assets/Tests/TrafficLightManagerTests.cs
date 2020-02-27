@@ -27,9 +27,9 @@ public class TrafficLightManagerTests : CommonSceneTest
         TrafficLightManager trafficLightManager = (TrafficLightManager)GameObject.FindObjectOfType(typeof(TrafficLightManager));
         foreach (int i in trafficLightManager.demoOrder)
         {
-            trafficLightManager.StartCoroutine(trafficLightManager.FireEvent(i));
+            trafficLightManager.StartCoroutine(trafficLightManager.FireEvent(i + ""));
             yield return new WaitForSeconds(6);
-            CheckTrafficLightIsGreen(i);
+            CheckTrafficLightIsGreen(i + "");
         }
         trafficLightManager.StopAllCoroutines();
     }
@@ -60,11 +60,11 @@ public class TrafficLightManagerTests : CommonSceneTest
 
     }
 
-    private void CheckTrafficLightIsGreen(int id)
+    private void CheckTrafficLightIsGreen(string id)
     {
         foreach (TrafficLight trafficLight in TrafficLightManager.GetInstance().GetTrafficLights())
         {
-            if (trafficLight.GetTrafficLightId() == id)
+            if (trafficLight.GetTrafficLightId().Equals(id))
             {
                 Assert.AreEqual(TrafficLight.LightColour.GREEN, trafficLight.GetCurrentLightColour());
             }

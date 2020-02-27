@@ -42,7 +42,7 @@ public class TrafficLightManager : MonoBehaviour
         {
             foreach (int i in demoOrder)
             {
-                yield return StartCoroutine(FireEvent(i));
+                yield return StartCoroutine(FireEvent(i + ""));
             }
         }
     }
@@ -57,7 +57,7 @@ public class TrafficLightManager : MonoBehaviour
     /// Sets all to red, waits 5 seconds then changes the colour of the inputted traffic light ID to green and waits.
     /// </summary>
     /// <param name="trafficLightId">The traffic light int ID which needs changing.</param>
-    public IEnumerator FireEvent(int trafficLightId)
+    public IEnumerator FireEvent(string trafficLightId)
     {
         SetAllToRed();
         yield return new WaitForSeconds(5);
@@ -95,25 +95,25 @@ public class TrafficLightManager : MonoBehaviour
     /// </summary>
     /// <param name="id">The ID of the traffic light needed.</param>
     /// <returns>The traffic light of the ID inputted.</returns>
-    public TrafficLight GetTrafficLight(int id)
+    public TrafficLight GetTrafficLight(string id)
     {
-        return trafficLights.ToList().Find(trafficLight => trafficLight.GetTrafficLightId() == id);
+        return trafficLights.ToList().Find(trafficLight => trafficLight.GetTrafficLightId().Equals(id));
     }
 
     /// <summary>
     /// Set the traffic light to green and set all others to red.
     /// </summary>
     /// <param name="id">The ID of the traffic light to turn green.</param>
-    public void SetTrafficLightToGreen(int id)
+    public void SetTrafficLightToGreen(string id)
     {
-        SetTrafficLightsToGreen(new List<int>() { id });
+        SetTrafficLightsToGreen(new List<string>() { id });
     }
 
     /// <summary>
     /// Set all specified traffic lights to green and set the rest to red.
     /// </summary>
     /// <param name="id">The ID of the traffic light to turn green.</param>
-    public void SetTrafficLightsToGreen(List<int> ids)
+    public void SetTrafficLightsToGreen(List<string> ids)
     {
         foreach (TrafficLight trafficLight in trafficLights)
         {

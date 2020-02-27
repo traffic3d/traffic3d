@@ -1164,7 +1164,7 @@ PrefabInstance:
     - target: {fileID: 6088276054575079565, guid: d75b5ede3ea82df4aa0d388eaa24dc33,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.06
+      value: 5.7799993
       objectReference: {fileID: 0}
     - target: {fileID: 6088276054575079565, guid: d75b5ede3ea82df4aa0d388eaa24dc33,
         type: 3}
@@ -1217,6 +1217,26 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 394095774}
     - target: {fileID: 6088276054575079564, guid: d75b5ede3ea82df4aa0d388eaa24dc33,
+        type: 3}
+      propertyPath: stopNodes.Array.data[1]
+      value: 
+      objectReference: {fileID: 516734298}
+    - target: {fileID: 2424833495961824150, guid: d75b5ede3ea82df4aa0d388eaa24dc33,
+        type: 3}
+      propertyPath: stopNodes.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424833495961824150, guid: d75b5ede3ea82df4aa0d388eaa24dc33,
+        type: 3}
+      propertyPath: trafficLightId
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424833495961824150, guid: d75b5ede3ea82df4aa0d388eaa24dc33,
+        type: 3}
+      propertyPath: stopNodes.Array.data[0]
+      value: 
+      objectReference: {fileID: 394095774}
+    - target: {fileID: 2424833495961824150, guid: d75b5ede3ea82df4aa0d388eaa24dc33,
         type: 3}
       propertyPath: stopNodes.Array.data[1]
       value: 
@@ -3380,7 +3400,7 @@ PrefabInstance:
     - target: {fileID: 3055922325406029001, guid: b7397aab7dc552145a55b866e27848d9,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.05
+      value: 5.769999
       objectReference: {fileID: 0}
     - target: {fileID: 3055922325406029001, guid: b7397aab7dc552145a55b866e27848d9,
         type: 3}
@@ -3433,6 +3453,26 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1927847033}
     - target: {fileID: 3055922325406029000, guid: b7397aab7dc552145a55b866e27848d9,
+        type: 3}
+      propertyPath: stopNodes.Array.data[1]
+      value: 
+      objectReference: {fileID: 1399231561}
+    - target: {fileID: 6896008075597062098, guid: b7397aab7dc552145a55b866e27848d9,
+        type: 3}
+      propertyPath: stopNodes.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6896008075597062098, guid: b7397aab7dc552145a55b866e27848d9,
+        type: 3}
+      propertyPath: trafficLightId
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6896008075597062098, guid: b7397aab7dc552145a55b866e27848d9,
+        type: 3}
+      propertyPath: stopNodes.Array.data[0]
+      value: 
+      objectReference: {fileID: 1927847033}
+    - target: {fileID: 6896008075597062098, guid: b7397aab7dc552145a55b866e27848d9,
         type: 3}
       propertyPath: stopNodes.Array.data[1]
       value: 
@@ -4773,7 +4813,7 @@ PrefabInstance:
     - target: {fileID: 9024846169820919362, guid: cc1a5b5ec2927254a9f42f7219bc5e15,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.050001
+      value: 5.77
       objectReference: {fileID: 0}
     - target: {fileID: 9024846169820919362, guid: cc1a5b5ec2927254a9f42f7219bc5e15,
         type: 3}
@@ -4826,6 +4866,26 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1905037846}
     - target: {fileID: 9024846169820919363, guid: cc1a5b5ec2927254a9f42f7219bc5e15,
+        type: 3}
+      propertyPath: stopNodes.Array.data[1]
+      value: 
+      objectReference: {fileID: 246082234}
+    - target: {fileID: 641175951598386521, guid: cc1a5b5ec2927254a9f42f7219bc5e15,
+        type: 3}
+      propertyPath: stopNodes.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 641175951598386521, guid: cc1a5b5ec2927254a9f42f7219bc5e15,
+        type: 3}
+      propertyPath: trafficLightId
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 641175951598386521, guid: cc1a5b5ec2927254a9f42f7219bc5e15,
+        type: 3}
+      propertyPath: stopNodes.Array.data[0]
+      value: 
+      objectReference: {fileID: 1905037846}
+    - target: {fileID: 641175951598386521, guid: cc1a5b5ec2927254a9f42f7219bc5e15,
         type: 3}
       propertyPath: stopNodes.Array.data[1]
       value: 
@@ -5426,7 +5486,7 @@ PrefabInstance:
     - target: {fileID: 8950408308118876602, guid: 9c7392d3017b12047b6179a5515f29f3,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.050001
+      value: 5.77
       objectReference: {fileID: 0}
     - target: {fileID: 8950408308118876602, guid: 9c7392d3017b12047b6179a5515f29f3,
         type: 3}
@@ -5479,6 +5539,26 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1178700731}
     - target: {fileID: 8950408308118876603, guid: 9c7392d3017b12047b6179a5515f29f3,
+        type: 3}
+      propertyPath: stopNodes.Array.data[1]
+      value: 
+      objectReference: {fileID: 447529915}
+    - target: {fileID: 715341200970906273, guid: 9c7392d3017b12047b6179a5515f29f3,
+        type: 3}
+      propertyPath: stopNodes.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 715341200970906273, guid: 9c7392d3017b12047b6179a5515f29f3,
+        type: 3}
+      propertyPath: trafficLightId
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 715341200970906273, guid: 9c7392d3017b12047b6179a5515f29f3,
+        type: 3}
+      propertyPath: stopNodes.Array.data[0]
+      value: 
+      objectReference: {fileID: 1178700731}
+    - target: {fileID: 715341200970906273, guid: 9c7392d3017b12047b6179a5515f29f3,
         type: 3}
       propertyPath: stopNodes.Array.data[1]
       value: 
