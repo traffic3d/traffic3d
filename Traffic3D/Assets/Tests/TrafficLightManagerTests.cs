@@ -27,7 +27,7 @@ public class TrafficLightManagerTests : CommonSceneTest
         TrafficLightManager trafficLightManager = (TrafficLightManager)GameObject.FindObjectOfType(typeof(TrafficLightManager));
         foreach (int i in trafficLightManager.demoOrder)
         {
-            trafficLightManager.StartCoroutine(trafficLightManager.FireEvent(i + ""));
+            trafficLightManager.StartCoroutine(trafficLightManager.FireEvent(i));
             yield return new WaitForSeconds(6);
             CheckTrafficLightIsGreen(i + "");
         }

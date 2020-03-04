@@ -50,35 +50,48 @@ public class SumoManager : MonoBehaviour
             this.enabled = false;
             return;
         }
+        FindObjectOfType<CameraManager>().frameRate = 60;
         StartCoroutine(Run());
         vehicleFactory.StopAllCoroutines();
         TrafficLightManager.GetInstance().RefreshTrafficLights();
+
+        // Traffic Flow
         if (!IsControlledBySumo(SumoLinkControlPoint.TRAFFIC_FLOW))
         {
             StartCoroutine(RunTraffic3DTrafficFlow());
         }
+
+        // Traffic Lights
+        List<string> trafficLightIds = client.TrafficLight.GetIdList().Content;
+        foreach (string id in trafficLightIds)
+        {
+            List<string> controlledLanes = client.TrafficLight.GetControlledLanes(id).Content;
+            string currentState = client.TrafficLight.GetState(id).Content;
+            for (int i = 0; i < controlledLanes.Count; i++)
+            {
+                TrafficLight trafficLight = TrafficLightManager.GetInstance().GetTrafficLight(controlledLanes[i]);
+                if (trafficLight != null)
+                {
+                    sumoTrafficLights.Add(new SumoTrafficLight(trafficLight, id, i));
+                }
+            }
+            // Remove all current traffic light programs in Sumo
+            if (!IsControlledBySumo(SumoLinkControlPoint.TRAFFIC_LIGHTS))
+            {
+                client.TrafficLight.SetRedYellowGreenState(id, new string('r', currentState.Length));
+                client.TrafficLight.SetPhaseDuration(id, Double.MaxValue);
+            }
+        }
         if (IsControlledBySumo(SumoLinkControlPoint.TRAFFIC_LIGHTS))
         {
             TrafficLightManager.GetInstance().StopAllCoroutines();
-            foreach (string id in client.TrafficLight.GetIdList().Content)
-            {
-                List<string> controlledLanes = client.TrafficLight.GetControlledLanes(id).Content;
-                string currentState = client.TrafficLight.GetState(id).Content;
-                for (int i = 0; i < controlledLanes.Count; i++)
-                {
-                    TrafficLight trafficLight = TrafficLightManager.GetInstance().GetTrafficLight(controlledLanes[i]);
-                    if (trafficLight != null)
-                    {
-                        sumoTrafficLights.Add(new SumoTrafficLight(trafficLight, id, i));
-                    }
-                }
-            }
             StartCoroutine(RunTrafficLights());
         }
         else
         {
             TrafficLightManager.GetInstance().trafficLightChangeEvent += ChangeSumoTrafficLights;
         }
+
     }
 
     IEnumerator Run()
@@ -118,9 +131,21 @@ public class SumoManager : MonoBehaviour
         }
     }
 
-    public void ChangeSumoTrafficLights(object sender, TrafficLight.TrafficLightChangeEventArgs e)
+    public void ChangeSumoTrafficLights(object sender, TrafficLight.TrafficLightChangeEventArgs trafficLightChangeEvent)
     {
-        // Todo: Change Lights on Sumo according to lights changed on Traffic3D
+        SumoTrafficLight sumoTrafficLight = sumoTrafficLights.Find(s => s.trafficLight.trafficLightId.Equals(trafficLightChangeEvent.trafficLight.trafficLightId));
+        if (sumoTrafficLight == null)
+        {
+            Debug.Log("Unable to find sumo traffic light: " + trafficLightChangeEvent.trafficLight.trafficLightId);
+            return;
+        }
+
+        Debug.Log(sumoTrafficLight.junctionId);
+        string currentState = client.TrafficLight.GetState(sumoTrafficLight.junctionId).Content;
+        Debug.Log(currentState);
+        string newState = sumoTrafficLight.GetStateFromTrafficLightColour(currentState);
+        Debug.Log(newState);
+        client.TrafficLight.SetRedYellowGreenState(sumoTrafficLight.junctionId, newState);
     }
 
     public bool IsConnected()

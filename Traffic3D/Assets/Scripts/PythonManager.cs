@@ -46,7 +46,7 @@ public class PythonManager : MonoBehaviour
         else
         {
             Debug.Log("Unable to connect to the Python Script. Running the demo instead.");
-            if (SumoManager.GetInstance() == null || !SumoManager.GetInstance().IsConnected())
+            if (SumoManager.GetInstance() == null || !SumoManager.GetInstance().IsConnected() || !SumoManager.GetInstance().IsControlledBySumo(SumoLinkControlPoint.TRAFFIC_LIGHTS))
             {
                 TrafficLightManager.GetInstance().RunDemo();
             }

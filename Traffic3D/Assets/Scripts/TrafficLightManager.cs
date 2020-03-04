@@ -46,7 +46,7 @@ public class TrafficLightManager : MonoBehaviour
         {
             foreach (int i in demoOrder)
             {
-                yield return StartCoroutine(FireEvent(i + ""));
+                yield return StartCoroutine(FireEvent(i));
             }
         }
     }
@@ -79,11 +79,23 @@ public class TrafficLightManager : MonoBehaviour
     /// Sets all to red, waits 5 seconds then changes the colour of the inputted traffic light ID to green and waits.
     /// </summary>
     /// <param name="trafficLightId">The traffic light int ID which needs changing.</param>
-    public IEnumerator FireEvent(string trafficLightId)
+    public IEnumerator FireEvent(int eventNumber)
     {
         SetAllToRed();
         yield return new WaitForSeconds(5);
-        SetTrafficLightToGreen(trafficLightId);
+        TrafficLight trafficLight = trafficLights.ToList().Find(t => t.trafficLightId.Equals(eventNumber + ""));
+        if(trafficLight == null)
+        {
+            if(eventNumber > trafficLights.Length)
+            {
+                trafficLight = trafficLights[eventNumber - 1];
+            }
+            else
+            {
+                trafficLight = trafficLights[Random.Range(0, trafficLights.Length)];
+            }
+        }
+        SetTrafficLightToGreen(trafficLight.trafficLightId);
         yield return new WaitForSeconds(19);
     }
 

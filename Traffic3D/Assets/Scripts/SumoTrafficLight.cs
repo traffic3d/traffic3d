@@ -20,6 +20,13 @@ public class SumoTrafficLight
         trafficLight.SetColour(GetLightColourFromStateString(state));
     }
 
+    public string GetStateFromTrafficLightColour(string currentState)
+    {
+        char[] charArray = currentState.ToCharArray();
+        charArray.SetValue(GetCharacterFromLightColour(trafficLight.GetCurrentLightColour()), stateIndex);
+        return new string(charArray);
+    }
+
     public TrafficLight.LightColour GetLightColourFromStateString(string state)
     {
         return GetLightColourFromCharacter(state.ToCharArray()[stateIndex]);
@@ -42,6 +49,26 @@ public class SumoTrafficLight
         else
         {
             return TrafficLight.LightColour.RED;
+        }
+    }
+
+    public char GetCharacterFromLightColour(TrafficLight.LightColour lightColour)
+    {
+        if (lightColour == TrafficLight.LightColour.RED)
+        {
+            return 'r';
+        }
+        else if (lightColour == TrafficLight.LightColour.AMBER)
+        {
+            return 'y';
+        }
+        else if (lightColour == TrafficLight.LightColour.GREEN)
+        {
+            return 'g';
+        }
+        else
+        {
+            return 'r';
         }
     }
 
