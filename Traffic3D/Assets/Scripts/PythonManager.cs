@@ -46,7 +46,10 @@ public class PythonManager : MonoBehaviour
         else
         {
             Debug.Log("Unable to connect to the Python Script. Running the demo instead.");
-            TrafficLightManager.GetInstance().RunDemo();
+            if (SumoManager.GetInstance() == null || !SumoManager.GetInstance().IsConnected())
+            {
+                TrafficLightManager.GetInstance().RunDemo();
+            }
         }
         densityLengthConstant = FindObjectsOfType<Path>().Select(path => path.GetDistanceUntilDensityMeasurePointInKM()).Sum();
         print(densityLengthConstant);

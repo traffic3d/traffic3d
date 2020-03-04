@@ -9,10 +9,23 @@ using UnityEngine;
 
 public class SumoManager : MonoBehaviour
 {
+    private static SumoManager instance;
+
+    public static SumoManager GetInstance()
+    {
+        return instance;
+    }
+
+    void Awake()
+    {
+        instance = this;
+    }
+
     public string ip = "127.0.0.1";
     public int port = 4001;
     public List<SumoLinkControlPointObject> sumoControlSettings = new List<SumoLinkControlPointObject>();
 
+    private bool connected = false;
     private TraCIClient client;
     private VehicleFactory vehicleFactory;
     private Dictionary<string, Rigidbody> renderedVehicles = new Dictionary<string, Rigidbody>();
@@ -29,6 +42,7 @@ public class SumoManager : MonoBehaviour
         if (client.Connect(ip, port))
         {
             Debug.Log("Connected to Sumo");
+            connected = true;
         }
         else
         {
@@ -38,27 +52,32 @@ public class SumoManager : MonoBehaviour
         }
         StartCoroutine(Run());
         vehicleFactory.StopAllCoroutines();
+        TrafficLightManager.GetInstance().RefreshTrafficLights();
         if (!IsControlledBySumo(SumoLinkControlPoint.TRAFFIC_FLOW))
         {
             StartCoroutine(RunTraffic3DTrafficFlow());
         }
         if (IsControlledBySumo(SumoLinkControlPoint.TRAFFIC_LIGHTS))
         {
-            TrafficLightManager.GetInstance().enabled = false;
             TrafficLightManager.GetInstance().StopAllCoroutines();
             foreach (string id in client.TrafficLight.GetIdList().Content)
             {
                 List<string> controlledLanes = client.TrafficLight.GetControlledLanes(id).Content;
                 string currentState = client.TrafficLight.GetState(id).Content;
-                for (int i = 0; i > controlledLanes.Count; i++)
+                for (int i = 0; i < controlledLanes.Count; i++)
                 {
-                    TrafficLight trafficLight = TrafficLightManager.GetInstance().GetTrafficLights().First(t => t.gameObject.name.EndsWith(controlledLanes[i]));
+                    TrafficLight trafficLight = TrafficLightManager.GetInstance().GetTrafficLight(controlledLanes[i]);
                     if (trafficLight != null)
                     {
                         sumoTrafficLights.Add(new SumoTrafficLight(trafficLight, id, i));
                     }
                 }
             }
+            StartCoroutine(RunTrafficLights());
+        }
+        else
+        {
+            TrafficLightManager.GetInstance().trafficLightChangeEvent += ChangeSumoTrafficLights;
         }
     }
 
@@ -68,10 +87,10 @@ public class SumoManager : MonoBehaviour
         {
             yield return new WaitForSeconds(1 / 60F);
             var task = Task.Run(() => client.Control.SimStep(0.0));
-            if (task.Wait(TimeSpan.FromSeconds(1)))
-                Debug.Log("Completed Step");
-            else
-                throw new Exception("Timed out");
+            if (!task.Wait(TimeSpan.FromSeconds(5)))
+            {
+                throw new Exception("Sumo Timed out");
+            }
         }
     }
 
@@ -87,6 +106,28 @@ public class SumoManager : MonoBehaviour
         }
     }
 
+    IEnumerator RunTrafficLights()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(0.1F);
+            foreach (string id in client.TrafficLight.GetIdList().Content)
+            {
+                sumoTrafficLights.FindAll(t => t.junctionId.Equals(id)).ForEach(t => t.UpdateTrafficLight(client.TrafficLight.GetState(id).Content));
+            }
+        }
+    }
+
+    public void ChangeSumoTrafficLights(object sender, TrafficLight.TrafficLightChangeEventArgs e)
+    {
+        // Todo: Change Lights on Sumo according to lights changed on Traffic3D
+    }
+
+    public bool IsConnected()
+    {
+        return connected;
+    }
+
     public void AddVehicle()
     {
         client.Vehicle.Add(Guid.NewGuid().ToString(), "DEFAULT_VEHTYPE", GetRandomSumoRoute(), 0, 0, 0, 0);
@@ -94,9 +135,6 @@ public class SumoManager : MonoBehaviour
 
     void Update()
     {
-        /*
-        Debug.Log("Start Update");
-        long start = DateTimeOffset.Now.ToUnixTimeMilliseconds();
         TraCIResponse<List<string>> vehicleIDs = client.Vehicle.GetIdList();
         foreach (string vehicleId in vehicleIDs.Content)
         {
@@ -120,13 +158,6 @@ public class SumoManager : MonoBehaviour
         {
             DestroyRenderedVehicle(id);
         }
-        foreach (string id in client.TrafficLight.GetIdList().Content)
-        {
-            sumoTrafficLights.FindAll(t => t.junctionId.Equals(id)).ForEach(t => t.UpdateTrafficLight(client.TrafficLight.GetState(id).Content));
-        }
-        long end = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-        Debug.Log("Update: " + (end - start));
-        */
     }
 
     public void DestroyRenderedVehicle(string id)

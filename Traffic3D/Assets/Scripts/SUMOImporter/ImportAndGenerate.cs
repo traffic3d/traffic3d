@@ -363,7 +363,7 @@ public class ImportAndGenerate
                     float xDest = (float)((1 - ratio) * x1 + ratio * x2);
                     float yDest = (float)((1 - ratio) * y1 + ratio * y2);
 
-                    string trafficLightId = j.id + "_" + l.id;
+                    string trafficLightId = l.id;
                     // Insert the 3d object, rotate from lane 90° to the right side and then orientate the traffic light towards the vehicles
                     GameObject trafficLightPrefab = Resources.Load<GameObject>("Models/TrafficLight");
                     GameObject trafficLight = GameObject.Instantiate(trafficLightPrefab, new Vector3(xDest, 0, yDest), Quaternion.Euler(new Vector3(0, 0, 0)));

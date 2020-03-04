@@ -14,12 +14,16 @@ public class TrafficLightManager : MonoBehaviour
 
     void Awake()
     {
-        trafficLights = GameObject.FindObjectsOfType<TrafficLight>();
+        RefreshTrafficLights();
         instance = this;
     }
 
     public TrafficLight[] trafficLights;
     public int[] demoOrder;
+
+    public event TrafficLightChangeEvent trafficLightChangeEvent;
+
+    public delegate void TrafficLightChangeEvent(object sender, TrafficLight.TrafficLightChangeEventArgs e);
 
     void Start()
     {
@@ -44,6 +48,24 @@ public class TrafficLightManager : MonoBehaviour
             {
                 yield return StartCoroutine(FireEvent(i + ""));
             }
+        }
+    }
+
+    public void RefreshTrafficLights()
+    {
+        trafficLights = GameObject.FindObjectsOfType<TrafficLight>();
+        foreach (TrafficLight trafficLight in trafficLights)
+        {
+            trafficLight.trafficLightChangeEvent -= TrafficLightChange;
+            trafficLight.trafficLightChangeEvent += TrafficLightChange;
+        }
+    }
+
+    private void TrafficLightChange(object sender, TrafficLight.TrafficLightChangeEventArgs e)
+    {
+        if (trafficLightChangeEvent != null)
+        {
+            trafficLightChangeEvent.Invoke(sender, e);
         }
     }
 
@@ -135,4 +157,5 @@ public class TrafficLightManager : MonoBehaviour
     {
         trafficLights.ToList().ForEach(trafficLight => trafficLight.SetColour(TrafficLight.LightColour.RED));
     }
+
 }
