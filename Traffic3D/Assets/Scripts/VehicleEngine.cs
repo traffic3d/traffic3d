@@ -147,6 +147,7 @@ public class VehicleEngine : MonoBehaviour
         PythonManager.GetInstance().speedList.Add(speed);
         Destroy(this.gameObject);
         PythonManager.GetInstance().IncrementRewardCount();
+        System.IO.File.AppendAllText(System.IO.Path.Combine("Assets", "Results", "VehicleTimes.csv"), time.ToString() + ",");
     }
 
     /// <summary>

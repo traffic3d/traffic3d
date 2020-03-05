@@ -46,6 +46,7 @@ Traffic3D/fourways/four/[Aa]ssets/Plugins/Editor/JetBrains*
 
 # Traffic3D specific
 *.csv
+*.csv.meta
 
 # Visual Studio cache directory
 .vs/
