@@ -72,7 +72,15 @@ public class SumoManager : MonoBehaviour
                 TrafficLight trafficLight = TrafficLightManager.GetInstance().GetTrafficLight(controlledLanes[i]);
                 if (trafficLight != null)
                 {
-                    sumoTrafficLights.Add(new SumoTrafficLight(trafficLight, id, i));
+                    SumoTrafficLight sumoTrafficLight = sumoTrafficLights.Find(s => s.trafficLight.trafficLightId.Equals(trafficLight.trafficLightId));
+                    if (sumoTrafficLight == null)
+                    {
+                        sumoTrafficLights.Add(new SumoTrafficLight(trafficLight, id, new HashSet<int>() { i }));
+                    }
+                    else
+                    {
+                        sumoTrafficLight.AddIndexState(i);
+                    }
                 }
             }
             // Remove all current traffic light programs in Sumo
@@ -139,12 +147,8 @@ public class SumoManager : MonoBehaviour
             Debug.Log("Unable to find sumo traffic light: " + trafficLightChangeEvent.trafficLight.trafficLightId);
             return;
         }
-
-        Debug.Log(sumoTrafficLight.junctionId);
         string currentState = client.TrafficLight.GetState(sumoTrafficLight.junctionId).Content;
-        Debug.Log(currentState);
         string newState = sumoTrafficLight.GetStateFromTrafficLightColour(currentState);
-        Debug.Log(newState);
         client.TrafficLight.SetRedYellowGreenState(sumoTrafficLight.junctionId, newState);
     }
 

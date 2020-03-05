@@ -1,7 +1,8 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.TestTools;
+using System.Linq;
 
 [Category("Tests")]
 public class TrafficLightManagerTests : CommonSceneTest
@@ -29,7 +30,7 @@ public class TrafficLightManagerTests : CommonSceneTest
         {
             trafficLightManager.StartCoroutine(trafficLightManager.FireEvent(i));
             yield return new WaitForSeconds(6);
-            CheckTrafficLightIsGreen(i + "");
+            CheckTrafficLightIsGreen(trafficLightManager.trafficLights[i].trafficLightId);
         }
         trafficLightManager.StopAllCoroutines();
     }

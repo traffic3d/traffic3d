@@ -27,7 +27,7 @@ public class TrafficLightManager : MonoBehaviour
 
     void Start()
     {
-        demoOrder = new int[4] { 1, 3, 2, 4 };
+        demoOrder = new int[4] { 0, 1, 2, 3 };
     }
 
     /// <summary>
@@ -83,19 +83,7 @@ public class TrafficLightManager : MonoBehaviour
     {
         SetAllToRed();
         yield return new WaitForSeconds(5);
-        TrafficLight trafficLight = trafficLights.ToList().Find(t => t.trafficLightId.Equals(eventNumber + ""));
-        if(trafficLight == null)
-        {
-            if(eventNumber > trafficLights.Length)
-            {
-                trafficLight = trafficLights[eventNumber - 1];
-            }
-            else
-            {
-                trafficLight = trafficLights[Random.Range(0, trafficLights.Length)];
-            }
-        }
-        SetTrafficLightToGreen(trafficLight.trafficLightId);
+        SetTrafficLightsToGreen(trafficLights.Where((x, i) => i % demoOrder.Length == eventNumber).Select(t => t.trafficLightId).ToList());
         yield return new WaitForSeconds(19);
     }
 

@@ -1,18 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 public class SumoTrafficLight
 {
     public TrafficLight trafficLight;
     public string junctionId;
-    public int stateIndex;
+    public HashSet<int> stateIndexes;
 
-    public SumoTrafficLight(TrafficLight trafficLight, string junctionId, int stateIndex)
+    public SumoTrafficLight(TrafficLight trafficLight, string junctionId, HashSet<int> stateIndexes)
     {
         this.trafficLight = trafficLight;
         this.junctionId = junctionId;
-        this.stateIndex = stateIndex;
+        this.stateIndexes = stateIndexes;
     }
 
     public void UpdateTrafficLight(string state)
@@ -23,13 +22,29 @@ public class SumoTrafficLight
     public string GetStateFromTrafficLightColour(string currentState)
     {
         char[] charArray = currentState.ToCharArray();
-        charArray.SetValue(GetCharacterFromLightColour(trafficLight.GetCurrentLightColour()), stateIndex);
+        char value = GetCharacterFromLightColour(trafficLight.GetCurrentLightColour());
+        foreach(int stateIndex in stateIndexes)
+        {
+            charArray.SetValue(value, stateIndex);
+        }
         return new string(charArray);
     }
 
     public TrafficLight.LightColour GetLightColourFromStateString(string state)
     {
-        return GetLightColourFromCharacter(state.ToCharArray()[stateIndex]);
+        char[] charArray = state.ToCharArray();
+        char mostCommonChar = stateIndexes.Select(index => charArray[index]).GroupBy(x => x).OrderByDescending(x => x.Count()).First().Key;
+        return GetLightColourFromCharacter(mostCommonChar);
+    }
+
+    public HashSet<int> GetIndexStates()
+    {
+        return stateIndexes;
+    }
+
+    public void AddIndexState(int i)
+    {
+        stateIndexes.Add(i);
     }
 
     public TrafficLight.LightColour GetLightColourFromCharacter(char character)
