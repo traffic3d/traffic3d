@@ -11,6 +11,7 @@ cache:
 
 stages:
   - prepare
+  - lint
   - test
   - build
   - benchmark
@@ -36,6 +37,18 @@ meta-build-image:
 .unity_before_script: &unity_before_script
   before_script:
     - chmod +x ./ci/before_script.sh && ./ci/before_script.sh
+
+lint:
+  stage: lint
+  image: ruby:2.5
+  before_script:
+    - gem install mdl
+  script:
+    - git ls-files -z '*.md' | xargs -0 mdl --style .mdl.rb
+  except:
+    - master
+  tags:
+    - shared
 
 .test: &test
   image: registry.gitlab.com/traffic3d/traffic3d/buildimage

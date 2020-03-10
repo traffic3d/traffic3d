@@ -16,6 +16,35 @@ git clone git@gitlab.com:traffic3d/traffic3d.git
 cd traffic3d
 ```
 
+## Documentation
+
+All documents should be in [Markdown format](https://about.gitlab.com/handbook/product/technical-writing/markdown-guide/) in a directory called `docs`.
+Images should go in a `figures` subdirectory.
+
+All Markdown documents should follow the rule of **one sentence per line** (i.e. a line break should follow every full stop).
+This makes it *much* easier to view `git diff`s and review merge requests.
+
+### Ensuring that your Markdown syntax is valid
+
+To make sure that your Markdown is valid, please use [the mdl Markdown lint](https://github.com/markdownlint/markdownlint).
+
+To install the lint on Debian-like machines, use the [Rubygems](https://rubygems.org/) package manager:
+
+```sh
+sudo apt-get install gem
+sudo gem install mdl
+```
+
+Because we keep each sentence on a separate line, you will want to suppress spurious `MD013 Line length` reports by configuring `mdl`.
+The file [.mdl.rb](/.mdl.rb) contains styles that deal with `MD013` and other tweaks we want to make to the lint.
+To use the style configuration, pass it as a parameter to `mdl` on the command line:
+
+```sh
+mdl -s .mdl.rb DOCUMENT.md
+```
+
+If you want to run `mdl` from your IDE or editor, you will either need to configure it, or find a plugin, such as [this one for Sublime Text](https://github.com/SublimeLinter/SublimeLinter-mdl).
+
 ## Installation and set-up
 
 The project runs on Unity 2018.3.11f1 and up.
