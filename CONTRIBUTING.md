@@ -24,6 +24,13 @@ Or download Unity 2018.3.11f1 from the following link: [https://unity3d.com/get-
 
 Use a preferred C# IDE or download Visual Studio using the following link: [https://visualstudio.microsoft.com/vs/](https://visualstudio.microsoft.com/vs/)
 
+## Density Measurements
+
+On new scenes, the density measure points need setting up to allow for correct density per km calculations.
+To set these points up, on the paths, 
+select the node that needs to be used as the density measure point (normally just after exiting a junction) and add the `DensityMeasurePoint.cs` script to the node.
+Then add a `BoxCollider` to the node, check `Is Trigger` and resize where vehicles on that path will pass through the box.
+
 ## Further documentation
 
 Detailed documentation, including how to use the Unity editor, how to extend Traffic3D with new assets and scenes, can be found in the [Traffic3D documentation](https://traffic3d.org).
