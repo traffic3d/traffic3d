@@ -2,7 +2,6 @@ using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.TestTools;
-using System.Linq;
 
 [Category("Tests")]
 public class TrafficLightManagerTests : CommonSceneTest
@@ -22,15 +21,18 @@ public class TrafficLightManagerTests : CommonSceneTest
     }
 
     [UnityTest]
-    public IEnumerator TrafficLightFireEventTest()
+    public IEnumerator TrafficLightFireNextEventTest()
     {
         DisableLoops();
         TrafficLightManager trafficLightManager = (TrafficLightManager)GameObject.FindObjectOfType(typeof(TrafficLightManager));
-        foreach (int i in trafficLightManager.demoOrder)
+        for (int i = 0; i < 4; i++)
         {
-            trafficLightManager.StartCoroutine(trafficLightManager.FireEvent(i));
+            trafficLightManager.StartCoroutine(trafficLightManager.FireNextEvent());
             yield return new WaitForSeconds(6);
-            CheckTrafficLightIsGreen(trafficLightManager.trafficLights[i].trafficLightId);
+            foreach (Junction junction in trafficLightManager.GetJunctions())
+            {
+                Assert.AreEqual(i + 1, junction.GetCurrentState());
+            }
         }
         trafficLightManager.StopAllCoroutines();
     }

@@ -330,6 +330,8 @@ public class ImportAndGenerate
             // Set up game object with mesh;
             GameObject junction3D = new GameObject("junction_" + junctionCounter++);
             MeshRenderer r = (MeshRenderer)junction3D.AddComponent(typeof(MeshRenderer));
+            Junction junction = junction3D.AddComponent<Junction>();
+            junction.junctionId = j.id;
             Material material = Resources.Load<Material>("Materials/sidewalk");
             r.material = material;
             MeshFilter filter = junction3D.AddComponent(typeof(MeshFilter)) as MeshFilter;

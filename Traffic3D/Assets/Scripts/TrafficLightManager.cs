@@ -14,21 +14,16 @@ public class TrafficLightManager : MonoBehaviour
 
     void Awake()
     {
-        RefreshTrafficLights();
+        RefreshTrafficLightsAndJunctions();
         instance = this;
     }
 
     public TrafficLight[] trafficLights;
-    public int[] demoOrder;
+    public Junction[] junctions;
 
     public event TrafficLightChangeEvent trafficLightChangeEvent;
 
     public delegate void TrafficLightChangeEvent(object sender, TrafficLight.TrafficLightChangeEventArgs e);
-
-    void Start()
-    {
-        demoOrder = new int[4] { 0, 1, 2, 3 };
-    }
 
     /// <summary>
     /// Run the demo for the traffic lights which just changes four traffic lights in order using the demoOrder int array. 
@@ -44,14 +39,11 @@ public class TrafficLightManager : MonoBehaviour
         yield return StartCoroutine(FirstEvent());
         while (true)
         {
-            foreach (int i in demoOrder)
-            {
-                yield return StartCoroutine(FireEvent(i));
-            }
+            yield return StartCoroutine(FireNextEvent());
         }
     }
 
-    public void RefreshTrafficLights()
+    public void RefreshTrafficLightsAndJunctions()
     {
         trafficLights = GameObject.FindObjectsOfType<TrafficLight>();
         foreach (TrafficLight trafficLight in trafficLights)
@@ -59,6 +51,7 @@ public class TrafficLightManager : MonoBehaviour
             trafficLight.trafficLightChangeEvent -= TrafficLightChange;
             trafficLight.trafficLightChangeEvent += TrafficLightChange;
         }
+        junctions = GameObject.FindObjectsOfType<Junction>();
     }
 
     private void TrafficLightChange(object sender, TrafficLight.TrafficLightChangeEventArgs e)
@@ -78,18 +71,30 @@ public class TrafficLightManager : MonoBehaviour
     /// <summary>
     /// Sets all to red, waits 5 seconds then changes the colour of the inputted traffic light ID to green and waits.
     /// </summary>
-    /// <param name="trafficLightId">The traffic light int ID which needs changing.</param>
-    public IEnumerator FireEvent(int eventNumber)
+    public IEnumerator FireNextEvent()
     {
         SetAllToRed();
         yield return new WaitForSeconds(5);
-        SetTrafficLightsToGreen(trafficLights.Where((x, i) => i % demoOrder.Length == eventNumber).Select(t => t.trafficLightId).ToList());
+        foreach(Junction junction in junctions)
+        {
+            junction.SetNextJunctionState();
+        }
         yield return new WaitForSeconds(19);
     }
 
     public TrafficLight[] GetTrafficLights()
     {
         return trafficLights;
+    }
+
+    public Junction[] GetJunctions()
+    {
+        return junctions;
+    }
+
+    public Junction GetJunction(string id)
+    {
+        return junctions.ToList().Find(junction => junction.GetJunctionId().Equals(id));
     }
 
     /// <summary>

@@ -107,7 +107,7 @@ class PG(nn.Module):
         self.bn3 = nn.BatchNorm2d(32)
         self.conv4 = nn.Conv2d(32, 64, kernel_size=5, stride=2)
         self.bn4 = nn.BatchNorm2d(64)
-        self.head = nn.Linear(576, 2)
+        self.head = nn.Linear(576, 4)
 
         self.saved_log_probs = []
         self.basic_rewards = []
