@@ -25,6 +25,7 @@ public class VehicleEngine : MonoBehaviour
     public Vector3 startPos;
     public float nodeReadingOffset;
     public EngineStatus engineStatus;
+    public bool densityCountTriggered = false;
 
     void Start()
     {
@@ -139,7 +140,11 @@ public class VehicleEngine : MonoBehaviour
     /// </summary>
     private void Destroy()
     {
-        PythonManager.GetInstance().IncrementDensityCount();
+        if (!densityCountTriggered)
+        {
+            densityCountTriggered = true;
+            PythonManager.GetInstance().IncrementDensityCount();
+        }
         Vector3 endPos = transform.position;
         double distance = Vector3.Distance(startPos, endPos);
         double time = (Time.time - startTime);

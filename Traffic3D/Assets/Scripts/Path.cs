@@ -12,6 +12,28 @@ public class Path : MonoBehaviour
         SetNodes();
     }
 
+    public double GetDistanceUntilDensityMeasurePointInKM()
+    {
+        double distance = 0;
+        for (int i = 0; i < nodes.Count(); i++)
+        {
+            if (i == 0)
+            {
+                if (nodes[i].GetComponent<DensityMeasurePoint>() != null)
+                {
+                    break;
+                }
+                continue;
+            }
+            distance += Vector3.Distance(nodes[i - 1].position, nodes[i].position);
+            if (nodes[i].GetComponent<DensityMeasurePoint>() != null)
+            {
+                break;
+            }
+        }
+        return distance / 1000.0;
+    }
+
     /// <summary>
     /// Sets the nodes of the path using the child game objects.
     /// </summary>
