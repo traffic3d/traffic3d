@@ -27,8 +27,7 @@ Use a preferred C# IDE or download Visual Studio using the following link: [http
 ## Density Measurements
 
 On new scenes, the density measure points need setting up to allow for correct density per km calculations.
-To set these points up, on the paths, 
-select the node that needs to be used as the density measure point (normally just after exiting a junction) and add the `DensityMeasurePoint.cs` script to the node.
+To set these points up, on the paths, select the node that needs to be used as the density measure point (normally just after exiting a junction) and add the `DensityMeasurePoint.cs` script to the node.
 Then add a `BoxCollider` to the node, check `Is Trigger` and resize where vehicles on that path will pass through the box.
 
 ## Further documentation
