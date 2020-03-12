@@ -74,11 +74,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2580143106212169527, guid: 3be469bd7c3062e4db0d6de7a1b55b72,
         type: 3}
-      propertyPath: trafficLightId
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2580143106212169527, guid: 3be469bd7c3062e4db0d6de7a1b55b72,
-        type: 3}
       propertyPath: stopNodes.Array.data[0]
       value: 
       objectReference: {fileID: 0}
@@ -86,6 +81,11 @@ PrefabInstance:
         type: 3}
       propertyPath: stopNodes.Array.data[1]
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2580143106212169527, guid: 3be469bd7c3062e4db0d6de7a1b55b72,
+        type: 3}
+      propertyPath: trafficLightId
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3be469bd7c3062e4db0d6de7a1b55b72, type: 3}

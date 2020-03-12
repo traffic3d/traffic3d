@@ -21,6 +21,7 @@ public class PythonManager : MonoBehaviour
     private Camera camera;
     private bool hasScreenshot = false;
     private string screenshotPath;
+    private double densityLengthConstant;
     public int shotCount = 0;
     public int rewardCount = 0;
     public int densityCount;
@@ -47,6 +48,8 @@ public class PythonManager : MonoBehaviour
             Debug.Log("Unable to connect to the Python Script. Running the demo instead.");
             TrafficLightManager.GetInstance().RunDemo();
         }
+        densityLengthConstant = FindObjectsOfType<Path>().Select(path => path.GetDistanceUntilDensityMeasurePointInKM()).Sum();
+        print(densityLengthConstant);
     }
 
     /// <summary>
@@ -140,7 +143,7 @@ public class PythonManager : MonoBehaviour
     public IEnumerator CalculateDensity()
     {
         Time.timeScale = 0;
-        double densityPerkm = (densityCount / 34.0);
+        double densityPerkm = (densityCount / densityLengthConstant);
         Utils.AppendAllTextToResults("DensityPerKm.csv", densityPerkm.ToString() + ",");
         double averageSpeed = (speedList.Sum() / (densityCount));
         double flow = (densityPerkm * averageSpeed);
