@@ -7,7 +7,12 @@ public class Junction : MonoBehaviour
     public int currentState;
     public JunctionState[] junctionStates;
 
-    private void Awake()
+    private void Start()
+    {
+        RefreshJunctionStates();
+    }
+
+    public void RefreshJunctionStates()
     {
         junctionStates = GetComponentsInChildren<JunctionState>();
     }
@@ -40,7 +45,11 @@ public class Junction : MonoBehaviour
     {
         if (junctionStates.Length == 0)
         {
-            return;
+            RefreshJunctionStates();
+            if (junctionStates.Length == 0)
+            {
+                return;
+            }
         }
         JunctionState junctionState = GetJunctionState(currentState + 1);
         if (junctionState != null)

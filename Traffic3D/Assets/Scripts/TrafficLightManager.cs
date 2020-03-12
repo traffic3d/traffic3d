@@ -75,10 +75,7 @@ public class TrafficLightManager : MonoBehaviour
     {
         SetAllToRed();
         yield return new WaitForSeconds(5);
-        foreach(Junction junction in junctions)
-        {
-            junction.SetNextJunctionState();
-        }
+        junctions.ToList().ForEach(junction => junction.SetNextJunctionState());
         yield return new WaitForSeconds(19);
     }
 
