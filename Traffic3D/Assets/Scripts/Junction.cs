@@ -58,12 +58,17 @@ public class Junction : MonoBehaviour
         }
         else
         {
-            SetJunctionState(junctionStates[0]);
+            SetJunctionState(GetFirstJunctionState());
         }
     }
 
     public JunctionState GetJunctionState(int stateNumber)
     {
         return junctionStates.ToList().Find(junctionState => junctionState.GetStateNumber() == stateNumber);
+    }
+
+    public JunctionState GetFirstJunctionState()
+    {
+        return GetJunctionState(junctionStates.ToList().Min(junctionState => junctionState.GetStateNumber()));
     }
 }

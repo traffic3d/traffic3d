@@ -100,6 +100,17 @@ public class SumoManager : MonoBehaviour
             TrafficLightManager.GetInstance().trafficLightChangeEvent += ChangeSumoTrafficLights;
             foreach (string junctionId in junctionIds)
             {
+                /* Looking into automatic building of junction states based on Sumo
+                TrafficCompleteLightProgram program = client.TrafficLight.GetCompleteDefinition(junctionId).Content;
+                foreach (TrafficLightLogics trafficLightLogics in program.TrafficLightLogics)
+                {
+                    print(DateTimeOffset.Now.ToUnixTimeMilliseconds() + " - " + trafficLightLogics.SubId + " - " + trafficLightLogics.SubParameter.Value);
+                    foreach (TrafficLightProgramPhase trafficLightProgramPhase in trafficLightLogics.TrafficLightPhases)
+                    {
+                        print(DateTimeOffset.Now.ToUnixTimeMilliseconds() + " - " + trafficLightProgramPhase.Definition);
+                    }
+                }
+                */
                 List<SumoTrafficLight> sumoTrafficLightsForJunction = sumoTrafficLights.FindAll(sumoTrafficLight => sumoTrafficLight.junctionId.Equals(junctionId));
                 Junction junction = FindObjectsOfType<Junction>().ToList().Find(j => j.junctionId.Equals(junctionId));
                 if (junction == null)
