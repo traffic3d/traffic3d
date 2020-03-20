@@ -3,6 +3,7 @@ import socket
 import cv2
 import os
 import tempfile
+import json
 from datetime import datetime
 
 class ModelGenerator(ABC):
@@ -38,14 +39,16 @@ class ModelGenerator(ABC):
         action_bytes = bytes(str(data_to_send), "ascii")
         self.client_socket.send(action_bytes)
 
-    def receive_image(self):
+    def receive_images(self):
         data_string = (self.get_data().decode('utf-8'))
         print(data_string)
-        img_path = os.path.join(self.images_path, data_string)
-        img = cv2.imread(img_path)
-        if img is None:
-            raise Exception("Image cannot be found, image path may be incorrect.")
-        return img
+        screenshots = json.loads(data_string)
+        screenshots = screenshots["screenshots"]
+        imgs = {}
+        for item in screenshots:
+            img_path = os.path.join(self.images_path, item["screenshotPath"])
+            imgs[item["junctionId"]] = cv2.imread(img_path)
+        return imgs
 
     def send_action(self, action):
         self.send_data(action)

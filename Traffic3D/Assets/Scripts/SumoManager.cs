@@ -98,45 +98,33 @@ public class SumoManager : MonoBehaviour
         else
         {
             TrafficLightManager.GetInstance().trafficLightChangeEvent += ChangeSumoTrafficLights;
-            foreach (string junctionId in junctionIds)
-            {
-                /* Looking into automatic building of junction states based on Sumo
-                TrafficCompleteLightProgram program = client.TrafficLight.GetCompleteDefinition(junctionId).Content;
-                foreach (TrafficLightLogics trafficLightLogics in program.TrafficLightLogics)
-                {
-                    print(DateTimeOffset.Now.ToUnixTimeMilliseconds() + " - " + trafficLightLogics.SubId + " - " + trafficLightLogics.SubParameter.Value);
-                    foreach (TrafficLightProgramPhase trafficLightProgramPhase in trafficLightLogics.TrafficLightPhases)
-                    {
-                        print(DateTimeOffset.Now.ToUnixTimeMilliseconds() + " - " + trafficLightProgramPhase.Definition);
-                    }
-                }
-                */
-                List<SumoTrafficLight> sumoTrafficLightsForJunction = sumoTrafficLights.FindAll(sumoTrafficLight => sumoTrafficLight.junctionId.Equals(junctionId));
-                Junction junction = FindObjectsOfType<Junction>().ToList().Find(j => j.junctionId.Equals(junctionId));
-                if (junction == null)
-                {
-                    continue;
-                }
-                int stateCounter = 0;
-                foreach (SumoTrafficLight sumoTrafficLightMain in sumoTrafficLightsForJunction)
-                {
-                    stateCounter++;
-                    GameObject stateObject = new GameObject("State" + stateCounter);
-                    stateObject.transform.SetParent(junction.gameObject.transform);
-                    JunctionState junctionState = stateObject.AddComponent<JunctionState>();
-                    junctionState.stateNumber = stateCounter;
-                    int trafficLightStateCounter = 0;
-                    junctionState.states = new JunctionState.TrafficLightState[sumoTrafficLightsForJunction.Count()];
-                    foreach (SumoTrafficLight sumoTrafficLight in sumoTrafficLightsForJunction)
-                    {
-                        junctionState.states[trafficLightStateCounter] = new JunctionState.TrafficLightState(sumoTrafficLight.trafficLight.trafficLightId, (sumoTrafficLightMain == sumoTrafficLight ? TrafficLight.LightColour.GREEN : TrafficLight.LightColour.RED));
-                        trafficLightStateCounter++;
-                    }
-                }
-            }
-            foreach (SumoTrafficLight sumoTrafficLight in sumoTrafficLights)
-            {
 
+            foreach (tlLogicType tlLogicType in ImportAndGenerate.trafficLightPrograms.Values)
+            {
+                int stateCounter = 0;
+                Junction junction = FindObjectsOfType<Junction>().ToList().Find(j => j.junctionId.Equals(tlLogicType.id));
+                List<SumoTrafficLight> sumoTrafficLightsForJunction = sumoTrafficLights.FindAll(sumoTrafficLight => sumoTrafficLight.junctionId.Equals(tlLogicType.id));
+                foreach (object obj in tlLogicType.Items)
+                {
+                    if (obj is phaseType)
+                    {
+                        stateCounter++;
+                        GameObject stateObject = new GameObject("State" + stateCounter);
+                        stateObject.transform.SetParent(junction.gameObject.transform);
+                        JunctionState junctionState = stateObject.AddComponent<JunctionState>();
+                        junctionState.stateNumber = stateCounter;
+                        junctionState.states = new JunctionState.TrafficLightState[sumoTrafficLightsForJunction.Count()];
+                        int trafficLightStateCounter = 0;
+                        phaseType phase = (phaseType)obj;
+
+                        foreach (SumoTrafficLight sumoTrafficLight in sumoTrafficLightsForJunction)
+                        {
+                            TrafficLight.LightColour lightColour = sumoTrafficLight.GetLightColourFromStateString(phase.state);
+                            junctionState.states[trafficLightStateCounter] = new JunctionState.TrafficLightState(sumoTrafficLight.trafficLight.trafficLightId, lightColour);
+                            trafficLightStateCounter++;
+                        }
+                    }
+                }
             }
         }
 

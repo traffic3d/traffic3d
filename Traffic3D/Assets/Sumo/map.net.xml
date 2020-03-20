@@ -135,15 +135,11 @@
 
     <tlLogic id="gneJ3" type="static" programID="0" offset="0">
         <phase duration="42" state="GGgrrrGGgrrr"/>
-        <phase duration="3"  state="yyyrrryyyrrr"/>
         <phase duration="42" state="rrrGGgrrrGGg"/>
-        <phase duration="3"  state="rrryyyrrryyy"/>
     </tlLogic>
     <tlLogic id="gneJ4" type="static" programID="0" offset="0">
         <phase duration="42" state="rrGGGg"/>
-        <phase duration="3"  state="rryyyy"/>
         <phase duration="42" state="GGGrrr"/>
-        <phase duration="3"  state="yyyrrr"/>
     </tlLogic>
 
     <junction id="gneJ2" type="dead_end" x="4.94" y="67.40" incLanes="-gneE1_0" intLanes="" shape="4.94,67.40 4.90,70.60 4.94,67.40"/>

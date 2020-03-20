@@ -6,6 +6,7 @@ public class Junction : MonoBehaviour
     public string junctionId;
     public int currentState;
     public JunctionState[] junctionStates;
+    public Camera junctionCamera;
 
     private void Start()
     {
@@ -32,6 +33,11 @@ public class Junction : MonoBehaviour
         return junctionStates;
     }
 
+    public Camera GetJunctionCamera()
+    {
+        return junctionCamera;
+    }
+
     public void SetJunctionState(JunctionState junctionState)
     {
         this.currentState = junctionState.GetStateNumber();
@@ -39,6 +45,16 @@ public class Junction : MonoBehaviour
         {
             TrafficLightManager.GetInstance().GetTrafficLight(trafficLightState.GetTrafficLightId()).SetColour(trafficLightState.GetLightColour());
         }
+    }
+
+    public void SetJunctionState(int junctionStateNumber)
+    {
+        JunctionState junctionState = GetJunctionState(junctionStateNumber);
+        if (junctionState == null)
+        {
+            return;
+        }
+        SetJunctionState(junctionState);
     }
 
     public void SetNextJunctionState()

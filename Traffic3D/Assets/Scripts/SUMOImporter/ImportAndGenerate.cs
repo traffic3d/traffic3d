@@ -20,6 +20,7 @@ public class ImportAndGenerate
     public static Dictionary<string, NetFileEdge> edges;
     public static Dictionary<string, Shape> shapes;
     public static Dictionary<string, List<string>> routes;
+    public static Dictionary<string, tlLogicType> trafficLightPrograms;
 
     public static List<Vector3[]> polygons;
 
@@ -68,6 +69,7 @@ public class ImportAndGenerate
         junctions = new Dictionary<string, NetFileJunction>();
         shapes = new Dictionary<string, Shape>();
         routes = new Dictionary<string, List<string>>();
+        trafficLightPrograms = new Dictionary<string, tlLogicType>();
 
         netType netFile;
         XmlSerializer serializer = new XmlSerializer(typeof(netType));
@@ -106,6 +108,12 @@ public class ImportAndGenerate
                     e.addLane(l.id, l.index, l.speed, l.length, l.shape);
                 }
             }
+        }
+
+        // Get all traffic light programs
+        foreach (tlLogicType tlLogic in netFile.tlLogic)
+        {
+            trafficLightPrograms.Add(tlLogic.id, tlLogic);
         }
 
         // Get map boundaries

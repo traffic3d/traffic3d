@@ -4658,7 +4658,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 865fb5b1feb0bf146983b1e056a9efc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shotCount: 0
   rewardCount: 0
   densityCount: 0
   speedList: []
@@ -5369,6 +5368,7 @@ MonoBehaviour:
   junctionId: 1
   currentState: 0
   junctionStates: []
+  junctionCamera: {fileID: 952408077}
 --- !u!1 &1457919690
 GameObject:
   m_ObjectHideFlags: 0

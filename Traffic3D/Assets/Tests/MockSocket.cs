@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 class MockSocket : ISocket
@@ -25,13 +26,14 @@ class MockSocket : ISocket
         }
         else
         {
-            int trafficLightAmount = TrafficLightManager.GetInstance().GetTrafficLights().Length;
-            int trafficLightToChange = 0;
-            if (trafficLightAmount != 0)
+            List<PythonManager.PythonAction> pythonActionsList = new List<PythonManager.PythonAction>();
+            foreach (Junction junction in TrafficLightManager.GetInstance().GetJunctions())
             {
-                trafficLightToChange = receiveCounter % TrafficLightManager.GetInstance().GetTrafficLights().Length;
+                pythonActionsList.Add(new PythonManager.PythonAction(junction.junctionId, 0));
             }
-            PushDataIntoBuffer(buffer, "" + trafficLightToChange);
+            PythonManager.PythonActions pythonActions = new PythonManager.PythonActions();
+            pythonActions.actions = pythonActionsList.ToArray();
+            PushDataIntoBuffer(buffer, JsonUtility.ToJson(pythonActions));
         }
         receiveCounter++;
         return buffer.Length;
