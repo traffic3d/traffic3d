@@ -45,6 +45,17 @@ mdl -s .mdl.rb DOCUMENT.md
 
 If you want to run `mdl` from your IDE or editor, you will either need to configure it, or find a plugin, such as [this one for Sublime Text](https://github.com/SublimeLinter/SublimeLinter-mdl).
 
+### Setting up a git hook
+
+This repository provides a [git hook](https://githooks.com/) that will run `mdl` each time the developer commits their code, and refuse to perform the commit if the changes do not pass the lint.
+
+To install the hook, first ensure that you have `mdl` installed correctly (see above).
+Next, run the hook install script:
+
+```sh
+./bin/create-hook-symlinks
+```
+
 ## Installation and set-up
 
 The project runs on Unity 2018.3.11f1 and up.
