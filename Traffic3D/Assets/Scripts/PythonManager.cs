@@ -96,14 +96,9 @@ public class PythonManager : MonoBehaviour
                 throw new System.Exception("Unable to get camera for junction: " + junction.junctionId);
             }
             junctionShotCount[junction] = GetJunctionScreenshotCount(junction) + 1;
-            if (!Settings.IsHeadlessMode())
-            {
-                ScreenCapture.CaptureScreenshot(GetScreenshotFilePath(screenshotPath, junction.junctionId, junctionShotCount[junction]));
-            }
-            else
-            {
-                camera.Render();
-            }
+            CameraManager cameraManager = camera.GetComponent<CameraManager>();
+            cameraManager.SetRenderScreenshot();
+            camera.Render();
         }
 
         yield return null;

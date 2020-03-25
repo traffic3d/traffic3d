@@ -25,12 +25,13 @@ public class TrafficLightManagerTests : CommonSceneTest
     {
         DisableLoops();
         TrafficLightManager trafficLightManager = (TrafficLightManager)GameObject.FindObjectOfType(typeof(TrafficLightManager));
-        for (int i = 0; i < 4; i++)
+        foreach (Junction junction in trafficLightManager.GetJunctions())
         {
-            trafficLightManager.StartCoroutine(trafficLightManager.FireNextEvent());
-            yield return new WaitForSeconds(6);
-            foreach (Junction junction in trafficLightManager.GetJunctions())
+            junction.SetJunctionState(junction.GetFirstJunctionState());
+            for (int i = 1; i < junction.GetJunctionStates().Length; i++)
             {
+                trafficLightManager.StartCoroutine(trafficLightManager.FireNextEvent());
+                yield return new WaitForSeconds(6);
                 Assert.AreEqual(i + 1, junction.GetCurrentState());
             }
         }
