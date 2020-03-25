@@ -53,7 +53,6 @@ public class PythonManager : MonoBehaviour
             }
         }
         densityLengthConstant = FindObjectsOfType<Path>().Select(path => path.GetDistanceUntilDensityMeasurePointInKM()).Sum();
-        print(densityLengthConstant);
     }
 
     /// <summary>

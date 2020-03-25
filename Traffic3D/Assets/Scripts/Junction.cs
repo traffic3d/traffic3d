@@ -4,8 +4,8 @@ using UnityEngine;
 public class Junction : MonoBehaviour
 {
     public string junctionId;
-    public int currentState;
-    public JunctionState[] junctionStates;
+    private int currentState;
+    private JunctionState[] junctionStates;
     public Camera junctionCamera;
 
     private void Start()
