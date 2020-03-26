@@ -10,6 +10,8 @@ using UnityEngine;
 public class SumoManager : MonoBehaviour
 {
     private static SumoManager instance;
+    private const int SIMULATION_RUNS_PER_SECOND = 60;
+    private const int SUMO_TIME_OUT = 5;
 
     public static SumoManager GetInstance()
     {
@@ -134,9 +136,9 @@ public class SumoManager : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(1 / 60F);
+            yield return new WaitForSeconds(1f / SIMULATION_RUNS_PER_SECOND);
             var task = Task.Run(() => client.Control.SimStep(0.0));
-            if (!task.Wait(TimeSpan.FromSeconds(5)))
+            if (!task.Wait(TimeSpan.FromSeconds(SUMO_TIME_OUT)))
             {
                 throw new Exception("Sumo Timed out");
             }
