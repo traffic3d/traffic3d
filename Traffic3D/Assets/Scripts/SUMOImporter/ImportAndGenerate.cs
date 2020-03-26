@@ -1,14 +1,12 @@
-﻿using System.Collections.Generic;
-using UnityEditor;
-using System;
-using System.Xml.Serialization;
-using System.IO;
-using Assets.Scripts.SUMOImporter.NetFileComponents;
-using Assets.Scripts;
-using UnityEngine;
-using System.Linq;
+﻿using Assets.Scripts.SUMOImporter.NetFileComponents;
 using SplineMesh;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Xml;
+using System.Xml.Serialization;
+using UnityEngine;
 
 public class ImportAndGenerate
 {
@@ -338,8 +336,12 @@ public class ImportAndGenerate
             // Set up game object with mesh;
             GameObject junction3D = new GameObject("junction_" + junctionCounter++);
             MeshRenderer r = (MeshRenderer)junction3D.AddComponent(typeof(MeshRenderer));
-            Junction junction = junction3D.AddComponent<Junction>();
-            junction.junctionId = j.id;
+            tlLogicType tlLogicType = trafficLightPrograms.ToList().Find(e => e.Key.Equals(j.id) && e.Value.Items.Length > 0).Value;
+            if (tlLogicType != null)
+            {
+                Junction junction = junction3D.AddComponent<Junction>();
+                junction.junctionId = j.id;
+            }
             Material material = Resources.Load<Material>("Materials/sidewalk");
             r.material = material;
             MeshFilter filter = junction3D.AddComponent(typeof(MeshFilter)) as MeshFilter;

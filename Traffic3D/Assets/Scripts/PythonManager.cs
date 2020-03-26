@@ -227,6 +227,9 @@ public class PythonManager : MonoBehaviour
         densityCount = 0;
     }
 
+    /// <summary>
+    /// A list of screenshots sent to the Python Script.
+    /// </summary>
     [System.Serializable]
     public class PythonScreenshots
     {
@@ -238,6 +241,9 @@ public class PythonManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// A single screenshot item containing the junction id and the screenshot file path.
+    /// </summary>
     [System.Serializable]
     public class PythonScreenshot
     {
@@ -251,12 +257,19 @@ public class PythonManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// A List of Actions that have been sent from the Python Script to Traffic3D (see PythonAction).
+    /// </summary>
     [System.Serializable]
     public class PythonActions
     {
         public PythonAction[] actions;
     }
 
+    /// <summary>
+    /// A single Python Action that contains the junction id of the junction to change and the action being the state
+    /// of which the junction should be.
+    /// </summary>
     [System.Serializable]
     public class PythonAction
     {

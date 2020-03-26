@@ -62,10 +62,6 @@ public class Junction : MonoBehaviour
         if (junctionStates.Length == 0)
         {
             RefreshJunctionStates();
-            if (junctionStates.Length == 0)
-            {
-                return;
-            }
         }
         JunctionState junctionState = GetJunctionState(currentState + 1);
         if (junctionState != null)
