@@ -46,8 +46,8 @@ public class PythonManagerTests : CommonSceneTest
     [UnityTest]
     public IEnumerator PythonManagerGetScreenshotFilePathTest()
     {
-        string path = PythonManager.GetInstance().GetScreenshotFilePath("screenshots/", 5);
-        Assert.AreEqual("screenshots/shot5.png", path);
+        string path = PythonManager.GetInstance().GetScreenshotFilePath("screenshots/", "junction1", 5);
+        Assert.AreEqual("screenshots/junction1_shot5.png", path);
         yield return null;
     }
 

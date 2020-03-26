@@ -11,7 +11,7 @@ import numpy as np
 import cv2
 import matplotlib
 import matplotlib.pyplot as plt
-
+import json
 import torch
 from torch import *
 import torch.nn as nn
@@ -60,10 +60,12 @@ class Traffic3DProcessor(model_generator.ModelGenerator):
         discounted_rewards = []
         # One episode is made of 100 timesteps, get 100 rewards after an episode.
         for i in torch.arange(1, 11):
-            img = self.receive_image()
-            img1 = self.prepro(img)
-            act = self.select_action(img1)
-            self.send_action(act)
+            imgs = self.receive_images()
+            actions = {"actions": []}
+            for junction_id in imgs:
+                img1 = self.prepro(imgs[junction_id])
+                actions["actions"].append({"junctionId": junction_id, "action": self.select_action(img1)})
+            self.send_action(json.dumps(actions))
             rew = self.receive_rewards()
             self.policy.basic_rewards.append(rew)
 
@@ -107,7 +109,7 @@ class PG(nn.Module):
         self.bn3 = nn.BatchNorm2d(32)
         self.conv4 = nn.Conv2d(32, 64, kernel_size=5, stride=2)
         self.bn4 = nn.BatchNorm2d(64)
-        self.head = nn.Linear(576, 2)
+        self.head = nn.Linear(576, 4)
 
         self.saved_log_probs = []
         self.basic_rewards = []

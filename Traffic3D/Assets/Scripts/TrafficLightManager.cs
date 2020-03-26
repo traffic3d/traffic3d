@@ -14,17 +14,16 @@ public class TrafficLightManager : MonoBehaviour
 
     void Awake()
     {
-        trafficLights = GameObject.FindObjectsOfType<TrafficLight>();
+        RefreshTrafficLightsAndJunctions();
         instance = this;
     }
 
     public TrafficLight[] trafficLights;
-    public int[] demoOrder;
+    public Junction[] junctions;
 
-    void Start()
-    {
-        demoOrder = new int[4] { 1, 3, 2, 4 };
-    }
+    public event TrafficLightChangeEvent trafficLightChangeEvent;
+
+    public delegate void TrafficLightChangeEvent(object sender, TrafficLight.TrafficLightChangeEventArgs e);
 
     /// <summary>
     /// Run the demo for the traffic lights which just changes four traffic lights in order using the demoOrder int array. 
@@ -40,10 +39,26 @@ public class TrafficLightManager : MonoBehaviour
         yield return StartCoroutine(FirstEvent());
         while (true)
         {
-            foreach (int i in demoOrder)
-            {
-                yield return StartCoroutine(FireEvent(i));
-            }
+            yield return StartCoroutine(FireNextEvent());
+        }
+    }
+
+    public void RefreshTrafficLightsAndJunctions()
+    {
+        trafficLights = GameObject.FindObjectsOfType<TrafficLight>();
+        foreach (TrafficLight trafficLight in trafficLights)
+        {
+            trafficLight.trafficLightChangeEvent -= TrafficLightChange;
+            trafficLight.trafficLightChangeEvent += TrafficLightChange;
+        }
+        junctions = GameObject.FindObjectsOfType<Junction>();
+    }
+
+    private void TrafficLightChange(object sender, TrafficLight.TrafficLightChangeEventArgs e)
+    {
+        if (trafficLightChangeEvent != null)
+        {
+            trafficLightChangeEvent.Invoke(sender, e);
         }
     }
 
@@ -56,18 +71,27 @@ public class TrafficLightManager : MonoBehaviour
     /// <summary>
     /// Sets all to red, waits 5 seconds then changes the colour of the inputted traffic light ID to green and waits.
     /// </summary>
-    /// <param name="trafficLightId">The traffic light int ID which needs changing.</param>
-    public IEnumerator FireEvent(int trafficLightId)
+    public IEnumerator FireNextEvent()
     {
         SetAllToRed();
         yield return new WaitForSeconds(5);
-        SetTrafficLightToGreen(trafficLightId);
+        junctions.ToList().ForEach(junction => junction.SetNextJunctionState());
         yield return new WaitForSeconds(19);
     }
 
     public TrafficLight[] GetTrafficLights()
     {
         return trafficLights;
+    }
+
+    public Junction[] GetJunctions()
+    {
+        return junctions;
+    }
+
+    public Junction GetJunction(string id)
+    {
+        return junctions.ToList().Find(junction => junction.GetJunctionId().Equals(id));
     }
 
     /// <summary>
@@ -95,25 +119,25 @@ public class TrafficLightManager : MonoBehaviour
     /// </summary>
     /// <param name="id">The ID of the traffic light needed.</param>
     /// <returns>The traffic light of the ID inputted.</returns>
-    public TrafficLight GetTrafficLight(int id)
+    public TrafficLight GetTrafficLight(string id)
     {
-        return trafficLights.ToList().Find(trafficLight => trafficLight.GetTrafficLightId() == id);
+        return trafficLights.ToList().Find(trafficLight => trafficLight.GetTrafficLightId().Equals(id));
     }
 
     /// <summary>
     /// Set the traffic light to green and set all others to red.
     /// </summary>
     /// <param name="id">The ID of the traffic light to turn green.</param>
-    public void SetTrafficLightToGreen(int id)
+    public void SetTrafficLightToGreen(string id)
     {
-        SetTrafficLightsToGreen(new List<int>() { id });
+        SetTrafficLightsToGreen(new List<string>() { id });
     }
 
     /// <summary>
     /// Set all specified traffic lights to green and set the rest to red.
     /// </summary>
     /// <param name="id">The ID of the traffic light to turn green.</param>
-    public void SetTrafficLightsToGreen(List<int> ids)
+    public void SetTrafficLightsToGreen(List<string> ids)
     {
         foreach (TrafficLight trafficLight in trafficLights)
         {
@@ -135,4 +159,5 @@ public class TrafficLightManager : MonoBehaviour
     {
         trafficLights.ToList().ForEach(trafficLight => trafficLight.SetColour(TrafficLight.LightColour.RED));
     }
+
 }

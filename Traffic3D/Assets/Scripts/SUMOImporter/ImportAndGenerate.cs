@@ -1,14 +1,12 @@
-﻿using System.Collections.Generic;
-using UnityEditor;
-using System;
-using System.Xml.Serialization;
-using System.IO;
-using Assets.Scripts.SUMOImporter.NetFileComponents;
-using Assets.Scripts;
-using UnityEngine;
-using System.Linq;
+﻿using Assets.Scripts.SUMOImporter.NetFileComponents;
 using SplineMesh;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Xml;
+using System.Xml.Serialization;
+using UnityEngine;
 
 public class ImportAndGenerate
 {
@@ -20,6 +18,7 @@ public class ImportAndGenerate
     public static Dictionary<string, NetFileEdge> edges;
     public static Dictionary<string, Shape> shapes;
     public static Dictionary<string, List<string>> routes;
+    public static Dictionary<string, tlLogicType> trafficLightPrograms;
 
     public static List<Vector3[]> polygons;
 
@@ -68,6 +67,7 @@ public class ImportAndGenerate
         junctions = new Dictionary<string, NetFileJunction>();
         shapes = new Dictionary<string, Shape>();
         routes = new Dictionary<string, List<string>>();
+        trafficLightPrograms = new Dictionary<string, tlLogicType>();
 
         netType netFile;
         XmlSerializer serializer = new XmlSerializer(typeof(netType));
@@ -106,6 +106,12 @@ public class ImportAndGenerate
                     e.addLane(l.id, l.index, l.speed, l.length, l.shape);
                 }
             }
+        }
+
+        // Get all traffic light programs
+        foreach (tlLogicType tlLogic in netFile.tlLogic)
+        {
+            trafficLightPrograms.Add(tlLogic.id, tlLogic);
         }
 
         // Get map boundaries
@@ -330,6 +336,12 @@ public class ImportAndGenerate
             // Set up game object with mesh;
             GameObject junction3D = new GameObject("junction_" + junctionCounter++);
             MeshRenderer r = (MeshRenderer)junction3D.AddComponent(typeof(MeshRenderer));
+            tlLogicType tlLogicType = trafficLightPrograms.ToList().Find(e => e.Key.Equals(j.id) && e.Value.Items.Length > 0).Value;
+            if (tlLogicType != null)
+            {
+                Junction junction = junction3D.AddComponent<Junction>();
+                junction.junctionId = j.id;
+            }
             Material material = Resources.Load<Material>("Materials/sidewalk");
             r.material = material;
             MeshFilter filter = junction3D.AddComponent(typeof(MeshFilter)) as MeshFilter;
@@ -363,19 +375,22 @@ public class ImportAndGenerate
                     float xDest = (float)((1 - ratio) * x1 + ratio * x2);
                     float yDest = (float)((1 - ratio) * y1 + ratio * y2);
 
+                    string trafficLightId = l.id;
                     // Insert the 3d object, rotate from lane 90° to the right side and then orientate the traffic light towards the vehicles
                     GameObject trafficLightPrefab = Resources.Load<GameObject>("Models/TrafficLight");
                     GameObject trafficLight = GameObject.Instantiate(trafficLightPrefab, new Vector3(xDest, 0, yDest), Quaternion.Euler(new Vector3(0, 0, 0)));
-                    trafficLight.name = "TrafficLight_" + j.id;
+                    trafficLight.name = "TrafficLight_" + trafficLightId;
+                    trafficLight.GetComponentInChildren<TrafficLight>().trafficLightId = trafficLightId;
                     trafficLight.transform.SetParent(network.transform);
                     trafficLight.transform.RotateAround(new Vector3(x2, 0, y2), Vector3.up, -90.0f);
                     trafficLight.transform.Rotate(Vector3.up, -angle);
 
                     // Insert traffic light index as empty GameObject into traffic light
                     GameObject TLindex = new GameObject("index");
-                    GameObject TLindexVal = new GameObject(Convert.ToString(index++));
+                    GameObject TLindexVal = new GameObject(Convert.ToString(index));
                     TLindexVal.transform.SetParent(TLindex.transform);
                     TLindex.transform.SetParent(trafficLight.transform);
+                    index++;
                 }
             }
         }

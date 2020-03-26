@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 02/19/20 15:34:40 by Eclipse SUMO netedit Version 1.4.0
+<!-- generated on 02/26/20 16:06:57 by Eclipse SUMO netedit Version 1.4.0
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
 
     <input>
-        <sumo-net-file value="E:\Sumo\complex_network.net.xml"/>
+        <sumo-net-file value="E:\Sumo\3.net.xml"/>
     </input>
 
     <output>
-        <output-file value="E:\Sumo\complex_network.net.xml"/>
+        <output-file value="E:\Sumo\3.net.xml"/>
     </output>
 
     <processing>
@@ -30,7 +30,7 @@
     </pedestrian>
 
     <netedit>
-        <route-files value="E:\Sumo\complex.rou.xml"/>
+        <route-files value="E:\Sumo\3.rou.xml"/>
     </netedit>
 
     <report>
@@ -41,8 +41,7 @@
 -->
 
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
-    <route edges="gneE0 gneE1 gneE2 gneE3 gneE18" color="yellow" id="route_0"/>
-    <route edges="-gneE12 -gneE9 gneE1 gneE2 gneE8 gneE17" color="yellow" id="route_1"/>
-    <flow id="flow_0" begin="0.00" from="gneE0" to="gneE18" via="gneE1 gneE2 gneE3" end="3600.00" number="1800"/>
-    <flow id="flow_1" begin="0.00" from="-gneE12" to="gneE17" via="-gneE9 gneE1 gneE2 gneE8" end="3600.00" number="1800"/>
+    <route edges="gneE1 -gneE2 gneE5" color="yellow" id="route_0"/>
+    <route edges="-gneE3 gneE4" color="yellow" id="route_1"/>
+    <route edges="-gneE3 -gneE2 gneE6" color="yellow" id="route_2"/>
 </routes>

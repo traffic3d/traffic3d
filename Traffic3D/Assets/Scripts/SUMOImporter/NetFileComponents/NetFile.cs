@@ -528,7 +528,10 @@ public enum connectionTypeState {
     
     /// <remarks/>
     o,
-    
+
+    /// <remarks/>
+    O,
+
     /// <remarks/>
     [System.Xml.Serialization.XmlEnumAttribute("=")]
     Item,

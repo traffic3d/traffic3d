@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -21,15 +21,19 @@ public class TrafficLightManagerTests : CommonSceneTest
     }
 
     [UnityTest]
-    public IEnumerator TrafficLightFireEventTest()
+    public IEnumerator TrafficLightFireNextEventTest()
     {
         DisableLoops();
         TrafficLightManager trafficLightManager = (TrafficLightManager)GameObject.FindObjectOfType(typeof(TrafficLightManager));
-        foreach (int i in trafficLightManager.demoOrder)
+        foreach (Junction junction in trafficLightManager.GetJunctions())
         {
-            trafficLightManager.StartCoroutine(trafficLightManager.FireEvent(i));
-            yield return new WaitForSeconds(6);
-            CheckTrafficLightIsGreen(i);
+            junction.SetJunctionState(junction.GetFirstJunctionState());
+            for (int i = 1; i < junction.GetJunctionStates().Length; i++)
+            {
+                trafficLightManager.StartCoroutine(trafficLightManager.FireNextEvent());
+                yield return new WaitForSeconds(6);
+                Assert.AreEqual(i + 1, junction.GetCurrentState());
+            }
         }
         trafficLightManager.StopAllCoroutines();
     }
@@ -60,11 +64,11 @@ public class TrafficLightManagerTests : CommonSceneTest
 
     }
 
-    private void CheckTrafficLightIsGreen(int id)
+    private void CheckTrafficLightIsGreen(string id)
     {
         foreach (TrafficLight trafficLight in TrafficLightManager.GetInstance().GetTrafficLights())
         {
-            if (trafficLight.GetTrafficLightId() == id)
+            if (trafficLight.GetTrafficLightId().Equals(id))
             {
                 Assert.AreEqual(TrafficLight.LightColour.GREEN, trafficLight.GetCurrentLightColour());
             }
