@@ -1,6 +1,8 @@
 {
     "name": "Scripts",
-    "references": [],
+    "references": [
+        "RainMaker"
+    ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
