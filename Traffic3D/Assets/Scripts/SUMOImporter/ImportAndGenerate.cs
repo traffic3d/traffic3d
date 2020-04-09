@@ -109,9 +109,12 @@ public class ImportAndGenerate
         }
 
         // Get all traffic light programs
-        foreach (tlLogicType tlLogic in netFile.tlLogic)
+        if (netFile.tlLogic != null)
         {
-            trafficLightPrograms.Add(tlLogic.id, tlLogic);
+            foreach (tlLogicType tlLogic in netFile.tlLogic)
+            {
+                trafficLightPrograms.Add(tlLogic.id, tlLogic);
+            }
         }
 
         // Get map boundaries
@@ -180,6 +183,9 @@ public class ImportAndGenerate
 
         int laneCounter = 0;
         int streetLightCounter = 0;
+        int buildingCounter = 0;
+
+        GameObject[] buildingsToPlace = Resources.LoadAll<GameObject>("Models/Buildings");
 
         MonoBehaviour.print("Inserting 3d Streets");
 
@@ -281,6 +287,31 @@ public class ImportAndGenerate
                         streetLamp.transform.SetParent(network.transform);
                         streetLamp.transform.RotateAround(new Vector3(xRotDest, 0, yRotDest), Vector3.up, -90.0f);
                         streetLamp.transform.Rotate(Vector3.up, -angle);
+                    }
+
+                    // Add Buildings
+                    if(buildingsToPlace.Length > 0 && length >= 10 && e.getLanes().Count <= 2)
+                    {
+                        float angle = Mathf.Atan2(y2 - y1, x2 - x1) * 180 / Mathf.PI;
+                        int amountOfBuildings = (int) length / 15;
+                        double lengthBetweenBuildings = length / (amountOfBuildings + 1);
+
+                        for(int buildingNum = 0; buildingNum < amountOfBuildings; buildingNum++)
+                        {
+                            GameObject building = buildingsToPlace[UnityEngine.Random.Range(0, buildingsToPlace.Length)];
+
+                            double ratioRotPoint = 1;
+                            double ratio = (lengthBetweenBuildings * (buildingNum + 1)) / length;
+                            Debug.Log(ratio);
+                            float xDest = (float)((1 - ratio) * x1 + ratio * x2);
+                            float yDest = (float)((1 - ratio) * y1 + ratio * y2);
+
+                            GameObject buildingCreated = GameObject.Instantiate(building, new Vector3(xDest, 0, yDest), Quaternion.Euler(new Vector3(0, 0, 0)));
+                            buildingCreated.name = "Building_" + buildingCounter++;
+                            buildingCreated.transform.SetParent(network.transform);
+                            buildingCreated.transform.Rotate(Vector3.up, -angle);
+                            buildingCreated.transform.position = buildingCreated.transform.position + buildingCreated.transform.forward * (15);
+                        }
                     }
                 }
 
