@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: cornerterrace1c_material
+  m_Name: terraced3c_material
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: _NORMALMAP
   m_LightmapFlags: 5
@@ -19,14 +19,14 @@ Material:
         first:
           name: _MainTex
         second:
-          m_Texture: {fileID: 2800000, guid: 14a6b65b389c06748be17319ded0325e, type: 3}
+          m_Texture: {fileID: 2800000, guid: 71aa80404d38d5647bc6e34026344b8c, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
         first:
           name: _BumpMap
         second:
-          m_Texture: {fileID: 2800000, guid: dea69c591ac42d1489f80c791ca3a014, type: 3}
+          m_Texture: {fileID: 2800000, guid: 78c7cd8dc019af845af6ab0061e5317b, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
