@@ -308,7 +308,6 @@ public class ImportAndGenerate
                             GameObject building = buildingsToPlace[UnityEngine.Random.Range(0, buildingsToPlace.Length)];
 
                             double ratio = (lengthBetweenBuildings * (buildingNum + 1)) / length;
-                            Debug.Log(ratio);
                             float xDest = (float)((1 - ratio) * x1 + ratio * x2);
                             float yDest = (float)((1 - ratio) * y1 + ratio * y2);
 
@@ -329,7 +328,6 @@ public class ImportAndGenerate
                                 {
                                     if (collider.transform.IsChildOf(otherBuilding.transform))
                                     {
-                                        buildingCreated.name = buildingCreated.name + "_COLLIDED WITH " + otherBuilding.name;
                                         isBuildingAlready = true;
                                         break;
                                     }
