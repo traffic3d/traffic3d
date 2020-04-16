@@ -19,6 +19,7 @@ public class ImportAndGenerate
     public static Dictionary<string, Shape> shapes;
     public static Dictionary<string, List<string>> routes;
     public static Dictionary<string, tlLogicType> trafficLightPrograms;
+    private static List<GameObject> buildings;
 
     public static List<Vector3[]> polygons;
 
@@ -47,6 +48,10 @@ public class ImportAndGenerate
     static float minLengthForStreetLamp = 12;
     static float streeLampDistance = 6f;
 
+    static int maxLanesForBuildings = 2;
+    static float lengthFromRoadToBuilding = 15f;
+    static float lengthFromBuildingToBuildingAlongRoad = 20f;
+
     static Boolean grassEnabled = true;
     static Boolean treesEnabled = true;
 
@@ -68,6 +73,7 @@ public class ImportAndGenerate
         shapes = new Dictionary<string, Shape>();
         routes = new Dictionary<string, List<string>>();
         trafficLightPrograms = new Dictionary<string, tlLogicType>();
+        buildings = new List<GameObject>();
 
         netType netFile;
         XmlSerializer serializer = new XmlSerializer(typeof(netType));
@@ -109,9 +115,12 @@ public class ImportAndGenerate
         }
 
         // Get all traffic light programs
-        foreach (tlLogicType tlLogic in netFile.tlLogic)
+        if (netFile.tlLogic != null)
         {
-            trafficLightPrograms.Add(tlLogic.id, tlLogic);
+            foreach (tlLogicType tlLogic in netFile.tlLogic)
+            {
+                trafficLightPrograms.Add(tlLogic.id, tlLogic);
+            }
         }
 
         // Get map boundaries
@@ -180,6 +189,9 @@ public class ImportAndGenerate
 
         int laneCounter = 0;
         int streetLightCounter = 0;
+        int buildingCounter = 0;
+
+        GameObject[] buildingsToPlace = Resources.LoadAll<GameObject>("Models/Buildings");
 
         MonoBehaviour.print("Inserting 3d Streets");
 
@@ -281,6 +293,57 @@ public class ImportAndGenerate
                         streetLamp.transform.SetParent(network.transform);
                         streetLamp.transform.RotateAround(new Vector3(xRotDest, 0, yRotDest), Vector3.up, -90.0f);
                         streetLamp.transform.Rotate(Vector3.up, -angle);
+                    }
+
+                    if (buildingsToPlace.Length > 0 && length >= lengthFromBuildingToBuildingAlongRoad && e.getLanes().Count <= maxLanesForBuildings)
+                    {
+                        // Get the angle perpendicular to the road, the number of buildings along the road and the exact length between them.
+                        float angle = Mathf.Atan2(y2 - y1, x2 - x1) * 180 / Mathf.PI;
+                        int amountOfBuildings = (int) (length / lengthFromBuildingToBuildingAlongRoad);
+                        double lengthBetweenBuildings = length / (amountOfBuildings + 1);
+
+                        for (int buildingNum = 0; buildingNum < amountOfBuildings; buildingNum++)
+                        {
+                            GameObject building = buildingsToPlace[UnityEngine.Random.Range(0, buildingsToPlace.Length)];
+
+                            // Find the ratio along the road e.g. the building is halfway down the road and then work out the x and y coords for that point on the road.
+                            double ratio = (lengthBetweenBuildings * (buildingNum + 1)) / length;
+                            float xDest = (float)((1 - ratio) * x1 + ratio * x2);
+                            float yDest = (float)((1 - ratio) * y1 + ratio * y2);
+
+                            GameObject buildingCreated = GameObject.Instantiate(building, new Vector3(xDest, 0, yDest), Quaternion.Euler(new Vector3(0, 0, 0)));
+                            buildingCreated.transform.SetParent(network.transform);
+                            // Rotate and place building on road then move forward away from the road by a constant. 
+                            buildingCreated.transform.Rotate(Vector3.up, -angle);
+                            buildingCreated.transform.position = buildingCreated.transform.position + buildingCreated.transform.forward * lengthFromRoadToBuilding;
+                            Physics.SyncTransforms();
+                            Collider[] otherCollisions = Physics.OverlapBox(buildingCreated.gameObject.GetComponentInChildren<BoxCollider>().bounds.center, buildingCreated.gameObject.GetComponentInChildren<BoxCollider>().bounds.extents, buildingCreated.transform.rotation);
+                            bool isBuildingAlready = false;
+                            foreach (Collider collider in otherCollisions)
+                            {
+                                if (collider.transform.IsChildOf(buildingCreated.transform))
+                                {
+                                    continue;
+                                }
+                                foreach(GameObject otherBuilding in buildings)
+                                {
+                                    if (collider.transform.IsChildOf(otherBuilding.transform))
+                                    {
+                                        isBuildingAlready = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (!isBuildingAlready)
+                            {
+                                buildingCreated.name = "Building_" + buildingCounter++;
+                                buildings.Add(buildingCreated);
+                            }
+                            else
+                            {
+                                GameObject.Destroy(buildingCreated);
+                            }
+                        }
                     }
                 }
 
