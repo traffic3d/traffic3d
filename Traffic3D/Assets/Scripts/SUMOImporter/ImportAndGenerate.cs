@@ -48,7 +48,6 @@ public class ImportAndGenerate
     static float minLengthForStreetLamp = 12;
     static float streeLampDistance = 6f;
 
-    // Buildings
     static int maxLanesForBuildings = 2;
     static float lengthFromRoadToBuilding = 15f;
     static float lengthFromBuildingToBuildingAlongRoad = 20f;
@@ -296,9 +295,9 @@ public class ImportAndGenerate
                         streetLamp.transform.Rotate(Vector3.up, -angle);
                     }
 
-                    // Add Buildings
                     if (buildingsToPlace.Length > 0 && length >= lengthFromBuildingToBuildingAlongRoad && e.getLanes().Count <= maxLanesForBuildings)
                     {
+                        // Get the angle perpendicular to the road, the number of buildings along the road and the exact length between them.
                         float angle = Mathf.Atan2(y2 - y1, x2 - x1) * 180 / Mathf.PI;
                         int amountOfBuildings = (int) (length / lengthFromBuildingToBuildingAlongRoad);
                         double lengthBetweenBuildings = length / (amountOfBuildings + 1);
@@ -307,12 +306,14 @@ public class ImportAndGenerate
                         {
                             GameObject building = buildingsToPlace[UnityEngine.Random.Range(0, buildingsToPlace.Length)];
 
+                            // Find the ratio along the road e.g. the building is halfway down the road and then work out the x and y coords for that point on the road.
                             double ratio = (lengthBetweenBuildings * (buildingNum + 1)) / length;
                             float xDest = (float)((1 - ratio) * x1 + ratio * x2);
                             float yDest = (float)((1 - ratio) * y1 + ratio * y2);
 
                             GameObject buildingCreated = GameObject.Instantiate(building, new Vector3(xDest, 0, yDest), Quaternion.Euler(new Vector3(0, 0, 0)));
                             buildingCreated.transform.SetParent(network.transform);
+                            // Rotate and place building on road then move forward away from the road by a constant. 
                             buildingCreated.transform.Rotate(Vector3.up, -angle);
                             buildingCreated.transform.position = buildingCreated.transform.position + buildingCreated.transform.forward * lengthFromRoadToBuilding;
                             Physics.SyncTransforms();
