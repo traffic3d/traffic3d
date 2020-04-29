@@ -14,6 +14,14 @@ For more details please see [https://traffic3d.org](https://traffic3d.org).
 
 Please report issues via the [issue tracker](https://gitlab.com/traffic3d/traffic3d/issues).
 
+## Developers
+
+Current developers:
+
+* Callum Bugajski - @callumbugajski via [Beautiful Canoe](https://beautifulcanoe.com/)
+
+Based on original code by Deepeka Garg (@gargd03).
+
 ## License
 
 This software is licensed under the [Mozilla Public License Version 2.0](/LICENSE).
