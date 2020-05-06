@@ -28,33 +28,33 @@ _Note: During the beta cycle features and API are subject to change.\
 
 # FAQ
 
-Q: Can I bake a NavMesh at runtime?  
+Q: Can I bake a NavMesh at runtime?
 A: Yes.
 
-Q: Can I use NavMesh'es for more than one agent size?  
+Q: Can I use NavMesh'es for more than one agent size?
 A: Yes.
 
-Q: Can I put a NavMesh in a prefab?  
+Q: Can I put a NavMesh in a prefab?
 A: Yes - with some limitations.
 
-Q: How do I connect two NavMesh surfaces?  
+Q: How do I connect two NavMesh surfaces?
 A: Use the NavMeshLink to connect the two sides.
 
-Q: How do I query the NavMesh for one specific size of agent?  
+Q: How do I query the NavMesh for one specific size of agent?
 A: Use the NavMeshQuery filter when querying the NavMesh.
 
-Q: What's the deal with the 'DefaultExecutionOrder' attribute?  
+Q: What's the deal with the 'DefaultExecutionOrder' attribute?
 A: It gives a way of controlling the order of execution of scripts - specifically it allows us to build a NavMesh before the
 (native) NavMeshAgent component is enabled.
 
-Q: What's the use of the new delegate 'NavMesh.onPreUpdate'?  
+Q: What's the use of the new delegate 'NavMesh.onPreUpdate'?
 A: It allows you to hook in to controlling the NavMesh data and links set up before the navigation update loop is called on the native side.
 
-Q: Can I do moving NavMesh platforms?  
+Q: Can I do moving NavMesh platforms?
 A: No - new API is required for consistently moving platforms carrying agents.
 
-Q: Is OffMeshLink now obsolete?  
+Q: Is OffMeshLink now obsolete?
 A: No - you can still use OffMeshLink - however you'll find that NavMeshLink is more flexible and have less overhead.
 
-Q: What happened to HeightMesh and Auto Generated OffMeshLinks?  
+Q: What happened to HeightMesh and Auto Generated OffMeshLinks?
 A: They're not supported in the new NavMesh building feature. HeightMesh will be added at some point. Auto OffMeshLink generation will possibly be replaced with a solution that allows better control of placement.

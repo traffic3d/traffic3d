@@ -24,5 +24,10 @@ public class CommonSceneTest
         TrafficLightManager trafficLightManager = (TrafficLightManager)GameObject.FindObjectOfType(typeof(TrafficLightManager));
         trafficLightManager.StopAllCoroutines();
         PythonManager.GetInstance().StopAllCoroutines();
+        PedestrianFactory pedestrianFactory = (PedestrianFactory)GameObject.FindObjectOfType(typeof(PedestrianFactory));
+        if (pedestrianFactory != null)
+        {
+            pedestrianFactory.StopAllCoroutines();
+        }
     }
 }
