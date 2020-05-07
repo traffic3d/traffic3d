@@ -1,7 +1,8 @@
 {
     "name": "Scripts",
     "references": [
-        "RainMaker"
+        "RainMaker",
+        "NavMeshComponents"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
