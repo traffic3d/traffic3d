@@ -5,7 +5,6 @@ using UnityEngine.AI;
 
 public class Pedestrian : MonoBehaviour
 {
-    private Rigidbody rigidbody;
     private NavMeshAgent navMeshAgent;
     private Animator animator;
     private Vector3 location;
@@ -17,7 +16,6 @@ public class Pedestrian : MonoBehaviour
         int roadArea = NavMesh.GetAreaFromName(PedestrianFactory.ROAD_AREA);
         int walkableArea = NavMesh.GetAreaFromName(PedestrianFactory.WALKABLE_AREA);
         animator = GetComponent<Animator>();
-        rigidbody = GetComponent<Rigidbody>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         // Chance of walking in road
         if (UnityEngine.Random.value > walkingInRoadPercentage)

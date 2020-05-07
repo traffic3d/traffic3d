@@ -333,6 +333,7 @@ MonoBehaviour:
   startPos: {x: 0, y: 0, z: 0}
   nodeReadingOffset: 0
   engineStatus: 0
+  densityCountTriggered: 0
 --- !u!1 &1221545532200992
 GameObject:
   m_ObjectHideFlags: 0
@@ -710,6 +711,7 @@ GameObject:
   - component: {fileID: 33428427794021526}
   - component: {fileID: 23511256852763880}
   - component: {fileID: 65346630301044000}
+  - component: {fileID: 2170565485157588968}
   m_Layer: 0
   m_Name: SmallTruck
   m_TagString: Untagged
@@ -789,3 +791,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.7, y: 8, z: 2}
   m_Center: {x: 0.0000014901161, y: 4.7665485e-14, z: 1.6770799}
+--- !u!208 &2170565485157588968
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1996787895668850}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 1.659, y: 4.1600003, z: 1.353}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0, y: 0, z: 1.677}
+  m_TimeToStationary: 0.5
