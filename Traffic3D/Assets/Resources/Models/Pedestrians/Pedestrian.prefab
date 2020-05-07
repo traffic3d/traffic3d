@@ -2600,6 +2600,7 @@ GameObject:
   - component: {fileID: 5913043121793296476}
   - component: {fileID: 5913043121793296478}
   - component: {fileID: 6074077082472266415}
+  - component: {fileID: 2554721832604828272}
   m_Layer: 0
   m_Name: Pedestrian
   m_TagString: Untagged
@@ -2693,6 +2694,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkingInRoadPercentage: 0.01
+--- !u!65 &2554721832604828272
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5913043123334804236}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.7, y: 2, z: 0.7}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &5913043123334805782
 GameObject:
   m_ObjectHideFlags: 0

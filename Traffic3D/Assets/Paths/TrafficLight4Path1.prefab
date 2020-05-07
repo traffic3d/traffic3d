@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1034019138065761509}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: node7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5546222609443703290}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: node5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +69,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5546222609821408448}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: node1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,7 +99,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5546222611135027283}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: node3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -129,7 +129,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5546222611240235265}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: node4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -160,7 +160,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5546222609678887999}
   - component: {fileID: 8595298221287292799}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: TrafficLight4Path1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -217,7 +217,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5546222611476537985}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: node2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -247,7 +247,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4562446947588423380}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: node8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -279,7 +279,7 @@ GameObject:
   - component: {fileID: 8525044784051452489}
   - component: {fileID: 904886391204527080}
   - component: {fileID: 9183467123289290813}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: node6
   m_TagString: Untagged
   m_Icon: {fileID: 0}

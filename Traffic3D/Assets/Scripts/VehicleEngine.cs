@@ -76,6 +76,7 @@ public class VehicleEngine : MonoBehaviour
         ApplySteer();
         currentSpeed = 2 * Mathf.PI * wheelColliderFrontLeft.radius * wheelColliderFrontLeft.rpm * 60 / 1000;
         SpeedCheck();
+        SensorCheck();
         TrafficLight trafficLight = TrafficLightManager.GetInstance().GetTrafficLightFromStopNode(currentNode);
         if ((trafficLight != null && trafficLight.IsCurrentLightColour(TrafficLight.LightColour.RED)) || this.gameObject.tag == "hap")
         {
@@ -132,6 +133,23 @@ public class VehicleEngine : MonoBehaviour
             {
                 SetTargetSpeed(maxSpeedAproachingLightsSecondLastNode);
             }
+        }
+    }
+
+    private void SensorCheck()
+    {
+        RaycastHit hit;
+        // Raise raycast by 0.5
+        Vector3 rayPosition = transform.position + Vector3.up * 0.5f;
+        //rayPosition = rayPosition + Vector3.forward * GetComponentInChildren<Renderer>().bounds.extents.x; todo Dyanmically work out the size of the car
+        if (Physics.Raycast(rayPosition, transform.TransformDirection(Vector3.forward), out hit, 50))
+        {
+            Debug.DrawRay(rayPosition, transform.TransformDirection(Vector3.forward) * hit.distance, Color.red, 0.01f);
+            SetTargetSpeed(Math.Min(targetSpeed, hit.distance - 10));
+        }
+        else
+        {
+            Debug.DrawRay(rayPosition, transform.TransformDirection(Vector3.forward) * 50, Color.green, 0.01f);
         }
     }
 
