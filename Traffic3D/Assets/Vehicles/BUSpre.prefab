@@ -470,6 +470,7 @@ GameObject:
   - component: {fileID: 33497178406319598}
   - component: {fileID: 23697769133892112}
   - component: {fileID: 65285619644041940}
+  - component: {fileID: 6103283199012981193}
   m_Layer: 0
   m_Name: City Bus
   m_TagString: Untagged
@@ -549,6 +550,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.5, y: 2.5, z: 11.9}
   m_Center: {x: 0.00000005960466, y: 0.00000011920929, z: 0}
+--- !u!208 &6103283199012981193
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1458222318323818}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 1.3340001, y: 1.189, z: 5.893}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &1496974738235772
 GameObject:
   m_ObjectHideFlags: 0
@@ -639,6 +656,7 @@ MonoBehaviour:
   startPos: {x: 0, y: 0, z: 0}
   nodeReadingOffset: 2
   engineStatus: 0
+  densityCountTriggered: 0
 --- !u!1 &1592329904448136
 GameObject:
   m_ObjectHideFlags: 0

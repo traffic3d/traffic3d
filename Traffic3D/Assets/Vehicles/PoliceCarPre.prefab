@@ -376,8 +376,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4480326362977190}
   - component: {fileID: 54280346119316502}
-  - component: {fileID: 65096561342443840}
-  - component: {fileID: 64242199729140996}
   - component: {fileID: 8652479516804725867}
   m_Layer: 0
   m_Name: PoliceCarPre
@@ -422,33 +420,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &65096561342443840
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1591734672701284}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 6, y: 1, z: 7}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!64 &64242199729140996
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1591734672701284}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_Mesh: {fileID: 0}
 --- !u!114 &8652479516804725867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -482,6 +453,7 @@ MonoBehaviour:
   startPos: {x: 0, y: 0, z: 0}
   nodeReadingOffset: 0
   engineStatus: 0
+  densityCountTriggered: 0
 --- !u!1 &1668625861029646
 GameObject:
   m_ObjectHideFlags: 0
@@ -894,6 +866,7 @@ GameObject:
   - component: {fileID: 33894388899350490}
   - component: {fileID: 23459461944496144}
   - component: {fileID: 65422652865535086}
+  - component: {fileID: 217193946535054822}
   m_Layer: 0
   m_Name: Police Car
   m_TagString: Untagged
@@ -973,3 +946,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2, y: 1.4, z: 5.3}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!208 &217193946535054822
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1973280654756736}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 1.0500001, y: 0.69000006, z: 2.7580001}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
