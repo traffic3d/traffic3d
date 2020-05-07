@@ -6,6 +6,9 @@ using UnityEngine.AI;
 
 public class PedestrianFactory : MonoBehaviour
 {
+    public const string WALKABLE_AREA = "Walkable";
+    public const string ROAD_AREA = "Road";
+
     public float lowRangeRespawnTime = 5f;
     public float highRangeRespawnTime = 10f;
     public int maximumPedestrianCount = 20;
@@ -48,7 +51,6 @@ public class PedestrianFactory : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(Random.Range(lowRangeRespawnTime, highRangeRespawnTime));
-            print(System.DateTimeOffset.Now.ToUnixTimeMilliseconds() + " Spawn");
             if (FindObjectsOfType<Pedestrian>().Length < maximumPedestrianCount)
             {
                 SpawnPedestrian();

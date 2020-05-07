@@ -14,8 +14,8 @@ public class Pedestrian : MonoBehaviour
 
     void Start()
     {
-        int roadArea = NavMesh.GetAreaFromName("Road");
-        int walkableArea = NavMesh.GetAreaFromName("Walkable");
+        int roadArea = NavMesh.GetAreaFromName(PedestrianFactory.ROAD_AREA);
+        int walkableArea = NavMesh.GetAreaFromName(PedestrianFactory.WALKABLE_AREA);
         animator = GetComponent<Animator>();
         rigidbody = GetComponent<Rigidbody>();
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -23,7 +23,7 @@ public class Pedestrian : MonoBehaviour
         if (UnityEngine.Random.value > walkingInRoadPercentage)
         {
             // Walkable
-            navMeshAgent.areaMask = 1;
+            navMeshAgent.areaMask = 1 << walkableArea;
         }
         else
         {
