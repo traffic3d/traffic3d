@@ -16,6 +16,12 @@ stages:
     - build
     - benchmark
 
+workflow:
+    rules:
+        - if: $CI_MERGE_REQUEST_ID
+          when: never
+        - when: always
+
 meta-build-image:
     stage: prepare
     image: docker:stable
@@ -28,9 +34,11 @@ meta-build-image:
         - cd .meta
         - docker build -t $CI_REGISTRY/traffic3d/traffic3d/buildimage:latest .
         - docker push $CI_REGISTRY/traffic3d/traffic3d/buildimage:latest
-    only:
-        changes:
-            - .meta/Dockerfile
+    rules:
+        - changes:
+              - .meta/Dockerfile
+          when: always
+        - when: never
     tags:
         - dind
 
@@ -45,15 +53,15 @@ lint:
         - gem install mdl
     script:
         - git ls-files -z '*.md' | xargs -0 mdl --style .mdl.rb
-    except:
-        - master
+    rules:
+        - if: '$CI_COMMIT_BRANCH == "master"'
+          when: never
+        - when: always
     tags:
         - shared
 
 .test: &test
     image: registry.gitlab.com/traffic3d/traffic3d/buildimage
-    except:
-        - tags
     stage: test
     <<: *unity_before_script
     script:
@@ -63,6 +71,10 @@ lint:
         when: always
         paths:
             - $(pwd)/$TEST_PLATFORM-results.xml
+    rules:
+        - if: $CI_COMMIT_TAG
+          when: never
+        - when: always
     tags:
         - test
 
@@ -73,8 +85,6 @@ test-playmode:
 
 .build: &build
     image: registry.gitlab.com/traffic3d/traffic3d/buildimage
-    except:
-        - tags
     stage: build
     <<: *unity_before_script
     script:
@@ -82,6 +92,10 @@ test-playmode:
     artifacts:
         paths:
             - ./$BUILD_NAME/Builds/
+    rules:
+        - if: $CI_COMMIT_TAG
+          when: never
+        - when: always
     tags:
         - build
 
@@ -108,4 +122,5 @@ benchmark:
         - build-StandaloneLinux64
     script:
         - chmod +x ./ci/benchmark.sh && ./ci/benchmark.sh
-    when: manual
+    rules:
+        - when: manual
