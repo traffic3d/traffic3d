@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class VehicleEngine : MonoBehaviour
@@ -12,6 +14,7 @@ public class VehicleEngine : MonoBehaviour
     public float normalBrakeTorque = 200f;
     public float maxBrakeTorque = 400f;
     public float currentSpeed;
+    public float stoppingDistance = 7f;
     public float maxSpeed = 100f;
     public float maxSpeedTurning = 20f;
     public float maxSpeedAproachingLightsLastNode = 7f;
@@ -20,16 +23,28 @@ public class VehicleEngine : MonoBehaviour
     public Transform currentNode;
     public int currentNodeNumber;
     private float targetSteerAngle = 0;
+    private Renderer renderer;
+    public float numberOfSensorRays = 5;
+    public float steerReduceRayConstant = 5;
+    public float maxDistanceToMonitor = 80;
+    private float distanceBetweenRays;
+    private float shortestSide;
+    private float longestSide;
     public float targetSpeed;
     public float startTime;
     public Vector3 startPos;
     public float nodeReadingOffset;
     public EngineStatus engineStatus;
     public bool densityCountTriggered = false;
+    public bool debug = false;
 
     void Start()
     {
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
+        renderer = GetComponentsInChildren<Renderer>().Aggregate((r1, r2) => (r1.bounds.extents.x * r1.bounds.extents.y * r1.bounds.extents.z) > (r2.bounds.extents.x * r2.bounds.extents.y * r2.bounds.extents.z) ? r1 : r2);
+        longestSide = Math.Max(renderer.bounds.size.z, renderer.bounds.size.x);
+        shortestSide = Math.Min(renderer.bounds.size.z, renderer.bounds.size.x);
+        distanceBetweenRays = (shortestSide / (numberOfSensorRays - 1));
         startTime = Time.time;
         startPos = transform.position;
         engineStatus = EngineStatus.STOP;
@@ -76,6 +91,7 @@ public class VehicleEngine : MonoBehaviour
         ApplySteer();
         currentSpeed = 2 * Mathf.PI * wheelColliderFrontLeft.radius * wheelColliderFrontLeft.rpm * 60 / 1000;
         SpeedCheck();
+        SensorCheck();
         TrafficLight trafficLight = TrafficLightManager.GetInstance().GetTrafficLightFromStopNode(currentNode);
         if ((trafficLight != null && trafficLight.IsCurrentLightColour(TrafficLight.LightColour.RED)) || this.gameObject.tag == "hap")
         {
@@ -133,6 +149,46 @@ public class VehicleEngine : MonoBehaviour
                 SetTargetSpeed(maxSpeedAproachingLightsSecondLastNode);
             }
         }
+    }
+
+    private void SensorCheck()
+    {
+        List<Ray> rays = new List<Ray>();
+        RaycastHit hit;
+        Vector3 rayPosition = transform.position + transform.TransformDirection(Vector3.up);
+        rayPosition = rayPosition + transform.TransformDirection(Vector3.forward) * ((longestSide / 2) - 1) + transform.TransformDirection(Vector3.left) * (shortestSide / 2);
+        float angle = (float)Math.PI * wheelColliderFrontLeft.steerAngle / 180f;
+        Vector3 direction = transform.TransformDirection(new Vector3((float)Math.Sin(angle), 0, (float)Math.Cos(angle)));
+        for (float i = 0; i <= shortestSide; i = i + distanceBetweenRays)
+        {
+            Ray ray = new Ray(rayPosition + transform.TransformDirection(Vector3.right) * i, direction);
+            rays.Add(ray);
+        }
+        float speedToTarget = targetSpeed;
+        float distanceToMonitor = Math.Min(Math.Max(maxDistanceToMonitor - (Math.Abs(angle) * steerReduceRayConstant * maxDistanceToMonitor), stoppingDistance), maxDistanceToMonitor);
+        foreach (Ray ray in rays)
+        {
+            if (Physics.Raycast(ray, out hit, distanceToMonitor, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
+            {
+                if (GetComponentsInChildren<Collider>().Any(c => c.Equals(hit.collider)))
+                {
+                    continue;
+                }
+                if (debug)
+                {
+                    Debug.DrawRay(ray.origin, ray.direction * hit.distance, new Color(1, (hit.distance / distanceToMonitor), 0), 0.01f);
+                }
+                speedToTarget = Math.Min(speedToTarget, (hit.distance - stoppingDistance) / 2);
+            }
+            else
+            {
+                if (debug)
+                {
+                    Debug.DrawRay(ray.origin, ray.direction * distanceToMonitor, Color.green, 0.01f);
+                }
+            }
+        }
+        SetTargetSpeed(speedToTarget);
     }
 
     /// <summary>
