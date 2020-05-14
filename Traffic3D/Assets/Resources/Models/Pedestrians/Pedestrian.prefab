@@ -2676,7 +2676,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4efc69cea918336408ff50f4d9e6d8d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkingInRoadPercentage: 1
+  walkingInRoadPercentage: 0.01
 --- !u!136 &5852456205354867346
 CapsuleCollider:
   m_ObjectHideFlags: 0

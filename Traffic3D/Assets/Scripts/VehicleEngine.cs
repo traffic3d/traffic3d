@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using UnityEngine;
 
 public class VehicleEngine : MonoBehaviour
 {
@@ -14,7 +14,7 @@ public class VehicleEngine : MonoBehaviour
     public float normalBrakeTorque = 200f;
     public float maxBrakeTorque = 400f;
     public float currentSpeed;
-    public float stoppingDistance = 5f;
+    public float stoppingDistance = 7f;
     public float maxSpeed = 100f;
     public float maxSpeedTurning = 20f;
     public float maxSpeedAproachingLightsLastNode = 7f;
@@ -25,6 +25,8 @@ public class VehicleEngine : MonoBehaviour
     private float targetSteerAngle = 0;
     private Renderer renderer;
     public float numberOfSensorRays = 5;
+    public float steerReduceRayConstant = 5;
+    public float maxDistanceToMonitor = 80;
     private float distanceBetweenRays;
     private float shortestSide;
     private float longestSide;
@@ -34,6 +36,7 @@ public class VehicleEngine : MonoBehaviour
     public float nodeReadingOffset;
     public EngineStatus engineStatus;
     public bool densityCountTriggered = false;
+    public bool debug = false;
 
     void Start()
     {
@@ -150,13 +153,11 @@ public class VehicleEngine : MonoBehaviour
 
     private void SensorCheck()
     {
-        int maxDistanceToMonitor = 80;
         List<Ray> rays = new List<Ray>();
         RaycastHit hit;
-        // Raise raycast by 1
-        Vector3 rayPosition = transform.position + transform.TransformDirection(Vector3.up) * 1f;
+        Vector3 rayPosition = transform.position + transform.TransformDirection(Vector3.up);
         rayPosition = rayPosition + transform.TransformDirection(Vector3.forward) * ((longestSide / 2) - 1) + transform.TransformDirection(Vector3.left) * (shortestSide / 2);
-        float angle = (float) Math.PI * wheelColliderFrontLeft.steerAngle / 180f;
+        float angle = (float)Math.PI * wheelColliderFrontLeft.steerAngle / 180f;
         Vector3 direction = transform.TransformDirection(new Vector3((float)Math.Sin(angle), 0, (float)Math.Cos(angle)));
         for (float i = 0; i <= shortestSide; i = i + distanceBetweenRays)
         {
@@ -164,21 +165,27 @@ public class VehicleEngine : MonoBehaviour
             rays.Add(ray);
         }
         float speedToTarget = targetSpeed;
-        float distanceToMonitor = Math.Min(Math.Max(maxDistanceToMonitor - (Math.Abs(angle) * maxSteerAngle * maxDistanceToMonitor), stoppingDistance), maxDistanceToMonitor);
+        float distanceToMonitor = Math.Min(Math.Max(maxDistanceToMonitor - (Math.Abs(angle) * steerReduceRayConstant * maxDistanceToMonitor), stoppingDistance), maxDistanceToMonitor);
         foreach (Ray ray in rays)
         {
             if (Physics.Raycast(ray, out hit, distanceToMonitor, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
             {
-                if(GetComponentsInChildren<Collider>().Any(c => c.Equals(hit.collider)))
+                if (GetComponentsInChildren<Collider>().Any(c => c.Equals(hit.collider)))
                 {
                     continue;
                 }
-                Debug.DrawRay(ray.origin, ray.direction * hit.distance, new Color(1, (hit.distance / distanceToMonitor), 0), 0.01f);
-                speedToTarget = Math.Min(speedToTarget, (hit.distance / 2) - stoppingDistance);
+                if (debug)
+                {
+                    Debug.DrawRay(ray.origin, ray.direction * hit.distance, new Color(1, (hit.distance / distanceToMonitor), 0), 0.01f);
+                }
+                speedToTarget = Math.Min(speedToTarget, (hit.distance - stoppingDistance) / 2);
             }
             else
             {
-                Debug.DrawRay(ray.origin, ray.direction * distanceToMonitor, Color.green, 0.01f);
+                if (debug)
+                {
+                    Debug.DrawRay(ray.origin, ray.direction * distanceToMonitor, Color.green, 0.01f);
+                }
             }
         }
         SetTargetSpeed(speedToTarget);
