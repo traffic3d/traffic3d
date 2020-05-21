@@ -6,9 +6,6 @@ using UnityEngine.AI;
 
 public class PedestrianFactory : MonoBehaviour
 {
-    public const string WALKABLE_AREA = "Walkable";
-    public const string ROAD_AREA = "Road";
-
     public float lowRangeRespawnTime = 5f;
     public float highRangeRespawnTime = 10f;
     public int maximumPedestrianCount = 20;
@@ -18,30 +15,10 @@ public class PedestrianFactory : MonoBehaviour
 
     void Start()
     {
-        if(pedestrianProbabilities.Count == 0)
+        if (pedestrianProbabilities.Count == 0)
         {
             throw new System.Exception("There are no pedestrians to spawn.");
         }
-        GameObject[] pathways = GameObject.FindGameObjectsWithTag("pathway");
-        foreach(GameObject pathway in pathways)
-        {
-            pathway.GetComponents<MeshRenderer>();
-            NavMeshModifier navMeshModifier = pathway.AddComponent<NavMeshModifier>();
-            navMeshModifier.ignoreFromBuild = false;
-            navMeshModifier.overrideArea = true;
-            navMeshModifier.area = 0;
-        }
-        GameObject[] roadways = GameObject.FindGameObjectsWithTag("roadway");
-        foreach (GameObject roadway in roadways)
-        {
-            roadway.GetComponents<MeshRenderer>();
-            NavMeshModifier navMeshModifier = roadway.AddComponent<NavMeshModifier>();
-            navMeshModifier.ignoreFromBuild = false;
-            navMeshModifier.overrideArea = true;
-            navMeshModifier.area = 3;
-        }
-        NavMeshSurface navMeshSurface = GameObject.FindObjectOfType<NavMeshSurface>();
-        navMeshSurface.BuildNavMesh();
         pedestrianPoints = FindObjectsOfType<PedestrianPoint>();
         StartCoroutine(GeneratePedestrians());
     }

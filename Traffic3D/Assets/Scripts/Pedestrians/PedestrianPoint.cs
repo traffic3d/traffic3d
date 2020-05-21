@@ -7,7 +7,7 @@ public class PedestrianPoint : MonoBehaviour
     {
         NavMeshHit hit;
         Vector3 finalPosition = Vector3.zero;
-        if (NavMesh.SamplePosition(transform.position, out hit, float.MaxValue, 1 << NavMesh.GetAreaFromName(PedestrianFactory.WALKABLE_AREA)))
+        if (NavMesh.SamplePosition(transform.position, out hit, float.MaxValue, 1 << NavMesh.GetAreaFromName(PedestrianManager.WALKABLE_AREA)))
         {
             finalPosition = hit.position;
         }

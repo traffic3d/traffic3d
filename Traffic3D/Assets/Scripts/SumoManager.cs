@@ -115,14 +115,14 @@ public class SumoManager : MonoBehaviour
                         stateObject.transform.SetParent(junction.gameObject.transform);
                         JunctionState junctionState = stateObject.AddComponent<JunctionState>();
                         junctionState.stateNumber = stateCounter;
-                        junctionState.states = new JunctionState.TrafficLightState[sumoTrafficLightsForJunction.Count()];
+                        junctionState.trafficLightStates = new JunctionState.TrafficLightState[sumoTrafficLightsForJunction.Count()];
                         int trafficLightStateCounter = 0;
                         phaseType phase = (phaseType)obj;
 
                         foreach (SumoTrafficLight sumoTrafficLight in sumoTrafficLightsForJunction)
                         {
                             TrafficLight.LightColour lightColour = sumoTrafficLight.GetLightColourFromStateString(phase.state);
-                            junctionState.states[trafficLightStateCounter] = new JunctionState.TrafficLightState(sumoTrafficLight.trafficLight.trafficLightId, lightColour);
+                            junctionState.trafficLightStates[trafficLightStateCounter] = new JunctionState.TrafficLightState(sumoTrafficLight.trafficLight.trafficLightId, lightColour);
                             trafficLightStateCounter++;
                         }
                     }
