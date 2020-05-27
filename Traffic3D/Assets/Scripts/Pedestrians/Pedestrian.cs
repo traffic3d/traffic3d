@@ -22,6 +22,7 @@ public class Pedestrian : MonoBehaviour
 
     void Start()
     {
+        // Shifts are needed when combining the masks to make multiple areas accessible to the Pedestrian.
         roadAreaMask = 1 << NavMesh.GetAreaFromName(PedestrianManager.ROAD_AREA);
         walkableAreaMask = 1 << NavMesh.GetAreaFromName(PedestrianManager.WALKABLE_AREA);
         pedestrianCrossingAreaMask = 1 << NavMesh.GetAreaFromName(PedestrianManager.PEDESTRIAN_CROSSING_AREA);
