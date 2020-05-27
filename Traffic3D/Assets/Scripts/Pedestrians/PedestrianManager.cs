@@ -28,31 +28,34 @@ public class PedestrianManager : MonoBehaviour
     void Start()
     {
         GameObject[] pathways = GameObject.FindGameObjectsWithTag("pathway");
+        int walkableArea = NavMesh.GetAreaFromName(WALKABLE_AREA);
         foreach (GameObject pathway in pathways)
         {
             pathway.GetComponents<MeshRenderer>();
             NavMeshModifier navMeshModifier = pathway.AddComponent<NavMeshModifier>();
             navMeshModifier.ignoreFromBuild = false;
             navMeshModifier.overrideArea = true;
-            navMeshModifier.area = NavMesh.GetAreaFromName(WALKABLE_AREA);
+            navMeshModifier.area = walkableArea;
         }
         GameObject[] roadways = GameObject.FindGameObjectsWithTag("roadway");
+        int roadArea = NavMesh.GetAreaFromName(ROAD_AREA);
         foreach (GameObject roadway in roadways)
         {
             roadway.GetComponents<MeshRenderer>();
             NavMeshModifier navMeshModifier = roadway.AddComponent<NavMeshModifier>();
             navMeshModifier.ignoreFromBuild = false;
             navMeshModifier.overrideArea = true;
-            navMeshModifier.area = NavMesh.GetAreaFromName(ROAD_AREA);
+            navMeshModifier.area = roadArea;
         }
         PedestrianCrossing[] pedestrianCrossings = GameObject.FindObjectsOfType<PedestrianCrossing>();
+        int pedestrianCrossingArea = NavMesh.GetAreaFromName(PEDESTRIAN_CROSSING_AREA);
         foreach (PedestrianCrossing crossing in pedestrianCrossings)
         {
             crossing.gameObject.GetComponents<MeshRenderer>();
             NavMeshModifier navMeshModifier = crossing.gameObject.AddComponent<NavMeshModifier>();
             navMeshModifier.ignoreFromBuild = false;
             navMeshModifier.overrideArea = true;
-            navMeshModifier.area = NavMesh.GetAreaFromName(PEDESTRIAN_CROSSING_AREA);
+            navMeshModifier.area = pedestrianCrossingArea;
         }
         navMeshSurface = GameObject.FindObjectOfType<NavMeshSurface>();
         navMeshSurface.BuildNavMesh();

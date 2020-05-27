@@ -2678,7 +2678,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkingInRoadPercentage: 0.01
-  allowCrossing: 1
+  partialPathFallbackLocationDistance: 5
 --- !u!136 &5852456205354867346
 CapsuleCollider:
   m_ObjectHideFlags: 0

@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class Pedestrian : MonoBehaviour
 {
     public float walkingInRoadPercentage = 0.01f;
+    public float partialPathFallbackLocationDistance = 5f;
 
     private NavMeshAgent navMeshAgent;
     private Animator animator;
@@ -14,12 +15,10 @@ public class Pedestrian : MonoBehaviour
     private float normalSpeed;
     private float normalStoppingDistance;
     private Vector3[] generalPathCorners = null;
-    public bool allowCrossing = true;
+    private bool allowCrossing = true;
     private int roadAreaMask;
     private int walkableAreaMask;
     private int pedestrianCrossingAreaMask;
-
-    public bool debug = false;
 
     void Start()
     {
@@ -49,10 +48,22 @@ public class Pedestrian : MonoBehaviour
     void Update()
     {
         animator.SetFloat("speed", navMeshAgent.velocity.magnitude);
+        DestroyCheck();
+        CrossingCheck();
+        SpeedUpdate();
+        LocationUpdate();
+    }
+
+    public void DestroyCheck()
+    {
         if (Vector3.Distance(transform.position, location) < 1f)
         {
             Destroy(gameObject);
         }
+    }
+
+    public void CrossingCheck()
+    {
         if (allowCrossing)
         {
             if (navMeshAgent.areaMask == walkableAreaMask)
@@ -67,11 +78,14 @@ public class Pedestrian : MonoBehaviour
                 NavMeshHit navMeshHit;
                 if (NavMesh.SamplePosition(transform.position, out navMeshHit, 1f, walkableAreaMask))
                 {
-                    Debug.DrawLine(navMeshHit.position, navMeshHit.position + Vector3.up * 5, Color.blue);
                     navMeshAgent.areaMask = walkableAreaMask;
                 }
             }
         }
+    }
+
+    public void SpeedUpdate()
+    {
         if (navMeshAgent.pathStatus == NavMeshPathStatus.PathInvalid)
         {
             navMeshAgent.speed = 0;
@@ -81,14 +95,12 @@ public class Pedestrian : MonoBehaviour
             navMeshAgent.speed = normalSpeed;
             navMeshAgent.stoppingDistance = normalStoppingDistance;
             Vector3 nearestLocation = FindNearestGeneralPathPoint();
-            if (Vector3.Distance(transform.position, nearestLocation) < 5f)
+            if (Vector3.Distance(transform.position, nearestLocation) < partialPathFallbackLocationDistance)
             {
-                Debug.DrawLine(nearestLocation, nearestLocation + Vector3.up * 2, Color.yellow, 10f);
                 navMeshAgent.SetDestination(nearestLocation);
             }
             else
             {
-                Debug.DrawLine(transform.position, transform.position + Vector3.up * 2, Color.red, 10f);
                 navMeshAgent.SetDestination(transform.position);
             }
         }
@@ -96,13 +108,10 @@ public class Pedestrian : MonoBehaviour
         {
             navMeshAgent.speed = normalSpeed;
         }
-        if (debug)
-        {
-            foreach(Vector3 corner in generalPathCorners)
-            {
-                Debug.DrawLine(corner, corner + Vector3.up, Color.green);
-            }
-        }
+    }
+
+    public void LocationUpdate()
+    {
         if (navMeshAgent.destination != location)
         {
             if (CanContinue())
