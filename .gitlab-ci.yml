@@ -3,6 +3,11 @@ variables:
     # See: https://docs.gitlab.com/ee/ci/large_repositories/
     BUILD_NAME: Traffic3D
     GIT_DEPTH: 10
+    DOCKER_IMAGE_NAME: "$CI_REGISTRY_IMAGE"
+    DOCKER_BUILD_ARGS: BUILDKIT_INLINE_CACHE=1
+    RELEASE_TAG: "latest"
+    FEATURE_BRANCH_TAG: $CI_COMMIT_REF_SLUG
+
 
 cache:
     key: "$CI_PROJECT_NAMESPACE-$CI_PROJECT_NAME-$CI_COMMIT_REF_SLUG-$BUILD_TARGET"
@@ -15,6 +20,7 @@ stages:
     - test
     - build
     - benchmark
+    - release
 
 workflow:
     rules:
@@ -34,10 +40,14 @@ meta-build-image:
     script:
         - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
         - cd .meta
-        - docker build -t $CI_REGISTRY/traffic3d/traffic3d/buildimage:latest .
-        - docker push $CI_REGISTRY/traffic3d/traffic3d/buildimage:latest
+        # Note that, unlike $BUILD_NAME, $PROJECT_NAME is lowercase, and so
+        # won't cause Docker to error with:
+        #     invalid reference format: repository name must be lowercase
+        - docker build -t $DOCKER_IMAGE_NAME:$FEATURE_BRANCH_TAG --build-arg $DOCKER_BUILD_ARGS .
+        - docker push $DOCKER_IMAGE_NAME:$FEATURE_BRANCH_TAG
     rules:
         - changes:
+              - .gitlab-ci.yml
               - .meta/Dockerfile
           when: always
         - when: never
@@ -63,7 +73,7 @@ lint:
         - shared
 
 .test: &test
-    image: registry.gitlab.com/traffic3d/traffic3d/buildimage
+    image: $DOCKER_IMAGE_NAME:$FEATURE_BRANCH_TAG
     stage: test
     <<: *unity_before_script
     script:
@@ -92,7 +102,7 @@ test-editmode:
 
 
 .build: &build
-    image: registry.gitlab.com/traffic3d/traffic3d/buildimage
+    image: $DOCKER_IMAGE_NAME:$FEATURE_BRANCH_TAG
     stage: build
     <<: *unity_before_script
     script:
@@ -134,7 +144,7 @@ build:master:
 
 benchmark:
     stage: benchmark
-    image: registry.gitlab.com/traffic3d/traffic3d/buildimage:latest
+    image: $DOCKER_IMAGE_NAME:$FEATURE_BRANCH_TAG
     <<: *unity_before_script
     dependencies:
         - build:feature-branch
@@ -145,3 +155,19 @@ benchmark:
     allow_failure: true
     tags:
         - shared
+
+release:dockerimage:
+    stage: release
+    image: docker:stable
+    script:
+        - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+        - cd .meta
+        - docker pull $DOCKER_IMAGE_NAME:$FEATURE_BRANCH_TAG
+        - docker tag $DOCKER_IMAGE_NAME:$FEATURE_BRANCH_TAG $DOCKER_IMAGE_NAME:$RELEASE_TAG
+        - docker push $DOCKER_IMAGE_NAME:RELEASE_TAG
+    rules:
+        - if: '$CI_COMMIT_BRANCH == "master"'
+          when: on_success
+        - if: '$CI_COMMIT_BRANCH == "develop"'
+          when: on_success
+        - when: never
