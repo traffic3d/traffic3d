@@ -7,6 +7,12 @@ public class Pedestrian : MonoBehaviour
 {
     public float walkingInRoadPercentage = 0.01f;
     public float partialPathFallbackLocationDistance = 5f;
+    public float maxSpeed = 5f;
+    public float minSpeed = 1f;
+    public float probabilityOfRunning = 0.1f;
+
+    // If changed, the animation controller needs the running value changed too.
+    private float runSpeed = 2.5f;
 
     private NavMeshAgent navMeshAgent;
     private Animator animator;
@@ -28,6 +34,14 @@ public class Pedestrian : MonoBehaviour
         pedestrianCrossingAreaMask = 1 << NavMesh.GetAreaFromName(PedestrianManager.PEDESTRIAN_CROSSING_AREA);
         animator = GetComponent<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
+        if (UnityEngine.Random.value > probabilityOfRunning)
+        {
+            navMeshAgent.speed = UnityEngine.Random.Range(minSpeed, runSpeed);
+        }
+        else
+        {
+            navMeshAgent.speed = UnityEngine.Random.Range(runSpeed, maxSpeed);
+        }
         normalSpeed = navMeshAgent.speed;
         normalStoppingDistance = navMeshAgent.stoppingDistance;
         navMeshAgent.avoidancePriority = UnityEngine.Random.Range(0, 99);
