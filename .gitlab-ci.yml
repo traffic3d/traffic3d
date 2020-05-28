@@ -125,3 +125,5 @@ benchmark:
     rules:
         - when: manual
     allow_failure: true
+    tags:
+        - benchmark
