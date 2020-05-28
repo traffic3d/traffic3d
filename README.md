@@ -1,7 +1,7 @@
 # Traffic 3D
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3460497.svg)](https://doi.org/10.5281/zenodo.3460497)
-[![pipeline status](https://gitlab.com/traffic3d/traffic3d/badges/develop/pipeline.svg)](https://gitlab.com/traffic3d/traffic3d/commits/develop)
+[![pipeline status](https://gitlab.com/traffic3d/traffic3d/badges/develop/pipeline.svg)](https://gitlab.com/traffic3d/traffic3d/-/commits/develop)
 
 Traffic3D is a new traffic simulation paradigm, built to push forward research in human-like learning (for example, based on photo-realistic visual input).
 It provides a fast, cheap and scalable proxy for real-world traffic environments, based on the [Unity 3d](https://unity3d.com/unity) platform.
