@@ -45,9 +45,12 @@ public class Junction : MonoBehaviour
         {
             TrafficLightManager.GetInstance().GetTrafficLight(trafficLightState.GetTrafficLightId()).SetColour(trafficLightState.GetLightColour());
         }
-        foreach (JunctionState.PedestrianCrossingState pedestrianCrossingState in junctionState.GetPedestrianCrossingStates())
+        if (junctionState.GetPedestrianCrossingStates() != null)
         {
-            PedestrianManager.GetInstance().GetPedestrianCrossing(pedestrianCrossingState.GetPedestrianCrossingId()).SetAllowCrossing(pedestrianCrossingState.AllowCrossing());
+            foreach (JunctionState.PedestrianCrossingState pedestrianCrossingState in junctionState.GetPedestrianCrossingStates())
+            {
+                PedestrianManager.GetInstance().GetPedestrianCrossing(pedestrianCrossingState.GetPedestrianCrossingId()).SetAllowCrossing(pedestrianCrossingState.AllowCrossing());
+            }
         }
     }
 
