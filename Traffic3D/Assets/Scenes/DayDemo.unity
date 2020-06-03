@@ -1377,7 +1377,16 @@ MonoBehaviour:
   pedestrianProbabilities:
   - pedestrian: {fileID: 6074077082472266415, guid: 399880466bcbc044996080057b662e3c,
       type: 3}
-    probability: 1
+    probability: 0.25
+  - pedestrian: {fileID: 3049720742483535364, guid: f756f376d4a99bf4495a81889624aef5,
+      type: 3}
+    probability: 0.25
+  - pedestrian: {fileID: 7032486324304100893, guid: 6c80ae2ba22adf44b872de5936f68fd3,
+      type: 3}
+    probability: 0.25
+  - pedestrian: {fileID: 6179223786555668857, guid: 4de6b56a257bb6f40843c24876c1c753,
+      type: 3}
+    probability: 0.25
 --- !u!4 &217048923
 Transform:
   m_ObjectHideFlags: 0
@@ -5278,6 +5287,7 @@ GameObject:
   - component: {fileID: 931275466}
   - component: {fileID: 931275465}
   - component: {fileID: 931275464}
+  - component: {fileID: 931275467}
   m_Layer: 0
   m_Name: Plane (3)
   m_TagString: roadway
@@ -5358,6 +5368,25 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 931275462}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!95 &931275467
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 931275462}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0d41b75e2dd97e74483ba12a5c7fea99, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &934259031
 GameObject:
   m_ObjectHideFlags: 0
@@ -13164,6 +13193,7 @@ GameObject:
   - component: {fileID: 574501488800957354}
   - component: {fileID: 2674947421617475637}
   - component: {fileID: 4932748921500174249}
+  - component: {fileID: 6628926511012594011}
   m_Layer: 0
   m_Name: CrossingLine8
   m_TagString: Untagged
@@ -13171,6 +13201,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!95 &6628926511012594011
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6628926511012594010}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0d41b75e2dd97e74483ba12a5c7fea99, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!33 &6666056584316093435
 MeshFilter:
   m_ObjectHideFlags: 0

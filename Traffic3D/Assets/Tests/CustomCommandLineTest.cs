@@ -44,6 +44,14 @@ public class CustomCommandLineTest : CommonSceneTest
         {
             Assert.AreEqual(0.125, vehicleProbability.probability);
         }
+        PedestrianFactory pedestrianFactory = (PedestrianFactory)GameObject.FindObjectOfType(typeof(PedestrianFactory));
+        Assert.AreEqual(1, pedestrianFactory.highRangeRespawnTime);
+        Assert.AreEqual(1, pedestrianFactory.lowRangeRespawnTime);
+        Assert.AreEqual(1, pedestrianFactory.maximumPedestrianCount);
+        foreach (PedestrianFactory.PedestrianProbability pedestrianProbability in pedestrianFactory.pedestrianProbabilities)
+        {
+            Assert.AreEqual(0.25, pedestrianProbability.probability);
+        }
         SceneManager.LoadScene("Sumo");
         yield return new WaitUntil(() => GameObject.FindObjectOfType(typeof(SumoManager)) != null);
         DisableLoops();

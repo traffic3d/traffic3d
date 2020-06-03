@@ -58,6 +58,7 @@ public class JSONConfigParser
             currentBuildScene = scene;
         }
         SetUpVehicleFactory((VehicleFactory)GameObject.FindObjectOfType(typeof(VehicleFactory)));
+        SetUpPedestrianFactory((PedestrianFactory)GameObject.FindObjectOfType(typeof(PedestrianFactory)));
         SetUpSumo((SumoManager)GameObject.FindObjectOfType(typeof(SumoManager)));
     }
 
@@ -79,6 +80,27 @@ public class JSONConfigParser
         }
     }
 
+    public static void SetUpPedestrianFactory(PedestrianFactory pedestrianFactory)
+    {
+        // Pedestrian Factory is not supported in SUMO
+        if (pedestrianFactory == null)
+        {
+            return;
+        }
+        pedestrianFactory.highRangeRespawnTime = config.pedestrianFactoryConfig.highRangeRespawnTime;
+        pedestrianFactory.lowRangeRespawnTime = config.pedestrianFactoryConfig.lowRangeRespawnTime;
+        pedestrianFactory.maximumPedestrianCount = config.pedestrianFactoryConfig.maximumPedestrianCount;
+        pedestrianFactory.pedestrianProbabilities.Clear();
+
+        foreach (PedestrianProbabilityConfig pedestrianProbabilityConfig in config.pedestrianFactoryConfig.pedestrianProbabilities)
+        {
+            PedestrianFactory.PedestrianProbability pedestrianProbability = new PedestrianFactory.PedestrianProbability();
+            pedestrianProbability.pedestrian = (Pedestrian)AssetDatabase.LoadAssetAtPath(pedestrianProbabilityConfig.pedestrianPath, typeof(Pedestrian));
+            pedestrianProbability.probability = pedestrianProbabilityConfig.probability;
+            pedestrianFactory.pedestrianProbabilities.Add(pedestrianProbability);
+        }
+    }
+
     public static void SetUpSumo(SumoManager sumoManager)
     {
         if (sumoManager == null)
@@ -94,6 +116,7 @@ public class JSONConfigParser
     public class JSONConfig
     {
         public VehicleFactoryConfig vehicleFactoryConfig;
+        public PedestrianFactoryConfig pedestrianFactoryConfig;
         public SumoConfig sumoConfig;
     }
 
@@ -120,6 +143,22 @@ public class JSONConfigParser
     public class VehicleProbabilityConfig
     {
         public string vehiclePath;
+        public float probability;
+    }
+
+    [System.Serializable]
+    public class PedestrianFactoryConfig
+    {
+        public float highRangeRespawnTime;
+        public float lowRangeRespawnTime;
+        public int maximumPedestrianCount;
+        public List<PedestrianProbabilityConfig> pedestrianProbabilities;
+    }
+
+    [System.Serializable]
+    public class PedestrianProbabilityConfig
+    {
+        public string pedestrianPath;
         public float probability;
     }
 }
