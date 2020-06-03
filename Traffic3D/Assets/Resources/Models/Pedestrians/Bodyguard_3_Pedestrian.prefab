@@ -511,7 +511,7 @@ GameObject:
   - component: {fileID: 4012293838445934057}
   - component: {fileID: 3605245957896298385}
   m_Layer: 0
-  m_Name: Bodyguard_04
+  m_Name: Bodyguard_3_Pedestrian
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -576,7 +576,7 @@ NavMeshAgent:
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: -0.075
-  m_WalkableMask: 9
+  m_WalkableMask: 1
   m_ObstacleAvoidanceType: 4
 --- !u!114 &6179223786555668857
 MonoBehaviour:

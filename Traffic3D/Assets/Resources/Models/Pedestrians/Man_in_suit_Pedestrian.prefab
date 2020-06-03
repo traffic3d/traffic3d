@@ -2602,7 +2602,7 @@ GameObject:
   - component: {fileID: 5852456205354867346}
   - component: {fileID: 438254585534590477}
   m_Layer: 0
-  m_Name: Pedestrian
+  m_Name: Man_in_suit_Pedestrian
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2663,7 +2663,7 @@ NavMeshAgent:
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: -0.075
-  m_WalkableMask: 9
+  m_WalkableMask: 1
   m_ObstacleAvoidanceType: 4
 --- !u!114 &6074077082472266415
 MonoBehaviour:
@@ -2679,6 +2679,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkingInRoadPercentage: 0.01
   partialPathFallbackLocationDistance: 5
+  maxSpeed: 5
+  minSpeed: 1
+  probabilityOfRunning: 0.1
 --- !u!136 &5852456205354867346
 CapsuleCollider:
   m_ObjectHideFlags: 0
