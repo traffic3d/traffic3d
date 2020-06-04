@@ -52,3 +52,4 @@ MonoBehaviour:
   nightSkyBox: {fileID: 2100000, guid: 51b74d7bad397457d883c5940f7664d8, type: 2}
   mainLight: {fileID: 0}
   nightLightColour: {r: 0.8392157, g: 0.8405378, b: 1, a: 1}
+  snowMaterial: {fileID: 2100000, guid: d92695b5eaaaa4fe5ad32a138a96ea1a, type: 2}

@@ -12,6 +12,7 @@ public class EnvironmentSettings : MonoBehaviour
     public Material nightSkyBox;
     public Light mainLight;
     public Color nightLightColour = new Color(0.8392157F, 0.8405378F, 1F);
+    public Material snowMaterial;
 
     private const int snowHeight = 50;
     private const int snowLengthForward = 40;
@@ -37,6 +38,13 @@ public class EnvironmentSettings : MonoBehaviour
             {
                 Vector3 camPosition = cam.transform.position;
                 GameObject snowPrefabInstance = GameObject.Instantiate(snowPrefab, new Vector3(camPosition.x, camPosition.y + snowHeight, camPosition.z) + cam.transform.forward * snowLengthForward, Quaternion.Euler(new Vector3(0, 0, 0)));
+            }
+            foreach (Renderer renderer in GameObject.FindObjectsOfType<Renderer>())
+            {
+                if (renderer.material.name.ToLower().Contains("grass"))
+                {
+                    renderer.material = snowMaterial;
+                }
             }
             RenderSettings.skybox = snowSkyBox;
         }
