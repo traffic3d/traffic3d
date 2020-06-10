@@ -62,6 +62,11 @@ public class PedestrianManager : MonoBehaviour
         this.pedestrianCrossings = pedestrianCrossings.ToList();
     }
 
+    public List<PedestrianCrossing> GetPedestrianCrossings()
+    {
+        return pedestrianCrossings;
+    }
+
     public PedestrianCrossing GetPedestrianCrossing(string id)
     {
         return pedestrianCrossings.Find(p => p.GetPedestrianCrossingId() == id);
