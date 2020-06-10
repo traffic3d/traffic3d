@@ -141,6 +141,11 @@ public class Pedestrian : MonoBehaviour
         this.allowCrossing = allowCrossing;
     }
 
+    public bool GetAllowCrossing()
+    {
+        return this.allowCrossing;
+    }
+
     public void GoToRandomPossibleLocation()
     {
         location = FindRandomPossibleLocation();

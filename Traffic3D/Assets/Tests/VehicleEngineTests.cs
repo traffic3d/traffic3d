@@ -178,6 +178,11 @@ public class VehicleEngineTests : CommonSceneTest
         VehicleFactory vehicleFactory = (VehicleFactory)GameObject.FindObjectOfType(typeof(VehicleFactory));
         vehicleFactory.StopAllCoroutines();
         PythonManager.GetInstance().StopAllCoroutines();
+        PedestrianFactory pedestrianFactory = (PedestrianFactory)GameObject.FindObjectOfType(typeof(PedestrianFactory));
+        if (pedestrianFactory != null)
+        {
+            pedestrianFactory.StopAllCoroutines();
+        }
     }
 
 }
