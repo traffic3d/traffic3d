@@ -92,7 +92,6 @@ public class VehicleEngineTests : CommonSceneTest
         Rigidbody vehicle = vehicleFactory.SpawnVehicle(vehicleFactory.GetRandomVehicle(), pathWithTurning);
         VehicleEngine vehicleEngine = vehicle.GetComponent<VehicleEngine>();
         bool carIsDestroyed = false;
-        bool passedTest = false;
         for (int i = 0; i <= TIME_OUT_DESTROY_TIME; i = i + 5)
         {
             yield return new WaitForSeconds(5);
@@ -105,7 +104,7 @@ public class VehicleEngineTests : CommonSceneTest
 
             if (Math.Abs(vehicleEngine.wheelColliderFrontLeft.steerAngle) > 2)
             {
-                passedTest = vehicleEngine.maxSpeedTurning == vehicleEngine.targetSpeed;
+                Assert.AreEqual(vehicleEngine.maxSpeedTurning, vehicleEngine.targetSpeed, "Turning Speed");
             }
 
             if (vehicleEngine.currentNodeNumber + 1 < vehicleEngine.path.nodes.Count)
@@ -113,7 +112,7 @@ public class VehicleEngineTests : CommonSceneTest
                 // If next node is a traffic light
                 if (TrafficLightManager.GetInstance().IsStopNode(vehicleEngine.path.nodes[vehicleEngine.currentNodeNumber + 1]))
                 {
-                    passedTest = vehicleEngine.maxSpeedAproachingLightsLastNode == vehicleEngine.targetSpeed;
+                    Assert.AreEqual(vehicleEngine.maxSpeedApproachingLightsLastNode, vehicleEngine.targetSpeed, "Speed Approaching last node");
                 }
             }
             if (vehicleEngine.currentNodeNumber + 2 < vehicleEngine.path.nodes.Count)
@@ -121,16 +120,12 @@ public class VehicleEngineTests : CommonSceneTest
                 // If 2nd to next node is a traffic light
                 if (TrafficLightManager.GetInstance().IsStopNode(vehicleEngine.path.nodes[vehicleEngine.currentNodeNumber + 2]))
                 {
-                    passedTest = vehicleEngine.maxSpeedAproachingLightsSecondLastNode == vehicleEngine.targetSpeed;
+                    Assert.AreEqual(vehicleEngine.maxSpeedApproachingLightsSecondLastNode, vehicleEngine.targetSpeed, "Speed Approaching second to last node");
                 }
             }
 
-            if (!passedTest)
-            {
-                Assert.Fail("Speed test failed, current target speed: " + vehicleEngine.targetSpeed);
-            }
         }
-        Assert.True(passedTest && carIsDestroyed);
+        Assert.True(carIsDestroyed);
     }
 
     [UnityTest]
@@ -147,8 +142,8 @@ public class VehicleEngineTests : CommonSceneTest
 
         Assert.AreEqual(0, vehicleEngine.wheelColliderFrontLeft.brakeTorque);
         Assert.AreEqual(0, vehicleEngine.wheelColliderFrontRight.brakeTorque);
-        Assert.AreEqual(vehicleEngine.maxMotorTorque, vehicleEngine.wheelColliderFrontLeft.motorTorque);
-        Assert.AreEqual(vehicleEngine.maxMotorTorque, vehicleEngine.wheelColliderFrontRight.motorTorque);
+        Assert.AreEqual(vehicleEngine.currentMotorTorque, vehicleEngine.wheelColliderFrontLeft.motorTorque);
+        Assert.AreEqual(vehicleEngine.currentMotorTorque, vehicleEngine.wheelColliderFrontRight.motorTorque);
 
         vehicleEngine.SetEngineStatus(VehicleEngine.EngineStatus.STOP);
 

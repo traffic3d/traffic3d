@@ -11,14 +11,15 @@ public class VehicleEngine : MonoBehaviour
     public WheelCollider wheelColliderFrontLeft;
     public WheelCollider wheelColliderFrontRight;
     public float maxMotorTorque = 200f;
+    public float currentMotorTorque;
     public float normalBrakeTorque = 200f;
     public float maxBrakeTorque = 400f;
     public float currentSpeed;
     public float stoppingDistance = 7f;
     public float maxSpeed = 100f;
     public float maxSpeedTurning = 20f;
-    public float maxSpeedAproachingLightsLastNode = 7f;
-    public float maxSpeedAproachingLightsSecondLastNode = 30f;
+    public float maxSpeedApproachingLightsLastNode = 7f;
+    public float maxSpeedApproachingLightsSecondLastNode = 30f;
     public Vector3 centerOfMass;
     public Transform currentNode;
     public int currentNodeNumber;
@@ -49,6 +50,7 @@ public class VehicleEngine : MonoBehaviour
         startPos = transform.position;
         engineStatus = EngineStatus.STOP;
         targetSpeed = maxSpeed;
+        currentMotorTorque = maxMotorTorque;
     }
 
     /// <summary>
@@ -70,6 +72,11 @@ public class VehicleEngine : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        SurfaceCheck();
+    }
+
     /// <summary>
     /// The update method to check and update values for the vehicle.
     /// </summary>
@@ -89,7 +96,8 @@ public class VehicleEngine : MonoBehaviour
             return;
         }
         ApplySteer();
-        currentSpeed = 2 * Mathf.PI * wheelColliderFrontLeft.radius * wheelColliderFrontLeft.rpm * 60 / 1000;
+        WheelCollider nonePoweredWheel = GetComponentsInChildren<WheelCollider>().First(wheel => wheel != wheelColliderFrontLeft && wheel != wheelColliderFrontRight);
+        currentSpeed = 2 * Mathf.PI * nonePoweredWheel.radius * nonePoweredWheel.rpm * 60 / 1000;
         SpeedCheck();
         SensorCheck();
         TrafficLight trafficLight = TrafficLightManager.GetInstance().GetTrafficLightFromStopNode(currentNode);
@@ -138,7 +146,7 @@ public class VehicleEngine : MonoBehaviour
             // If next node is a traffic light
             if (TrafficLightManager.GetInstance().IsStopNode(path.nodes[currentNodeNumber + 1]))
             {
-                SetTargetSpeed(maxSpeedAproachingLightsLastNode);
+                SetTargetSpeed(maxSpeedApproachingLightsLastNode);
             }
         }
         if (currentNodeNumber + 2 < path.nodes.Count)
@@ -146,7 +154,7 @@ public class VehicleEngine : MonoBehaviour
             // If 2nd to next node is a traffic light
             if (TrafficLightManager.GetInstance().IsStopNode(path.nodes[currentNodeNumber + 2]))
             {
-                SetTargetSpeed(maxSpeedAproachingLightsSecondLastNode);
+                SetTargetSpeed(maxSpeedApproachingLightsSecondLastNode);
             }
         }
     }
@@ -189,6 +197,34 @@ public class VehicleEngine : MonoBehaviour
             }
         }
         SetTargetSpeed(speedToTarget);
+    }
+
+    private void SurfaceCheck()
+    {
+        WheelHit hit;
+        if (wheelColliderFrontLeft.GetGroundHit(out hit))
+        {
+            float staticFriction = hit.collider.material.staticFriction;
+            float dyanmicFriction = hit.collider.material.dynamicFriction;
+            foreach (WheelCollider wheelCollider in GetComponentsInChildren<WheelCollider>())
+            {
+                WheelFrictionCurve wheelFrictionCurveForward = new WheelFrictionCurve();
+                wheelFrictionCurveForward.extremumValue = staticFriction;
+                wheelFrictionCurveForward.extremumSlip = wheelCollider.forwardFriction.extremumSlip;
+                wheelFrictionCurveForward.asymptoteValue = dyanmicFriction;
+                wheelFrictionCurveForward.asymptoteSlip = wheelCollider.forwardFriction.asymptoteSlip;
+                wheelFrictionCurveForward.stiffness = wheelCollider.forwardFriction.stiffness;
+                WheelFrictionCurve wheelFrictionCurveSideways = new WheelFrictionCurve();
+                wheelFrictionCurveSideways.extremumValue = staticFriction;
+                wheelFrictionCurveSideways.extremumSlip = wheelCollider.sidewaysFriction.extremumSlip;
+                wheelFrictionCurveSideways.asymptoteValue = dyanmicFriction;
+                wheelFrictionCurveSideways.asymptoteSlip = wheelCollider.sidewaysFriction.asymptoteSlip;
+                wheelFrictionCurveSideways.stiffness = wheelCollider.sidewaysFriction.stiffness;
+                wheelCollider.forwardFriction = wheelFrictionCurveForward;
+                wheelCollider.sidewaysFriction = wheelFrictionCurveSideways;
+            }
+            currentMotorTorque = Math.Min(maxMotorTorque, maxMotorTorque * dyanmicFriction);
+        }
     }
 
     /// <summary>
@@ -258,8 +294,8 @@ public class VehicleEngine : MonoBehaviour
         wheelColliderFrontRight.motorTorque = 0;
         if (engineStatus == EngineStatus.ACCELERATE)
         {
-            wheelColliderFrontLeft.motorTorque = maxMotorTorque;
-            wheelColliderFrontRight.motorTorque = maxMotorTorque;
+            wheelColliderFrontLeft.motorTorque = currentMotorTorque;
+            wheelColliderFrontRight.motorTorque = currentMotorTorque;
         }
         else if (engineStatus == EngineStatus.STOP)
         {

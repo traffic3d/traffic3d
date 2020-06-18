@@ -53,3 +53,9 @@ MonoBehaviour:
   mainLight: {fileID: 0}
   nightLightColour: {r: 0.8392157, g: 0.8405378, b: 1, a: 1}
   snowMaterial: {fileID: 2100000, guid: d92695b5eaaaa4fe5ad32a138a96ea1a, type: 2}
+  normalSurfaceMaterial: {fileID: 13400000, guid: e36899b7c28d72149836adc34b7d618e,
+    type: 2}
+  rainSurfaceMaterial: {fileID: 13400000, guid: 0597a25b3fa40ef4aae847370a2fd5c3,
+    type: 2}
+  snowSurfaceMaterial: {fileID: 13400000, guid: 381d556d8e65b924c89c70b0691d5e62,
+    type: 2}
