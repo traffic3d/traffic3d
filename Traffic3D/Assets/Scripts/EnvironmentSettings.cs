@@ -13,6 +13,9 @@ public class EnvironmentSettings : MonoBehaviour
     public Light mainLight;
     public Color nightLightColour = new Color(0.8392157F, 0.8405378F, 1F);
     public Material snowMaterial;
+    public PhysicMaterial normalSurfaceMaterial;
+    public PhysicMaterial rainSurfaceMaterial;
+    public PhysicMaterial snowSurfaceMaterial;
 
     private const int snowHeight = 50;
     private const int snowLengthForward = 40;
@@ -20,9 +23,11 @@ public class EnvironmentSettings : MonoBehaviour
 
     void Start()
     {
+        SetSurfaceMaterial(normalSurfaceMaterial);
         RenderSettings.ambientIntensity = ambientIntensity;
         if (rain)
         {
+            SetSurfaceMaterial(rainSurfaceMaterial);
             GameObject rainPrefab = Resources.Load<GameObject>("Models/Rain");
             foreach (Camera cam in FindObjectsOfType<Camera>())
             {
@@ -33,6 +38,7 @@ public class EnvironmentSettings : MonoBehaviour
         }
         if (snow)
         {
+            SetSurfaceMaterial(snowSurfaceMaterial);
             GameObject snowPrefab = Resources.Load<GameObject>("Models/Snow");
             foreach (Camera cam in FindObjectsOfType<Camera>())
             {
@@ -47,6 +53,7 @@ public class EnvironmentSettings : MonoBehaviour
                 }
             }
             RenderSettings.skybox = snowSkyBox;
+
         }
         if (night)
         {
@@ -56,6 +63,18 @@ public class EnvironmentSettings : MonoBehaviour
                 mainLight.intensity = mainLight.intensity * nightLightIntensityConstant;
                 mainLight.color = nightLightColour;
             }
+        }
+    }
+
+    private void SetSurfaceMaterial(PhysicMaterial surfaceMaterial)
+    {
+        foreach (GameObject roadway in GameObject.FindGameObjectsWithTag("roadway"))
+        {
+            roadway.GetComponent<Collider>().material = surfaceMaterial;
+        }
+        foreach (GameObject pathway in GameObject.FindGameObjectsWithTag("pathway"))
+        {
+            pathway.GetComponent<Collider>().material = surfaceMaterial;
         }
     }
 
