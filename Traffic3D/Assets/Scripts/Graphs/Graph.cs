@@ -13,6 +13,7 @@ public class Graph : MonoBehaviour
     private Text textTemplate;
     public int maxDataPoints = 20;
     public int numberOfLabelsY = 5;
+    public GraphType graphType;
 
     void Awake()
     {
@@ -27,10 +28,19 @@ public class Graph : MonoBehaviour
         UpdateGraph();
     }
 
+    public void SetData(List<float> data)
+    {
+        this.data = data;
+    }
+
     public void UpdateGraph()
     {
         graphComponents.ForEach(ob => Destroy(ob));
         DrawGraphLines();
+        if (data == null || data.Count == 0)
+        {
+            return;
+        }
         float graphHeight = graphContainer.sizeDelta.y;
         float graphWidth = graphContainer.sizeDelta.x;
         float yMax = data.Max();
@@ -53,8 +63,8 @@ public class Graph : MonoBehaviour
             }
             lastDataPoint = dataPoint;
         }
-        int distanceBetweenLabelsY = (int) Math.Ceiling(graphHeight / (numberOfLabelsY - 1));
-        for(int i = 0; i <= (int) graphHeight; i = i + distanceBetweenLabelsY)
+        int distanceBetweenLabelsY = (int)Math.Ceiling(graphHeight / (numberOfLabelsY - 1));
+        for (int i = 0; i <= (int)graphHeight; i = i + distanceBetweenLabelsY)
         {
             double amount = Math.Round((i / graphHeight) * yMax);
             GameObject dataPointYLabel = CreateDataPointLabel(new Vector2(-15, i), amount + "");
@@ -122,7 +132,7 @@ public class Graph : MonoBehaviour
         rectTransform.anchorMin = Vector2.zero;
         rectTransform.anchorMax = Vector2.zero;
         rectTransform.anchoredPosition = dataPointPosition1 + direction * distance * 0.5f;
-        rectTransform.localEulerAngles = new Vector3(0, 0, (float) Math.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
+        rectTransform.localEulerAngles = new Vector3(0, 0, (float)Math.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
         return connection;
     }
 
