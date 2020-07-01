@@ -8,6 +8,7 @@ public class GraphManager : MonoBehaviour
 {
     public bool flowGraph;
     public bool throughputGraph;
+    public bool densityPerKmGraph;
     private List<Graph> graphs;
 
     void Start()
@@ -20,7 +21,9 @@ public class GraphManager : MonoBehaviour
     {
         while (true)
         {
-            UpdateFlowGraph();
+            UpdateGeneralGraph(GraphType.FLOW, "Flow.csv", flowGraph);
+            UpdateGeneralGraph(GraphType.THROUGHPUT, "Throughput.csv", throughputGraph);
+            UpdateGeneralGraph(GraphType.DENSITY_PER_KM, "DensityPerKm.csv", densityPerKmGraph);
             yield return new WaitForSeconds(10);
         }
     }
@@ -34,32 +37,45 @@ public class GraphManager : MonoBehaviour
     {
         GameObject template = Resources.Load<GameObject>("UI/GraphTemplate");
         GameObject graphObject = Instantiate(template, FindObjectOfType<Canvas>().transform);
-        graphObject.name = "FlowGraph";
+        graphObject.name = graphType.ToString();
         RectTransform rectTransform = graphObject.GetComponent<RectTransform>();
-        rectTransform.anchoredPosition = new Vector2(rectTransform.sizeDelta.x / 2, -rectTransform.sizeDelta.y / 2);
+        float distanceToMoveX = graphs.Sum(g => g.transform.parent.GetComponent<RectTransform>().sizeDelta.x);
+        print(distanceToMoveX);
+        rectTransform.anchoredPosition = new Vector2(distanceToMoveX + rectTransform.sizeDelta.x / 2, -rectTransform.sizeDelta.y / 2);
         Graph graph = graphObject.GetComponentInChildren<Graph>();
         graph.graphType = graphType;
         graphs.Add(graph);
         return graph;
     }
 
-    public void UpdateFlowGraph()
+    private void UpdateGeneralGraph(GraphType graphType, string fileName, bool enabled)
     {
-        Graph graph = GetGraph(GraphType.FLOW);
+        Graph graph = GetGraph(graphType);
         if (graph == null)
         {
-            graph = CreateGraph(GraphType.FLOW);
+            graph = CreateGraph(graphType);
         }
-        graph.enabled = flowGraph;
-        graph.transform.parent.gameObject.SetActive(flowGraph);
-        if (flowGraph)
+        graph.enabled = enabled;
+        graph.transform.parent.gameObject.SetActive(enabled);
+        if (enabled)
         {
-            // Todo SET GRAPH DATA
-            //string flow = Utils.ReadText("Flow.csv")[0];
-            //List<string> resultString = flow.Split(',').ToList();
-            //resultString.RemoveAll(s => s.Equals("NaN"));
-            //List<float> results = resultString.Select(s => float.Parse(s)).ToList();
-            //graph.SetData(results);
+            string flow = Utils.ReadResultText(fileName)[0];
+            List<string> resultString = flow.Split(',').ToList();
+            resultString.RemoveAll(s => s == null || s.Equals("") || s.Equals("NaN"));
+            resultString = resultString.Skip(Math.Max(0, resultString.Count() - graph.maxDataPoints)).ToList();
+            List<float> data = new List<float>();
+            foreach (String s in resultString)
+            {
+                try
+                {
+                    data.Add(float.Parse(s));
+                }
+                catch (Exception e)
+                {
+                    Debug.Log(s + " + " + e.Message);
+                }
+            }
+            graph.SetData(data);
             graph.UpdateGraph();
         }
     }

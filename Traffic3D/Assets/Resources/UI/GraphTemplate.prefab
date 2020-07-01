@@ -95,7 +95,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.50980395}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.50980395}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -161,9 +161,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d09c35867c1b8a74481c356358d893e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dataPointSprite: {fileID: 0}
+  dataPointSprite: {fileID: 21300000, guid: 202531525ceaf1949a0452cf2660b74e, type: 3}
   maxDataPoints: 20
-  numberOfLabelsY: 5
+  numberOfLabelsY: 6
   graphType: 0
 --- !u!222 &1876983398805754692
 CanvasRenderer:
@@ -186,7 +186,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.69803923}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.69803923}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:

@@ -16,7 +16,7 @@ public class Utils
         System.IO.File.AppendAllText(System.IO.Path.Combine(resultPath, fileName), result);
     }
 
-    public static string[] ReadText(string fileName)
+    public static string[] ReadResultText(string fileName)
     {
         return System.IO.File.ReadAllLines(System.IO.Path.Combine(resultPath, fileName));
     }

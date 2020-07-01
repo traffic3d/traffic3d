@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,7 +13,7 @@ public class Graph : MonoBehaviour
     private List<float> data;
     private Text textTemplate;
     public int maxDataPoints = 20;
-    public int numberOfLabelsY = 5;
+    public int numberOfLabelsY = 6;
     public GraphType graphType;
 
     void Awake()
@@ -20,12 +21,6 @@ public class Graph : MonoBehaviour
         graphContainer = gameObject.GetComponent<RectTransform>();
         graphComponents = new List<GameObject>();
         textTemplate = Resources.Load<Text>("UI/textTemplate");
-    }
-
-    private void Start()
-    {
-        data = new List<float>() { 35, 23, 58, 24, 89, 87, 76, 54, 23, 10, 23, 43, 54, 65, 66, 45, 34, 56, 26, 24 };
-        UpdateGraph();
     }
 
     public void SetData(List<float> data)
@@ -37,6 +32,7 @@ public class Graph : MonoBehaviour
     {
         graphComponents.ForEach(ob => Destroy(ob));
         DrawGraphLines();
+        DrawTitles();
         if (data == null || data.Count == 0)
         {
             return;
@@ -53,8 +49,6 @@ public class Graph : MonoBehaviour
             float yPosition = (data[i] / yMax) * graphHeight;
             GameObject dataPoint = CreateDataPoint(new Vector2(xPosition, yPosition));
             graphComponents.Add(dataPoint);
-            GameObject dataPointXLabel = CreateDataPointLabel(new Vector2(xPosition, -15), i + "");
-            graphComponents.Add(dataPointXLabel);
             if (lastDataPoint != null)
             {
                 GameObject connection = CreateDataPointConnection(lastDataPoint.GetComponent<RectTransform>().anchoredPosition,
@@ -66,8 +60,9 @@ public class Graph : MonoBehaviour
         int distanceBetweenLabelsY = (int)Math.Ceiling(graphHeight / (numberOfLabelsY - 1));
         for (int i = 0; i <= (int)graphHeight; i = i + distanceBetweenLabelsY)
         {
-            double amount = Math.Round((i / graphHeight) * yMax);
-            GameObject dataPointYLabel = CreateDataPointLabel(new Vector2(-15, i), amount + "");
+            float amount = (float)Math.Round((i / graphHeight) * yMax);
+            float yPosition = (amount / yMax) * graphHeight;
+            GameObject dataPointYLabel = CreateLabel(new Vector2(-15, yPosition), amount + "");
             graphComponents.Add(dataPointYLabel);
         }
     }
@@ -94,6 +89,18 @@ public class Graph : MonoBehaviour
         graphComponents.Add(yLine);
     }
 
+    private void DrawTitles()
+    {
+        string graphTitle = graphType.ToString().ToLower().Replace('_', ' ');
+        graphTitle = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(graphTitle);
+        GameObject title = CreateLabel(new Vector2(graphContainer.sizeDelta.x / 2, graphContainer.sizeDelta.y + 10), graphTitle);
+        graphComponents.Add(title);
+        GameObject xAxisTitle = CreateLabel(new Vector2(graphContainer.sizeDelta.x / 2, -10), "Time Period");
+        graphComponents.Add(xAxisTitle);
+        GameObject xAxisTitleLatest = CreateLabel(new Vector2(graphContainer.sizeDelta.x, -10), "Latest");
+        graphComponents.Add(xAxisTitleLatest);
+    }
+
     private GameObject CreateDataPoint(Vector2 position)
     {
         GameObject dataPoint = new GameObject("dataPoint", typeof(Image));
@@ -101,13 +108,13 @@ public class Graph : MonoBehaviour
         dataPoint.GetComponent<Image>().sprite = dataPointSprite;
         RectTransform rectTransform = dataPoint.GetComponent<RectTransform>();
         rectTransform.anchoredPosition = position;
-        rectTransform.sizeDelta = new Vector2(10, 10);
+        rectTransform.sizeDelta = new Vector2(5, 5);
         rectTransform.anchorMin = Vector2.zero;
         rectTransform.anchorMax = Vector2.zero;
         return dataPoint;
     }
 
-    private GameObject CreateDataPointLabel(Vector2 position, string label)
+    private GameObject CreateLabel(Vector2 position, string label)
     {
         Text dataPointLabel = Instantiate(textTemplate);
         dataPointLabel.transform.SetParent(graphContainer, false);
@@ -124,11 +131,11 @@ public class Graph : MonoBehaviour
     {
         GameObject connection = new GameObject("connection", typeof(Image));
         connection.transform.SetParent(graphContainer, false);
-        connection.GetComponent<Image>().color = new Color(1, 1, 1, 0.5f);
+        connection.GetComponent<Image>().color = Color.gray;
         RectTransform rectTransform = connection.GetComponent<RectTransform>();
         Vector2 direction = (dataPointPosition2 - dataPointPosition1).normalized;
         float distance = Vector2.Distance(dataPointPosition1, dataPointPosition2);
-        rectTransform.sizeDelta = new Vector2(distance, 3);
+        rectTransform.sizeDelta = new Vector2(distance, 2);
         rectTransform.anchorMin = Vector2.zero;
         rectTransform.anchorMax = Vector2.zero;
         rectTransform.anchoredPosition = dataPointPosition1 + direction * distance * 0.5f;

@@ -1,5 +1,6 @@
 ﻿public enum GraphType
 {
     FLOW,
-    THROUGH_PUT
+    THROUGHPUT,
+    DENSITY_PER_KM
 }
