@@ -21,9 +21,9 @@ public class GraphManager : MonoBehaviour
     {
         while (true)
         {
-            UpdateGeneralGraph(GraphType.FLOW, "Flow.csv", flowGraph);
-            UpdateGeneralGraph(GraphType.THROUGHPUT, "Throughput.csv", throughputGraph);
-            UpdateGeneralGraph(GraphType.DENSITY_PER_KM, "DensityPerKm.csv", densityPerKmGraph);
+            UpdateGeneralGraph(GraphType.FLOW, Utils.FLOW_FILE_NAME, flowGraph);
+            UpdateGeneralGraph(GraphType.THROUGHPUT, Utils.THROUGHPUT_FILE_NAME, throughputGraph);
+            UpdateGeneralGraph(GraphType.DENSITY_PER_KM, Utils.DENSITY_PER_KM_FILE_NAME, densityPerKmGraph);
             yield return new WaitForSeconds(10);
         }
     }
@@ -40,7 +40,6 @@ public class GraphManager : MonoBehaviour
         graphObject.name = graphType.ToString();
         RectTransform rectTransform = graphObject.GetComponent<RectTransform>();
         float distanceToMoveX = graphs.Sum(g => g.transform.parent.GetComponent<RectTransform>().sizeDelta.x);
-        print(distanceToMoveX);
         rectTransform.anchoredPosition = new Vector2(distanceToMoveX + rectTransform.sizeDelta.x / 2, -rectTransform.sizeDelta.y / 2);
         Graph graph = graphObject.GetComponentInChildren<Graph>();
         graph.graphType = graphType;
@@ -59,12 +58,17 @@ public class GraphManager : MonoBehaviour
         graph.transform.parent.gameObject.SetActive(enabled);
         if (enabled)
         {
-            string flow = Utils.ReadResultText(fileName)[0];
-            List<string> resultString = flow.Split(',').ToList();
-            resultString.RemoveAll(s => s == null || s.Equals("") || s.Equals("NaN"));
-            resultString = resultString.Skip(Math.Max(0, resultString.Count() - graph.maxDataPoints)).ToList();
+            string[] stringData = Utils.ReadResultText(fileName);
+            if (stringData == null)
+            {
+                return;
+            }
+            string resultString = stringData[0];
+            List<string> resultStrings = resultString.Split(',').ToList();
+            resultStrings.RemoveAll(s => s == null || s.Equals("") || s.Equals("NaN"));
+            resultStrings = resultStrings.Skip(Math.Max(0, resultStrings.Count() - graph.maxDataPoints)).ToList();
             List<float> data = new List<float>();
-            foreach (String s in resultString)
+            foreach (String s in resultStrings)
             {
                 try
                 {

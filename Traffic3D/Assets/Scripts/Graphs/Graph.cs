@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class Graph : MonoBehaviour
 {
     public Sprite dataPointSprite;
+    public Vector2 dataPointSize = new Vector2(5, 5);
     private RectTransform graphContainer;
     private List<GameObject> graphComponents;
     private List<float> data;
@@ -15,6 +16,7 @@ public class Graph : MonoBehaviour
     public int maxDataPoints = 20;
     public int numberOfLabelsY = 6;
     public GraphType graphType;
+    public Color lineColor = Color.white;
 
     void Awake()
     {
@@ -71,7 +73,7 @@ public class Graph : MonoBehaviour
     {
         GameObject xLine = new GameObject("xLine", typeof(Image));
         xLine.transform.SetParent(graphContainer, false);
-        xLine.GetComponent<Image>().color = Color.white;
+        xLine.GetComponent<Image>().color = lineColor;
         RectTransform rectTransformX = xLine.GetComponent<RectTransform>();
         rectTransformX.sizeDelta = new Vector2(graphContainer.sizeDelta.x, 3);
         rectTransformX.anchorMin = Vector2.zero;
@@ -80,7 +82,7 @@ public class Graph : MonoBehaviour
         graphComponents.Add(xLine);
         GameObject yLine = new GameObject("yLine", typeof(Image));
         yLine.transform.SetParent(graphContainer, false);
-        yLine.GetComponent<Image>().color = Color.white;
+        yLine.GetComponent<Image>().color = lineColor;
         RectTransform rectTransformY = yLine.GetComponent<RectTransform>();
         rectTransformY.sizeDelta = new Vector2(3, graphContainer.sizeDelta.y);
         rectTransformY.anchorMin = Vector2.zero;
@@ -108,7 +110,7 @@ public class Graph : MonoBehaviour
         dataPoint.GetComponent<Image>().sprite = dataPointSprite;
         RectTransform rectTransform = dataPoint.GetComponent<RectTransform>();
         rectTransform.anchoredPosition = position;
-        rectTransform.sizeDelta = new Vector2(5, 5);
+        rectTransform.sizeDelta = dataPointSize;
         rectTransform.anchorMin = Vector2.zero;
         rectTransform.anchorMax = Vector2.zero;
         return dataPoint;

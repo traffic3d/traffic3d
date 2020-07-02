@@ -169,10 +169,10 @@ public class PythonManager : MonoBehaviour
     {
         Time.timeScale = 0;
         double densityPerkm = (densityCount / densityLengthConstant);
-        Utils.AppendAllTextToResults("DensityPerKm.csv", densityPerkm.ToString() + ",");
+        Utils.AppendAllTextToResults(Utils.DENSITY_PER_KM_FILE_NAME, densityPerkm.ToString() + ",");
         double averageSpeed = (speedList.Sum() / (densityCount));
         double flow = (densityPerkm * averageSpeed);
-        Utils.AppendAllTextToResults("Flow.csv", flow.ToString() + ",");
+        Utils.AppendAllTextToResults(Utils.FLOW_FILE_NAME, flow.ToString() + ",");
         ResetDensityCount();
         speedList.Clear();
         yield return null;
@@ -186,7 +186,7 @@ public class PythonManager : MonoBehaviour
         // Both "car" and "hap" tags are cars that are waiting.
         int finalReward = rewardCount - (GameObject.FindGameObjectsWithTag("car").Length + GameObject.FindGameObjectsWithTag("hap").Length);
         Utils.AppendAllTextToResults("TrueRewards.csv", finalReward.ToString() + ",");
-        Utils.AppendAllTextToResults("Throughput.csv", rewardCount.ToString() + ",");
+        Utils.AppendAllTextToResults(Utils.THROUGHPUT_FILE_NAME, rewardCount.ToString() + ",");
         SocketManager.GetInstance().Send("" + finalReward);
         ResetRewardCount();
         yield return null;

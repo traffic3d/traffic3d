@@ -1,10 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using UnityEngine;
 
 public class Utils
 {
+    public static string FLOW_FILE_NAME = "Flow.csv";
+    public static string THROUGHPUT_FILE_NAME = "Throughput.csv";
+    public static string DENSITY_PER_KM_FILE_NAME = "DensityPerKm.csv";
+
     private static string resultPath = System.IO.Path.Combine(Application.dataPath, "Results");
 
     public static void AppendAllTextToResults(string fileName, string result)
@@ -18,6 +20,15 @@ public class Utils
 
     public static string[] ReadResultText(string fileName)
     {
-        return System.IO.File.ReadAllLines(System.IO.Path.Combine(resultPath, fileName));
+        if (!Directory.Exists(resultPath))
+        {
+            return null;
+        }
+        string filePath = System.IO.Path.Combine(resultPath, fileName);
+        if (!File.Exists(filePath))
+        {
+            return null;
+        }
+        return System.IO.File.ReadAllLines(filePath);
     }
 }
