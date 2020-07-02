@@ -32,12 +32,11 @@ public class PythonManager : MonoBehaviour
     /// /// <param name="vehicle">The vehicle to create.</param>
     void Start()
     {
-        if (Settings.IsHeadlessMode())
+        if (Settings.IsBenchmark())
         {
-            foreach (Camera camera in GameObject.FindObjectsOfType<Camera>())
-            {
-                camera.enabled = false;
-            }
+            Debug.Log("Running Benchmark");
+            SocketManager.GetInstance().SetSocket(new MockSocket());
+            StartCoroutine(RunBenchmark());
         }
         if (SocketManager.GetInstance().Connect())
         {
@@ -70,6 +69,22 @@ public class PythonManager : MonoBehaviour
             yield return StartCoroutine(CalculateDensity());
             yield return StartCoroutine(SendRewards());
         }
+    }
+
+
+    /// <summary>
+    /// Benchmark will close the application after 300 seconds of simulation time.
+    /// </summary>
+    public IEnumerator RunBenchmark()
+    {
+#if UNITY_EDITOR
+        yield return new WaitForSeconds(300);
+        Debug.Log("Benchmark Finished");
+        UnityEditor.EditorApplication.isPlaying = false;
+        UnityEditor.EditorApplication.Exit(0);
+#else
+        yield return null;
+#endif
     }
 
     /// <summary>

@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
@@ -9,8 +8,8 @@ public static class CustomCommandLineArguments
 
     public static void Run()
     {
-        CheckHeadless();
         CheckJSONConfigFile();
+        CheckRunBenchmark();
         CheckOpenScene();
     }
 
@@ -31,19 +30,6 @@ public static class CustomCommandLineArguments
         arguments = mockArguments;
     }
 
-    private static void CheckHeadless()
-    {
-        string isHeadless = GetArgument("RunHeadless");
-        if (isHeadless != null && isHeadless.ToLower().Equals("true"))
-        {
-            Settings.SetHeadlessMode(true);
-        }
-        else
-        {
-            Settings.SetHeadlessMode(false);
-        }
-    }
-
     private static void CheckJSONConfigFile()
     {
         string configPath = GetArgument("JSONConfigFile");
@@ -59,6 +45,21 @@ public static class CustomCommandLineArguments
         if (openScene != null)
         {
             EditorSceneManager.OpenScene(System.IO.Path.Combine(Application.dataPath, openScene));
+        }
+    }
+
+
+    private static void CheckRunBenchmark()
+    {
+        string runBenchmark = GetArgument("RunBenchmark");
+        if (runBenchmark != null && runBenchmark.ToLower().Equals("true"))
+        {
+            Settings.SetBenchmark();
+            UnityEditor.EditorApplication.isPlaying = true;
+            if (EditorSceneManager.GetActiveScene() == null)
+            {
+                EditorSceneManager.LoadScene(0);
+            }
         }
     }
 

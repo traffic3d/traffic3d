@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using UnityEngine;
 
-class MockSocket : ISocket
+public class MockSocket : ISocket
 {
     private int receiveCounter;
     private int sendCounter;
@@ -22,7 +23,12 @@ class MockSocket : ISocket
     {
         if (receiveCounter == 0)
         {
-            PushDataIntoBuffer(buffer, System.IO.Path.Combine(Application.dataPath, "Screenshots"));
+            string screenshotPath = System.IO.Path.Combine(Application.dataPath, "Screenshots");
+            if (!Directory.Exists(screenshotPath))
+            {
+                Directory.CreateDirectory(screenshotPath);
+            }
+            PushDataIntoBuffer(buffer, screenshotPath);
         }
         else
         {
