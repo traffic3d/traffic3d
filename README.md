@@ -40,7 +40,7 @@ The custom options are:
 
 * `-JSONConfigFile "filename.json"` - Import settings from a JSON file (see below for config details)
 * `-OpenScene "Scenes/sceneName.unity"` - Open a scene
-* `-RunHeadless true|false` - Run in headless mode
+* `-RunBenchmark true|false` - Run Benchmark
 
 ### Examples
 
@@ -54,7 +54,7 @@ ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x2
   -executeMethod CustomCommandLineArguments.Run \
   -JSONConfigFile "config.json" \
   -OpenScene "Scenes/NightDemo.unity" \
-  -RunHeadless true \
+  -RunBenchmark true \
   -logFile \
   -batchmode
 ```
