@@ -7,15 +7,13 @@ using UnityEngine.TestTools;
 [Category("Tests")]
 public class CustomCommandLineTest : CommonSceneTest
 {
-    private bool originalHeadlessMode;
     private JSONConfigParser.JSONConfig originalConfig;
 
     [UnitySetUp]
     public IEnumerator UnitySetUp()
     {
-        originalHeadlessMode = Settings.IsHeadlessMode();
         originalConfig = JSONConfigParser.GetConfig();
-        string[] arguments = new string[] { "-JSONConfigFile", "Assets/Tests/TestFiles/test_config.json", "-RunHeadless", "true" };
+        string[] arguments = new string[] { "-JSONConfigFile", "Assets/Tests/TestFiles/test_config.json" };
         CustomCommandLineArguments.SetMockArgument(arguments);
         CustomCommandLineArguments.Run();
         yield return new EnterPlayMode();
@@ -25,7 +23,6 @@ public class CustomCommandLineTest : CommonSceneTest
     public IEnumerator UnityTearDown()
     {
         JSONConfigParser.SetConfig(originalConfig);
-        Settings.SetHeadlessMode(originalHeadlessMode);
         yield return new ExitPlayMode();
     }
 
@@ -60,13 +57,6 @@ public class CustomCommandLineTest : CommonSceneTest
         Assert.AreEqual("0.0.0.0", sumoManager.ip);
         SumoManager.SumoLinkControlPointObject sumoLinkControlPointObject = sumoManager.sumoControlSettings.Find(o => o.sumoLinkControlPoint == SumoLinkControlPoint.TRAFFIC_FLOW);
         Assert.AreEqual(true, sumoLinkControlPointObject.controlledBySumo);
-    }
-
-    [UnityTest]
-    public IEnumerator RunHeadlessModeTest()
-    {
-        yield return null;
-        Assert.True(Settings.IsHeadlessMode());
     }
 
 }

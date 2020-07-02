@@ -8,13 +8,11 @@ using UnityEngine.TestTools;
 [Category("Tests")]
 public class InvalidJSONConfigTest : CommonSceneTest
 {
-    private bool originalHeadlessMode;
     private JSONConfigParser.JSONConfig originalConfig;
 
     [UnitySetUp]
     public IEnumerator UnitySetUp()
     {
-        originalHeadlessMode = Settings.IsHeadlessMode();
         originalConfig = JSONConfigParser.GetConfig();
         yield return new EnterPlayMode();
     }
@@ -23,7 +21,6 @@ public class InvalidJSONConfigTest : CommonSceneTest
     public IEnumerator UnityTearDown()
     {
         JSONConfigParser.SetConfig(originalConfig);
-        Settings.SetHeadlessMode(originalHeadlessMode);
         yield return null;
     }
 

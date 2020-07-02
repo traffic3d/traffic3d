@@ -1,25 +1,21 @@
-﻿public static class Settings
+﻿using UnityEditor;
+
+public static class Settings
 {
-    private static bool isBenchmark = false;
-    private static bool headlessMode = false;
 
     public static void SetBenchmark()
     {
-        isBenchmark = true;
+#if UNITY_EDITOR
+        EditorPrefs.SetBool("isBenchmark", true);
+#endif
     }
 
     public static bool IsBenchmark()
     {
-        return isBenchmark;
-    }
-
-    public static void SetHeadlessMode(bool input)
-    {
-        headlessMode = input;
-    }
-
-    public static bool IsHeadlessMode()
-    {
-        return headlessMode;
+#if UNITY_EDITOR
+        return EditorPrefs.GetBool("isBenchmark");
+#else
+        return false;
+#endif
     }
 }
