@@ -16,7 +16,8 @@ public class Graph : MonoBehaviour
     public int maxDataPoints = 20;
     public int numberOfLabelsY = 6;
     public GraphType graphType;
-    public Color lineColor = Color.white;
+    public Color axisColor = Color.white;
+    public Color lineColor = new Color(0.5664f, 0.7461f, 0.8555f);
 
     void Awake()
     {
@@ -42,6 +43,7 @@ public class Graph : MonoBehaviour
         float graphHeight = graphContainer.sizeDelta.y;
         float graphWidth = graphContainer.sizeDelta.x;
         float yMax = data.Max();
+        // Currently yMin will always be 0
         float dataPointAmount = Math.Min(data.Count, maxDataPoints);
         float xSize = graphWidth / dataPointAmount;
         GameObject lastDataPoint = null;
@@ -53,7 +55,7 @@ public class Graph : MonoBehaviour
             graphComponents.Add(dataPoint);
             if (lastDataPoint != null)
             {
-                GameObject connection = CreateDataPointConnection(lastDataPoint.GetComponent<RectTransform>().anchoredPosition,
+                GameObject connection = JoinConsecutiveDataPoints(lastDataPoint.GetComponent<RectTransform>().anchoredPosition,
                     dataPoint.GetComponent<RectTransform>().anchoredPosition);
                 graphComponents.Add(connection);
             }
@@ -73,7 +75,7 @@ public class Graph : MonoBehaviour
     {
         GameObject xLine = new GameObject("xLine", typeof(Image));
         xLine.transform.SetParent(graphContainer, false);
-        xLine.GetComponent<Image>().color = lineColor;
+        xLine.GetComponent<Image>().color = axisColor;
         RectTransform rectTransformX = xLine.GetComponent<RectTransform>();
         rectTransformX.sizeDelta = new Vector2(graphContainer.sizeDelta.x, 3);
         rectTransformX.anchorMin = Vector2.zero;
@@ -82,7 +84,7 @@ public class Graph : MonoBehaviour
         graphComponents.Add(xLine);
         GameObject yLine = new GameObject("yLine", typeof(Image));
         yLine.transform.SetParent(graphContainer, false);
-        yLine.GetComponent<Image>().color = lineColor;
+        yLine.GetComponent<Image>().color = axisColor;
         RectTransform rectTransformY = yLine.GetComponent<RectTransform>();
         rectTransformY.sizeDelta = new Vector2(3, graphContainer.sizeDelta.y);
         rectTransformY.anchorMin = Vector2.zero;
@@ -129,18 +131,23 @@ public class Graph : MonoBehaviour
         return dataPointLabel.gameObject;
     }
 
-    private GameObject CreateDataPointConnection(Vector2 dataPointPosition1, Vector2 dataPointPosition2)
+    private GameObject JoinConsecutiveDataPoints(Vector2 dataPointPosition1, Vector2 dataPointPosition2)
     {
         GameObject connection = new GameObject("connection", typeof(Image));
         connection.transform.SetParent(graphContainer, false);
-        connection.GetComponent<Image>().color = Color.gray;
+        connection.GetComponent<Image>().color = lineColor;
         RectTransform rectTransform = connection.GetComponent<RectTransform>();
+        rectTransform.SetAsFirstSibling();
+        // Get direction of the first point to the second.
         Vector2 direction = (dataPointPosition2 - dataPointPosition1).normalized;
+        // Get distance of between the two points.
         float distance = Vector2.Distance(dataPointPosition1, dataPointPosition2);
         rectTransform.sizeDelta = new Vector2(distance, 2);
         rectTransform.anchorMin = Vector2.zero;
         rectTransform.anchorMax = Vector2.zero;
+        // Change the line position to the first data point and move it to halfway across the two points (as the anchor point is in the middle of the line). 
         rectTransform.anchoredPosition = dataPointPosition1 + direction * distance * 0.5f;
+        // Rotate the line so its between the two points by working out the angle using the previously calculated direction
         rectTransform.localEulerAngles = new Vector3(0, 0, (float)Math.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
         return connection;
     }
