@@ -52,6 +52,10 @@ public class TrafficLightManager : MonoBehaviour
             trafficLight.trafficLightChangeEvent += TrafficLightChange;
         }
         junctions = GameObject.FindObjectsOfType<Junction>();
+        foreach(Junction junction in junctions)
+        {
+            junction.RefreshJunctionStates();
+        }
     }
 
     private void TrafficLightChange(object sender, TrafficLight.TrafficLightChangeEventArgs e)

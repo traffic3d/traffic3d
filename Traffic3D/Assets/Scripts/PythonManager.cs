@@ -41,6 +41,8 @@ public class PythonManager : MonoBehaviour
         if (SocketManager.GetInstance().Connect())
         {
             screenshotPath = string.Concat(SocketManager.GetInstance().ReceiveString().Replace('\\', '/').Split(System.IO.Path.GetInvalidPathChars()));
+            TrafficLightManager.GetInstance().RefreshTrafficLightsAndJunctions();
+            SocketManager.GetInstance().Send(TrafficLightManager.GetInstance().GetJunctions().Max(j => j.GetJunctionStates().Length) + "");
             StartCoroutine(MainLoop());
         }
         else
