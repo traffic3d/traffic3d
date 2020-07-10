@@ -83,12 +83,12 @@ public class GraphManager : MonoBehaviour
             if (graphType == GraphType.THROUGHPUT)
             {
                 graph.displayLatestXLabel = true;
-                graph.xLabel = "Simulation Time";
+                graph.xLabel = "Simulation Time-Steps";
             }
             else if (graphType == GraphType.TIME_TRAVELED || graphType == GraphType.DELAY)
             {
                 graph.displayLatestXLabel = true;
-                graph.xLabel = "Vehicles";
+                graph.xLabel = "Number of Vehicles Observed";
             }
             graph.UpdateGraph();
         }
