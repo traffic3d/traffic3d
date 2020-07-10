@@ -34,7 +34,8 @@ class ModelGenerator(ABC):
         self.send_data(self.images_path)
         self.max_number_of_junction_states = int(self.get_data().decode('utf-8'))
         if self.max_number_of_junction_states == 0:
-            raise ValueError("Max Junction State Size is 0.")
+            raise ValueError("The Max Number of Junction States is 0. It is possible that Traffic3D "
+                             "never sent the number in the first place or there are no Junction States in Traffic3D.")
         print("Max Junction State Size: " + str(self.max_number_of_junction_states))
 
     def get_data(self):
