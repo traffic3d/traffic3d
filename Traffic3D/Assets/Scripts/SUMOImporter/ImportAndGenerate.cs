@@ -408,11 +408,16 @@ public class ImportAndGenerate
             {
                 Junction junction = junction3D.AddComponent<Junction>();
                 junction.junctionId = j.id;
+                // Create Camera object for the junction.
                 GameObject cameraGameObject = new GameObject("junction_camera_" + j.id);
                 cameraGameObject.transform.SetParent(junction3D.transform);
+                // Get the center position of the Junction.
                 cameraGameObject.transform.position = mesh.bounds.center;
+                // Move the camera back for "cameraDistance" and up for "cameraHeight".
                 cameraGameObject.transform.position = cameraGameObject.transform.position + (cameraGameObject.transform.TransformDirection(Vector3.back) * cameraDistance) + (cameraGameObject.transform.TransformDirection(Vector3.up) * cameraHeight);
+                // Look the camera down by "cameraTiltDown".
                 cameraGameObject.transform.Rotate(new Vector3(cameraTiltDown, 0, 0));
+                // Add the Camera component to the object, assign it to the junction and add the CameraManager component.
                 Camera camera = cameraGameObject.AddComponent<Camera>();
                 junction.junctionCamera = camera;
                 cameraGameObject.AddComponent<CameraManager>();
