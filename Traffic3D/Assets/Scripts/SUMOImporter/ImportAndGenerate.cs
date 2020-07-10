@@ -52,6 +52,10 @@ public class ImportAndGenerate
     static float lengthFromRoadToBuilding = 15f;
     static float lengthFromBuildingToBuildingAlongRoad = 20f;
 
+    static float cameraHeight = 14f;
+    static float cameraDistance = 20f;
+    static float cameraTiltDown = 35f;
+
     static Boolean grassEnabled = true;
     static Boolean treesEnabled = true;
 
@@ -299,7 +303,7 @@ public class ImportAndGenerate
                     {
                         // Get the angle perpendicular to the road, the number of buildings along the road and the exact length between them.
                         float angle = Mathf.Atan2(y2 - y1, x2 - x1) * 180 / Mathf.PI;
-                        int amountOfBuildings = (int) (length / lengthFromBuildingToBuildingAlongRoad);
+                        int amountOfBuildings = (int)(length / lengthFromBuildingToBuildingAlongRoad);
                         double lengthBetweenBuildings = length / (amountOfBuildings + 1);
 
                         for (int buildingNum = 0; buildingNum < amountOfBuildings; buildingNum++)
@@ -325,7 +329,7 @@ public class ImportAndGenerate
                                 {
                                     continue;
                                 }
-                                foreach(GameObject otherBuilding in buildings)
+                                foreach (GameObject otherBuilding in buildings)
                                 {
                                     if (collider.transform.IsChildOf(otherBuilding.transform))
                                     {
@@ -404,6 +408,19 @@ public class ImportAndGenerate
             {
                 Junction junction = junction3D.AddComponent<Junction>();
                 junction.junctionId = j.id;
+                // Create Camera object for the junction.
+                GameObject cameraGameObject = new GameObject("junction_camera_" + j.id);
+                cameraGameObject.transform.SetParent(junction3D.transform);
+                // Get the center position of the Junction.
+                cameraGameObject.transform.position = mesh.bounds.center;
+                // Move the camera back for "cameraDistance" and up for "cameraHeight".
+                cameraGameObject.transform.position = cameraGameObject.transform.position + (cameraGameObject.transform.TransformDirection(Vector3.back) * cameraDistance) + (cameraGameObject.transform.TransformDirection(Vector3.up) * cameraHeight);
+                // Look the camera down by "cameraTiltDown".
+                cameraGameObject.transform.Rotate(new Vector3(cameraTiltDown, 0, 0));
+                // Add the Camera component to the object, assign it to the junction and add the CameraManager component.
+                Camera camera = cameraGameObject.AddComponent<Camera>();
+                junction.junctionCamera = camera;
+                cameraGameObject.AddComponent<CameraManager>();
             }
             Material material = Resources.Load<Material>("Materials/sidewalk");
             r.material = material;
