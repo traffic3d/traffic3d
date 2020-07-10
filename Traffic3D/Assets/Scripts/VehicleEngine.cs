@@ -33,6 +33,7 @@ public class VehicleEngine : MonoBehaviour
     private float longestSide;
     public float targetSpeed;
     public float startTime;
+    public float startDelayTime = -1;
     public Vector3 startPos;
     public float nodeReadingOffset;
     public EngineStatus engineStatus;
@@ -112,6 +113,10 @@ public class VehicleEngine : MonoBehaviour
         else
         {
             SetEngineStatus(EngineStatus.STOP);
+        }
+        if (startDelayTime == -1 && trafficLight != null)
+        {
+            startDelayTime = Time.time;
         }
     }
 
@@ -244,7 +249,7 @@ public class VehicleEngine : MonoBehaviour
         PythonManager.GetInstance().speedList.Add(speed);
         Destroy(this.gameObject);
         PythonManager.GetInstance().IncrementRewardCount();
-        Utils.AppendAllTextToResults("VehicleTimes.csv", time.ToString() + ",");
+        Utils.AppendAllTextToResults(Utils.VEHICLE_TIMES_FILE_NAME, time.ToString() + ",");
     }
 
     /// <summary>

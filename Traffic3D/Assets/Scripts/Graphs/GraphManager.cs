@@ -6,9 +6,9 @@ using UnityEngine;
 
 public class GraphManager : MonoBehaviour
 {
-    public bool flowGraph;
+    public bool timeTraveledGraph;
     public bool throughputGraph;
-    public bool densityPerKmGraph;
+    public bool delayGraph;
     private List<Graph> graphs;
 
     void Start()
@@ -21,9 +21,9 @@ public class GraphManager : MonoBehaviour
     {
         while (true)
         {
-            UpdateGeneralGraph(GraphType.FLOW, Utils.FLOW_FILE_NAME, flowGraph);
+            UpdateGeneralGraph(GraphType.TIME_TRAVELED, Utils.VEHICLE_TIMES_FILE_NAME, timeTraveledGraph);
             UpdateGeneralGraph(GraphType.THROUGHPUT, Utils.THROUGHPUT_FILE_NAME, throughputGraph);
-            UpdateGeneralGraph(GraphType.DENSITY_PER_KM, Utils.DENSITY_PER_KM_FILE_NAME, densityPerKmGraph);
+            UpdateGeneralGraph(GraphType.DELAY, Utils.VEHICLE_DELAY_TIMES_FILE_NAME, delayGraph);
             yield return new WaitForSeconds(10);
         }
     }
@@ -80,6 +80,16 @@ public class GraphManager : MonoBehaviour
                 }
             }
             graph.SetData(data);
+            if (graphType == GraphType.THROUGHPUT)
+            {
+                graph.displayLatestXLabel = true;
+                graph.xLabel = "Simulation Time";
+            }
+            else if (graphType == GraphType.TIME_TRAVELED || graphType == GraphType.DELAY)
+            {
+                graph.displayLatestXLabel = true;
+                graph.xLabel = "Vehicles";
+            }
             graph.UpdateGraph();
         }
     }

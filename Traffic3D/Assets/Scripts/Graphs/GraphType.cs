@@ -1,6 +1,6 @@
 ﻿public enum GraphType
 {
-    FLOW,
+    TIME_TRAVELED,
     THROUGHPUT,
-    DENSITY_PER_KM
+    DELAY
 }

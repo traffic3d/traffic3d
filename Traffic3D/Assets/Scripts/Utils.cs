@@ -6,6 +6,8 @@ public class Utils
     public static string FLOW_FILE_NAME = "Flow.csv";
     public static string THROUGHPUT_FILE_NAME = "Throughput.csv";
     public static string DENSITY_PER_KM_FILE_NAME = "DensityPerKm.csv";
+    public static string VEHICLE_TIMES_FILE_NAME = "VehicleTimes.csv";
+    public static string VEHICLE_DELAY_TIMES_FILE_NAME = "VehicleDelayTimes.csv";
 
     private static string resultPath = System.IO.Path.Combine(Application.dataPath, "Results");
 

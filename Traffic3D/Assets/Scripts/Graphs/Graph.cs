@@ -18,6 +18,8 @@ public class Graph : MonoBehaviour
     public GraphType graphType;
     public Color axisColor = Color.white;
     public Color lineColor = new Color(0.5664f, 0.7461f, 0.8555f);
+    public string xLabel = "";
+    public bool displayLatestXLabel = false;
 
     void Awake()
     {
@@ -99,10 +101,13 @@ public class Graph : MonoBehaviour
         graphTitle = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(graphTitle);
         GameObject title = CreateLabel(new Vector2(graphContainer.sizeDelta.x / 2, graphContainer.sizeDelta.y + 10), graphTitle);
         graphComponents.Add(title);
-        GameObject xAxisTitle = CreateLabel(new Vector2(graphContainer.sizeDelta.x / 2, -10), "Time Period");
+        GameObject xAxisTitle = CreateLabel(new Vector2(graphContainer.sizeDelta.x / 2, -10), xLabel);
         graphComponents.Add(xAxisTitle);
-        GameObject xAxisTitleLatest = CreateLabel(new Vector2(graphContainer.sizeDelta.x, -10), "Latest");
-        graphComponents.Add(xAxisTitleLatest);
+        if (displayLatestXLabel)
+        {
+            GameObject xAxisTitleLatest = CreateLabel(new Vector2(graphContainer.sizeDelta.x, -10), "Latest");
+            graphComponents.Add(xAxisTitleLatest);
+        }
     }
 
     private GameObject CreateDataPoint(Vector2 position)
