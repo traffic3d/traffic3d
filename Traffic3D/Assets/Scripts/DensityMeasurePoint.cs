@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class DensityMeasurePoint : MonoBehaviour
 {
@@ -11,6 +9,12 @@ public class DensityMeasurePoint : MonoBehaviour
         {
             vehicleEngine.densityCountTriggered = true;
             PythonManager.GetInstance().IncrementDensityCount();
+            // Calculate Delay
+            if (vehicleEngine.startDelayTime != -1)
+            {
+                float delay = Time.time - vehicleEngine.startDelayTime;
+                Utils.AppendAllTextToResults(Utils.VEHICLE_DELAY_TIMES_FILE_NAME, delay.ToString() + ",");
+            }
         }
     }
 }
