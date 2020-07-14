@@ -64,6 +64,77 @@ Or download Unity 2018.3.11f1 from the following link: [https://unity3d.com/get-
 
 Use a preferred C# IDE or download Visual Studio using the following link: [https://visualstudio.microsoft.com/vs/](https://visualstudio.microsoft.com/vs/)
 
+## Unity activation for the CI/CD environment
+
+Install [docker](https://www.docker.com/) on your development machine, for example on Ubuntu 20.04:
+
+```sh
+sudo apt-get install docker.io
+```
+
+Pull the `gableroux/unity3d` docker image and run Bash inside, passing your unity username and password in to the environment:
+
+```sh
+UNITY_VERSION=2019.3.7f1
+docker run -it --rm \
+-e "UNITY_USERNAME=username@example.com" \
+-e "UNITY_PASSWORD=example_password" \
+-e "TEST_PLATFORM=linux" \
+-e "WORKDIR=/root/project" \
+-v "$(pwd):/root/project" \
+gableroux/unity3d:$UNITY_VERSION \
+bash
+```
+
+_hint: you should write this to a shell script and execute the shell script so you don't have your credentials stored in your bash history_.
+Also make sure you use your Unity3d _email address_ for `UNITY_USERNAME` environment variable.
+
+If your password contains a `!`, you can escape it like this (`example_pass!word`):
+
+```sh
+...
+-e "UNITY_PASSWORD=example_pass"'!'"word" \
+...
+```
+
+In the Docker container, run Unity once like this, it will try to activate the license:
+
+```sh
+xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' \
+/opt/Unity/Editor/Unity \
+-logFile /dev/stdout \
+-batchmode \
+-username "$UNITY_USERNAME" -password "$UNITY_PASSWORD"
+```
+
+Wait for output that looks like this:
+
+```sh
+LICENSE SYSTEM [2017723 8:6:38] Posting <?xml version="1.0" encoding="UTF-8"?><root><SystemInfo><IsoCode>en</IsoCode><UserName>[...]
+```
+
+If you get the following error:
+
+> Can't activate unity: No sufficient permissions while processing request HTTP error code 401
+
+Make sure your credentials are valid.
+You may try to disable 2FA in your account and try again.
+Once done, you should enable 2FA again for security reasons.
+See [this issue](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/-/issues/11) from the Unity3d [CI example repository](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/) for more details.
+
+Next:
+
+1. Copy the XML content and save in a file called `unity3d.alf`.
+1. Open [https://license.unity3d.com/manual](https://license.unity3d.com/manual) and answer the questions.
+1. Upload `unity3d.alf` for manual activation.
+1. Download `Unity_v2018.x.ulf` (`Unity_v2019.x.ulf` for 2019 versions).
+1. Copy the content of `Unity_v2018.x.ulf` license file to your CI's environment variable `UNITY_LICENSE_CONTENT`.
+
+Note: if you are doing this on windows your [line endings will be wrong as explained here](https://gitlab.com/gableroux/unity3d-gitlab-ci-example/issues/5#note_95831816).
+[`.gitlab-ci.yml`](.gitlab-ci.yml) solves this by removing `\r` character from the environment variable so you do not need to edit the license files manually.
+
+[`.gitlab-ci.yml`](.gitlab-ci.yml) will then place the `UNITY_LICENSE_CONTENT` to the right place before running tests or creating the builds.
+
 ## Density Measurements
 
 On new scenes, the density measure points need setting up to allow for correct density per km calculations.
