@@ -20,11 +20,13 @@ public class Graph : MonoBehaviour
     public Color lineColor = new Color(0.5664f, 0.7461f, 0.8555f);
     public string xLabel = "";
     public bool displayLatestXLabel = false;
+    private List<GameObject> deactivatedImageObjectPool;
 
     void Awake()
     {
         graphContainer = gameObject.GetComponent<RectTransform>();
         graphComponents = new List<GameObject>();
+        deactivatedImageObjectPool = new List<GameObject>();
         textTemplate = Resources.Load<Text>("UI/textTemplate");
     }
 
@@ -35,7 +37,8 @@ public class Graph : MonoBehaviour
 
     public void UpdateGraph()
     {
-        graphComponents.ForEach(ob => Destroy(ob));
+        new List<GameObject>(graphComponents).ForEach(ob => RemoveGameObject(ob));
+        graphComponents.Clear();
         DrawGraphLines();
         DrawTitles();
         if (data == null || data.Count == 0)
@@ -54,12 +57,10 @@ public class Graph : MonoBehaviour
             float xPosition = xSize + i * xSize;
             float yPosition = (data[i] / yMax) * graphHeight;
             GameObject dataPoint = CreateDataPoint(new Vector2(xPosition, yPosition));
-            graphComponents.Add(dataPoint);
             if (lastDataPoint != null)
             {
                 GameObject connection = JoinConsecutiveDataPoints(lastDataPoint.GetComponent<RectTransform>().anchoredPosition,
                     dataPoint.GetComponent<RectTransform>().anchoredPosition);
-                graphComponents.Add(connection);
             }
             lastDataPoint = dataPoint;
         }
@@ -69,13 +70,12 @@ public class Graph : MonoBehaviour
             float amount = (float)Math.Round((i / graphHeight) * yMax);
             float yPosition = (amount / yMax) * graphHeight;
             GameObject dataPointYLabel = CreateLabel(new Vector2(-15, yPosition), amount + "");
-            graphComponents.Add(dataPointYLabel);
         }
     }
 
     private void DrawGraphLines()
     {
-        GameObject xLine = new GameObject("xLine", typeof(Image));
+        GameObject xLine = CreateGameObjectFromPool("xLine", typeof(Image));
         xLine.transform.SetParent(graphContainer, false);
         xLine.GetComponent<Image>().color = axisColor;
         RectTransform rectTransformX = xLine.GetComponent<RectTransform>();
@@ -83,8 +83,7 @@ public class Graph : MonoBehaviour
         rectTransformX.anchorMin = Vector2.zero;
         rectTransformX.anchorMax = Vector2.zero;
         rectTransformX.anchoredPosition = Vector2.right * graphContainer.sizeDelta.x * 0.5f;
-        graphComponents.Add(xLine);
-        GameObject yLine = new GameObject("yLine", typeof(Image));
+        GameObject yLine = CreateGameObjectFromPool("yLine", typeof(Image));
         yLine.transform.SetParent(graphContainer, false);
         yLine.GetComponent<Image>().color = axisColor;
         RectTransform rectTransformY = yLine.GetComponent<RectTransform>();
@@ -92,7 +91,6 @@ public class Graph : MonoBehaviour
         rectTransformY.anchorMin = Vector2.zero;
         rectTransformY.anchorMax = Vector2.zero;
         rectTransformY.anchoredPosition = Vector2.up * graphContainer.sizeDelta.y * 0.5f;
-        graphComponents.Add(yLine);
     }
 
     private void DrawTitles()
@@ -100,19 +98,16 @@ public class Graph : MonoBehaviour
         string graphTitle = graphType.ToString().ToLower().Replace('_', ' ');
         graphTitle = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(graphTitle);
         GameObject title = CreateLabel(new Vector2(graphContainer.sizeDelta.x / 2, graphContainer.sizeDelta.y + 10), graphTitle);
-        graphComponents.Add(title);
         GameObject xAxisTitle = CreateLabel(new Vector2(graphContainer.sizeDelta.x / 2, -10), xLabel);
-        graphComponents.Add(xAxisTitle);
         if (displayLatestXLabel)
         {
             GameObject xAxisTitleLatest = CreateLabel(new Vector2(graphContainer.sizeDelta.x, -10), "Latest");
-            graphComponents.Add(xAxisTitleLatest);
         }
     }
 
     private GameObject CreateDataPoint(Vector2 position)
     {
-        GameObject dataPoint = new GameObject("dataPoint", typeof(Image));
+        GameObject dataPoint = CreateGameObjectFromPool("dataPoint", typeof(Image));
         dataPoint.transform.SetParent(graphContainer, false);
         dataPoint.GetComponent<Image>().sprite = dataPointSprite;
         RectTransform rectTransform = dataPoint.GetComponent<RectTransform>();
@@ -126,6 +121,7 @@ public class Graph : MonoBehaviour
     private GameObject CreateLabel(Vector2 position, string label)
     {
         Text dataPointLabel = Instantiate(textTemplate);
+        graphComponents.Add(dataPointLabel.gameObject);
         dataPointLabel.transform.SetParent(graphContainer, false);
         dataPointLabel.text = label;
         dataPointLabel.alignment = TextAnchor.MiddleCenter;
@@ -138,7 +134,7 @@ public class Graph : MonoBehaviour
 
     private GameObject JoinConsecutiveDataPoints(Vector2 dataPointPosition1, Vector2 dataPointPosition2)
     {
-        GameObject connection = new GameObject("connection", typeof(Image));
+        GameObject connection = CreateGameObjectFromPool("connection", typeof(Image));
         connection.transform.SetParent(graphContainer, false);
         connection.GetComponent<Image>().color = lineColor;
         RectTransform rectTransform = connection.GetComponent<RectTransform>();
@@ -155,6 +151,39 @@ public class Graph : MonoBehaviour
         // Rotate the line so its between the two points by working out the angle using the previously calculated direction
         rectTransform.localEulerAngles = new Vector3(0, 0, (float)Math.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
         return connection;
+    }
+
+    private GameObject CreateGameObjectFromPool(string name, Type type)
+    {
+        GameObject gameObject = null;
+        if (type == typeof(Image))
+        {
+            gameObject = deactivatedImageObjectPool.FirstOrDefault();
+        }
+        if (gameObject != null)
+        {
+            deactivatedImageObjectPool.Remove(gameObject);
+            gameObject.SetActive(true);
+            gameObject.name = name;
+        }
+        else
+        {
+            gameObject = new GameObject(name, type);
+        }
+        graphComponents.Add(gameObject);
+        return gameObject;
+    }
+
+    private void RemoveGameObject(GameObject gameObject)
+    {
+        graphComponents.Remove(gameObject);
+        if (gameObject.GetComponent(typeof(Image)) != null)
+        {
+            gameObject.SetActive(false);
+            deactivatedImageObjectPool.Add(gameObject);
+            return;
+        }
+        Destroy(gameObject);
     }
 
 }
