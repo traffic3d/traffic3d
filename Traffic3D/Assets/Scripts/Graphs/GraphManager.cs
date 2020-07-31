@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class GraphManager : MonoBehaviour
@@ -10,6 +11,9 @@ public class GraphManager : MonoBehaviour
     public bool throughputGraph;
     public bool delayGraph;
     private List<Graph> graphs;
+    private const float SECONDS_BETWEEN_INDIVIDUAL_GRAPH_UPDATES = 3f;
+    private const string SIMULATION_TIME_STEPS = "Simulation Time-Steps";
+    private const string NUMBER_VEHICLES_OBSERVED = "Number of Vehicles Observed";
 
     void Start()
     {
@@ -22,9 +26,11 @@ public class GraphManager : MonoBehaviour
         while (true)
         {
             UpdateGeneralGraph(GraphType.TIME_TRAVELED, Utils.VEHICLE_TIMES_FILE_NAME, timeTraveledGraph);
+            yield return new WaitForSeconds(SECONDS_BETWEEN_INDIVIDUAL_GRAPH_UPDATES);
             UpdateGeneralGraph(GraphType.THROUGHPUT, Utils.THROUGHPUT_FILE_NAME, throughputGraph);
+            yield return new WaitForSeconds(SECONDS_BETWEEN_INDIVIDUAL_GRAPH_UPDATES);
             UpdateGeneralGraph(GraphType.DELAY, Utils.VEHICLE_DELAY_TIMES_FILE_NAME, delayGraph);
-            yield return new WaitForSeconds(10);
+            yield return new WaitForSeconds(SECONDS_BETWEEN_INDIVIDUAL_GRAPH_UPDATES);
         }
     }
 
@@ -47,7 +53,7 @@ public class GraphManager : MonoBehaviour
         return graph;
     }
 
-    private void UpdateGeneralGraph(GraphType graphType, string fileName, bool enabled)
+    private async void UpdateGeneralGraph(GraphType graphType, string fileName, bool enabled)
     {
         Graph graph = GetGraph(graphType);
         if (graph == null)
@@ -58,38 +64,41 @@ public class GraphManager : MonoBehaviour
         graph.transform.parent.gameObject.SetActive(enabled);
         if (enabled)
         {
-            string[] stringData = Utils.ReadResultText(fileName);
-            if (stringData == null)
+            await Task.Run(() =>
             {
-                return;
-            }
-            string resultString = stringData[0];
-            List<string> resultStrings = resultString.Split(',').ToList();
-            resultStrings.RemoveAll(s => s == null || s.Equals("") || s.Equals("NaN"));
-            resultStrings = resultStrings.Skip(Math.Max(0, resultStrings.Count() - graph.maxDataPoints)).ToList();
-            List<float> data = new List<float>();
-            foreach (String s in resultStrings)
-            {
-                try
+                string[] stringData = Utils.ReadResultText(fileName);
+                if (stringData == null)
                 {
-                    data.Add(float.Parse(s));
+                    return;
                 }
-                catch (Exception e)
+                string resultString = stringData[0];
+                List<string> resultStrings = resultString.Split(',').ToList();
+                resultStrings.RemoveAll(s => s == null || s.Equals("") || s.Equals("NaN"));
+                resultStrings = resultStrings.Skip(Math.Max(0, resultStrings.Count() - graph.maxDataPoints)).ToList();
+                List<float> data = new List<float>();
+                foreach (String s in resultStrings)
                 {
-                    Debug.Log(s + " + " + e.Message);
+                    try
+                    {
+                        data.Add(float.Parse(s));
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.Log(s + " + " + e.Message);
+                    }
                 }
-            }
-            graph.SetData(data);
-            if (graphType == GraphType.THROUGHPUT)
-            {
-                graph.displayLatestXLabel = true;
-                graph.xLabel = "Simulation Time-Steps";
-            }
-            else if (graphType == GraphType.TIME_TRAVELED || graphType == GraphType.DELAY)
-            {
-                graph.displayLatestXLabel = true;
-                graph.xLabel = "Number of Vehicles Observed";
-            }
+                graph.SetData(data);
+                if (graphType == GraphType.THROUGHPUT)
+                {
+                    graph.displayLatestXLabel = true;
+                    graph.xLabel = SIMULATION_TIME_STEPS;
+                }
+                else if (graphType == GraphType.TIME_TRAVELED || graphType == GraphType.DELAY)
+                {
+                    graph.displayLatestXLabel = true;
+                    graph.xLabel = NUMBER_VEHICLES_OBSERVED;
+                }
+            });
             graph.UpdateGraph();
         }
     }
