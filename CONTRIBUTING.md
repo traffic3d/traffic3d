@@ -141,6 +141,26 @@ On new scenes, the density measure points need setting up to allow for correct d
 To set these points up, on the paths, select the node that needs to be used as the density measure point (normally just after exiting a junction) and add the `DensityMeasurePoint.cs` script to the node.
 Then add a `BoxCollider` to the node, check `Is Trigger` and resize where vehicles on that path will pass through the box.
 
+## Creating a new release
+
+To create a new release of Traffic3D, follow these steps:
+
+1. Create an MR with the version number in the title, merging `develop->master`. Remember that @bc-bot cannot force-push to the `develop` branch (because it is protected) so the MR has to be merged manually.
+1. Assign it for review / merge to someone who has `Maintainer` rights or above.
+1. Go to the [releases page](https://gitlab.com/traffic3d/traffic3d/-/releases) and create a new release [here](https://gitlab.com/traffic3d/traffic3d/-/tags/new).
+1. From the release page, download the `.zip` file containing the source code for the release.
+1. Go to the [Zenodo page](https://zenodo.org/record/3968432) for the Traffic3D software.
+    1. Click on **New version**.
+    1. Delete the `.zip` file from the previous version.
+    1. Upload the new `.zip` file that you downloaded from the releases page.
+    1. Bump the version number.
+    1. Click **Save**.
+    1. Click **Publish**.
+1. The links on the website to download the built versions of Traffic3D always go to the latest build on `master`, and the Zenodo badges go to the multi-version DOI page, so neither of these need to be updated.
+1. When the website MR is merged, push a tag for the next version of the website.
+1. Go to the admin page on [readthedocs.org](https://readthedocs.org/projects/traffic3d/) and activate the tag that you just pushed.
+1. Raise one final MR, to add a link to the activated tag on the navigation bar on the site.
+
 ## Further documentation
 
 Detailed documentation, including how to use the Unity editor, how to extend Traffic3D with new assets and scenes, can be found in the [Traffic3D documentation](https://traffic3d.org).
