@@ -23,11 +23,11 @@ public class GraphManager : MonoBehaviour
         while (true)
         {
             UpdateGeneralGraph(GraphType.TIME_TRAVELED, Utils.VEHICLE_TIMES_FILE_NAME, timeTraveledGraph);
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(3);
             UpdateGeneralGraph(GraphType.THROUGHPUT, Utils.THROUGHPUT_FILE_NAME, throughputGraph);
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(3);
             UpdateGeneralGraph(GraphType.DELAY, Utils.VEHICLE_DELAY_TIMES_FILE_NAME, delayGraph);
-            yield return new WaitForSeconds(10);
+            yield return new WaitForSeconds(3);
         }
     }
 
@@ -66,7 +66,7 @@ public class GraphManager : MonoBehaviour
                 string[] stringData = Utils.ReadResultText(fileName);
                 if (stringData == null)
                 {
-
+                    return;
                 }
                 string resultString = stringData[0];
                 List<string> resultStrings = resultString.Split(',').ToList();

@@ -39,6 +39,10 @@ public class Graph : MonoBehaviour
     {
         new List<GameObject>(graphComponents).ForEach(ob => RemoveGameObject(ob));
         graphComponents.Clear();
+        if (graphContainer == null)
+        {
+            return;
+        }
         DrawGraphLines();
         DrawTitles();
         if (data == null || data.Count == 0)
@@ -176,6 +180,10 @@ public class Graph : MonoBehaviour
 
     private void RemoveGameObject(GameObject gameObject)
     {
+        if (gameObject == null)
+        {
+            return;
+        }
         graphComponents.Remove(gameObject);
         if (gameObject.GetComponent(typeof(Image)) != null)
         {
