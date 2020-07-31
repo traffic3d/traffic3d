@@ -11,6 +11,9 @@ public class GraphManager : MonoBehaviour
     public bool throughputGraph;
     public bool delayGraph;
     private List<Graph> graphs;
+    private const float SECONDS_BETWEEN_INDIVIDUAL_GRAPH_UPDATES = 3f;
+    private const string SIMULATION_TIME_STEPS = "Simulation Time-Steps";
+    private const string NUMBER_VEHICLES_OBSERVED = "Number of Vehicles Observed";
 
     void Start()
     {
@@ -23,11 +26,11 @@ public class GraphManager : MonoBehaviour
         while (true)
         {
             UpdateGeneralGraph(GraphType.TIME_TRAVELED, Utils.VEHICLE_TIMES_FILE_NAME, timeTraveledGraph);
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(SECONDS_BETWEEN_INDIVIDUAL_GRAPH_UPDATES);
             UpdateGeneralGraph(GraphType.THROUGHPUT, Utils.THROUGHPUT_FILE_NAME, throughputGraph);
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(SECONDS_BETWEEN_INDIVIDUAL_GRAPH_UPDATES);
             UpdateGeneralGraph(GraphType.DELAY, Utils.VEHICLE_DELAY_TIMES_FILE_NAME, delayGraph);
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(SECONDS_BETWEEN_INDIVIDUAL_GRAPH_UPDATES);
         }
     }
 
@@ -88,12 +91,12 @@ public class GraphManager : MonoBehaviour
                 if (graphType == GraphType.THROUGHPUT)
                 {
                     graph.displayLatestXLabel = true;
-                    graph.xLabel = "Simulation Time-Steps";
+                    graph.xLabel = SIMULATION_TIME_STEPS;
                 }
                 else if (graphType == GraphType.TIME_TRAVELED || graphType == GraphType.DELAY)
                 {
                     graph.displayLatestXLabel = true;
-                    graph.xLabel = "Number of Vehicles Observed";
+                    graph.xLabel = NUMBER_VEHICLES_OBSERVED;
                 }
             });
             graph.UpdateGraph();
