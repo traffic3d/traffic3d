@@ -1,26 +1,11 @@
-﻿using NUnit.Framework;
-using System;
+using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
-public class TrafficLightManagerTests
+[Category("Tests")]
+public class TrafficLightManagerTests : CommonSceneTest
 {
-    [SetUp]
-    public void SetUpTest()
-    {
-        try
-        {
-            SocketManager.GetInstance().SetSocket(new MockSocket());
-            SceneManager.LoadScene(0);
-        }
-        catch (Exception e)
-        {
-            Debug.Log(e);
-        }
-    }
-
     [UnityTest]
     public IEnumerator TrafficLightFirstEventTest()
     {
@@ -36,31 +21,54 @@ public class TrafficLightManagerTests
     }
 
     [UnityTest]
-    public IEnumerator TrafficLightFireEventTest()
+    public IEnumerator TrafficLightFireNextEventTest()
     {
         DisableLoops();
         TrafficLightManager trafficLightManager = (TrafficLightManager)GameObject.FindObjectOfType(typeof(TrafficLightManager));
-        foreach (int i in trafficLightManager.demoOrder)
+        foreach (Junction junction in trafficLightManager.GetJunctions())
         {
-            trafficLightManager.StartCoroutine(trafficLightManager.FireEvent(i));
-            yield return null;
-            CheckTrafficLightIsGreen(i);
+            junction.SetJunctionState(junction.GetFirstJunctionState());
+            for (int i = 1; i < junction.GetJunctionStates().Length; i++)
+            {
+                trafficLightManager.StartCoroutine(trafficLightManager.FireNextEvent());
+                yield return new WaitForSeconds(6);
+                Assert.AreEqual(i + 1, junction.GetCurrentState());
+            }
         }
         trafficLightManager.StopAllCoroutines();
     }
 
-    private void DisableLoops()
+    [UnityTest]
+    public IEnumerator TrafficLightNodeTest()
     {
+        DisableLoops();
+        yield return null;
         TrafficLightManager trafficLightManager = (TrafficLightManager)GameObject.FindObjectOfType(typeof(TrafficLightManager));
-        trafficLightManager.StopAllCoroutines();
-        PythonManager.GetInstance().StopAllCoroutines();
+        GameObject pathObject = new GameObject("TestPath", typeof(Path));
+        GameObject node1 = new GameObject("1");
+        GameObject node2 = new GameObject("2");
+        GameObject trafficLight = new GameObject("TrafficLight", typeof(TrafficLight));
+        pathObject = GameObject.Instantiate(pathObject);
+        node1 = GameObject.Instantiate(node1, pathObject.transform);
+        node2 = GameObject.Instantiate(node2, pathObject.transform);
+        trafficLight = GameObject.Instantiate(trafficLight);
+
+        trafficLightManager.trafficLights = new TrafficLight[1];
+        trafficLightManager.trafficLights[0] = trafficLight.GetComponent<TrafficLight>();
+        trafficLightManager.trafficLights[0].stopNodes.Add(node2.transform);
+
+        Assert.False(trafficLightManager.IsStopNode(node1.transform));
+        Assert.True(trafficLightManager.IsStopNode(node2.transform));
+
+        Assert.AreEqual(trafficLightManager.trafficLights[0], trafficLightManager.GetTrafficLightFromStopNode(node2.transform));
+
     }
 
-    private void CheckTrafficLightIsGreen(int id)
+    private void CheckTrafficLightIsGreen(string id)
     {
         foreach (TrafficLight trafficLight in TrafficLightManager.GetInstance().GetTrafficLights())
         {
-            if (trafficLight.GetTrafficLightId() == id)
+            if (trafficLight.GetTrafficLightId().Equals(id))
             {
                 Assert.AreEqual(TrafficLight.LightColour.GREEN, trafficLight.GetCurrentLightColour());
             }

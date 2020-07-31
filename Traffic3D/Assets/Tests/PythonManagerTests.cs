@@ -1,26 +1,10 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Collections;
-using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
-public class PythonManagerTests
+[Category("Tests")]
+public class PythonManagerTests : CommonSceneTest
 {
-    [SetUp]
-    public void SetUpTest()
-    {
-        try
-        {
-            SocketManager.GetInstance().SetSocket(new MockSocket());
-            SceneManager.LoadScene(0);
-        }
-        catch (Exception e)
-        {
-            Debug.Log(e);
-        }
-    }
-
     [TearDown]
     public void TearDown()
     {
@@ -58,4 +42,13 @@ public class PythonManagerTests
         Assert.AreEqual(PythonManager.GetInstance().GetDensityCount(), currentCount);
         yield return null;
     }
+
+    [UnityTest]
+    public IEnumerator PythonManagerGetScreenshotFilePathTest()
+    {
+        string path = PythonManager.GetInstance().GetScreenshotFilePath("screenshots/", "junction1", 5);
+        Assert.AreEqual("screenshots/junction1_shot5.png", path);
+        yield return null;
+    }
+
 }

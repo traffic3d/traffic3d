@@ -1,66 +1,129 @@
-image: gableroux/unity3d:2018.3.11f1
-
 variables:
-  # Use a shallow clone depth to speed up the CI build.
-  # See: https://docs.gitlab.com/ee/ci/large_repositories/
-  BUILD_NAME: Traffic3D
-  GIT_DEPTH: 10
+    # Use a shallow clone depth to speed up the CI build.
+    # See: https://docs.gitlab.com/ee/ci/large_repositories/
+    BUILD_NAME: Traffic3D
+    GIT_DEPTH: 10
 
 cache:
-  key: "$CI_PROJECT_NAMESPACE-$CI_PROJECT_NAME-$CI_COMMIT_REF_SLUG-$BUILD_TARGET"
-  paths:
-    - $BUILD_NAME/Library/
+    key: "$CI_PROJECT_NAMESPACE-$CI_PROJECT_NAME-$CI_COMMIT_REF_SLUG-$BUILD_TARGET"
+    paths:
+        - $BUILD_NAME/Library/
 
 stages:
-  - test
-  - build
+    - prepare
+    - lint
+    - test
+    - build
+    - benchmark
+
+workflow:
+    rules:
+        - if: $CI_MERGE_REQUEST_ID
+          when: never
+        - when: always
+
+meta-build-image:
+    stage: prepare
+    image: docker:stable
+    variables:
+        DOCKER_TLS_CERTDIR: ""
+    services:
+        - docker:dind
+    script:
+        - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+        - cd .meta
+        - docker build -t $CI_REGISTRY/traffic3d/traffic3d/buildimage:latest .
+        - docker push $CI_REGISTRY/traffic3d/traffic3d/buildimage:latest
+    rules:
+        - changes:
+              - .meta/Dockerfile
+          when: always
+        - when: never
+    tags:
+        - dind
 
 .unity_before_script: &unity_before_script
-  before_script:
-    - apt-get update -qq -y
-    - apt-get install -y moreutils
-    - chmod +x ./ci/before_script.sh && ./ci/before_script.sh
+    before_script:
+        - chmod +x ./ci/before_script.sh && ./ci/before_script.sh
+
+lint:
+    stage: lint
+    image: ruby:2.5
+    before_script:
+        - gem install mdl
+    script:
+        - git ls-files -z '*.md' | xargs -0 mdl --style .mdl.rb
+    rules:
+        - if: '$CI_COMMIT_BRANCH == "master"'
+          when: never
+        - when: always
+    tags:
+        - shared
 
 .test: &test
-  except:
-    - tags
-  stage: test
-  <<: *unity_before_script
-  script:
-    - chmod +x ./ci/test.sh && ./ci/test.sh
-  artifacts:
-    name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME-$TEST_PLATFORM-results"
-    when: always
-    paths:
-      - $(pwd)/$TEST_PLATFORM-results.xml
+    image: registry.gitlab.com/traffic3d/traffic3d/buildimage
+    stage: test
+    <<: *unity_before_script
+    script:
+        - chmod +x ./ci/test.sh && ./ci/test.sh
+    artifacts:
+        name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME-$TEST_PLATFORM-results"
+        when: always
+        paths:
+            - $(pwd)/$TEST_PLATFORM-results.xml
+    rules:
+        - if: $CI_COMMIT_TAG
+          when: never
+        - when: always
+    tags:
+        - test
 
 test-playmode:
-  <<: *test
-  variables:
-    TEST_PLATFORM: playmode
+    <<: *test
+    variables:
+        TEST_PLATFORM: playmode
 
 .build: &build
-  except:
-    - tags
-  stage: build
-  <<: *unity_before_script
-  script:
-    - chmod +x ./ci/build.sh && ./ci/build.sh
-  artifacts:
-    paths:
-      - ./$BUILD_NAME/Builds/
+    image: registry.gitlab.com/traffic3d/traffic3d/buildimage
+    stage: build
+    <<: *unity_before_script
+    script:
+        - chmod +x ./ci/build.sh && ./ci/build.sh
+    artifacts:
+        paths:
+            - ./$BUILD_NAME/Builds/
+    rules:
+        - if: $CI_COMMIT_TAG
+          when: never
+        - when: always
+    tags:
+        - build
 
 build-StandaloneLinux64:
-  <<: *build
-  variables:
-    BUILD_TARGET: StandaloneLinux64
+    <<: *build
+    variables:
+        BUILD_TARGET: StandaloneLinux64
 
 build-StandaloneWindows64:
-  <<: *build
-  variables:
-    BUILD_TARGET: StandaloneWindows64
+    <<: *build
+    variables:
+        BUILD_TARGET: StandaloneWindows64
 
 build-StandaloneOSX:
-  <<: *build
-  variables:
-    BUILD_TARGET: StandaloneOSX
+    <<: *build
+    variables:
+        BUILD_TARGET: StandaloneOSX
+
+benchmark:
+    stage: benchmark
+    image: registry.gitlab.com/traffic3d/traffic3d/buildimage:latest
+    <<: *unity_before_script
+    dependencies:
+        - build-StandaloneLinux64
+    script:
+        - chmod +x ./ci/benchmark.sh && ./ci/benchmark.sh
+    rules:
+        - when: manual
+    allow_failure: true
+    tags:
+        - benchmark

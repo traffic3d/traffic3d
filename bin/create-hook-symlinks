@@ -1,0 +1,12 @@
+#!/bin/sh
+
+#
+# Install all git hooks in the hooks/ directory into the local repository.
+#
+
+GIT_DIR=$(git rev-parse --show-toplevel)
+HOOK_DIR="$GIT_DIR"/.git/hooks
+
+for FILE in hooks/* ; do
+    ln -s "$GIT_DIR/$FILE" "$HOOK_DIR/${FILE##*/}"
+done

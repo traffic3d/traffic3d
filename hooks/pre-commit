@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+#
+# To use this pre-commit hook you will need to install Markdown Lint (mdl).
+# Please see the mdl project pages for details:
+#
+#    https://github.com/markdownlint/markdownlint
+#
+# Once mdl is installed, run this file to check that it works, the run
+# ./bin/create-hook-symlinks to install this hook.
+#
+
+git ls-files -z '*.md' | xargs -0 mdl --style .mdl.rb

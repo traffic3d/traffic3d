@@ -161,7 +161,7 @@ WheelCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1109589882287796}
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.5
+  m_Radius: 0.35
   m_SuspensionSpring:
     spring: 35000
     damper: 4500
@@ -222,7 +222,7 @@ WheelCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1110204818032730}
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.5
+  m_Radius: 0.35
   m_SuspensionSpring:
     spring: 35000
     damper: 4500
@@ -257,7 +257,7 @@ GameObject:
   - component: {fileID: 2670748517366013716}
   m_Layer: 0
   m_Name: SUV
-  m_TagString: Untagged
+  m_TagString: car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -271,7 +271,7 @@ Transform:
   m_GameObject: {fileID: 1310869725840042}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -27.1, y: 11.28, z: -17.3}
-  m_LocalScale: {x: 1, y: 1.5, z: 0.8352901}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4304993668136086}
   - {fileID: 4130141345392216}
@@ -318,17 +318,29 @@ MonoBehaviour:
   turnSpeed: 5
   wheelColliderFrontLeft: {fileID: 146655200263391466}
   wheelColliderFrontRight: {fileID: 146240499941219244}
-  maxMotorTorque: 80
-  normalBrakeTorque: 100
-  maxBrakeTorque: 100
+  maxMotorTorque: 300
+  currentMotorTorque: 0
+  normalBrakeTorque: 600
+  maxBrakeTorque: 600
   currentSpeed: 0
+  stoppingDistance: 7
   maxSpeed: 100
+  maxSpeedTurning: 20
+  maxSpeedAproachingLightsLastNode: 7
+  maxSpeedAproachingLightsSecondLastNode: 30
   centerOfMass: {x: 0, y: 0, z: 0}
   currentNode: {fileID: 0}
   currentNodeNumber: 0
+  numberOfSensorRays: 5
+  steerReduceRayConstant: 5
+  maxDistanceToMonitor: 80
+  targetSpeed: 0
   startTime: 0
   startPos: {x: 0, y: 0, z: 0}
+  nodeReadingOffset: 0
   engineStatus: 0
+  densityCountTriggered: 0
+  debug: 0
 --- !u!1 &1311078208310664
 GameObject:
   m_ObjectHideFlags: 0
@@ -368,7 +380,7 @@ WheelCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1311078208310664}
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.5
+  m_Radius: 0.35
   m_SuspensionSpring:
     spring: 35000
     damper: 4500
@@ -402,6 +414,7 @@ GameObject:
   - component: {fileID: 33176016308193468}
   - component: {fileID: 23167689510686436}
   - component: {fileID: 65636910328823380}
+  - component: {fileID: 1856520059743700253}
   m_Layer: 0
   m_Name: Suv
   m_TagString: Untagged
@@ -479,8 +492,24 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3, y: 1.5172423, z: 7}
-  m_Center: {x: 0, y: 0.0000019073486, z: 0.7038146}
+  m_Size: {x: 1.8, y: 1.3, z: 4.9}
+  m_Center: {x: 0, y: 0.1, z: 0.7038146}
+--- !u!208 &1856520059743700253
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1372622489760288}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.947, y: 0.75900006, z: 2.446}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0, y: 0, z: 0.70400006}
+  m_TimeToStationary: 0.5
 --- !u!1 &1530088870435162
 GameObject:
   m_ObjectHideFlags: 0
@@ -886,7 +915,7 @@ WheelCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1997486262618994}
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.5
+  m_Radius: 0.35
   m_SuspensionSpring:
     spring: 35000
     damper: 4500

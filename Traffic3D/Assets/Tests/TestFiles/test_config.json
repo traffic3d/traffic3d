@@ -1,0 +1,76 @@
+{
+  "vehicleFactoryConfig": {
+    "highRangeRespawnTime": 1,
+    "lowRangeRespawnTime": 1,
+    "maximumVehicleCount": 1,
+    "slowDownVehicleRateAt": 1,
+    "timeOfStartInvisibility": 1,
+    "vehicleProbabilities": [
+      {
+        "vehiclePath": "Assets/Vehicles/BluecarPre.prefab",
+        "probability": 0.125
+      },
+      {
+        "vehiclePath": "Assets/Vehicles/BUSpre.prefab",
+        "probability": 0.125
+      },
+      {
+        "vehiclePath": "Assets/Vehicles/PoliceCarPre.prefab",
+        "probability": 0.125
+      },
+      {
+        "vehiclePath": "Assets/Vehicles/REDcarpre.prefab",
+        "probability": 0.125
+      },
+      {
+        "vehiclePath": "Assets/Vehicles/SUV.prefab",
+        "probability": 0.125
+      },
+      {
+        "vehiclePath": "Assets/Vehicles/Trucpre.prefab",
+        "probability": 0.125
+      },
+      {
+        "vehiclePath": "Assets/Vehicles/yellocarpre.prefab",
+        "probability": 0.125
+      },
+      {
+        "vehiclePath": "Assets/Vehicles/yellowBuspre.prefab",
+        "probability": 0.125
+      }
+    ]
+  },
+  "pedestrianFactoryConfig": {
+    "highRangeRespawnTime": 1,
+    "lowRangeRespawnTime": 1,
+    "maximumPedestrianCount": 1,
+    "pedestrianProbabilities": [
+      {
+        "pedestrianPath": "Assets/Resources/Models/Pedestrians/Man_in_suit_Pedestrian.prefab",
+        "probability": 0.25
+      },
+      {
+        "pedestrianPath": "Assets/Resources/Models/Pedestrians/Bodyguard_1_Pedestrian.prefab",
+        "probability": 0.25
+      },
+      {
+        "pedestrianPath": "Assets/Resources/Models/Pedestrians/Bodyguard_2_Pedestrian.prefab",
+        "probability": 0.25
+      },
+      {
+        "pedestrianPath": "Assets/Resources/Models/Pedestrians/Bodyguard_3_Pedestrian.prefab",
+        "probability": 0.25
+      }
+    ]
+  },
+  "sumoConfig": {
+    "ip": "0.0.0.0",
+    "port": 12345,
+    "sumoControlSettings": [
+      {
+        "sumoLinkControlPoint": "TRAFFIC_FLOW",
+        "controlledBySumo": true
+      }
+    ]
+  }
+}

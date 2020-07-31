@@ -1,7 +1,7 @@
 # Traffic 3D
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3460497.svg)](https://doi.org/10.5281/zenodo.3460497)
-[![pipeline status](https://gitlab.com/traffic3d/traffic3d/badges/develop/pipeline.svg)](https://gitlab.com/traffic3d/traffic3d/commits/develop)
+[![pipeline status](https://gitlab.com/traffic3d/traffic3d/badges/develop/pipeline.svg)](https://gitlab.com/traffic3d/traffic3d/-/commits/develop)
 
 Traffic3D is a new traffic simulation paradigm, built to push forward research in human-like learning (for example, based on photo-realistic visual input).
 It provides a fast, cheap and scalable proxy for real-world traffic environments, based on the [Unity 3d](https://unity3d.com/unity) platform.
@@ -14,6 +14,14 @@ For more details please see [https://traffic3d.org](https://traffic3d.org).
 
 Please report issues via the [issue tracker](https://gitlab.com/traffic3d/traffic3d/issues).
 
+## Developers
+
+Current developers:
+
+* Callum Bugajski - @callumbugajski via [Beautiful Canoe](https://beautifulcanoe.com/)
+
+Based on original code by Deepeka Garg (@gargd03).
+
 ## License
 
 This software is licensed under the [Mozilla Public License Version 2.0](/LICENSE).
@@ -22,6 +30,45 @@ Copies of the license can also be obtained [directly from Mozilla](https://mozil
 ## Getting Started with Development
 
 Please read [CONTRIBUTING.md](/CONTRIBUTING.md) before you start working on this repository.
+
+## CLI Options
+
+Traffic3D has custom command line options using following flag:
+`-executeMethod CustomCommandLineArguments.Run`
+
+The custom options are:
+
+* `-JSONConfigFile "filename.json"` - Import settings from a JSON file (see below for config details)
+* `-OpenScene "Scenes/sceneName.unity"` - Open a scene
+* `-RunBenchmark true|false` - Run Benchmark
+
+### Examples
+
+```sh
+# Using all custom options.
+${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' /opt/Unity/Editor/Unity} \
+  -projectPath $(pwd)/Traffic3D \
+  -testPlatform playmode \
+  -testResults $(pwd)/playmode-results.xml \
+  -CacheServerIPAddress 172.17.0.1:8126 \
+  -executeMethod CustomCommandLineArguments.Run \
+  -JSONConfigFile "config.json" \
+  -OpenScene "Scenes/NightDemo.unity" \
+  -RunBenchmark true \
+  -logFile \
+  -batchmode
+```
+
+## Config
+
+Configuration is used to bulk import initialisation values into the Traffic3D system.
+Normally the values are direct mappings of the values that can be changed within the Unity UI.
+For example the `vehicleFactoryConfig` object within the config example below allows us to pass data directly to the specified fields.
+e.g. The `highRangeRespawnTime` field in the config maps to the `highRangeRespawnTime` field in the game object.
+
+### Examples
+
+See [test_config.json](/Traffic3D/Assets/Tests/TestFiles/test_config.json) for an example of how to structure the file.
 
 ## Citing the Traffi3D software
 

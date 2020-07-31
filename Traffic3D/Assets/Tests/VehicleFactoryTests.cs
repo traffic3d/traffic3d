@@ -1,28 +1,11 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
-public class VehicleFactoryTests
+[Category("Tests")]
+public class VehicleFactoryTests : CommonSceneTest
 {
-    public const int AMOUNT_LEFT_FOR_PASS = 2;
-
-    [SetUp]
-    public void SetUpTest()
-    {
-        try
-        {
-            SocketManager.GetInstance().SetSocket(new MockSocket());
-            SceneManager.LoadScene(0);
-        }
-        catch (Exception e)
-        {
-            Debug.Log(e);
-        }
-    }
-
     [UnityTest]
     public IEnumerator VehicleFactoryPathTest()
     {
@@ -39,11 +22,11 @@ public class VehicleFactoryTests
     public IEnumerator VehicleFactoryVehicleTest()
     {
         VehicleFactory vehicleFactory = (VehicleFactory)GameObject.FindObjectOfType(typeof(VehicleFactory));
-        foreach (Rigidbody vehicle in vehicleFactory.vehicles)
+        foreach (VehicleFactory.VehicleProbability vehicleProbability in vehicleFactory.vehicleProbabilities)
         {
-            vehicleFactory.SpawnVehicle(vehicle, vehicleFactory.GetRandomPath());
+            vehicleFactory.SpawnVehicle(vehicleProbability.vehicle, vehicleFactory.GetRandomPath());
         }
-        Assert.AreEqual(vehicleFactory.vehicles.Count, vehicleFactory.currentVehicles.Count);
+        Assert.AreEqual(vehicleFactory.vehicleProbabilities.Count, vehicleFactory.currentVehicles.Count);
         yield return null;
     }
 }

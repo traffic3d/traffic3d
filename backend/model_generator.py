@@ -3,6 +3,7 @@ import socket
 import cv2
 import os
 import tempfile
+import json
 from datetime import datetime
 
 class ModelGenerator(ABC):
@@ -10,6 +11,7 @@ class ModelGenerator(ABC):
     @abstractmethod
     def __init__(self, port=PORT):
         self.port = port
+        self.max_number_of_junction_states = 0
         self.client_socket = None
         self.images_path = os.path.join(tempfile.gettempdir(), "Traffic3D_Screenshots", datetime.now().strftime("%Y-%m-%d_%H_%M_%S_%f"))
         os.makedirs(self.images_path, exist_ok=True)
@@ -28,8 +30,13 @@ class ModelGenerator(ABC):
         ss.listen()
         print("waiting for tcpConnection")
         (self.client_socket, address) = ss.accept()
-        self.send_data(self.images_path)
         print("tcpConnection established")
+        self.send_data(self.images_path)
+        self.max_number_of_junction_states = int(self.get_data().decode('utf-8'))
+        if self.max_number_of_junction_states == 0:
+            raise ValueError("The Max Number of Junction States is 0. It is possible that Traffic3D "
+                             "never sent the number in the first place or there are no Junction States in Traffic3D.")
+        print("Max Junction State Size: " + str(self.max_number_of_junction_states))
 
     def get_data(self):
         return self.client_socket.recv(1024)
@@ -38,14 +45,16 @@ class ModelGenerator(ABC):
         action_bytes = bytes(str(data_to_send), "ascii")
         self.client_socket.send(action_bytes)
 
-    def receive_image(self):
+    def receive_images(self):
         data_string = (self.get_data().decode('utf-8'))
         print(data_string)
-        img_path = os.path.join(self.images_path, data_string)
-        img = cv2.imread(img_path)
-        if img is None:
-            raise Exception("Image cannot be found, image path may be incorrect.")
-        return img
+        screenshots = json.loads(data_string)
+        screenshots = screenshots["screenshots"]
+        imgs = {}
+        for item in screenshots:
+            img_path = os.path.join(self.images_path, item["screenshotPath"])
+            imgs[item["junctionId"]] = cv2.imread(img_path)
+        return imgs
 
     def send_action(self, action):
         self.send_data(action)

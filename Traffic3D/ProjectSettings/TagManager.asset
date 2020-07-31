@@ -8,6 +8,8 @@ TagManager:
   - car
   - hap
   - unhap
+  - roadway
+  - pathway
   layers:
   - Default
   - TransparentFX

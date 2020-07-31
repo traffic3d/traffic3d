@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TrafficLight : MonoBehaviour
 {
-    public int trafficLightId;
+    public string trafficLightId;
     public Material redMaterial;
     public Material amberMaterial;
     public Material greenMaterial;
@@ -15,6 +16,10 @@ public class TrafficLight : MonoBehaviour
     public LightColour currentLightColour = LightColour.RED;
     private Dictionary<LightColour, GameObject> lightObjects;
     private Dictionary<LightColour, Material> lightMaterials;
+
+    public event TrafficLightChangeEvent trafficLightChangeEvent;
+
+    public delegate void TrafficLightChangeEvent(object sender, TrafficLightChangeEventArgs e);
 
     void Awake()
     {
@@ -46,6 +51,10 @@ public class TrafficLight : MonoBehaviour
                 ChangeMaterial(lightObjectEntry.Value, blackMaterial);
             }
         }
+        if (trafficLightChangeEvent != null)
+        {
+            trafficLightChangeEvent.Invoke(this, new TrafficLightChangeEventArgs(this, currentLightColour));
+        }
     }
 
     /// <summary>
@@ -62,7 +71,7 @@ public class TrafficLight : MonoBehaviour
     /// Returns the ID of the traffic light.
     /// </summary>
     /// <returns>The int ID of the traffic light.</returns>
-    public int GetTrafficLightId()
+    public string GetTrafficLightId()
     {
         return trafficLightId;
     }
@@ -110,5 +119,17 @@ public class TrafficLight : MonoBehaviour
         RED,
         AMBER,
         GREEN
+    }
+
+    public class TrafficLightChangeEventArgs : EventArgs
+    {
+        public TrafficLight trafficLight;
+        public LightColour lightColour;
+
+        public TrafficLightChangeEventArgs(TrafficLight trafficLight, LightColour lightColour)
+        {
+            this.trafficLight = trafficLight;
+            this.lightColour = lightColour;
+        }
     }
 }
