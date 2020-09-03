@@ -37,7 +37,7 @@ public class Path : MonoBehaviour
     /// <summary>
     /// Sets the nodes of the path using the child game objects.
     /// </summary>
-    private void SetNodes()
+    public void SetNodes()
     {
         nodes = GetComponentsInChildren<Transform>().ToList().FindAll(node => node != transform);
     }
