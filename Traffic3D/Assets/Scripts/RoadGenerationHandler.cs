@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Handles the creation of the road mesh and positioning of label above road
+/// </summary>
 public class RoadGenerationHandler 
 {
 
     /// <summary>
     /// Uses a list of node positions to generate a Road Mesh
     /// </summary>
-    /// <param name="nodePositions">List of Vector3s, creating the road. (Vector3s' must be positioned exactly where road will spawn)</param>
+    /// <param name="nodePositions">List of Vector3s, creating the road. (Vector3s' should be the position of nodes along the road)</param>
     /// <param name="roadWidth">Total Width of the road</param>
     /// <returns> Returns new mesh for road. OR, if list doesn't contain atleast 2 nodes, returns empty mesh. </returns>
     public Mesh CreateRoadMesh(List<Vector3> nodePositions, int numLanes, float laneWidth)
@@ -89,7 +92,7 @@ public class RoadGenerationHandler
     }
 
     /// <summary>
-    /// Positions the label showing the road name above the center node
+    /// Positions the label (showing the road name) above the center node and orientate along road.
     /// </summary>
     /// <param name="midNode">Middle node in road</param>
     /// <param name="nextNode">Node after the middle node in road</param>

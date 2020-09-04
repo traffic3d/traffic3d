@@ -16,7 +16,7 @@ namespace Tests
         {
             MapReader mr = new MapReader();
             mr.ImportFile(mapWithMaxNodes);
-            RoadGenerator rg = new RoadGenerator(mr, null, null);
+            RoadGenerator rg = new RoadGenerator(mr, null);
             System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
 
             stopwatch.Start();

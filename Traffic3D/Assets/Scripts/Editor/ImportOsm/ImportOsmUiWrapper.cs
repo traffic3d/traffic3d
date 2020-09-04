@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+/// Handles all key scripts required to generate a scene.
+/// Calls the map reader to read map data
+/// Calls scripts that are responsible for the generation of different scene elements
+/// </summary>
 public class ImportOsmUiWrapper
 {
     //GUI
@@ -36,30 +41,31 @@ public class ImportOsmUiWrapper
     }
 
     /// <summary>
-    /// Calls all method and classes responsible for reading a file and generating a Road Network
+    /// Calls all method and classes responsible generating a Road Network
     /// </summary>
     /// <returns>True if successfully uploaded data</returns>
     public bool Import()
     {
-        mapReader = new MapReader();
-
-        //Check if importing invalid file or file with invalid data
-        try {
-            //Read File and create node & way objects
-            mapReader.ImportFile(filePath);
-        } catch
-        {
+      
+        //Return if failed to Read Data
+        if (!ReadMapData())
             return false;
-        }
+        
+        CreateFloor();
+
+        //Create Traffic3D required Objects & scripts
+        CreatePythonManager();
+        CreateTrafficLightManager();
+        GameObject vehicleFactory = CreateVehicleFactory();
+
 
         //Defines the parent game object connected to each each Way (Key: "Way", Value: "Parent_Object") 
         parentObjectsForWays = new Dictionary<MapXmlWay, GameObject>(mapReader.ways.Count);
 
         //Create scene objects 
-
         buildingGenerator = new BuildingGenerator(mapReader, building_material);
-        roadGenerator = new RoadGenerator(mapReader, road_material, floor_material);
-        pathGenerator = new PathGenerator(mapReader);
+        roadGenerator = new RoadGenerator(mapReader, road_material);
+        pathGenerator = new PathGenerator(mapReader, vehicleFactory);
         trafficLightGenerator = new TrafficLightGenerator(mapReader);
         junctionGenerator = new JunctionGenerator();
 
@@ -75,12 +81,11 @@ public class ImportOsmUiWrapper
         GenerateJunctions();
 
         pathGenerator.RemovePathsWithTwoNodes();
+
         pathGenerator.PopulateVehicleFactory();
 
 
-        //GenerateTrafficLights(pathGenerator.GetAllNodesInRoadNetwork()); //NOTE: No Longer supporting real-world trafficLights due to lack of trafficLights in map data
-
-        //mapReader.DrawTheLines();
+        //GenerateTrafficLights(pathGenerator.GetAllNodesInRoadNetwork()); //NOTE: No Longer supporting real-world trafficLights due to lack of trafficLights in map data. Junctions now spawn the trafficlights
 
         return true;
     }
@@ -167,7 +172,7 @@ public class ImportOsmUiWrapper
                 GameObject path = RoadParentObject.transform.GetChild(RoadParentObject.transform.childCount - 1).gameObject;
                 roadMeshHolder.AddComponent<RoadMeshUpdater>();
                 //Initializse values
-                roadMeshHolder.GetComponent<RoadMeshUpdater>().setValues(kv.Key.Lanes, roadMeshHolder, path,roadGenerator.DefaultLaneWidth);
+                roadMeshHolder.GetComponent<RoadMeshUpdater>().SetValues(kv.Key.Lanes, roadMeshHolder, path,roadGenerator.DefaultLaneWidth);
             }
 
             //Update road Mesh
@@ -215,5 +220,67 @@ public class ImportOsmUiWrapper
     public int GetNodesInScene()
     {
         return mapReader.nodes.Count;
+    }
+
+    //Floor for the scene
+    void CreateFloor()
+    {
+        //Create floor object
+        GameObject floor = GameObject.CreatePrimitive(PrimitiveType.Plane);
+
+        //add scripts
+        floor.AddComponent<MeshCollider>();
+        Renderer rend = floor.GetComponent<Renderer>();
+
+        rend.material = floor_material; //Add material
+
+        //position floor at center, and just slightly below road height.
+        floor.transform.position = new Vector3(0, -0.01f, 0);
+        //scale to size of map bounds
+        floor.transform.localScale = mapReader.bounds.Size;
+        //Ensure Y-axis scale is set to 1
+        floor.transform.localScale = new Vector3(floor.transform.localScale.x, 1f, floor.transform.localScale.z);
+    }
+
+    GameObject CreateVehicleFactory()
+    {
+        GameObject vehicleFactory = new GameObject("VehicleFactory");
+        vehicleFactory.AddComponent<VehicleFactory>();
+        return vehicleFactory;
+    }
+
+    void CreatePythonManager()
+    {
+        //Initialize list in PythonManager
+        GameObject pm = new GameObject("PythonManager");
+        pm.AddComponent<PythonManager>();
+    }
+
+    void CreateTrafficLightManager()
+    {
+        GameObject tlm = new GameObject("TrafficLightManager");
+        tlm.AddComponent<TrafficLightManager>();
+    }
+
+
+    /// <summary>
+    /// Use public MapReader to read Map File
+    /// </summary>
+    /// <returns>Bool if successfully read data</returns>
+    bool ReadMapData()
+    {
+        mapReader = new MapReader();
+
+        //Try to read file
+        try
+        {
+            //Read File and create node & way objects
+            mapReader.ImportFile(filePath);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
 }

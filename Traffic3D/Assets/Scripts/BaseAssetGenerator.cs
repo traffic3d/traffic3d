@@ -2,7 +2,7 @@
 using UnityEngine;
 
 /*
- Holds comman methods between the Road/Building- generator Scripts
+ * Abstracts functionality for generating meshes for asthetic elements of a scene e.g roads and buildings
  */
 public abstract class BaseAssetGenerator
 {
@@ -33,12 +33,12 @@ public abstract class BaseAssetGenerator
         return total / way.NodeIDs.Count;
     }
 
+    /// <summary>
+    /// Store passed object under root parent. e.g store a road under root parent named "Roads"
+    /// </summary>
+    /// <param name="child"></param>
     protected void AddToRootParent(GameObject child)
     {
-        if (child == null)
-            Debug.Log("CHild Null");
-        if (rootParent == null)
-            Debug.Log("Parent Null");
         child.transform.parent = rootParent.transform;
     }
 
@@ -107,6 +107,11 @@ public abstract class BaseAssetGenerator
         return parentObjectsForWays;
     }
 
+    /// <summary>
+    /// Get Parent object for a way
+    /// </summary>
+    /// <param name="way"></param>
+    /// <returns>Parent object</returns>
     public GameObject GetParent(MapXmlWay way)
     {
         if (parentObjectsForWays.ContainsKey(way))
@@ -115,6 +120,11 @@ public abstract class BaseAssetGenerator
         return null;
     }
 
+    /// <summary>
+    /// Link Way to paret object.
+    /// </summary>
+    /// <param name="way"></param>
+    /// <param name="parent"></param>
     public void LinkWayToParent(MapXmlWay way,GameObject parent)
     {
         parentObjectsForWays.Add(way, parent);

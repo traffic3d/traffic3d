@@ -4,36 +4,34 @@ using UnityEngine;
 using System.Linq;
 using System;
 
+/// <summary>
+/// Generates paths for vehicle to drive along (using Path component)
+/// </summary>
 public class PathGenerator : BaseNodeInformant
 {
     private MapReader map;
     GameObject vehiclePath;
     GameObject vehicleFactory;
 
-
-    public PathGenerator(MapReader mapReader)
+    public PathGenerator(MapReader mapReader, GameObject vehicleFactory)
     {
         //initialize base calss variables
         InitializeVariables();
-
-        map = mapReader;
-
-        vehicleFactory = new GameObject("VehicleFactory");
-        vehicleFactory.AddComponent<VehicleFactory>();
-
+        
         //Create list
-        List<Path> p = new List<Path>();
+        List<Path> path = new List<Path>();
 
         //Initialize list in VF
-        vehicleFactory.GetComponent<VehicleFactory>().paths = p;
+        vehicleFactory.GetComponent<VehicleFactory>().paths = path;
 
-        //Initialize list in PythonManager
-        GameObject pm = new GameObject("PythonManager");
-        pm.AddComponent<PythonManager>();
-
-
+        this.vehicleFactory = vehicleFactory;
+        map = mapReader;
     }
 
+    /// <summary>
+    /// Loop through ways and create path for each road
+    /// </summary>
+    /// <param name="wayObjects">Dictionary linking parent gameObject to way - {Key: way, Value: parent game Object}</param>
     public void AddPathsToRoads(Dictionary<MapXmlWay, GameObject> wayObjects)
     {
 
@@ -43,13 +41,12 @@ public class PathGenerator : BaseNodeInformant
             //if way is a road...
             if (way.IsRoad)
             {
-
-                //Create GO to hold vehicle path across road
+                //Create GameObject to hold vehicle path 
                 vehiclePath = new GameObject();
                 vehiclePath.AddComponent<Path>();
 
-                //Create and Add new vehicle path nodes vehicle factory
-                AddPath(way, way.Name, vehiclePath, vehicleFactory);
+                //Create new vehicle path and add to vehicleFactory
+                CreatePath(way, way.Name, vehiclePath, vehicleFactory);
 
                 //Make vehicle path child of way objects' parent
                 SetParent(way, wayObjects);
@@ -57,17 +54,23 @@ public class PathGenerator : BaseNodeInformant
                 //record as created
                 createdRoads.Add(vehiclePath);
             }
-
         }
-
         PopulateVehicleFactory();
-
     }
 
+    //Connect roads with the same name, if they join at same node
     public void JoinRoadsWithSameName()
     {
-        //Merge roads with the same name, if they are connected
-        MergeSimilarRoads();
+       HashSet<GameObject> temp = new HashSet<GameObject>(createdRoads);
+
+        //Loop through all roads
+        foreach (GameObject road in temp)
+        {
+            //Check if is a deleted road
+            if (!deletedVehiclePaths.Contains(road))
+                MergeToSimularEndNode(road);
+            
+        }
     }
 
     public List<GameObject> GetDeletedVehiclePaths()
@@ -76,55 +79,49 @@ public class PathGenerator : BaseNodeInformant
     }
 
     /// <summary>
-    /// Create new gameObject with "Path" script. Populate nodes using nodes found in "Way" and add new path to vehicle Factory
+    /// Creates a Vehicle Path and adds to vehicle factory
+    /// - Creates a new gameObject with "Path" Component. 
+    /// - Populates Path component using nodes found in "Way" 
     /// </summary>
     /// <param name="way">Way holding all nodes in the road</param>
     /// <param name="pathName">Name of the new vehicle path</param>
     /// <param name="vehiclePath">GameObject to hold "Path" Script</param>
     /// <param name="vf">GameObject with Vehicle Factory script</param>
-    void AddPath(MapXmlWay way, string pathName, GameObject vehiclePath, GameObject vf)
+    void CreatePath(MapXmlWay way, string pathName, GameObject vehiclePath, GameObject vf)
     {
-
         vehiclePath.name = string.IsNullOrEmpty(pathName) ? "Road_Path" : (pathName + "_Path");
-
-        //transform go
         Vector3 origin = GetCentre(way);
-
+        
+        //position path
         vehiclePath.transform.position = origin - map.bounds.Centre;
 
-        //Add layer to ignore to raycasts
+        //Add layer to 'ignore raycasts' to path object
         vehiclePath.layer = 2;
 
         //Loop through all nodes in the road
         for (int i = 0; i < way.NodeIDs.Count; i++)
         {
-
             //Create GameObject for node
             string name = "node" + (i + 1);
             GameObject singleNode = new GameObject(name);
 
-            //Add layer to ignore to raycasts
+            //Add layer to ignore to raycasts to node
             singleNode.layer = 2;
 
-            //get node
             MapXmlNode currentNodeLocation = map.nodes[way.NodeIDs[i]];// Current Nodes' Location
-
-            //get node vector location
-            Vector3 vCurrentNodeLocation = origin - currentNodeLocation;
+            Vector3 vCurrentNodeLocation = origin - currentNodeLocation;// Node vector location
 
             //move up along y-axis so node is above road
             vCurrentNodeLocation.y = vCurrentNodeLocation.y - 1;
 
             //Set position of Node to the vector
-            singleNode.transform.position = (vCurrentNodeLocation * (-1f));
-            //Debug.Log("final node: " + singleNode.transform.x);
+            singleNode.transform.position = vCurrentNodeLocation * (-1f);
 
             //Make node a child of main roads' path 
             singleNode.transform.SetParent(vehiclePath.transform, false);
 
             //Store node by ID
             StoreNodeObjectByNodeId(singleNode, way.NodeIDs[i]);
-
 
             //Rotate the first node so it faces to the second. (Vehicle spawn in the direction of the first node)
             if (i == 1)
@@ -137,9 +134,7 @@ public class PathGenerator : BaseNodeInformant
                 Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);
 
                 firstNode.rotation = rotation;
-
             }
-
         }
 
         Path path = vehiclePath.GetComponent<Path>();
@@ -150,8 +145,7 @@ public class PathGenerator : BaseNodeInformant
         //Set the line colour
         path.lineColor = Color.white;
         path.lineColor.a = 1;
-
-
+        
         List<Path> vf_path = vf.GetComponent<VehicleFactory>().paths;
 
         vf_path.Add(path); //Add path to vehicle factory
@@ -161,6 +155,11 @@ public class PathGenerator : BaseNodeInformant
 
     }
 
+    /// <summary>
+    /// Add node to dictionary
+    /// </summary>
+    /// <param name="singleNode">Node GameObject</param>
+    /// <param name="id">node id</param>
     void StoreNodeObjectByNodeId(GameObject singleNode, ulong id)
     {
         //If node not already stored, create new Key-Value pair
@@ -170,17 +169,22 @@ public class PathGenerator : BaseNodeInformant
             nodeObjectsByNodeId[id] = singleNode; //overwrite old value
     }
 
-    //Return all nodes in road netword
-    //Dictionary {Key: Node (MapXmlWay) ID, Value: Node Game Object}
+    /// <summary>
+    /// Return all nodes in road network
+    /// </summary>
+    /// <returns>Dictionary {Key: Node (MapXmlWay) ID, Value: Node Game Object}</returns>
     public Dictionary<ulong, GameObject> GetAllNodesInRoadNetwork()
     {
         return nodeObjectsByNodeId;
     }
 
-    //Make Vehicle child of ways parent GameObject
+    /// <summary>
+    /// Make Vehicle child of ways parent GameObject
+    /// </summary>
+    /// <param name="way">way</param>
+    /// <param name="wayObjects">Dictionary linking way to its parent object</param>
     public void SetParent(MapXmlWay way, Dictionary<MapXmlWay, GameObject> wayObjects)
     {
-
         GameObject parent;
 
         //if way has parent
@@ -286,26 +290,13 @@ public class PathGenerator : BaseNodeInformant
             }
         }
     }
-
     
 
-    //Connect roads with the same name, if they join at same node
-    void MergeSimilarRoads()
-    {
-        HashSet<GameObject> temp = new HashSet<GameObject>(createdRoads);
-
-        //Loop through all roads
-        foreach (GameObject road in temp)
-        {
-            //if not a deleted road
-            if (!deletedVehiclePaths.Contains(road))
-                MergeToSimularEndNode(road);
-            
-        }
-    }
-
-    //If node at the end of the current road has the same name, the roads will be merged and the joining road will be deleted
-    // (Recursive method)
+    /// <summary>
+    /// If node at the end of the current road has the same name, the roads will be merged and the joining road will be deleted
+    /// (Recursive method)
+    /// </summary>
+    /// <param name="road"></param>
     void MergeToSimularEndNode(GameObject road)
     {
         Path path = road.GetComponent<Path>();
@@ -339,16 +330,14 @@ public class PathGenerator : BaseNodeInformant
 
                     //After merging, the end node was updated => Call recursive method to merge again
                     MergeToSimularEndNode(road);
-
-                    
                 }
             }
         }
     }
 
     /// <summary>
-    /// Checks for any path with only 2 nodes and adds a 3rd node just before the last node. 
-    /// Note: This prevents errors with the Vehicle Factor which requires paths to have 3+ nodes
+    /// Checks for any path with only 2 nodes and adds a 3rd node, just before the last node. 
+    /// Dev Note: This is to prevent errors with the Vehicle Factory, which requires paths to have 3+ nodes
     /// </summary>
     public void RemovePathsWithTwoNodes()
     {
@@ -362,23 +351,24 @@ public class PathGenerator : BaseNodeInformant
                 path.SetNodes();
             }
         }
-        
     }
 
-    //Populate vehicle Factory with Road paths. Overwrite existing data
-    public  void PopulateVehicleFactory()
+    /// <summary>
+    /// Empties and re-populates the Vehicle Factory with road paths.
+    /// </summary>
+    public void PopulateVehicleFactory()
     {
         //Create list
-        List<Path> p = new List<Path>();
+        List<Path> paths = new List<Path>();
 
         //Loop through all roads
         foreach (GameObject road in createdRoads)
         {
             //if not a deleted road
             if (!deletedVehiclePaths.Contains(road))
-                p.Add(road.GetComponent<Path>());
+                paths.Add(road.GetComponent<Path>());
         }
-        vehicleFactory.GetComponent<VehicleFactory>().paths = p;
+        vehicleFactory.GetComponent<VehicleFactory>().paths = paths;
     }
 
     /*

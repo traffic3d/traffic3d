@@ -13,135 +13,143 @@ public class TrafficLightGenerator
     //unique ID for each trafficlight in simulation
     private static int trafficLightId = 1;
 
-    // Start is called before the first frame update
+
     public TrafficLightGenerator(MapReader mapReader)
     {
         map = mapReader;
         trafficLight_model = Resources.Load("Models/TrafficLight_small") as GameObject;
         trafficLights = new Dictionary<ulong, GameObject>();
-
-        GameObject tlm = new GameObject("TrafficLightManager");
-        tlm.AddComponent<TrafficLightManager>();
     }
 
-    //Create TrafficLight For every MapXmlNode marked as "hasTrafficLight"
-    //return Dictionary<ulong, GameObject> {NodeID, TrafficLight}
+
+    /// <summary>
+    /// Loop through all ways and create a trafficlight on roads with a traffic light
+    /// </summary>
+    /// <param name="parentObjectsForWays">Dictionary linking way to parent gameObject= {Key: Way, Value: Parent gameObject}</param>
+    /// <returns>Dictionary(ulong, GameObject) = {Key: NodeID where trafficlight spawned, Value: TrafficLight}</returns>
     public Dictionary<ulong, GameObject> AddTrafficLightsByWay(Dictionary<MapXmlWay,GameObject> parentObjectsForWays)
     {
-
         // Iterate through each way...
         foreach (var way in map.ways)
         {
             //if way is a road...
             if (way.IsRoad)
             {
-                CreateTrafficLight(way, way.Name, way.Lanes, parentObjectsForWays);
+                CreateTrafficLight(way, way.Lanes, parentObjectsForWays);
             }
         }
 
         return trafficLights;
-
     }
-    
 
-    void CreateTrafficLight(MapXmlWay way, string pathName, int numLanes, Dictionary<MapXmlWay, GameObject> parentObjectsForWays)
+    /// <summary>
+    /// Spawn Trafficlight on any nodes along roads (ways) flagged as containing a trafficlight. 
+    /// Make trafficlight a child of the ways' parent gameobject, using the passed Dictionary.
+    /// </summary>
+    /// <param name="way">Current way/road</param>
+    /// <param name="numLanes">number of lanes in way/road</param>
+    /// <param name="parentObjectsForWays">Dictionary linking way to parent gameObject = {Key: Way, Value: Parent gameObject}</param>
+    void CreateTrafficLight(MapXmlWay way, int numLanes, Dictionary<MapXmlWay, GameObject> parentObjectsForWays)
     {
        
-        //Holds all trafficlights for current way
+        //Holds all the trafficlights for current way
         GameObject parentObject = new GameObject();
 
+        //Trafficlights in road
         trafficLightCount = 0;
 
         Vector3 origin = GetCentre(way);
 
-        //postion go in road centre
+        //postion gameObject in road centre
         parentObject.transform.position = origin - map.bounds.Centre;
         parentObject.name = way.Name + "_TrafficLights";
 
         bool hasTrafficlights = false;
 
-        //(Dont add trafficLight to first node)
+        //Loop through nodes in way, and spawn trafficlights on nodes with a trafficlight (Dont add trafficLight to first node)
         for (int i = 1; i < way.NodeIDs.Count; i++)
         {
+            //get node
             ulong nodeID = way.NodeIDs[i];
             MapXmlNode node = map.nodes[way.NodeIDs[i]];
 
-
-            //if node has a New trafficLight 
+            //Check node doesn't already have a trafficlight
             if (node.hasTrafficLight && !trafficLights.ContainsKey(nodeID))
             {
                 trafficLightCount++;
                 hasTrafficlights = true;
                 MapXmlNode prevNode = map.nodes[way.NodeIDs[i - 1]];// Next Nodes' Location
                 Vector3 prevNodeLoc = prevNode - map.bounds.Centre;
+                //create Trafficlight on node
                 CreateTrafficLightModel(parentObject, node- map.bounds.Centre, nodeID, prevNodeLoc, trafficLightCount, numLanes);
             }
         }
 
-        //Destory parent if no children
+        //Destory gameobject if no trafficlights in current way
         if (!hasTrafficlights)
-        {
             Object.DestroyImmediate(parentObject);
-        }
         else
-        {
-            SetParent(way, parentObjectsForWays, parentObject);
-        }
+            SetParent(way, parentObjectsForWays, parentObject); // Make way/road and trafficlights share same parent gameObject
 
     }
 
-    //Make parent of trafficLigts in a single way a child of the root parent which contains all trafficlights
 
+    /// <summary>
+    /// Make way/road and trafficlights share same parent gameObject
+    /// </summary>
+    /// <param name="way">Way/road to which the trafficlights belong</param>
+    /// <param name="parentObjectsForWays">Dictionary linking 'ways' to 'parent gameObjects'</param>
+    /// <param name="trafficLightsParent">gameobject holding all trafficlights in way/road</param>
     public void SetParent(MapXmlWay way, Dictionary<MapXmlWay, GameObject> parentObjectsForWays, GameObject trafficLightsParent)
     {
 
         GameObject parent;
 
-        //Get Root parent holding all trafficLight Objects Across all roads
+        //Check if road has a parent gameObject
         if (parentObjectsForWays.ContainsKey(way))
         {
+            //get parent
             parent = parentObjectsForWays[way];
         }
         else
         {
+            //create new parent
             parent = new GameObject();
             parent.name = trafficLightsParent.name;
 
             parentObjectsForWays.Add(way, parent);
         }
 
-        //Make current parent object child of root parent object
+        //Make Gameobject holding all trafficlights a child of the roads' parent. (Road and trafficlights will now share same parent)
         trafficLightsParent.transform.parent = parent.transform;
 
     }
 
     /// <summary>
-    /// Creates a single instance of a trafficLight Game Object 
+    /// Creates a single instance of a trafficLight GameObject at a specific node and offset the trafficlight to the righ by the roads width.
+    /// Trafficlights are orientated towards the target node 
     /// </summary>
     /// <param name="localParentObject">Parent object holding current trafficlights</param>
     /// <param name="currentNode"> Node to spawn traffic light</param>
     /// <param name="nodeID">ulong id for currentNode</param>
-    /// <param name="targetDirection">TrafficLight will face this node (Usally previous node in path)</param>
+    /// <param name="targetDirection">TrafficLight will face towards this position</param>
     /// <param name="trafficLightCount">local count to uniquely identify trafficLight under current parent object</param>
     /// <param name="numLanes">number of lans in road. Used to offset trafficLight to side of the road</param>
-    /// <returns>Game Object trafficLight model</returns>
+    /// <returns>TrafficLight GameObject</returns>
     public GameObject CreateTrafficLightModel(GameObject localParentObject, Vector3 currentNode, ulong nodeID, Vector3 targetDirection, int trafficLightCount, int numLanes)
     {
 
         //instantiate model
         GameObject trafficLight = GameObject.Instantiate(trafficLight_model) as GameObject;
 
-        //Add Ignore raycast layer
+        //Add 'Ignore raycast' layer
         trafficLight.layer = 2;
 
+        //Check if TrafficLight already created
         if (!trafficLights.ContainsKey(nodeID))
-        {
-            trafficLights.Add(nodeID, trafficLight);
-        }
+            trafficLights.Add(nodeID, trafficLight); //add to list
         else
-        {
-            trafficLights[nodeID] = trafficLight;
-        }
+            trafficLights[nodeID] = trafficLight; //Overwrite existing trafficlight
         
 
         trafficLight.transform.parent = localParentObject.transform;
@@ -155,9 +163,6 @@ public class TrafficLightGenerator
         trafficLight.GetComponent<TrafficLight>().trafficLightId = "" + trafficLightId;
         trafficLightId++;
 
-
-
-
         //rotate towards previous node
         Vector3 relativePos = targetDirection - trafficLight.transform.position;
 
@@ -168,20 +173,20 @@ public class TrafficLightGenerator
             trafficLight.transform.rotation = rotation;
         }
 
-
-        //move too the side of the road
+        //offset to side of road
         trafficLight.transform.Translate(Vector3.right * numLanes* 5);
         trafficLight.transform.Translate(Vector3.up * 2);
-        float height = trafficLight.GetComponent<MeshRenderer>().bounds.size.y;
+        float height = trafficLight.GetComponent<MeshRenderer>().bounds.size.y; //height
         trafficLight.transform.position = new Vector3(trafficLight.transform.position.x,(height/2), trafficLight.transform.position.z);
 
         return trafficLight;
     }
 
 
-
-    //Add "Stop Nodes" to each TrafficLight
-    //@pram: Dictionary{Key: MapXmlNode ID, Value: a Node GameObject} - Hold all the gameobjects for all nodes in all roads, accessible by their node-(MapXmlNode) ID 
+    /// <summary>
+    /// Add "Stop Nodes" to each TrafficLight
+    /// </summary>
+    /// <param name="nodeObjectsById">Dictionary linking nodeId to node gameObject - {Key: MapXmlNode ID, Value: a Node GameObject}</param>
     public void AddStopNodesToTrafficLights(Dictionary<ulong, GameObject> nodeObjectsById)
     {
 
@@ -203,9 +208,8 @@ public class TrafficLightGenerator
         }
     }
 
-    /*
-        Returns the centre of an object
-    */
+
+    // Returns the centre of an object
     protected Vector3 GetCentre(MapXmlWay way)
     {
         Vector3 total = Vector3.zero;

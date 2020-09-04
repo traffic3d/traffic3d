@@ -4,10 +4,11 @@ using System.Xml; //XmlDocument()
 using UnityEngine;
 using System.IO;
 
-
+/// <summary>
+/// Reads and an OpenStreetMap .txt file and stores data about Ways, Nodes and the Bounds of the map
+/// </summary>
 public class MapReader
 {
-
     //Check when map data has finished uploading
     public bool finishedUploadingData;
 
@@ -16,7 +17,6 @@ public class MapReader
 
     //Nodes: ID, <Node> Object : A Single Node object
     public Dictionary<ulong, MapXmlNode> nodes;
-
 
     //Nodes: ID, <Way> Object : A Collection of Nodes
     public List<MapXmlWay> ways;
@@ -51,7 +51,6 @@ public class MapReader
 
     void GetNodeDataFromFile(XmlDocument doc)
     {
-
         // -- Empty collections
 
         //Hold <Node>-tag data
@@ -78,16 +77,13 @@ public class MapReader
         {
             MapXmlWay way = new MapXmlWay(node);
             ways.Add(way);
-
-            // way.printDictionary(); //->Debugging
-           
         }
     }
 
-    /*
-     For every XML 'Node' Tag
-     Create MapXmlNode Object & add to dictionary
-     */
+    /// <summary>
+    /// For every XML 'Node' Tag, creates a MapXmlNode Object & adds to dictionary
+    /// </summary>
+    /// <param name="xmlNodeList"></param>
     void InitializeNodes(XmlNodeList xmlNodeList)
     {
         foreach (XmlNode xmlNode in xmlNodeList)

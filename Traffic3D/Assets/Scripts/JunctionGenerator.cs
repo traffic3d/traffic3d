@@ -3,6 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using static JunctionState;
 
+/// <summary>
+/// Generates Junctions in a scene and spawns trafficlights
+/// Currently, junctions are only generated where 2 roads cross i.e Cross-junction (+)
+/// If more than two roads make up the the Cross-junction, it will merge "Entry->Exit" roads together so there's only 2 roads
+/// 
+/// NOTE: Class should be extended to create junctions at T-junctions. 
+/// However, this requires the 'Path' script to support nodes connecting to more than one other node.
+/// </summary>
 public class JunctionGenerator : BaseNodeInformant
 {
 
@@ -63,7 +71,8 @@ public class JunctionGenerator : BaseNodeInformant
     }
 
     /// <summary>
-    /// create junction at mid nodes where roads cross eachother
+    /// Creates junctions at mid nodes, where two roads meet (i.e Cross-Junctions)
+    /// Calls methods to merge roads if 'one road ends' where 'another road begins'.
     /// </summary>
     void CreateJunctions()
     {
@@ -73,25 +82,13 @@ public class JunctionGenerator : BaseNodeInformant
         //Create junction at each end node
         foreach (Vector3 endNode in endNodes.Keys)
         {
-
-            /*
-             * If (haven't already created junction) && (Junction connects to other roads) && (Number of end_nodes and start_nodes is the same )
-             * Effectively, there should be a 1-1 relationship between roads in a junction so e.g T-Junctions aren't supported
-            */
             if (!used.Contains(endNode))
             {
-                //check if junction and if number of start and end nodes  is equal (1-1 relationship)
-             //   GameObject junctionObject = CreateJunctionGameObjectAtNode(endNode);
-
-                //Merge Junctions
+                //Attempt to merge roads at current node
                 MergeJunctionNodes(endNode);
-
-                //Spawn TrafficLights
-                //AddTrafficLightsToJunction(junctionObject, node);
 
                 //Mark as used
                 used.Add(endNode);
-                
             }
         }
 
@@ -100,24 +97,19 @@ public class JunctionGenerator : BaseNodeInformant
         {
             if (!used.Contains(startNode))
             {
-                //Merge Junctions
+                //Attempt to merge roads at current node
                 MergeJunctionNodes(startNode);
-
-                //Spawn TrafficLights
-                //AddTrafficLightsToJunction(junctionObject, node);
 
                 //Mark as used
                 used.Add(startNode);
-                
             }
         }
 
-        CalculateMidConnectedNodes();
+        CalculateMidConnectedNodes(); //check & update, if the number of mid nodes (i.e Cross-junctions) has changed
 
-        //Create junction at each mid node
+        //Create junction at each mid node (i.e Cross-Junction)
         foreach (Vector3 midNode in midConnectedNodes.Keys)
         {
-
             GameObject junctionObject = CreateJunctionGameObjectAtNode(midNode);
 
             //Spawn TrafficLights
@@ -128,19 +120,16 @@ public class JunctionGenerator : BaseNodeInformant
             else
             {
                 AddJunctionStates(junctionObject, trafficLights);
-
                 AddDensityMeasurePoint(junctionObject, midConnectedNodes[midNode] );
             }
-                
         }
-
     }
 
     /// <summary>
-    /// Creates junction object at node
+    /// Creates junction object with scripts and name
     /// </summary>
     /// <param name="node">Vector3 position of junction</param>
-    /// <returns></returns>
+    /// <returns>Junction Object with scripts and camera</returns>
     GameObject CreateJunctionGameObjectAtNode(Vector3 node)
     {  
 
@@ -170,7 +159,7 @@ public class JunctionGenerator : BaseNodeInformant
 
 
     /// <summary>
-    /// Create plane object
+    /// Create a plane object and position at current node & scale to road size
     /// </summary>
     /// <param name="junctionNode">targetNode Node to spawn plane</param>
     /// <param name="parent">parent gameObject</param>
@@ -206,14 +195,12 @@ public class JunctionGenerator : BaseNodeInformant
         if (scaledWidth <= 0)
             scaledWidth = 0.25f;
 
-        
         plane.transform.localScale = new Vector3(0.15f+scaledWidth, planeHeight, 0.15f + scaledWidth);
 
         //Transform
         Vector3 pos = plane.transform.position;
         pos.y = 0;
         plane.transform.position = pos;
-
 
         return plane;
     }
@@ -259,8 +246,8 @@ public class JunctionGenerator : BaseNodeInformant
 
     //
     /// <summary>
-    /// Randomly links nodes in a junction.
-    /// Requires number of start and end nodes to be the same. => Roads merged using 1-1 relationship 
+    /// Randomly links Entry->Exit (Start/End) nodes in a junction.
+    /// Requires number of start and end nodes to be the same => Roads merged using 1-1 relationship. 
     /// </summary>
     /// <param name="junctionNode">the junction node whose roads are being merged</param>
     void MergeJunctionNodes(Vector3 junctionNode)
@@ -271,10 +258,8 @@ public class JunctionGenerator : BaseNodeInformant
             //Check if juction has start & end nodes
             if (GetNumStartNodes(junctionNode) > 0 && GetNumEndNodes(junctionNode) > 0)
             {
-
                 //"linkedStartEndNodes" must be a "new" dictionary as values of dictionary will be modified during iteration
                 Dictionary<GameObject, GameObject> linkedStartEndNodes = new Dictionary<GameObject, GameObject>();
-
 
                 //Create list from end nodes
                 List<GameObject> lsEndNodes = new List<GameObject>(endNodes[junctionNode]);
@@ -285,16 +270,13 @@ public class JunctionGenerator : BaseNodeInformant
                 //iterate through all sets of roads attached to current junction node (Loops aprox. 1-3 times => O(1) )
                 foreach (KeyValuePair<string, HashSet<GameObject>> startNodeSimularNodesDic in startNodesDic)
                 {
-
                     //loop through all values in set (Loops aprox 1-2 times => O(1))
                     foreach (GameObject road in startNodeSimularNodesDic.Value)
                     {
                         //randomly link a "Start-Node Road" to an "End-Node Road"
                         linkedStartEndNodes.Add(road, lsEndNodes[0]);
                         lsEndNodes.RemoveAt(0);
-                        
                     }
-
                 }
 
                 //-- Loop through and merge pair
@@ -302,15 +284,14 @@ public class JunctionGenerator : BaseNodeInformant
                 {
                     MergeTwoRoads(nodePairs.Value, nodePairs.Key);
                 }
-
-
             }
         }
-
     }
 
     /// <summary>
     /// Evaluates the number of trafficlights needed at a junction and manages creation of trafficlights
+    /// 
+    /// NOTE: currently only spawns trafficlights at junctions with 2 roads.
     /// </summary>
     /// <param name="junctionObject">Junction Gameobject with Junction Scripts</param>
     /// <param name="midNode">midConnectedNodes.Key</param>
@@ -330,7 +311,7 @@ public class JunctionGenerator : BaseNodeInformant
     }
 
     /// <summary>
-    /// Adds TrafficLights to a Junction with 2 roads, one-way roads
+    /// Adds TrafficLights to a Junction with 2 one-way roads
     /// </summary>
     /// <param name="junctionObject">Junction GameObject with junction scripts</param>
     /// <param name="midNode">midConnectedNodes.Key</param>
@@ -339,7 +320,6 @@ public class JunctionGenerator : BaseNodeInformant
     {
 
         List<GameObject> createdTrafficLights = new List<GameObject>(2);
-        
 
         //Get all roads traveling through junction node
         HashSet<GameObject> vehiclePaths = midConnectedNodes[midNode];
@@ -358,6 +338,7 @@ public class JunctionGenerator : BaseNodeInformant
         foreach (GameObject vehiclePath in vehiclePaths)
         {
             int numLanes = 1;
+
             try
             {
                 RoadMeshUpdater roadMeshUpdater = vehiclePath.transform.parent.GetComponentInChildren<RoadMeshUpdater>();
@@ -411,22 +392,20 @@ public class JunctionGenerator : BaseNodeInformant
 
 
     /// <summary>
-    /// Add junction state objects
+    /// Add junction states to junction 
     /// </summary>
-    /// <param name="junction">game object or parent junction holding states</param>
+    /// <param name="junction">Junction GameObject with Junction Scripts</param>
     /// <param name="trafficLights">trafficlights in junction</param>
     void AddJunctionStates(GameObject junction, List<GameObject> trafficLights)
     {
-        //Typically 2-4 loops: O(1) 
+
         for (int i=1; i<= trafficLights.Count;i++)
         {
-
             //initializse new State Object
             GameObject state = new GameObject("State" + i);
             state.AddComponent<JunctionState>();
             state.transform.parent = junction.transform;
             
-
             //Get States
             JunctionState junctionState = state.GetComponent<JunctionState>();
             junctionState.stateNumber = i;
@@ -450,23 +429,19 @@ public class JunctionGenerator : BaseNodeInformant
 
                 junctionState.trafficLightStates.SetValue(tls, j-1);
             }
-
         }
-
-      
     }
 
     /// <summary>
-    /// add Traffic3D required script to junction node
+    /// Add Traffic3D required script (DensityMeasurePoint) to node right after junction
     /// </summary>
     /// <param name="junction">junction Gameobject</param>
-    /// <param name="vehiclePaths">list of vehilce paths travelling through junction</param>
+    /// <param name="vehiclePaths">list of all vehicle paths travelling through junction</param>
     void AddDensityMeasurePoint(GameObject junction, HashSet<GameObject> vehiclePaths)
     {
         //For each Path connected to Junction - 2 loops
         foreach (GameObject vehiclePath in vehiclePaths)
         {
-
             Path path = vehiclePath.GetComponent<Path>();
 
             int indexOfJunctionNode = GetIndexOfTransformInPath(path, junction.transform);
@@ -501,7 +476,7 @@ public class JunctionGenerator : BaseNodeInformant
            
     }
 
-
+    /// <returns>Index of node in the Path</returns>
     int GetIndexOfTransformInPath(Path path, Transform pathNode)
     {
         int pathIndex = 0;
@@ -522,7 +497,7 @@ public class JunctionGenerator : BaseNodeInformant
 
 
     /// <summary>
-    /// Get number of start nodes connect to target
+    /// Get number of start nodes connected to target
     /// </summary>
     /// <param name="targetNodePos"></param>
     /// <returns>number of start nodes connected to target</returns>
@@ -568,7 +543,6 @@ public class JunctionGenerator : BaseNodeInformant
         //Count total number of roads in set
         numEndNodes += endNodesSet.Count;
             
-
         return numEndNodes;
     }
 }

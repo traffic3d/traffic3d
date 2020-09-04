@@ -2,6 +2,9 @@
 using UnityEditor;
 using UnityEditor.SceneManagement;
 
+/// <summary>
+/// GUI used to upload a .txt OpenStreetMap file, and asset textures
+/// </summary>
 public class ImportOsmGui : EditorWindow
 {
     public string filePath = "Select an OSM file...";

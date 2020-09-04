@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Holds shared information and functionality between PathGenerator and JunctionGenerator
+/// Information is used to merge roads without the continious need for large loops.
+/// </summary>
 public abstract class BaseNodeInformant 
 {
     //Maps all nodes at beginning of a path to a HashSet of all nodes sharing the same "Start_Nodes" -- (Key: Start_Node_Position, Value: "Dictionary = {Key: Road_Name, Value:List_of_Roads}" )

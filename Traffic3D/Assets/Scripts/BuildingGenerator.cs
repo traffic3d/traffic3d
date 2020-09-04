@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Generates Building Meshes and stores all buildings under same parent gameObject
+/// </summary>
 public class BuildingGenerator : BaseAssetGenerator
 {
     private Material building_material;
@@ -12,10 +15,11 @@ public class BuildingGenerator : BaseAssetGenerator
     {
         building_material = buildingMaterial;
         InitializeRootParent("Buildings");
-
-
     }
 
+    /// <summary>
+    /// Loop through all ways, and generate mesh if building
+    /// </summary>
     public void GenerateBuildings()
     {
   

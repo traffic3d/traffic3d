@@ -4,38 +4,33 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+/// Generate Road Mesh for each way which is a road, and assign to a game Object.
+/// GameObject position and name is based on the way
+/// </summary>
 public class RoadGenerator : BaseAssetGenerator
 {
-
     public Material road_material;
     public float DefaultLaneWidth { get; } = 3.65f;
     
-
-
-    public RoadGenerator(MapReader mapReader, Material roadMaterial, Material floor_material) : base(mapReader)
+    /// <summary>
+    /// Creates a floor gameobject on
+    /// </summary>
+    /// <param name="mapReader"></param>
+    /// <param name="roadMaterial"></param>
+    /// <param name="floor_material"></param>
+    public RoadGenerator(MapReader mapReader, Material roadMaterial) : base(mapReader)
     {
         road_material = roadMaterial;
 
-        //Create floor object
-        GameObject floor = GameObject.CreatePrimitive(PrimitiveType.Plane);
-
-        //Add material to floor
-        floor.AddComponent<MeshCollider>();
-        Renderer rend = floor.GetComponent<Renderer>();
-        rend.material = floor_material;
-
-        //position floor at center, and just slightly below road height.
-        floor.transform.position = new Vector3(0, -0.01f, 0);
-
-        //scale to size of map bounds
-        floor.transform.localScale = mapReader.bounds.Size;
-        //Ensure Y-axis scale is set to 1
-        floor.transform.localScale = new Vector3(floor.transform.localScale.x, 1f, floor.transform.localScale.z);
-
-        //Create GameObject to store all roads under
+        //Initialize parent so all roads stored under same gameObject called 'Roads'
         InitializeRootParent("Roads");
     }
 
+    /// <summary>
+    /// Loops through all ways in map reader and generates: road gameObject, Mesh and a Label showing road name.
+    /// Sets parent object for road.
+    /// </summary>
     public void GenerateRoads()
     {
         // Iterate through ways...
@@ -44,7 +39,6 @@ public class RoadGenerator : BaseAssetGenerator
             //if road...
             if (way.IsRoad)
             {
-
                 // Create Road object and assign a Mesh
                 GameObject road = GenerateObject(way, road_material, way.Name);
 
@@ -56,36 +50,42 @@ public class RoadGenerator : BaseAssetGenerator
 
                 //make Parent_object child of Root_Parent, assigned to parent for "all Roads""
                 AddToRootParent(GetParent(way));
-                
-
             }
 
         }
     }
 
+    /// <summary>
+    /// Abstract method. Gets node positions as Vector3s and calls method to create mesh
+    /// </summary>
+    /// <param name="way">Road</param>
+    /// <param name="origin">center position</param>
+    /// <param name="vectors">node postions as Vector3s'</param>
+    /// <param name="normals"></param>
+    /// <param name="uvs"></param>
+    /// <param name="indices"></param>
+    /// <returns></returns>
     protected override Mesh InitializeMesh(MapXmlWay way, Vector3 origin, List<Vector3> vectors, List<Vector3> normals, List<Vector2> uvs, List<int> indices)
     {
         List<Vector3> VectorNodesInRoad = new List<Vector3>(way.NodeIDs.Count);
 
+        //for each node, get Vector3 position
         foreach (ulong id in way.NodeIDs)
         {
-            MapXmlNode n = map.nodes[id];
-            VectorNodesInRoad.Add(n-origin);
+            MapXmlNode node = map.nodes[id];
+            VectorNodesInRoad.Add(node-origin);
         }
 
-        
-        Mesh mesh = CreateMesh(VectorNodesInRoad, way.Lanes);
-        return mesh;
-    }
-
-    public Mesh CreateMesh(List<Vector3> nodePositions, int numLanes)
-    {
         RoadGenerationHandler rgh = new RoadGenerationHandler();
-        return rgh.CreateRoadMesh(nodePositions, numLanes, DefaultLaneWidth);
 
+        return rgh.CreateRoadMesh(VectorNodesInRoad, way.Lanes, DefaultLaneWidth);
     }
 
-
+    /// <summary>
+    /// Create Label above roads center node
+    /// </summary>
+    /// <param name="way">Way for road</param>
+    /// <param name="wayObject">Road GameObject</param>
     void AddRoadNames(MapXmlWay way, GameObject wayObject)
     {
         string name = way.Name;
@@ -114,22 +114,20 @@ public class RoadGenerator : BaseAssetGenerator
             //Position label above center of road
             roadNameLabel.transform.position = midNodePos;
 
-
             //add label to road gameObject
             roadName.transform.parent = wayObject.transform;
 
             RoadGenerationHandler rgh = new RoadGenerationHandler();
             rgh.PositionRoadLabel(midNodePos, nextNodePos, way.NodeIDs.Count, roadNameLabel.gameObject, roadNameLabel.GetComponent<TextMesh>(), false);
-
-
         }
     }
 
 
-
-    // Ensure current object (e.g Road_Mesh/path_of_nodes/building_mesh/...) is a child of the Ways' Parent gameObject
-    // Way - Way linked to the current wayObject
-    // road - Current road being handled
+    /// <summary>
+    /// Make road a child of the ways' parent object
+    /// </summary>
+    /// <param name="way">Way linked to the current wayObject</param>
+    /// <param name="road">Current road being handled</param>
     public void SetParent(MapXmlWay way, GameObject road)
     {
         //initialize object
@@ -152,8 +150,10 @@ public class RoadGenerator : BaseAssetGenerator
         }
     }
 
-    //Deletes road
-    //Parent - parent gameObject
+    /// <summary>
+    /// Delete road and remove from parentObject dictionary
+    /// </summary>
+    /// <param name="parent">parent of road</param>
     public void DeleteRoad(GameObject parent)
     {
         //destroy game object
