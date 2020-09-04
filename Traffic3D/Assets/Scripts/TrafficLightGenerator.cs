@@ -131,6 +131,9 @@ public class TrafficLightGenerator
         //instantiate model
         GameObject trafficLight = GameObject.Instantiate(trafficLight_model) as GameObject;
 
+        //Add Ignore raycast layer
+        trafficLight.layer = 2;
+
         if (!trafficLights.ContainsKey(nodeID))
         {
             trafficLights.Add(nodeID, trafficLight);

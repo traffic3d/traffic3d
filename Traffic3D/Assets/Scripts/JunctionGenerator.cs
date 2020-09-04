@@ -162,6 +162,9 @@ public class JunctionGenerator : BaseNodeInformant
         AddScriptsToJunction(junctionObject);
         AddCameraToJunction(junctionObject, parent);
 
+        //Add Ignore Raycasts layer
+        junctionObject.layer = 2;
+
        return junctionObject;
     }
 

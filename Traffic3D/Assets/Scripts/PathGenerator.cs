@@ -92,6 +92,9 @@ public class PathGenerator : BaseNodeInformant
 
         vehiclePath.transform.position = origin - map.bounds.Centre;
 
+        //Add layer to ignore to raycasts
+        vehiclePath.layer = 2;
+
         //Loop through all nodes in the road
         for (int i = 0; i < way.NodeIDs.Count; i++)
         {
@@ -99,6 +102,9 @@ public class PathGenerator : BaseNodeInformant
             //Create GameObject for node
             string name = "node" + (i + 1);
             GameObject singleNode = new GameObject(name);
+
+            //Add layer to ignore to raycasts
+            singleNode.layer = 2;
 
             //get node
             MapXmlNode currentNodeLocation = map.nodes[way.NodeIDs[i]];// Current Nodes' Location

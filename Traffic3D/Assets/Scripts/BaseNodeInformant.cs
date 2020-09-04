@@ -161,6 +161,9 @@ public abstract class BaseNodeInformant
             //Move towards previous node
             newNode.transform.position = Vector3.MoveTowards(newNode.transform.position, previousNode.position, newNodedistanceApart);
 
+            //Add layer to ignore to raycasts
+            newNode.layer = 2;
+
             return newNode;
         }
 
