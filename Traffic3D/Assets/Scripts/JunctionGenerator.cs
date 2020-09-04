@@ -224,7 +224,7 @@ public class JunctionGenerator : BaseNodeInformant
         junctionObject.AddComponent<BoxCollider>();
         BoxCollider col = junctionObject.GetComponent<BoxCollider>();
         col.isTrigger = true;
-        col.size = new Vector3(col.size.x, 5, col.size.z);
+        col.size = new Vector3(col.size.x, 8f, col.size.z);
 
         //JunctionTrigger
         junctionObject.AddComponent<JunctionTrigger>();
@@ -478,12 +478,12 @@ public class JunctionGenerator : BaseNodeInformant
             }
 
             //Get radious of junction
-            float radius = junction.GetComponent<MeshRenderer>().bounds.extents.magnitude;
+            float junctionRadius = junction.GetComponent<BoxCollider>().bounds.extents.magnitude;
 
             Transform NodeAfterJunction = path.nodes[indexOfJunctionNode+1];
 
             //If nodes far apart, create new node and insert into path
-            GameObject densityNode = InsertPathNodeBetweenDistantNodes(radius+8, radius, path, junction.transform, NodeAfterJunction, indexOfJunctionNode, false);
+            GameObject densityNode = InsertPathNodeBetweenDistantNodes(junctionRadius + 8f, junctionRadius+3f, path, junction.transform, NodeAfterJunction, indexOfJunctionNode, false);
 
             //null => NodeAfterJunction is close enough to be density measure point 
             if (densityNode != null)
@@ -492,7 +492,9 @@ public class JunctionGenerator : BaseNodeInformant
                 densityNode = NodeAfterJunction.gameObject;
 
             densityNode.AddComponent<BoxCollider>();
-            densityNode.GetComponent<BoxCollider>().isTrigger = true;
+            BoxCollider col = densityNode.GetComponent<BoxCollider>();
+            col.isTrigger = true;
+            col.size = new Vector3(3f, 5f, 3f);
             densityNode.AddComponent<DensityMeasurePoint>();
 
         }
