@@ -48,14 +48,14 @@ public abstract class BaseNodeInformant
 
 
     /// <summary>
-    /// Will join the two passed roads together
+    /// Will merge the secondary road into the primary road.
+    /// Requires roads to be travelling in the same direction.
     /// </summary>
-    /// <param name="primary">GameObject with <path> component. {End Node}</param>
-    /// <param name="secondary">GameObject with <path> component. Will be deleted {Start Node}</param>
-    /// <returns>Bool, If merged roads successfully (will fail if merging into self e.g roundabout)</returns>
+    /// <param name="primary">GameObject with 'path' component. This road will be extended</param>
+    /// <param name="secondary">GameObject with 'path' component. This road Will be deleted</param>
+    /// <returns>Bool, If merged roads successfully (will fail if merging into itself e.g roundabout)</returns>
     protected bool MergeTwoRoads(GameObject primary, GameObject secondary)
     {
-
         //Check if road is merging with itself (e.g roundabouts)
         if (primary == secondary)
             return false;
@@ -63,53 +63,34 @@ public abstract class BaseNodeInformant
         if (primary == null | secondary == null)
             return false;
 
-        List<Transform> primaryPathNodes = primary.GetComponent<Path>().nodes;
-        List<Transform> secondaryPathNodes = secondary.GetComponent<Path>().nodes;
+        int primaryNodesCount = primary.GetComponent<Path>().nodes.Count;
 
-        //get latest nodes id
-        int id = primaryPathNodes.Count;
+        DeleteMergingRoadReferences(primary, secondary);
 
-
-        //delete primary_path "end node reference" 
-        endNodes[primaryPathNodes[primaryPathNodes.Count - 1].position].Remove(primary);
-
-        //Add primary_path "end node reference" to secondary "End Node" reference 
-        endNodes[secondaryPathNodes[secondaryPathNodes.Count - 1].position].Add(primary);
-
-        //Move all nodes from connected road to current road
+        //Move all nodes from secondary to primary path
         foreach (var node in secondary.GetComponent<Path>().nodes)
         {
-            //skip first node since primary path end node = secondarys' path first node
+            //skip first node, as Secondary path begins where Primary path ends
             if (node != secondary.GetComponent<Path>().nodes[0])
             {
+                //re-name node
+                primaryNodesCount++;
+                node.name = "node" + primaryNodesCount;
 
-                //increment node id
-                id++;
-
-                node.name = "node" + id; //rename node to math new list
-
-                //Make node a child of current road
+                //Make node a child of primary path
                 node.transform.SetParent(primary.transform, true);
 
-
-                //Replace references to old road with new road
+                //Replace node references
                 roadsIndexdByNodes[node.position].Remove(secondary);
                 roadsIndexdByNodes[node.position].Add(primary);
             }
-
         }
 
-        //Update Path class to deal with new nodes
+        //Replace node reference for first node (skipped in foreach loop)
+        roadsIndexdByNodes[secondary.GetComponent<Path>().nodes[0].position].Remove(secondary);
+
+        //Update Path class to recognise new nodes
         primary.GetComponent<Path>().SetNodes();
-
-        // - Delete references to old path
-
-        //delete old Vehicle path from "start_nodes" - StartNodes.[FirstNode].[RoadName].Remove[road]
-        startNodes[secondaryPathNodes[0].position][secondary.name].Remove(secondary);
-
-
-        //delete old Vehicle path from "End_nodes" - StartNodes.[FirstNode].[RoadName].Remove[road]
-        endNodes[secondaryPathNodes[secondaryPathNodes.Count - 1].position].Remove(secondary);
 
         //Mark as deleted
         deletedVehiclePaths.Add(secondary);
@@ -117,13 +98,61 @@ public abstract class BaseNodeInformant
         //update road list
         createdRoads.Remove(secondary); //remove deleted node
 
-        //if merging two nodes who have difference names
         if (primary.name != secondary.name)
         {
             primary.transform.parent.name = primary.name + " + " + secondary.name;
         }
 
         return true;
+    }
+
+    /// <summary>
+    /// Delete & update 'start' and 'end' node references for the two merging roads 
+    /// </summary>
+    /// <param name="primary">GameObject with 'path' component. This road will be extended</param>
+    /// <param name="secondary">GameObject with 'path' component. This road Will be deleted</param>
+    void DeleteMergingRoadReferences(GameObject primary, GameObject secondary)
+    {
+        List<Transform> primaryPathNodes = primary.GetComponent<Path>().nodes;
+        List<Transform> secondaryPathNodes = secondary.GetComponent<Path>().nodes;
+
+        Vector3 secondaryPathEndNode = secondaryPathNodes[secondaryPathNodes.Count - 1].position;
+        Vector3 nodeWherePathsMeet = primaryPathNodes[primaryPathNodes.Count - 1].position;
+
+        // -- Primary path references
+
+        //Primary path will no longer end at node -> Delete end node reference
+        endNodes[nodeWherePathsMeet].Remove(primary);
+
+        //Primary path will end where secondary path ends -> Update end node reference
+        endNodes[secondaryPathEndNode].Add(primary);
+
+        // -- Secondary path references
+
+        //Secondary Path will be deleted -> Delete from "start_nodes"
+        startNodes[nodeWherePathsMeet][secondary.name].Remove(secondary);
+
+        //Check if 'any' roads with 'same name' still start at node
+        if (startNodes[nodeWherePathsMeet][secondary.name].Count == 0)
+        {
+            startNodes[nodeWherePathsMeet].Remove(secondary.name);
+
+            //check if 'any' roads still start at node
+            if (startNodes[nodeWherePathsMeet].Count == 0)
+            {
+                startNodes.Remove(nodeWherePathsMeet); // remove key
+            }
+        }
+
+        //Secondary Path will be deleted -> delete from "End_nodes"
+        endNodes[secondaryPathEndNode].Remove(secondary);
+
+        //Check if any paths still end at node
+        if (endNodes[nodeWherePathsMeet].Count == 0)
+        {
+            endNodes.Remove(nodeWherePathsMeet); // remove key
+        }
+
     }
 
     /// <summary>

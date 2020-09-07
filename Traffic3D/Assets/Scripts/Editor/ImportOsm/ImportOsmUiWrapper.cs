@@ -116,7 +116,6 @@ public class ImportOsmUiWrapper
     //Merges connected roads with same name together, and link Road mesh to vehicle path
     void MergeRoadsAndPaths()
     {
-
         //Combine all connected roads with the same name
         pathGenerator.JoinRoadsWithSameName();
 
@@ -131,16 +130,13 @@ public class ImportOsmUiWrapper
 
         // - Link Road meshes to Vehicle Paths
         LinkRoadToVehiclePath();
-
-        //update dictionary to match changes to road
-        //parentObjectsForWays = roadGenerator.GetWayObjects(); //Currently causes error, but seems to work fine without method call
     }
 
     void GenerateJunctions()
     {
         UpdateRoadPathConnections();
         junctionGenerator.GenerateJunctions(trafficLightGenerator);
-       UpdateRoadPathConnections();
+        UpdateRoadPathConnections();
     }
 
     void GenerateTrafficLights(Dictionary<ulong, GameObject> roadNodesById)
