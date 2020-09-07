@@ -139,9 +139,7 @@ public abstract class BaseNodeInformant
 
             //check if 'any' roads still start at node
             if (startNodes[nodeWherePathsMeet].Count == 0)
-            {
                 startNodes.Remove(nodeWherePathsMeet); // remove key
-            }
         }
 
         //Secondary Path will be deleted -> delete from "End_nodes"
@@ -149,9 +147,7 @@ public abstract class BaseNodeInformant
 
         //Check if any paths still end at node
         if (endNodes[nodeWherePathsMeet].Count == 0)
-        {
             endNodes.Remove(nodeWherePathsMeet); // remove key
-        }
 
     }
 
@@ -179,16 +175,14 @@ public abstract class BaseNodeInformant
 
             //Add node to vehicle path
             newNode.transform.parent = vehiclePath.transform;
+
             if (addBeforeCurrentNode)
-            {
                 newNode.transform.SetSiblingIndex(currentNodeIndex); //add just before junction
-            }
             else
-            {
                 newNode.transform.SetSiblingIndex(currentNodeIndex + 1); //add just after junction
-            }
 
             newNode.transform.position = currentNode.position;
+
             vehiclePath.SetNodes();
 
             //Move towards previous node
@@ -199,9 +193,48 @@ public abstract class BaseNodeInformant
 
             return newNode;
         }
-
         return null;
-
     }
 
+    //testing
+    public int GetNumOfTotalEndNodes()
+    {
+        int totalEndNodes = 0;
+
+        foreach (HashSet<GameObject> endNodeRoads in endNodes.Values)
+                totalEndNodes += endNodeRoads.Count;
+
+        return totalEndNodes;
+    }
+
+    //testing
+    public int GetNumOfTotalStartNodes()
+    {
+        int totalStartNodes = 0;
+
+        foreach (Dictionary<string, HashSet<GameObject>> roadsIndexedByName in startNodes.Values)
+        {
+            foreach (HashSet<GameObject> roadsWithSameName in roadsIndexedByName.Values)
+                totalStartNodes += roadsWithSameName.Count;
+        }
+
+        return totalStartNodes;
+    }
+
+    //testing
+    public int GetNumCreatedRoads()
+    {
+        return createdRoads.Count;
+    }
+
+    //testing
+    public int GetNumMidConnectedRoads()
+    {
+        int totalMidConnectedNodes = 0;
+
+        foreach (HashSet<GameObject> midNodeRoads in midConnectedNodes.Values)
+            totalMidConnectedNodes += midNodeRoads.Count;
+
+        return totalMidConnectedNodes;
+    }
 }

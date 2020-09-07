@@ -13,13 +13,12 @@ using static JunctionState;
 /// </summary>
 public class JunctionGenerator : BaseNodeInformant
 {
-
     TrafficLightGenerator trafficLightGenerator;
     static ulong trafficLightId = 1;
 
     static int junctionId = 1;
     GameObject rootParent = new GameObject("Junctions"); //store all junctions under same gameobject to keep things tidy
-
+    int numCreatedJunctions = 0;
 
     public void GenerateJunctions(TrafficLightGenerator trafficLightGenerator)
     {
@@ -124,6 +123,7 @@ public class JunctionGenerator : BaseNodeInformant
             {
                 AddJunctionStates(junctionObject, trafficLights);
                 AddDensityMeasurePoint(junctionObject, midConnectedNodes[midNode]);
+                numCreatedJunctions++;
             }
         }
 
@@ -252,10 +252,10 @@ public class JunctionGenerator : BaseNodeInformant
     /// <param name="junctionNode">the junction node whose roads are being merged</param>
     void MergeJunctionNodes(Vector3 junctionNode)
     {
-        if (GetNumStartNodes(junctionNode) == GetNumEndNodes(junctionNode))
+        if (GetNumStartNodesAtTarget(junctionNode) == GetNumEndNodesAtTarget(junctionNode))
         {
             //Check if juction has start & end nodes
-            if (GetNumStartNodes(junctionNode) > 0 && GetNumEndNodes(junctionNode) > 0)
+            if (GetNumStartNodesAtTarget(junctionNode) > 0 && GetNumEndNodesAtTarget(junctionNode) > 0)
             {
                 //holds which start node was linked to which end node
                 Dictionary<GameObject, GameObject> linkedStartEndNodes = new Dictionary<GameObject, GameObject>();
@@ -336,6 +336,7 @@ public class JunctionGenerator : BaseNodeInformant
         {
             int numLanes = 1;
 
+            //attempt to update number of road lanes
             try
             {
                 RoadMeshUpdater roadMeshUpdater = vehiclePath.transform.parent.GetComponentInChildren<RoadMeshUpdater>();
@@ -491,14 +492,12 @@ public class JunctionGenerator : BaseNodeInformant
     /// </summary>
     /// <param name="targetNodePos"></param>
     /// <returns>number of start nodes connected to target</returns>
-    int GetNumStartNodes(Vector3 targetNodePos)
+    int GetNumStartNodesAtTarget(Vector3 targetNodePos)
     {
         int numStartNodes = 0;
 
         if (!startNodes.ContainsKey(targetNodePos))
             return 0;
-
-        //count number of node types connected to current road
 
         //Get dictionary of all roads starting at current node
         Dictionary<string, HashSet<GameObject>> startNodeDic = startNodes[targetNodePos];
@@ -518,14 +517,12 @@ public class JunctionGenerator : BaseNodeInformant
     /// </summary>
     /// <param name="targetNodePos"></param>
     /// <returns>number of end nodes</returns>
-    int GetNumEndNodes(Vector3 targetNodePos)
+    int GetNumEndNodesAtTarget(Vector3 targetNodePos)
     {
         int numEndNodes = 0;
 
         if (!endNodes.ContainsKey(targetNodePos))
             return 0;
-
-        //count number of node types connected to current road
 
         //Get dictionary of all roads starting at current node
         HashSet<GameObject> endNodesSet = endNodes[targetNodePos];
@@ -534,5 +531,10 @@ public class JunctionGenerator : BaseNodeInformant
         numEndNodes += endNodesSet.Count;
             
         return numEndNodes;
+    }
+
+    public int GetNumCreatedJunctions()
+    {
+        return numCreatedJunctions;
     }
 }

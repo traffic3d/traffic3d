@@ -236,9 +236,7 @@ public class PathGenerator : BaseNodeInformant
                 HashSet<GameObject> roads = new HashSet<GameObject>();
                 roads.Add(vehiclePath);
                 roadsByName.Add(vehiclePath.name, roads);
-
             }
-            
         }
         else
         {

@@ -78,7 +78,7 @@ namespace Tests
 
         // Does adding child nodes let road mesh update
         [Test]
-        public void MeshWhenValidChildNodes()
+        public void MeshCreatedWhenValidChildNodes()
         {
             //Add Children
             node1.transform.parent = path.transform;
