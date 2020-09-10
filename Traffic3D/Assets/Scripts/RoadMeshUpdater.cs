@@ -30,7 +30,7 @@ public class RoadMeshUpdater : MonoBehaviour
 
     /// <summary>
     /// Update Mesh of current road gameObject to match the positions of the nodes along the corresponding vehicle path.
-    /// Ensure Road label is repositioned above center node.
+    /// Ensures Road label is repositioned above center node.
     /// Paths with less than 2 nodes will have an empty mesh.
     /// </summary>
     public void UpdateRoadMesh()
@@ -39,7 +39,10 @@ public class RoadMeshUpdater : MonoBehaviour
 
         if (pathObject != null)
         {
+            pathObject.GetComponent<Path>().SetNodes(); //Updates node list to match child objects
+            
             Path vehiclePath = pathObject.GetComponent<Path>();
+
             if (vehiclePath.nodes.Count >1)
             {
                 //road center should be relative to path and no longer the map
