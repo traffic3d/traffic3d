@@ -9,18 +9,18 @@ namespace Tests
     public class JunctionGeneratorTest
     {
         readonly string mapFile = Application.dataPath + "/Scripts/Editor/ImportOsmTests/Files/smallData.txt";
-        MapReader mapReader;
+        OpenStreetMapReader osmMapReader;
         Dictionary<MapXmlWay, GameObject> origionalWayDic; //Not modified after [OneTimeSetUp]
 
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            mapReader = new MapReader();
+            osmMapReader = new OpenStreetMapReader();
             origionalWayDic = new Dictionary<MapXmlWay, GameObject>();
             
-            mapReader.ImportFile(mapFile);
+            osmMapReader.ImportFile(mapFile);
 
-            foreach (var way in mapReader.ways)
+            foreach (var way in osmMapReader.ways)
             {
                 GameObject go = new GameObject(way.Name);
                 origionalWayDic.Add(way, go);
@@ -35,7 +35,7 @@ namespace Tests
             var wayDicClone = new Dictionary<MapXmlWay, GameObject>(origionalWayDic);
 
             //run path generator 
-            PathGenerator pathGenerator = new PathGenerator(mapReader, vehicleFactory);
+            PathGenerator pathGenerator = new PathGenerator(osmMapReader, vehicleFactory);
             pathGenerator.AddPathsToRoads(wayDicClone);
             pathGenerator.JoinRoadsWithSameName();
             pathGenerator.PopulateVehicleFactory();
@@ -48,7 +48,7 @@ namespace Tests
         public void CorrectNumJunctionsCreatedAtMidNodes()
         {
             JunctionGenerator junctionGenerator = new JunctionGenerator();
-            junctionGenerator.GenerateJunctions(new TrafficLightGenerator(mapReader));
+            junctionGenerator.GenerateJunctions(new TrafficLightGenerator(osmMapReader));
 
             Assert.True(junctionGenerator.GetNumCreatedJunctions() == (junctionGenerator.GetNumMidConnectedRoads()/2));
         }
@@ -66,7 +66,7 @@ namespace Tests
             Assert.True(junctionGenerator.GetNumOfTotalEndNodes() == junctionGenerator.GetNumCreatedRoads());
             Assert.True(junctionGenerator.GetNumOfTotalStartNodes() == junctionGenerator.GetNumCreatedRoads());
 
-            junctionGenerator.GenerateJunctions(new TrafficLightGenerator(mapReader));
+            junctionGenerator.GenerateJunctions(new TrafficLightGenerator(osmMapReader));
 
             //After Junctions Created
             Assert.True(junctionGenerator.GetNumOfTotalEndNodes() == junctionGenerator.GetNumCreatedRoads());

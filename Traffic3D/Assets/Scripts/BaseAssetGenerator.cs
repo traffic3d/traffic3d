@@ -6,15 +6,15 @@ using UnityEngine;
  */
 public abstract class BaseAssetGenerator
 {
-    protected MapReader map;
+    protected OpenStreetMapReader osmMapReader;
     protected GameObject rootParent; // all object stored under same parent (e.g "Roads" -> road1,road2....)
     
     private GameObject objectInstance; //the object instance e.g building
     private Dictionary<MapXmlWay, GameObject> parentObjectsForWays; //{Key: Way, Value: Parent_object} - Ensures all elements of a Way are all connected to the same Parent_Object
 
-    public BaseAssetGenerator(MapReader mapReader)
+    public BaseAssetGenerator(OpenStreetMapReader osmMapReader)
     {
-        map = mapReader;
+        this.osmMapReader = osmMapReader;
         parentObjectsForWays = new Dictionary<MapXmlWay, GameObject>();
     }
 
@@ -27,7 +27,7 @@ public abstract class BaseAssetGenerator
 
         foreach (var id in way.NodeIDs)
         {
-            total = total + map.nodes[id];
+            total = total + osmMapReader.nodes[id];
         }
 
         return total / way.NodeIDs.Count;
@@ -59,7 +59,7 @@ public abstract class BaseAssetGenerator
         // Create an instance of the object and place it in the centre of its points
         objectInstance = new GameObject(objectName);
         Vector3 localOrigin = GetCentre(way);
-        objectInstance.transform.position = localOrigin - map.bounds.Centre;
+        objectInstance.transform.position = localOrigin - osmMapReader.bounds.Centre;
 
         // Add the mesh filter and renderer components to the object
         MeshFilter mf = objectInstance.AddComponent<MeshFilter>();

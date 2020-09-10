@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Data;
-using System.Xml; //XmlDocument() 
+using System.Xml; 
 using UnityEngine;
 using System.IO;
 
 /// <summary>
 /// Reads and an OpenStreetMap .txt file and stores data about Ways, Nodes and the Bounds of the map
 /// </summary>
-public class MapReader
+public class OpenStreetMapReader
 {
     //Check when map data has finished uploading
     public bool finishedUploadingData;

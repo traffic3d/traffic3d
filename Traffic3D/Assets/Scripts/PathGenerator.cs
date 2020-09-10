@@ -9,11 +9,11 @@ using System;
 /// </summary>
 public class PathGenerator : BaseNodeInformant
 {
-    private MapReader map;
+    private OpenStreetMapReader osmMapReader;
     GameObject vehiclePath;
     GameObject vehicleFactory;
 
-    public PathGenerator(MapReader mapReader, GameObject vehicleFactory)
+    public PathGenerator(OpenStreetMapReader osmMapReader, GameObject vehicleFactory)
     {
         //initialize base calss variables
         InitializeVariables();
@@ -25,7 +25,7 @@ public class PathGenerator : BaseNodeInformant
         vehicleFactory.GetComponent<VehicleFactory>().paths = path;
 
         this.vehicleFactory = vehicleFactory;
-        map = mapReader;
+        this.osmMapReader = osmMapReader;
     }
 
     /// <summary>
@@ -93,7 +93,7 @@ public class PathGenerator : BaseNodeInformant
         Vector3 origin = GetCentre(way);
         
         //position path
-        vehiclePath.transform.position = origin - map.bounds.Centre;
+        vehiclePath.transform.position = origin - osmMapReader.bounds.Centre;
 
         //Add layer to 'ignore raycasts' to path object
         vehiclePath.layer = 2;
@@ -108,7 +108,7 @@ public class PathGenerator : BaseNodeInformant
             //Add layer to ignore to raycasts to node
             singleNode.layer = 2;
 
-            MapXmlNode currentNodeLocation = map.nodes[way.NodeIDs[i]];// Current Nodes' Location
+            MapXmlNode currentNodeLocation = osmMapReader.nodes[way.NodeIDs[i]];// Current Nodes' Location
             Vector3 vCurrentNodeLocation = origin - currentNodeLocation;// Node vector location
 
             //move up along y-axis so node is above road
@@ -378,7 +378,7 @@ public class PathGenerator : BaseNodeInformant
 
         foreach (var id in way.NodeIDs)
         {
-            total = total + map.nodes[id];
+            total = total + osmMapReader.nodes[id];
         }
 
         return total / way.NodeIDs.Count;

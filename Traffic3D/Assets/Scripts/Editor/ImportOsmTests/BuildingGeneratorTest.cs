@@ -9,18 +9,18 @@ namespace Tests
     public class BuildingGeneratorTest
     {
         readonly string mapWithLargeNumBuildings = Application.dataPath + "/Scripts/Editor/ImportOsmTests/Files/newYork.txt";
-        MapReader mapReader;
+        OpenStreetMapReader osmMapReader;
         int numBuildings;
 
         //import file and count number of buildings in file
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            mapReader = new MapReader();
-            mapReader.ImportFile(mapWithLargeNumBuildings);
+            osmMapReader = new OpenStreetMapReader();
+            osmMapReader.ImportFile(mapWithLargeNumBuildings);
 
             numBuildings = 0;
-            foreach (var way in mapReader.ways)
+            foreach (var way in osmMapReader.ways)
             {
                 if (way.isBuilding)
                     numBuildings++;
@@ -30,7 +30,7 @@ namespace Tests
         [Test]
         public void CorrectNumBuildingsGeneratedFromWays()
         {
-            BuildingGenerator buildingGenerator = new BuildingGenerator(mapReader, null);
+            BuildingGenerator buildingGenerator = new BuildingGenerator(osmMapReader, null);
             buildingGenerator.GenerateBuildings();
 
             Assert.True(buildingGenerator.buildingsCreated == numBuildings); //check number of roads == expected 
@@ -40,7 +40,7 @@ namespace Tests
         [Test]
         public void TimeTakenToGenerateBuildings()
         {
-            BuildingGenerator buildingGenerator = new BuildingGenerator(mapReader, null);
+            BuildingGenerator buildingGenerator = new BuildingGenerator(osmMapReader, null);
             System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
 
             int maxTime = Mathf.CeilToInt((float)numBuildings / 100) * 10; //+10 miliseconds for every 100 buildings

@@ -9,7 +9,7 @@ namespace Tests
     public class PathGeneratorTest
     {
         readonly string mapFile = Application.dataPath + "/Scripts/Editor/ImportOsmTests/Files/SmallData.txt";
-        MapReader mapReader;
+        OpenStreetMapReader osmMapReader;
 
         int numRoads;
         
@@ -28,10 +28,10 @@ namespace Tests
 
             wayDic = new Dictionary<MapXmlWay, GameObject>();
 
-            mapReader = new MapReader();
-            mapReader.ImportFile(mapFile);
+            osmMapReader = new OpenStreetMapReader();
+            osmMapReader.ImportFile(mapFile);
 
-            foreach (var way in mapReader.ways)
+            foreach (var way in osmMapReader.ways)
             {                
                 if (way.IsRoad)
                     numRoads++;
@@ -63,7 +63,7 @@ namespace Tests
         [Test]
         public void CorrectNumPathsGeneratedFromWays()
         {
-            PathGenerator pathGenerator = new PathGenerator(mapReader, vehicleFactory);
+            PathGenerator pathGenerator = new PathGenerator(osmMapReader, vehicleFactory);
             pathGenerator.AddPathsToRoads(wayDic);
 
             Assert.True(vehicleFactory.GetComponent<VehicleFactory>().paths.Count == numRoads);
@@ -80,7 +80,7 @@ namespace Tests
             int numRoadsBeforeMerging = 102;
             int numRoadsAfterMerging = 64;
 
-            PathGenerator pathGenerator = new PathGenerator(mapReader, vehicleFactory);
+            PathGenerator pathGenerator = new PathGenerator(osmMapReader, vehicleFactory);
             pathGenerator.AddPathsToRoads(wayDic);
 
             Assert.True(vehicleFactory.GetComponent<VehicleFactory>().paths.Count == numRoadsBeforeMerging);
@@ -101,7 +101,7 @@ namespace Tests
         public void CorrectStartAndEndNodes()
         {
             //Before merging roads
-            PathGenerator pathGenerator = new PathGenerator(mapReader, vehicleFactory);
+            PathGenerator pathGenerator = new PathGenerator(osmMapReader, vehicleFactory);
             pathGenerator.AddPathsToRoads(wayDic);
 
             Assert.True(pathGenerator.GetNumOfTotalEndNodes() == pathGenerator.GetNumCreatedRoads());

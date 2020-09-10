@@ -11,7 +11,7 @@ public class BuildingGenerator : BaseAssetGenerator
     private Material building_material;
     public int buildingsCreated = 0;
 
-    public BuildingGenerator(MapReader mapReader, Material buildingMaterial) : base (mapReader)
+    public BuildingGenerator(OpenStreetMapReader mapReader, Material buildingMaterial) : base (mapReader)
     {
         building_material = buildingMaterial;
         InitializeRootParent("Buildings");
@@ -24,7 +24,7 @@ public class BuildingGenerator : BaseAssetGenerator
     {
   
         // Iterate through ways...
-        foreach (var way in map.ways)
+        foreach (var way in osmMapReader.ways)
         {
             //if building...
             if (way.isBuilding && way.NodeIDs.Count > 1)
@@ -65,8 +65,8 @@ public class BuildingGenerator : BaseAssetGenerator
         {
             
 
-            MapXmlNode currentNodeLocation = map.nodes[way.NodeIDs[i]]; //Current Nodes' Location
-            MapXmlNode nextNodeLocation = map.nodes[way.NodeIDs[i+1]]; //Next Nodes' Location
+            MapXmlNode currentNodeLocation = osmMapReader.nodes[way.NodeIDs[i]]; //Current Nodes' Location
+            MapXmlNode nextNodeLocation = osmMapReader.nodes[way.NodeIDs[i+1]]; //Next Nodes' Location
 
             //4 Points of a single face of building
             Vector3 v1 = currentNodeLocation - origin; //Bottom-left

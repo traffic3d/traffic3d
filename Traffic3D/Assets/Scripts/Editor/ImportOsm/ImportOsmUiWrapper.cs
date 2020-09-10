@@ -21,7 +21,7 @@ public class ImportOsmUiWrapper
 
     //Vars
     public Dictionary<MapXmlWay, GameObject> parentObjectsForWays; //{Key: Way, Value: Parent_object} - Ensures all elements of a Way are all connected to the same Parent_Object
-    MapReader mapReader;
+    OpenStreetMapReader osmMapReader;
 
     //Generators
     public BuildingGenerator buildingGenerator;
@@ -60,13 +60,13 @@ public class ImportOsmUiWrapper
 
 
         //Defines the parent game object connected to each each Way (Key: "Way", Value: "Parent_Object") 
-        parentObjectsForWays = new Dictionary<MapXmlWay, GameObject>(mapReader.ways.Count);
+        parentObjectsForWays = new Dictionary<MapXmlWay, GameObject>(osmMapReader.ways.Count);
 
         //Create scene objects 
-        buildingGenerator = new BuildingGenerator(mapReader, building_material);
-        roadGenerator = new RoadGenerator(mapReader, road_material);
-        pathGenerator = new PathGenerator(mapReader, vehicleFactory);
-        trafficLightGenerator = new TrafficLightGenerator(mapReader);
+        buildingGenerator = new BuildingGenerator(osmMapReader, building_material);
+        roadGenerator = new RoadGenerator(osmMapReader, road_material);
+        pathGenerator = new PathGenerator(osmMapReader, vehicleFactory);
+        trafficLightGenerator = new TrafficLightGenerator(osmMapReader);
         junctionGenerator = new JunctionGenerator();
 
 
@@ -215,7 +215,7 @@ public class ImportOsmUiWrapper
     /// <returns></returns>
     public int GetNodesInScene()
     {
-        return mapReader.nodes.Count;
+        return osmMapReader.nodes.Count;
     }
 
     //Floor for the scene
@@ -233,7 +233,7 @@ public class ImportOsmUiWrapper
         //position floor at center, and just slightly below road height.
         floor.transform.position = new Vector3(0, -0.01f, 0);
         //scale to size of map bounds
-        floor.transform.localScale = mapReader.bounds.Size;
+        floor.transform.localScale = osmMapReader.bounds.Size;
         //Ensure Y-axis scale is set to 1
         floor.transform.localScale = new Vector3(floor.transform.localScale.x, 1f, floor.transform.localScale.z);
     }
@@ -265,13 +265,13 @@ public class ImportOsmUiWrapper
     /// <returns>Bool if successfully read data</returns>
     bool ReadMapData()
     {
-        mapReader = new MapReader();
+        osmMapReader = new OpenStreetMapReader();
 
         //Try to read file
         try
         {
             //Read File and create node & way objects
-            mapReader.ImportFile(filePath);
+            osmMapReader.ImportFile(filePath);
             return true;
         }
         catch

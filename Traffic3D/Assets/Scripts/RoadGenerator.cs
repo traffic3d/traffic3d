@@ -19,7 +19,7 @@ public class RoadGenerator : BaseAssetGenerator
     /// <param name="mapReader"></param>
     /// <param name="roadMaterial"></param>
     /// <param name="floor_material"></param>
-    public RoadGenerator(MapReader mapReader, Material roadMaterial) : base(mapReader)
+    public RoadGenerator(OpenStreetMapReader mapReader, Material roadMaterial) : base(mapReader)
     {
         road_material = roadMaterial;
 
@@ -34,7 +34,7 @@ public class RoadGenerator : BaseAssetGenerator
     public void GenerateRoads()
     {
         // Iterate through ways...
-        foreach (var way in map.ways)
+        foreach (var way in osmMapReader.ways)
         {
             //if road...
             if (way.IsRoad)
@@ -72,7 +72,7 @@ public class RoadGenerator : BaseAssetGenerator
         //for each node, get Vector3 position
         foreach (ulong id in way.NodeIDs)
         {
-            MapXmlNode node = map.nodes[id];
+            MapXmlNode node = osmMapReader.nodes[id];
             VectorNodesInRoad.Add(node-origin);
         }
 
@@ -108,8 +108,8 @@ public class RoadGenerator : BaseAssetGenerator
             int middleIndex = middleIndex = (int)Math.Floor((decimal)( (way.NodeIDs.Count-1) / 2));
 
             //rotate towards previous node
-            Vector3 midNodePos = map.nodes[way.NodeIDs[middleIndex]] - map.bounds.Centre;
-            Vector3 nextNodePos = map.nodes[way.NodeIDs[middleIndex + 1]] - map.bounds.Centre;
+            Vector3 midNodePos = osmMapReader.nodes[way.NodeIDs[middleIndex]] - osmMapReader.bounds.Centre;
+            Vector3 nextNodePos = osmMapReader.nodes[way.NodeIDs[middleIndex + 1]] - osmMapReader.bounds.Centre;
 
             //Position label above center of road
             roadNameLabel.transform.position = midNodePos;

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TrafficLightGenerator
 {
-    private MapReader map;
+    private OpenStreetMapReader osmMapReader;
     private GameObject trafficLight_model;
     Dictionary<ulong, GameObject> trafficLights;
     int trafficLightCount = 0;
@@ -14,9 +14,9 @@ public class TrafficLightGenerator
     private static int trafficLightId = 1;
 
 
-    public TrafficLightGenerator(MapReader mapReader)
+    public TrafficLightGenerator(OpenStreetMapReader mapReader)
     {
-        map = mapReader;
+        osmMapReader = mapReader;
         trafficLight_model = Resources.Load("Models/TrafficLight_small") as GameObject;
         trafficLights = new Dictionary<ulong, GameObject>();
     }
@@ -30,7 +30,7 @@ public class TrafficLightGenerator
     public Dictionary<ulong, GameObject> AddTrafficLightsByWay(Dictionary<MapXmlWay,GameObject> parentObjectsForWays)
     {
         // Iterate through each way...
-        foreach (var way in map.ways)
+        foreach (var way in osmMapReader.ways)
         {
             //if way is a road...
             if (way.IsRoad)
@@ -61,7 +61,7 @@ public class TrafficLightGenerator
         Vector3 origin = GetCentre(way);
 
         //postion gameObject in road centre
-        parentObject.transform.position = origin - map.bounds.Centre;
+        parentObject.transform.position = origin - osmMapReader.bounds.Centre;
         parentObject.name = way.Name + "_TrafficLights";
 
         bool hasTrafficlights = false;
@@ -71,17 +71,17 @@ public class TrafficLightGenerator
         {
             //get node
             ulong nodeID = way.NodeIDs[i];
-            MapXmlNode node = map.nodes[way.NodeIDs[i]];
+            MapXmlNode node = osmMapReader.nodes[way.NodeIDs[i]];
 
             //Check node doesn't already have a trafficlight
             if (node.hasTrafficLight && !trafficLights.ContainsKey(nodeID))
             {
                 trafficLightCount++;
                 hasTrafficlights = true;
-                MapXmlNode prevNode = map.nodes[way.NodeIDs[i - 1]];// Next Nodes' Location
-                Vector3 prevNodeLoc = prevNode - map.bounds.Centre;
+                MapXmlNode prevNode = osmMapReader.nodes[way.NodeIDs[i - 1]];// Next Nodes' Location
+                Vector3 prevNodeLoc = prevNode - osmMapReader.bounds.Centre;
                 //create Trafficlight on node
-                CreateTrafficLightModel(parentObject, node- map.bounds.Centre, nodeID, prevNodeLoc, trafficLightCount, numLanes);
+                CreateTrafficLightModel(parentObject, node- osmMapReader.bounds.Centre, nodeID, prevNodeLoc, trafficLightCount, numLanes);
             }
         }
 
@@ -197,10 +197,10 @@ public class TrafficLightGenerator
             foreach (KeyValuePair<ulong, GameObject> node in nodeObjectsById)
             {
                 //Check if current Node has TrafficLight
-                if (trafficLights.ContainsKey(map.nodes[node.Key].ID))
+                if (trafficLights.ContainsKey(osmMapReader.nodes[node.Key].ID))
                 {
                     //Get TrafficLight for current Node
-                    GameObject trafficLight = trafficLights[map.nodes[node.Key].ID];
+                    GameObject trafficLight = trafficLights[osmMapReader.nodes[node.Key].ID];
                     //add stop node to TrafficLight
                     trafficLight.GetComponent<TrafficLight>().stopNodes.Add(node.Value.transform);
                 }
@@ -216,7 +216,7 @@ public class TrafficLightGenerator
 
         foreach (var id in way.NodeIDs)
         {
-            total = total + map.nodes[id];
+            total = total + osmMapReader.nodes[id];
         }
 
         return total / way.NodeIDs.Count;
