@@ -84,6 +84,12 @@ test-playmode:
     <<: *test
     variables:
         TEST_PLATFORM: playmode
+        
+test-editmode:
+    <<: *test
+    variables:
+        TEST_PLATFORM: editmode
+
 
 .build: &build
     image: registry.gitlab.com/traffic3d/traffic3d/buildimage
