@@ -21,7 +21,7 @@ public class LayerCheckTests
     [Test]
     public void TrafficLightIgnoreRayCast()
     {
-        osmWrapper = new ImportOsmUiWrapper(mapFile, null, null, null);
+        osmWrapper = new ImportOsmUiWrapper(null, mapFile, null, null, null);
         osmWrapper.Import();
             
         foreach (GameObject gameObj in GameObject.FindObjectsOfType<GameObject>())
@@ -38,7 +38,7 @@ public class LayerCheckTests
     [Test]
     public void PathsIgnoreRayCast()
     {
-        osmWrapper = new ImportOsmUiWrapper(mapFile, null, null, null);
+        osmWrapper = new ImportOsmUiWrapper(null, mapFile, null, null, null);
         osmWrapper.Import();
 
         //get all objects with Path script
@@ -55,7 +55,7 @@ public class LayerCheckTests
     [Test]
     public void JunctionsIgnoreRayCast()
     {
-        osmWrapper = new ImportOsmUiWrapper(mapFile, null, null, null);
+        osmWrapper = new ImportOsmUiWrapper(null, mapFile, null, null, null);
         osmWrapper.Import();
 
         //get all objects with Junction script

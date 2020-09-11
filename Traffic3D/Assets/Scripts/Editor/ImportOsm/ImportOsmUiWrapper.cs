@@ -13,7 +13,7 @@ using UnityEngine;
 public class ImportOsmUiWrapper
 {
     //GUI
-    ImportOsmGui gui;
+    ImportOsmGui osmGui;
     string filePath;
 
     //Materials
@@ -33,8 +33,9 @@ public class ImportOsmUiWrapper
     public JunctionGenerator junctionGenerator;
 
 
-    public ImportOsmUiWrapper( string osmFile, Material roadMat, Material floorMat, Material buildingMat)
+    public ImportOsmUiWrapper(ImportOsmGui osmGui, string osmFile, Material roadMat, Material floorMat, Material buildingMat)
     {
+        this.osmGui = osmGui;
         filePath = osmFile;
         road_material = roadMat;
         floor_material = floorMat;
@@ -71,24 +72,34 @@ public class ImportOsmUiWrapper
         trafficLightGenerator = new TrafficLightGenerator(osmMapReader);
         junctionGenerator = new JunctionGenerator();
 
+        //ProgressBar values
+        int totalTasks = 6;
+        int tasksComplete = 0;
 
+        
         // - Spawn and connect each element in the Scene -
-
+        ImportProgress("Generating Buildings", totalTasks, tasksComplete++);
         GenerateBuildings();
-
+  
+        ImportProgress("Generating Roads", totalTasks, tasksComplete++);
         GenerateRoads();
 
+        ImportProgress("Merging Roads & Paths", totalTasks, tasksComplete++);
         MergeRoadsAndPaths();
-
+   
+        ImportProgress("Generating Junctions", totalTasks, tasksComplete++);
         GenerateJunctions();
-
+  
+        ImportProgress("Removing roads with two nodes", totalTasks, tasksComplete++);
         pathGenerator.RemovePathsWithTwoNodes();
-
+       
+        ImportProgress("Populating vehicle factory", totalTasks, tasksComplete++);
         pathGenerator.PopulateVehicleFactory();
-
-
+       
         //GenerateTrafficLights(pathGenerator.GetAllNodesInRoadNetwork()); //NOTE: No Longer supporting real-world trafficLights due to lack of trafficLights in map data. Junctions now spawn the trafficlights
 
+        ImportProgress("Completed", totalTasks, tasksComplete++);
+       
         return true;
     }
 
@@ -296,4 +307,27 @@ public class ImportOsmUiWrapper
             return false;
         }
     }
+
+    /// <summary>
+    /// Updates GUI progress bar.
+    /// </summary>
+    /// <remarks>
+    /// If GUI is null, method does nothing
+    /// </remarks>
+    /// <param name="ProgressText"></param>
+    /// <param name="totalTasks"></param>
+    /// <param name="tasksComplete"></param>
+    void ImportProgress(string ProgressText, int totalTasks, int tasksComplete)
+    {
+        if (osmGui != null)
+        {
+            float progressPercentage = 0f;
+
+            if (tasksComplete > 0)
+                progressPercentage = (float)tasksComplete/totalTasks;
+
+            osmGui.UpdateProgressBar(progressPercentage, ProgressText);
+        }
+    }
+
 }

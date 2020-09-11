@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using System.Collections;
 
 /// <summary>
 /// GUI used to upload a .txt OpenStreetMap file, and asset textures
@@ -30,6 +31,18 @@ public class ImportOsmGui : EditorWindow
         window.Show();
     }
 
+    /// <summary>
+    /// Updates Values of progress bar
+    /// </summary>
+    /// <param name="progressValue">% progress is complete</param>
+    /// <param name="progressText">Text displayed in progress bar</param>
+    public void UpdateProgressBar(float progressValue, string progressText)
+    {
+        EditorUtility.DisplayProgressBar("Importing Map", string.Format("{0}", progressText, progressValue), progressValue);
+
+        if (progressValue == 1f)
+            EditorUtility.ClearProgressBar();
+    }
 
     /// <summary>
     /// GUI Elements
@@ -71,10 +84,9 @@ public class ImportOsmGui : EditorWindow
         // -- UI-Element: Import button
         if (GUILayout.Button("Import Map File"))
         {
-
             //Import Map Data
-            var mapWrapper = new ImportOsmUiWrapper( filePath, road_material, floor_material, building_material);
-            bool success = mapWrapper.Import();
+            var osmSceneGenerator = new ImportOsmUiWrapper(this, filePath, road_material, floor_material, building_material);
+            bool success = osmSceneGenerator.Import();
 
             if (!success)
             {

@@ -14,7 +14,7 @@ public class FullSystemTests
     [Test]
     public void MaxFileLoadTimes()
     {
-        ImportOsmUiWrapper handler = new ImportOsmUiWrapper(mapWithMaxNodes,null,null,null);
+        ImportOsmUiWrapper handler = new ImportOsmUiWrapper(null, mapWithMaxNodes,null,null,null);
 
         System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
 
