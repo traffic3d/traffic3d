@@ -22,7 +22,7 @@ public class MapXmlWay
 
     //Development purposes: Help track what types of "Highways" are in the scene
     static Dictionary<String, int> Highways = new Dictionary<string, int>(); 
-    public void printDictionary()
+    public void PrintDictionary()
     {
         foreach (KeyValuePair<String, int> kvp in Highways)
         {

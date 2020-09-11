@@ -16,7 +16,10 @@ using System.Xml;
     public bool hasTrafficLight = false;
 
 
-    // Convert xmlNode into Vector3
+    /// <summary>
+    /// Convert xmlNode into Vector3
+    /// </summary>
+    /// <param name="node">Node to be converted</param>
     public static implicit operator Vector3(MapXmlNode node)
     {
         return new Vector3(node.X, 0, node.Y);
@@ -59,11 +62,8 @@ using System.Xml;
                 if (GetAttribute<string>("v", tag.Attributes) == "traffic_signals")
                     hasTrafficLight = true;
             }
-
             
         }
-
-       
     }
 
     protected T GetAttribute<T>(string attrName, XmlAttributeCollection attributes)

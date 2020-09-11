@@ -20,7 +20,9 @@ public class ImportOsmGui : EditorWindow
     //Add to "Windows" tab
     [MenuItem("Window/Import OpenStreetMap File")]
 
-    //Create UI pop-up
+    /// <summary>
+    /// Create UI pop-up
+    /// </summary>
     public static void DisplayOsmGui()
     {    
         var window = GetWindow<ImportOsmGui>();
@@ -28,10 +30,12 @@ public class ImportOsmGui : EditorWindow
         window.Show();
     }
 
-    //GUI Elements
+
+    /// <summary>
+    /// GUI Elements
+    /// </summary>
     private void OnGUI()
     {
-
         //textbox disabled (users must use button and cannot directly type file-path)
         EditorGUI.BeginDisabledGroup(true);
             EditorGUILayout.TextField(filePath);
@@ -81,8 +85,6 @@ public class ImportOsmGui : EditorWindow
         }
 
         EditorGUI.EndDisabledGroup();
-
-
     }
 
     private void Update()

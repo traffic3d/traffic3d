@@ -100,9 +100,10 @@ public class OpenStreetMapReader
         bounds = new MapXmlBounds(xmlNode);
     }
     
-    //Debugging. -> Draw lines between nodes
+    
     public void DrawLinesBetweenNodes()
     {
+        //Debugging. -> Draw lines between nodes
         foreach (MapXmlWay w in ways)
         {
             if (w.Visible)

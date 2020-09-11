@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-/*
- * Abstracts functionality for generating meshes for asthetic elements of a scene e.g roads and buildings
- */
+ /// <summary>
+ /// Abstracts functionality for generating meshes for asthetic elements of a scene e.g roads and buildings
+ /// </summary>
 public abstract class BaseAssetGenerator
 {
     protected OpenStreetMapReader osmMapReader;
@@ -18,9 +18,11 @@ public abstract class BaseAssetGenerator
         parentObjectsForWays = new Dictionary<MapXmlWay, GameObject>();
     }
 
-    /*
-        Returns the centre of an object
-    */
+    /// <summary>
+    /// Returns the centre of a MapXmlWay
+    /// </summary>
+    /// <param name="way">Way whose centre you wish to find</param>
+    /// <returns>Cenre of was as vector3 position</returns>
     protected Vector3 GetCentre(MapXmlWay way)
     {
         Vector3 total = Vector3.zero;
@@ -36,12 +38,11 @@ public abstract class BaseAssetGenerator
     /// <summary>
     /// Store passed object under root parent. e.g store a road under root parent named "Roads"
     /// </summary>
-    /// <param name="child"></param>
+    /// <param name="child">object being stored under parent</param>
     protected void AddToRootParent(GameObject child)
     {
         child.transform.parent = rootParent.transform;
     }
-
     
 
     /// <summary>
@@ -92,10 +93,22 @@ public abstract class BaseAssetGenerator
         return objectInstance;
     }
 
-    //Create Mesh for Object
-    protected abstract Mesh InitializeMesh(MapXmlWay way, Vector3 origin, List<Vector3> vectors, List<Vector3> normals, List<Vector2> uvs, List<int> indices);
+    /// <summary>
+    /// Create Mesh for Object
+    /// </summary>
+    /// <param name="way">Way object</param>
+    /// <param name="origin">Centre of Way</param>
+    /// <param name="vectors">List where vectors are stored, for mesh</param>
+    /// <param name="normals">List where normals are stored, for mesh</param>
+    /// <param name="uvs">List where uvs are stored, for mesh</param>
+    /// <param name="tris">List where triangles are stored, for mesh</param>
+    /// <returns></returns>
+    protected abstract Mesh InitializeMesh(MapXmlWay way, Vector3 origin, List<Vector3> vectors, List<Vector3> normals, List<Vector2> uvs, List<int> tris);
     
-    //Initialize Parent Game Object with Custom Name
+    /// <summary>
+    /// Initialize Parent Game Object with Custom Name
+    /// </summary>
+    /// <param name="name">Name of Parent</param>
     protected void InitializeRootParent(string name)
     {
         rootParent = new GameObject(name);

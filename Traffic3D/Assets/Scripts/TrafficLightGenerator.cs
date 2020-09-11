@@ -208,8 +208,11 @@ public class TrafficLightGenerator
         }
     }
 
-
-    // Returns the centre of an object
+    /// <summary>
+    /// Returns the centre of an object
+    /// </summary>
+    /// <param name="way">MapXmlWay object</param>
+    /// <returns></returns>
     protected Vector3 GetCentre(MapXmlWay way)
     {
         Vector3 total = Vector3.zero;

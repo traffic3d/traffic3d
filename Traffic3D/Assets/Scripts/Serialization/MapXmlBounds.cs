@@ -50,13 +50,13 @@ public class MapXmlBounds
     }
 
 
-    /* Get's an attributes' value from a collection and returns it as another Data Type
-
-      Param - T : A required data-type
-      Param - attrName : Name of Attribute
-      Param - attributes : Collection holding attributes
-      returns - attributeName converted into type T 
-    */
+    /// <summary>
+    /// Get's an attributes' value from a collection and returns it as another Data Type
+    /// </summary>
+    /// <typeparam name="T">A required data-type</typeparam>
+    /// <param name="attributeName">Name of Attribute</param>
+    /// <param name="attributes">Collection holding attributes</param>
+    /// <returns>attributeName converted into type T </returns>
     protected T GetAttribute<T>(string attributeName, XmlAttributeCollection attributes)
     {
         //strValue = the value of our attribute (XML Tag stores this value as a string.)

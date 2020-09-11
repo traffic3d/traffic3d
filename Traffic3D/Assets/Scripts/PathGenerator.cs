@@ -58,7 +58,9 @@ public class PathGenerator : BaseNodeInformant
         PopulateVehicleFactory();
     }
 
-    //Connect roads with the same name, if they join at same node
+    /// <summary>
+    /// Connect roads with the same name, if they join at same node
+    /// </summary>
     public void JoinRoadsWithSameName()
     {
        HashSet<GameObject> temp = new HashSet<GameObject>(createdRoads);
@@ -207,7 +209,10 @@ public class PathGenerator : BaseNodeInformant
 
     }
 
-    //Record: Start, Middle, End and used nodes in current Vehicle Path
+    /// <summary>
+    /// Record: Start, Middle, End and used nodes in current Vehicle Path
+    /// </summary>
+    /// <param name="vehiclePath">Gameobject with 'Path' component attached, whose node data is being recorded</param>
     void RecordPathData(GameObject vehiclePath)
     {
         //Get nodes in current path
@@ -291,10 +296,15 @@ public class PathGenerator : BaseNodeInformant
     
 
     /// <summary>
-    /// If node at the end of the current road has the same name, the roads will be merged and the joining road will be deleted
-    /// (Recursive method)
+    /// Checks if the end of the current road connects to another road with 'the same name' & 'travelling in the same direction',
+    /// and will merge the roads together.
     /// </summary>
-    /// <param name="road"></param>
+    /// <remarks>
+    /// The road object passed will be extended by having the connected roads' nodes added to it.
+    /// The second road will be deleted.
+    /// This is a recursive method which merges roads until no simular roads are left.
+    /// </remarks>
+    /// <param name="road">Game Object with 'Path' component attached, which will be extended if merged with another road.</param>
     void MergeToSimularEndNode(GameObject road)
     {
         Path path = road.GetComponent<Path>();
@@ -369,9 +379,12 @@ public class PathGenerator : BaseNodeInformant
         vehicleFactory.GetComponent<VehicleFactory>().paths = paths;
     }
 
-    /*
-        Returns the centre of an object
-    */
+
+    /// <summary>
+    /// Returns the centre of an object
+    /// </summary>
+    /// <param name="way">MapXmlWay object</param>
+    /// <returns></returns>
     protected Vector3 GetCentre(MapXmlWay way)
     {
         Vector3 total = Vector3.zero;
