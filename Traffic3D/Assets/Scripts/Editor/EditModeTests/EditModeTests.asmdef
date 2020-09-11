@@ -1,7 +1,8 @@
 {
     "name": "EditModeTests",
     "references": [
-        "Scripts"
+        "Scripts",
+        "ImportOsmEditor"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"

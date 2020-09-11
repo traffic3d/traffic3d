@@ -5,9 +5,11 @@ using UnityEngine;
 
 /// <summary>
 /// Handles all key scripts required to generate a scene.
-/// Calls the map reader to read map data
-/// Calls scripts that are responsible for the generation of different scene elements
 /// </summary>
+/// <remarks>
+/// Calls the map reader to read map data.
+/// Calls scripts that are responsible for the generation of different scene elements.
+/// </remarks>
 public class ImportOsmUiWrapper
 {
     //GUI
@@ -113,7 +115,9 @@ public class ImportOsmUiWrapper
         pathGenerator.AddPathsToRoads(parentObjectsForWays); // Add vehicle paths
     }
 
-    //Merges connected roads with same name together, and link Road mesh to vehicle path
+    /// <summary>
+    /// Merges connected roads with same name together, and links a Road mesh to its vehicle path
+    /// </summary>
     void MergeRoadsAndPaths()
     {
         //Combine all connected roads with the same name
@@ -122,7 +126,12 @@ public class ImportOsmUiWrapper
         UpdateRoadPathConnections();
     }
 
-    //Call after roads are merged, to update road/paths/parent-way defining objects
+    /// <summary>
+    /// Updates road, vehicle path and the dictionary "parentObjectsForWays" which links a parent object to a way.
+    /// </summary>
+    /// <remarks>
+    /// Call after roads are merged.
+    /// </remarks>
     void UpdateRoadPathConnections()
     {
         //remove roads linked to any deleted vehicle paths
@@ -148,12 +157,12 @@ public class ImportOsmUiWrapper
         trafficLightGenerator.AddStopNodesToTrafficLights(roadNodesById);
     }
 
-    //For each road: Link the roads' "Mesh" to the roads' "Path", so if the nodes along the path are modified, then the mesh will auto update.
+    /// <summary>
+    /// For each road: Links the roads' "Mesh" to the roads' "Path", so if the nodes along the path are modified, then the mesh will auto update.
+    /// </summary>
     void LinkRoadToVehiclePath()
     {
-
         foreach (KeyValuePair<MapXmlWay, GameObject> kv in parentObjectsForWays) {
-
 
             //Get the Parent_GameObject for the current way
             GameObject RoadParentObject = kv.Value;
@@ -172,12 +181,15 @@ public class ImportOsmUiWrapper
             }
 
             //Update road Mesh
-             roadMeshHolder.GetComponent<RoadMeshUpdater>().UpdateRoadMesh();
-            
+            roadMeshHolder.GetComponent<RoadMeshUpdater>().UpdateRoadMesh();
         }
     }
 
-    //Merges all elements from a secondary dictionary into the primary dictionary
+    /// <summary>
+    /// Merges all elements from a secondary dictionary into the primary dictionary
+    /// </summary>
+    /// <param name="primaryDic">Dictionary receiving data</param>
+    /// <param name="addedDic">Dictionary from which the data will be copied</param>
     void MergeDictionary(Dictionary<MapXmlWay, GameObject> primaryDic, Dictionary<MapXmlWay, GameObject> addedDic)
     {
        
@@ -188,7 +200,10 @@ public class ImportOsmUiWrapper
         
     }
 
-    //vehiclePaths - Gameobjects to remove
+    /// <summary>
+    /// vehiclePaths - Gameobjects to remove
+    /// </summary>
+    /// <param name="deletedPaths">list of all deleted vehicle paths</param>
     void RemoveDeletedRoads( List<GameObject> deletedPaths)
     {
         //loop through deleted Vehicle Path GameObjects
@@ -212,13 +227,15 @@ public class ImportOsmUiWrapper
     /// <summary>
     /// Testing Method. Returns number of nodes in current MapReader
     /// </summary>
-    /// <returns></returns>
+    /// <returns>Total number of nodes read by the OpenStreetMapReader</returns>
     public int GetNodesInScene()
     {
         return osmMapReader.nodes.Count;
     }
 
-    //Floor for the scene
+    /// <summary>
+    /// Floor for the scene
+    /// </summary>
     void CreateFloor()
     {
         //Create floor object
