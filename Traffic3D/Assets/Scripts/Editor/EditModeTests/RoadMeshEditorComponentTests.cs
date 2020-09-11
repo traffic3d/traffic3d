@@ -95,7 +95,6 @@ public class RoadMeshEditorComponentTests
     [Test]
     public void EmptyWhenNoPathObject()
     {
-          
         GameObject.DestroyImmediate(path);
             
         //update road mesh

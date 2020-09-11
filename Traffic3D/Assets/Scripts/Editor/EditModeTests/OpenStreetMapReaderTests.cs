@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.TestTools;
 
 [Category("Tests")]
-public class MapReaderTests
+public class OpenStreetMapReaderTests
 {
     readonly string mapWithMaxNodes = "Assets/Scripts/Editor/EditModeTests/MapFiles/MaximumNodesDataSet.txt";
     readonly string mapFile = "Assets/Scripts/Editor/EditModeTests/MapFiles/SmallData.txt";
@@ -28,24 +28,6 @@ public class MapReaderTests
         osmMapReader.ImportFile(mapFile);
 
         Assert.True(osmMapReader.ways.Count == 2760);
-    }
-
-    //Tests the time taken to read data from a large map file
-    [Test]
-    public void TimeToReadMaxSizeFile()
-    {
-        OpenStreetMapReader osmMapReader = new OpenStreetMapReader();         
-        System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
-
-        stopwatch.Start();
-        osmMapReader.ImportFile(mapWithMaxNodes);
-        stopwatch.Stop();
-
-        long timeTaken = stopwatch.ElapsedMilliseconds;
-
-        Assert.True(timeTaken < 3000); //Shouldn't take more than 3 seconds when including inaccuracies of StopWatch
-        Assert.True(osmMapReader.nodes.Count > 50000); //Ensure file has over 50K nodes
-            
     }
 
 }

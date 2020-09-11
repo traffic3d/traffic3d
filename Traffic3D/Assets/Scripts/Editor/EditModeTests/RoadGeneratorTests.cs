@@ -34,23 +34,5 @@ public class RoadGeneratorTests
             
         Assert.True(roadGenerator.GetWayObjects().Count == numRoads); //check number of roads == expected 
     }
-
-    //100 roads every 20 Miliseconds
-    [Test]
-    public void TimeTakenToGenerateRoads()
-    {
-        RoadGenerator roadGenerator = new RoadGenerator(osmMapReader, null);
-        System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
-         
-        int maxTime = Mathf.CeilToInt((float)numRoads / 100) * 20; //+20 miliseconds for every 100 roads
-
-        stopwatch.Start();
-        roadGenerator.GenerateRoads();
-        stopwatch.Stop();
-
-        long timeTaken = stopwatch.ElapsedMilliseconds;
-            
-        Assert.True(timeTaken <= maxTime);
-    }
 }
 

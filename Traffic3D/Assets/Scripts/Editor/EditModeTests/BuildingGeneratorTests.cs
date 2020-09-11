@@ -34,23 +34,5 @@ public class BuildingGeneratorTests
 
         Assert.True(buildingGenerator.buildingsCreated == numBuildings); //check number of roads == expected 
     }
-
-    //100 roads every 10 Miliseconds
-    [Test]
-    public void TimeTakenToGenerateBuildings()
-    {
-        BuildingGenerator buildingGenerator = new BuildingGenerator(osmMapReader, null);
-        System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
-
-        int maxTime = Mathf.CeilToInt((float)numBuildings / 100) * 10; //+10 miliseconds for every 100 buildings
-
-        stopwatch.Start();
-        buildingGenerator.GenerateBuildings();
-        stopwatch.Stop();
-
-        long timeTaken = stopwatch.ElapsedMilliseconds;
-            
-        Assert.True(timeTaken <= maxTime);
-    }
 }
 
