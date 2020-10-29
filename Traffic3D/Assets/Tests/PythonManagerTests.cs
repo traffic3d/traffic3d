@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System.Collections;
+using UnityEngine;
 using UnityEngine.TestTools;
 
 [Category("Tests")]
@@ -49,6 +50,13 @@ public class PythonManagerTests : CommonSceneTest
         string path = PythonManager.GetInstance().GetScreenshotFilePath("screenshots/", "junction1", 5);
         Assert.AreEqual("screenshots/junction1_shot5.png", path);
         yield return null;
+    }
+
+    [UnityTest]
+    public IEnumerator FrameRateTest()
+    {
+        yield return null;
+        Assert.AreEqual(Time.captureFramerate, PythonManager.GetInstance().frameRate);
     }
 
 }

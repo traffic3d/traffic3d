@@ -2,19 +2,12 @@
 
 public class CameraManager : MonoBehaviour
 {
-    public int frameRate = 2;
     private Camera camera;
     private bool renderScreenshot = false;
 
     void Start()
     {
-        Time.captureFramerate = frameRate;
         camera = GetComponent<Camera>();
-    }
-
-    private void Update()
-    {
-        Time.captureFramerate = frameRate;
     }
 
     private void OnPostRender()

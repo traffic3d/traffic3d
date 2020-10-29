@@ -25,6 +25,7 @@ public class PythonManager : MonoBehaviour
     public int rewardCount = 0;
     public int densityCount;
     public List<double> speedList = new List<double>();
+    public int frameRate = 2;
 
     /// <summary>
     /// If connected, get the screenshot file path from the python script over the socket and remove any invalid characters from the path.
@@ -54,6 +55,12 @@ public class PythonManager : MonoBehaviour
             }
         }
         densityLengthConstant = FindObjectsOfType<Path>().Select(path => path.GetDistanceUntilDensityMeasurePointInKM()).Sum();
+        Time.captureFramerate = frameRate;
+    }
+
+    void Update()
+    {
+        Time.captureFramerate = frameRate;
     }
 
     /// <summary>
