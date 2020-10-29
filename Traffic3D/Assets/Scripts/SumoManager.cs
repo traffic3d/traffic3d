@@ -52,7 +52,11 @@ public class SumoManager : MonoBehaviour
             this.enabled = false;
             return;
         }
-        FindObjectOfType<CameraManager>().frameRate = 60;
+        PythonManager pythonManager = FindObjectOfType<PythonManager>();
+        if (pythonManager != null)
+        {
+            pythonManager.frameRate = 60;
+        }
         StartCoroutine(Run());
         vehicleFactory.StopAllCoroutines();
         TrafficLightManager.GetInstance().RefreshTrafficLightsAndJunctions();
