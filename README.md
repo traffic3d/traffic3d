@@ -24,7 +24,7 @@ Previous developers:
 
 * Hishaam Iqbal - @iqbalh7
 
-Based on original code by Deepeka Garg (@gargd03).
+Based on original code by Deepeka Garg - @gargd03.
 
 ## License
 
