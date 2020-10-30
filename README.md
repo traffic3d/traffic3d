@@ -20,6 +20,10 @@ Current developers:
 
 * Callum Bugajski - @callumbugajski via [Beautiful Canoe](https://beautifulcanoe.com/)
 
+Previous developers:
+
+* Hishaam Iqbal - @iqbalh7
+
 Based on original code by Deepeka Garg (@gargd03).
 
 ## License
