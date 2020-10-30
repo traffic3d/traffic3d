@@ -143,7 +143,7 @@ public class TrafficLightGenerator
         GameObject trafficLight = GameObject.Instantiate(trafficLight_model) as GameObject;
 
         //Add 'Ignore raycast' layer
-        trafficLight.layer = 2;
+        trafficLight.layer = LayerMask.NameToLayer("Ignore Raycast");
 
         //Check if TrafficLight already created
         if (!trafficLights.ContainsKey(nodeID))

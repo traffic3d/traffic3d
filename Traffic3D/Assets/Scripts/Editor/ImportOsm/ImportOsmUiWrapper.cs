@@ -59,7 +59,7 @@ public class ImportOsmUiWrapper
         //Create Traffic3D required Objects & scripts
         CreatePythonManager();
         CreateTrafficLightManager();
-        GameObject vehicleFactory = CreateVehicleFactory();
+        VehicleFactory vehicleFactory = CreateVehicleFactory();
 
 
         //Defines the parent game object connected to each each Way (Key: "Way", Value: "Parent_Object") 
@@ -185,10 +185,10 @@ public class ImportOsmUiWrapper
             if (!roadMeshHolder.GetComponent<RoadMeshUpdater>())
             {
                 //Path = last child
-                GameObject path = RoadParentObject.transform.GetChild(RoadParentObject.transform.childCount - 1).gameObject;
+                Path path = RoadParentObject.transform.GetChild(RoadParentObject.transform.childCount - 1).GetComponent<Path>();
                 roadMeshHolder.AddComponent<RoadMeshUpdater>();
                 //Initializse values
-                roadMeshHolder.GetComponent<RoadMeshUpdater>().SetValues(kv.Key.Lanes, roadMeshHolder, path,roadGenerator.DefaultLaneWidth);
+                roadMeshHolder.GetComponent<RoadMeshUpdater>().SetValues(kv.Key.Lanes, roadMeshHolder, path, roadGenerator.DefaultLaneWidth);
             }
 
             //Update road Mesh
@@ -266,11 +266,10 @@ public class ImportOsmUiWrapper
         floor.transform.localScale = new Vector3(floor.transform.localScale.x, 1f, floor.transform.localScale.z);
     }
 
-    GameObject CreateVehicleFactory()
+    VehicleFactory CreateVehicleFactory()
     {
-        GameObject vehicleFactory = new GameObject("VehicleFactory");
-        vehicleFactory.AddComponent<VehicleFactory>();
-        return vehicleFactory;
+        GameObject vehicleFactoryGameObject = new GameObject("VehicleFactory");
+        return vehicleFactoryGameObject.AddComponent<VehicleFactory>();
     }
 
     void CreatePythonManager()

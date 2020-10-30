@@ -9,7 +9,7 @@ using UnityEngine;
 public class RoadMeshUpdater : MonoBehaviour
 {
     public GameObject road; // Road to which this Script is attached
-    public GameObject pathObject; // Vehicle path. Must have 'Path' component
+    public Path vehiclePath;
     public int numLanes;
     public float laneWidth; // Width of each lane
 
@@ -20,10 +20,10 @@ public class RoadMeshUpdater : MonoBehaviour
     /// <param name="road">GameObject to which this script is attached to</param>
     /// <param name="path">GameObject of corresponding vehicle Path. Must have 'Path' component</param>
     /// <param name="laneWidth">Width of each lane</param>
-    public void SetValues(int numLanes, GameObject road, GameObject path, float laneWidth)
+    public void SetValues(int numLanes, GameObject road, Path path, float laneWidth)
     {
         this.road = road;
-        this.pathObject = path;
+        this.vehiclePath = path;
         this.numLanes = numLanes;
         this.laneWidth = laneWidth;
     }
@@ -37,16 +37,14 @@ public class RoadMeshUpdater : MonoBehaviour
     {
         Mesh mesh = new Mesh(); //default = empty mesh
 
-        if (pathObject != null)
+        if (vehiclePath != null)
         {
-            pathObject.GetComponent<Path>().SetNodes(); //Updates node list to match child objects
-            
-            Path vehiclePath = pathObject.GetComponent<Path>();
+            vehiclePath.SetNodes(); //Updates node list to match child objects
 
             if (vehiclePath.nodes.Count >1)
             {
                 //road center should be relative to path and no longer the map
-                road.transform.position = pathObject.transform.position;
+                road.transform.position = vehiclePath.transform.position;
 
                 Transform roadNameLabel = GetRoadLabel();
                 List<Vector3> roadNodePositions = ConvertPathToRoadVectorList(vehiclePath);

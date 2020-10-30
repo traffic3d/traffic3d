@@ -13,7 +13,7 @@ public class PathGeneratorTests
     int numRoads;
         
     //required by pathGenerator class
-    GameObject vehicleFactory;
+    VehicleFactory vehicleFactory;
     Dictionary<MapXmlWay, GameObject> wayDic;
     Dictionary<MapXmlWay, GameObject> defaultDic; // used to reset dictionary after each test 
 
@@ -22,8 +22,8 @@ public class PathGeneratorTests
     {
         numRoads = 0;
 
-        vehicleFactory = new GameObject();
-        vehicleFactory.AddComponent<VehicleFactory>();
+        GameObject vehicleFactoryGameObject = new GameObject();
+        vehicleFactory = vehicleFactoryGameObject.AddComponent<VehicleFactory>();
 
         wayDic = new Dictionary<MapXmlWay, GameObject>();
 
@@ -47,8 +47,8 @@ public class PathGeneratorTests
     public void ResetVehicleFactory()
     {
         Object.DestroyImmediate(vehicleFactory);
-        vehicleFactory = new GameObject();
-        vehicleFactory.AddComponent<VehicleFactory>();
+        GameObject vehicleFactoryGameObject = new GameObject();
+        vehicleFactory = vehicleFactoryGameObject.AddComponent<VehicleFactory>();
     }
 
     //reset dictionary after each test
@@ -65,7 +65,7 @@ public class PathGeneratorTests
         PathGenerator pathGenerator = new PathGenerator(osmMapReader, vehicleFactory);
         pathGenerator.AddPathsToRoads(wayDic);
 
-        Assert.True(vehicleFactory.GetComponent<VehicleFactory>().paths.Count == numRoads);
+        Assert.True(vehicleFactory.paths.Count == numRoads);
     }
 
 
@@ -82,14 +82,14 @@ public class PathGeneratorTests
         PathGenerator pathGenerator = new PathGenerator(osmMapReader, vehicleFactory);
         pathGenerator.AddPathsToRoads(wayDic);
 
-        Assert.True(vehicleFactory.GetComponent<VehicleFactory>().paths.Count == numRoadsBeforeMerging);
+        Assert.True(vehicleFactory.paths.Count == numRoadsBeforeMerging);
         Assert.True(pathGenerator.GetNumCreatedRoads() == numRoadsBeforeMerging);
 
         //Check roads correctly merged
         pathGenerator.JoinRoadsWithSameName();
         pathGenerator.PopulateVehicleFactory(); // update vehicle factory
 
-        Assert.True(vehicleFactory.GetComponent<VehicleFactory>().paths.Count == numRoadsAfterMerging);
+        Assert.True(vehicleFactory.paths.Count == numRoadsAfterMerging);
         Assert.True(pathGenerator.GetNumCreatedRoads() == numRoadsAfterMerging);
     }
 

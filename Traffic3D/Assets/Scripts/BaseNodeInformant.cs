@@ -189,7 +189,7 @@ public abstract class BaseNodeInformant
             newNode.transform.position = Vector3.MoveTowards(newNode.transform.position, previousNode.position, newNodedistanceApart);
 
             //Add layer to ignore to raycasts
-            newNode.layer = 2;
+            newNode.layer = LayerMask.NameToLayer("Ignore Raycast");
 
             return newNode;
         }

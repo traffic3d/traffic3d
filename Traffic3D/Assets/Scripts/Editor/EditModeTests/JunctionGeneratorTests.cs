@@ -30,8 +30,8 @@ public class JunctionGeneratorTests
     [SetUp]
     public void CreatePaths()
     {
-        GameObject vehicleFactory = new GameObject();
-        vehicleFactory.AddComponent<VehicleFactory>();
+        GameObject vehicleFactoryGameObject = new GameObject();
+        VehicleFactory vehicleFactory = vehicleFactoryGameObject.AddComponent<VehicleFactory>();
         var wayDicClone = new Dictionary<MapXmlWay, GameObject>(origionalWayDic);
 
         //run path generator 

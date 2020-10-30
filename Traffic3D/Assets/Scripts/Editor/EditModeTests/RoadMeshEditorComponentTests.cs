@@ -12,7 +12,7 @@ public class RoadMeshEditorComponentTests
     //create Road
     GameObject road;
     //create Path
-    GameObject path;
+    Path path;
     //nodes
     GameObject node1;
     GameObject node2;
@@ -23,13 +23,13 @@ public class RoadMeshEditorComponentTests
     {
         parent = new GameObject();
         road = new GameObject();
-        path = new GameObject();
+        GameObject pathObject = new GameObject();
 
         road.AddComponent<MeshFilter>();
         road.AddComponent<MeshRenderer>();
         road.AddComponent<RoadMeshUpdater>();
 
-        path.AddComponent<Path>();
+        path = pathObject.AddComponent<Path>();
 
         //give same Parent
         road.transform.parent = parent.transform;
@@ -43,7 +43,7 @@ public class RoadMeshEditorComponentTests
 
         updater = road.GetComponent<RoadMeshUpdater>();
         updater.road = road;
-        updater.pathObject = path;
+        updater.vehiclePath = path;
     }
 
 
@@ -101,7 +101,7 @@ public class RoadMeshEditorComponentTests
         updater.UpdateRoadMesh();
 
         Assert.True(road.GetComponent<MeshFilter>().sharedMesh.vertexCount == 0);
-        Assert.True(updater.pathObject == null);
+        Assert.True(updater.vehiclePath == null);
     }
 
 }

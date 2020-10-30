@@ -19,6 +19,7 @@ public class JunctionGenerator : BaseNodeInformant
     static int junctionId = 1;
     GameObject rootParent = new GameObject("Junctions"); //store all junctions under same gameobject to keep things tidy
     int numCreatedJunctions = 0;
+    private const float defaultJunctionWidth = 0.25f;
 
     public void GenerateJunctions(TrafficLightGenerator trafficLightGenerator)
     {
@@ -155,7 +156,7 @@ public class JunctionGenerator : BaseNodeInformant
         AddCameraToJunction(junctionObject, parent);
 
         //Add Ignore Raycasts layer
-        junctionObject.layer = 2;
+        junctionObject.layer = LayerMask.NameToLayer("Ignore Raycast");
 
        return junctionObject;
     }
@@ -192,9 +193,9 @@ public class JunctionGenerator : BaseNodeInformant
         }
         catch { }
 
-        float scaledWidth= 0.25f * numLanes;
+        float scaledWidth= defaultJunctionWidth * numLanes;
         if (scaledWidth <= 0)
-            scaledWidth = 0.25f;
+            scaledWidth = defaultJunctionWidth;
 
         plane.transform.localScale = new Vector3(0.15f+scaledWidth, planeHeight, 0.15f + scaledWidth);
 

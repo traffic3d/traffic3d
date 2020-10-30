@@ -10,10 +10,10 @@ using System;
 public class PathGenerator : BaseNodeInformant
 {
     private OpenStreetMapReader osmMapReader;
-    GameObject vehiclePath;
-    GameObject vehicleFactory;
+    private GameObject vehiclePath;
+    private VehicleFactory vehicleFactory;
 
-    public PathGenerator(OpenStreetMapReader osmMapReader, GameObject vehicleFactory)
+    public PathGenerator(OpenStreetMapReader osmMapReader, VehicleFactory vehicleFactory)
     {
         //initialize base calss variables
         InitializeVariables();
@@ -22,7 +22,7 @@ public class PathGenerator : BaseNodeInformant
         List<Path> path = new List<Path>();
 
         //Initialize list in VF
-        vehicleFactory.GetComponent<VehicleFactory>().paths = path;
+        vehicleFactory.paths = path;
 
         this.vehicleFactory = vehicleFactory;
         this.osmMapReader = osmMapReader;
@@ -89,7 +89,7 @@ public class PathGenerator : BaseNodeInformant
     /// <param name="pathName">Name of the new vehicle path</param>
     /// <param name="vehiclePath">GameObject to hold "Path" Script</param>
     /// <param name="vf">GameObject with Vehicle Factory script</param>
-    void CreatePath(MapXmlWay way, string pathName, GameObject vehiclePath, GameObject vf)
+    void CreatePath(MapXmlWay way, string pathName, GameObject vehiclePath, VehicleFactory vehicleFactory)
     {
         vehiclePath.name = string.IsNullOrEmpty(pathName) ? "Road_Path" : (pathName + "_Path");
         Vector3 origin = GetCentre(way);
@@ -98,7 +98,7 @@ public class PathGenerator : BaseNodeInformant
         vehiclePath.transform.position = origin - osmMapReader.bounds.Centre;
 
         //Add layer to 'ignore raycasts' to path object
-        vehiclePath.layer = 2;
+        vehiclePath.layer = LayerMask.NameToLayer("Ignore Raycast");
 
         //Loop through all nodes in the road
         for (int i = 0; i < way.NodeIDs.Count; i++)
@@ -108,7 +108,7 @@ public class PathGenerator : BaseNodeInformant
             GameObject singleNode = new GameObject(name);
 
             //Add layer to ignore to raycasts to node
-            singleNode.layer = 2;
+            singleNode.layer = LayerMask.NameToLayer("Ignore Raycast");
 
             MapXmlNode currentNodeLocation = osmMapReader.nodes[way.NodeIDs[i]];// Current Nodes' Location
             Vector3 vCurrentNodeLocation = origin - currentNodeLocation;// Node vector location
@@ -148,7 +148,7 @@ public class PathGenerator : BaseNodeInformant
         path.lineColor = Color.white;
         path.lineColor.a = 1;
         
-        List<Path> vf_path = vf.GetComponent<VehicleFactory>().paths;
+        List<Path> vf_path = vehicleFactory.paths;
 
         vf_path.Add(path); //Add path to vehicle factory
 
@@ -376,7 +376,7 @@ public class PathGenerator : BaseNodeInformant
             if (!deletedVehiclePaths.Contains(road))
                 paths.Add(road.GetComponent<Path>());
         }
-        vehicleFactory.GetComponent<VehicleFactory>().paths = paths;
+        vehicleFactory.paths = paths;
     }
 
 
