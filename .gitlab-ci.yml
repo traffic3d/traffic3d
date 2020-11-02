@@ -85,7 +85,7 @@ test-playmode:
     variables:
         TEST_PLATFORM: playmode
 
-build:
+.build: &build
     image: registry.gitlab.com/traffic3d/traffic3d/buildimage
     stage: build
     <<: *unity_before_script
@@ -97,22 +97,41 @@ build:
                   - StandaloneLinux64
                   - StandaloneOSX
                   - StandaloneWindows64
+    tags:
+        - build
+
+build:feature-branch:
+    <<: *build
     artifacts:
         paths:
             - ./$BUILD_NAME/Builds/
+        expire_in: 1 week
     rules:
         - if: $CI_COMMIT_TAG
           when: never
+        - if: '$CI_COMMIT_BRANCH == "master"'
+          when: never
         - when: on_success
-    tags:
-        - build
+
+build:master:
+    <<: *build
+    artifacts:
+        paths:
+            - ./$BUILD_NAME/Builds/
+        expire_in: never
+    rules:
+        - if: $CI_COMMIT_TAG
+          when: never
+        - if: '$CI_COMMIT_BRANCH == "master"'
+          when: always
+        - when: never
 
 benchmark:
     stage: benchmark
     image: registry.gitlab.com/traffic3d/traffic3d/buildimage:latest
     <<: *unity_before_script
     dependencies:
-        - build
+        - build:feature-branch
     script:
         - chmod +x ./ci/benchmark.sh && ./ci/benchmark.sh
     rules:
