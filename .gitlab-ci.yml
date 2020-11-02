@@ -85,12 +85,18 @@ test-playmode:
     variables:
         TEST_PLATFORM: playmode
 
-.build: &build
+build:
     image: registry.gitlab.com/traffic3d/traffic3d/buildimage
     stage: build
     <<: *unity_before_script
     script:
         - chmod +x ./ci/build.sh && ./ci/build.sh
+    parallel:
+        matrix:
+            - BUILD_TARGET:
+                  - StandaloneLinux64
+                  - StandaloneOSX
+                  - StandaloneWindows64
     artifacts:
         paths:
             - ./$BUILD_NAME/Builds/
@@ -101,27 +107,12 @@ test-playmode:
     tags:
         - build
 
-build-StandaloneLinux64:
-    <<: *build
-    variables:
-        BUILD_TARGET: StandaloneLinux64
-
-build-StandaloneWindows64:
-    <<: *build
-    variables:
-        BUILD_TARGET: StandaloneWindows64
-
-build-StandaloneOSX:
-    <<: *build
-    variables:
-        BUILD_TARGET: StandaloneOSX
-
 benchmark:
     stage: benchmark
     image: registry.gitlab.com/traffic3d/traffic3d/buildimage:latest
     <<: *unity_before_script
     dependencies:
-        - build-StandaloneLinux64
+        - build
     script:
         - chmod +x ./ci/benchmark.sh && ./ci/benchmark.sh
     rules:
