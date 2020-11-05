@@ -1,18 +1,14 @@
 ﻿using System;
 
-/*
- * 
- * COPYRIGHT NOTICE
- * 
- * I, Hishaam Iqbal, did not create this class. 
- * 
- * This Class was developed by Florian Müller
+/**
+ * Author: Florian Müller
+ * Licensed under Creative Commons Attribution-ShareAlike 2.0 (CC BY-SA)
  * Code Taken From: http://wiki.openstreetmap.org/wiki/Mercator#C_implementation
- * 
- * Reason For Use: This class will convert my XML Map Data, 'Latitude & Longitute' into
- * X,Y co-ordinates that I can represent in Unity
- * 
-*/
+ */
+
+/// <summary>
+/// Convert XML Map Data, 'Latitude & Longitute' into Unity X & Y co-ordinates.
+/// </summary>
 public static class LatLonConverter
 {
     private static readonly double R_MAJOR = 6378137.0;

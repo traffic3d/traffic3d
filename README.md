@@ -91,3 +91,7 @@ In 2018 3rd IEEE International Conference on Intelligent Transportation Engineer
 Garg, D., Chli, M. and Vogiatzis, G., 2019, June. Traffic3D: A Rich 3D-Traffic Environment to Train Intelligent Agents. In International Conference on Computational Science (pp. 749-755). Springer, Cham.
 
 Garg, D., Chli, M. and Vogiatzis, G., 2019, May. Traffic3D: A New Traffic Simulation Paradigm. In Proceedings of the 18th International Conference on Autonomous Agents and MultiAgent Systems (pp. 2354-2356). International Foundation for Autonomous Agents and Multiagent Systems.
+
+## Credits
+
+* [LatLonConverter Class](http://wiki.openstreetmap.org/wiki/Mercator#C_implementation) - Licensed under Creative Commons Attribution-ShareAlike 2.0 (CC BY-SA) - developed by Florian Müller
