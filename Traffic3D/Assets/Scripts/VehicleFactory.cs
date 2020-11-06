@@ -101,6 +101,29 @@ public class VehicleFactory : MonoBehaviour
     }
 
     /// <summary>
+    /// Sets a uniform probability distribution for a list of default vehicles within the vehicleProbabilities list.
+    /// Please note that all vehicles already in the probability list will be removed.
+    /// </summary>
+    /// <param name="defaultVehicles">A list of default vehicles to set.</param>
+    public void SetDefaultVehicleProbabilities(List<Rigidbody> defaultVehicles)
+    {
+        vehicleProbabilities = new List<VehicleProbability>();
+        if (defaultVehicles.Count == 0)
+        {
+            return;
+        }
+        float totalVehicles = defaultVehicles.Count;
+        float vehicleProbabilityValue = 1f / totalVehicles;
+        foreach (Rigidbody vehicle in defaultVehicles)
+        {
+            VehicleProbability vehicleProbability = new VehicleProbability();
+            vehicleProbability.vehicle = vehicle;
+            vehicleProbability.probability = vehicleProbabilityValue;
+            vehicleProbabilities.Add(vehicleProbability);
+        }
+    }
+
+    /// <summary>
     /// Gets a random path for the vehicles to use.
     /// </summary>
     /// <returns>The path chosen.</returns>
