@@ -54,7 +54,7 @@ public class PythonManager : MonoBehaviour
                 TrafficLightManager.GetInstance().RunDemo();
             }
         }
-        densityLengthConstant = FindObjectsOfType<Path>().Select(path => path.GetDistanceUntilDensityMeasurePointInKM()).Sum();
+        densityLengthConstant = FindObjectsOfType<RoadWay>().Select(roadWay => roadWay.GetDistanceUntilDensityMeasurePointInKM()).Sum();
         Time.captureFramerate = frameRate;
     }
 

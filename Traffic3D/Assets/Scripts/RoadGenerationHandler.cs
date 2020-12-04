@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Handles the creation of the road mesh and positioning of label above road
 /// </summary>
-public class RoadGenerationHandler 
+public class RoadGenerationHandler
 {
 
     /// <summary>
@@ -34,7 +34,6 @@ public class RoadGenerationHandler
         {
             Vector3 currentNodeLoc = nodePositions[i];// Next Nodes' Location
             Vector2 forward = Vector2.zero;
-            
             //For all but last node: Get forward between current & next Node
             if (i < numNodes - 1)
             {
@@ -56,13 +55,10 @@ public class RoadGenerationHandler
             //Calculate offseted positions for mesh
             Vector2 left = new Vector2(-forward.y, forward.x);
             Vector3 vleft = new Vector3(left.x, 0, left.y);
-
             verts[vertIndex] = currentNodeLoc + vleft * roadWidth * .5f; //node to left of current
             verts[vertIndex + 1] = currentNodeLoc - vleft * roadWidth * .5f; //node to right of current
-            
             float positionAcrossMesh = i / (float)(numNodes - 1); // % Across mesh
             float uvCoordinate = 1 - Mathf.Abs(2 * positionAcrossMesh - 1); // uv co-ordinate
-            
             uvs[vertIndex] = new Vector2(0, uvCoordinate); //e.g (0,0) -> (0,0.5) -> (0,1)
             uvs[vertIndex + 1] = new Vector2(1, uvCoordinate);//e.g (1,0) -> (1,0.5) ->(1,1)
 
@@ -102,19 +98,14 @@ public class RoadGenerationHandler
     /// <param name="localPosition">Boolean. Whether roadName is positioned using the localPosition or global position.</param>
     public void PositionRoadLabel(Vector3 midNode, Vector3 nextNode, int numNodes, GameObject roadName, TextMesh roadNameLabel, bool localPosition)
     {
-        
         Vector3 relativePos = nextNode - midNode;
-
         Quaternion rotation = Quaternion.Euler(Vector3.zero);
-
         if (relativePos != Vector3.zero)
             rotation = Quaternion.LookRotation(relativePos, Vector3.up);
-
 
         //Position label in centre of road
         roadName.transform.rotation = rotation; //rotate parallel to road
         roadName.transform.Rotate(90, 90, 0); // make flat and along road
-
         //if only 2 nodes, position label in centre of road
         if (numNodes <= 2)
         {
@@ -131,7 +122,6 @@ public class RoadGenerationHandler
             else
                 roadName.transform.position = midNode;
         }
-
         //increase label height above road
         roadName.transform.position = new Vector3(roadName.transform.position.x, roadName.transform.position.y + 12, roadName.transform.position.z);
     }

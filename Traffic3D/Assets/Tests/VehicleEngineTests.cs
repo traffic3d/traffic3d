@@ -17,7 +17,7 @@ public class VehicleEngineTests : CommonSceneTest
     {
         DisableLoops();
         VehicleFactory vehicleFactory = (VehicleFactory)GameObject.FindObjectOfType(typeof(VehicleFactory));
-        Rigidbody vehicle = vehicleFactory.SpawnVehicle(vehicleFactory.GetRandomVehicle(), vehicleFactory.GetRandomUnusedPath());
+        GameObject vehicle = vehicleFactory.SpawnVehicle(vehicleFactory.GetRandomVehicle(), RoadNetworkManager.GetInstance().GetRandomStartNode());
         VehicleEngine vehicleEngine = vehicle.GetComponent<VehicleEngine>();
         yield return null;
         Assert.True(vehicleEngine.GetEngineStatus() == VehicleEngine.EngineStatus.ACCELERATE);
@@ -30,7 +30,7 @@ public class VehicleEngineTests : CommonSceneTest
         DisableLoops();
         VehicleFactory vehicleFactory = (VehicleFactory)GameObject.FindObjectOfType(typeof(VehicleFactory));
         TrafficLightManager.GetInstance().SetAllToRed();
-        Rigidbody vehicle = vehicleFactory.SpawnVehicle(vehicleFactory.GetRandomVehicle(), vehicleFactory.GetRandomUnusedPath());
+        GameObject vehicle = vehicleFactory.SpawnVehicle(vehicleFactory.GetRandomVehicle(), RoadNetworkManager.GetInstance().GetRandomStartNode());
         VehicleEngine vehicleEngine = vehicle.GetComponent<VehicleEngine>();
         yield return new WaitForSeconds(STOP_LIGHT_TIME);
         Assert.True(vehicleEngine.GetEngineStatus() == VehicleEngine.EngineStatus.STOP || vehicleEngine.GetEngineStatus() == VehicleEngine.EngineStatus.HARD_STOP);
@@ -47,7 +47,7 @@ public class VehicleEngineTests : CommonSceneTest
         {
             trafficLight.SetColour(TrafficLight.LightColour.GREEN);
         }
-        Rigidbody vehicle = vehicleFactory.SpawnVehicle(vehicleFactory.GetRandomVehicle(), vehicleFactory.GetRandomUnusedPath());
+        GameObject vehicle = vehicleFactory.SpawnVehicle(vehicleFactory.GetRandomVehicle(), RoadNetworkManager.GetInstance().GetRandomStartNode());
         bool carIsDestroyed = false;
         for (int i = 0; i <= TIME_OUT_DESTROY_TIME; i = i + 5)
         {
@@ -73,24 +73,25 @@ public class VehicleEngineTests : CommonSceneTest
         {
             trafficLight.SetColour(TrafficLight.LightColour.GREEN);
         }
-        Path pathWithTurning = null;
-        foreach (Path path in vehicleFactory.paths)
+        RoadWay roadWayWithTurning = null;
+        foreach (RoadWay roadWay in RoadNetworkManager.GetInstance().GetWays())
         {
-            float xRange = path.nodes.Select(node => node.position.x).Max() - path.nodes.Select(node => node.position.x).Min();
-            float zRange = path.nodes.Select(node => node.position.z).Max() - path.nodes.Select(node => node.position.z).Min();
+            float xRange = roadWay.nodes.Select(node => node.transform.position.x).Max() - roadWay.nodes.Select(node => node.transform.position.x).Min();
+            float zRange = roadWay.nodes.Select(node => node.transform.position.z).Max() - roadWay.nodes.Select(node => node.transform.position.z).Min();
             // Path has turning
             if (xRange != 0 && zRange != 0)
             {
-                pathWithTurning = path;
+                roadWayWithTurning = roadWay;
                 break;
             }
         }
-        if (pathWithTurning == null)
+        if (roadWayWithTurning == null)
         {
             Assert.Inconclusive("Unable to test. No paths with turnings.");
         }
-        Rigidbody vehicle = vehicleFactory.SpawnVehicle(vehicleFactory.GetRandomVehicle(), pathWithTurning);
+        GameObject vehicle = vehicleFactory.SpawnVehicle(vehicleFactory.GetRandomVehicle(), roadWayWithTurning.nodes[0]);
         VehicleEngine vehicleEngine = vehicle.GetComponent<VehicleEngine>();
+        vehicleEngine.SetVehiclePath(roadWayWithTurning.ToDirectVehiclePath());
         bool carIsDestroyed = false;
         for (int i = 0; i <= TIME_OUT_DESTROY_TIME; i = i + 5)
         {
@@ -135,7 +136,7 @@ public class VehicleEngineTests : CommonSceneTest
         yield return null;
         DisableLoops();
         VehicleFactory vehicleFactory = (VehicleFactory)GameObject.FindObjectOfType(typeof(VehicleFactory));
-        Rigidbody vehicle = vehicleFactory.SpawnVehicle(vehicleFactory.GetRandomVehicle(), vehicleFactory.GetRandomUnusedPath());
+        GameObject vehicle = vehicleFactory.SpawnVehicle(vehicleFactory.GetRandomVehicle(), RoadNetworkManager.GetInstance().GetRandomStartNode());
         VehicleEngine vehicleEngine = vehicle.GetComponent<VehicleEngine>();
 
         vehicleEngine.SetEngineStatus(VehicleEngine.EngineStatus.ACCELERATE);
@@ -178,6 +179,7 @@ public class VehicleEngineTests : CommonSceneTest
         {
             pedestrianFactory.StopAllCoroutines();
         }
+        RoadNetworkManager.GetInstance().Reload();
     }
 
 }

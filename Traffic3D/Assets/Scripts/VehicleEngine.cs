@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class VehicleEngine : MonoBehaviour
 {
-    public Path path;
+    public VehiclePath path;
     public float maxSteerAngle = 45f;
     public float turnSpeed = 5f;
     public WheelCollider wheelColliderFrontLeft;
@@ -58,9 +58,14 @@ public class VehicleEngine : MonoBehaviour
     /// Sets the path for the vehicle to use.
     /// </summary>
     /// <param name="path">The path for the vehicle to use.</param>
-    public void SetPath(Path path)
+    public void GenerateVehiclePath(RoadNode startRoadNode)
     {
-        this.path = path;
+        SetVehiclePath(RoadNetworkManager.GetInstance().GetValidVehiclePath(startRoadNode));
+    }
+
+    public void SetVehiclePath(VehiclePath vehiclePath)
+    {
+        this.path = vehiclePath;
         currentNodeNumber = 1;
         currentNode = path.nodes[currentNodeNumber];
     }
@@ -319,5 +324,30 @@ public class VehicleEngine : MonoBehaviour
         ACCELERATE,
         STOP,
         HARD_STOP
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        if (path == null)
+        {
+            return;
+        }
+        Gizmos.color = Color.green;
+        for (int i = 0; i < path.nodes.Count; i++)
+        {
+            Vector3 currentNode = path.nodes[i].transform.position;
+            Vector3 previousNode = Vector3.zero;
+            Vector3 lastNode = Vector3.zero;
+            if (i > 0)
+            {
+                previousNode = path.nodes[i - 1].transform.position;
+            }
+            else if (i == 0 && path.nodes.Count > 1)
+            {
+                currentNode = lastNode;
+            }
+            Gizmos.DrawLine(previousNode, currentNode);
+            Gizmos.DrawWireSphere(currentNode, 0.25f);
+        }
     }
 }

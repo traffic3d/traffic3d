@@ -1,6 +1,4 @@
-﻿
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class TrafficLightGenerator
@@ -27,7 +25,7 @@ public class TrafficLightGenerator
     /// </summary>
     /// <param name="parentObjectsForWays">Dictionary linking way to parent gameObject= {Key: Way, Value: Parent gameObject}</param>
     /// <returns>Dictionary(ulong, GameObject) = {Key: NodeID where trafficlight spawned, Value: TrafficLight}</returns>
-    public Dictionary<ulong, GameObject> AddTrafficLightsByWay(Dictionary<MapXmlWay,GameObject> parentObjectsForWays)
+    public Dictionary<ulong, GameObject> AddTrafficLightsByWay(Dictionary<MapXmlWay, GameObject> parentObjectsForWays)
     {
         // Iterate through each way...
         foreach (var way in osmMapReader.ways)
@@ -51,7 +49,7 @@ public class TrafficLightGenerator
     /// <param name="parentObjectsForWays">Dictionary linking way to parent gameObject = {Key: Way, Value: Parent gameObject}</param>
     void CreateTrafficLight(MapXmlWay way, int numLanes, Dictionary<MapXmlWay, GameObject> parentObjectsForWays)
     {
-       
+
         //Holds all the trafficlights for current way
         GameObject parentObject = new GameObject();
 
@@ -81,7 +79,7 @@ public class TrafficLightGenerator
                 MapXmlNode prevNode = osmMapReader.nodes[way.NodeIDs[i - 1]];// Next Nodes' Location
                 Vector3 prevNodeLoc = prevNode - osmMapReader.bounds.Centre;
                 //create Trafficlight on node
-                CreateTrafficLightModel(parentObject, node- osmMapReader.bounds.Centre, nodeID, prevNodeLoc, trafficLightCount, numLanes);
+                CreateTrafficLightModel(parentObject, node - osmMapReader.bounds.Centre, nodeID, prevNodeLoc, trafficLightCount, numLanes);
             }
         }
 
@@ -150,7 +148,7 @@ public class TrafficLightGenerator
             trafficLights.Add(nodeID, trafficLight); //add to list
         else
             trafficLights[nodeID] = trafficLight; //Overwrite existing trafficlight
-        
+
 
         trafficLight.transform.parent = localParentObject.transform;
 
@@ -174,10 +172,10 @@ public class TrafficLightGenerator
         }
 
         //offset to side of road
-        trafficLight.transform.Translate(Vector3.right * numLanes* 5);
+        trafficLight.transform.Translate(Vector3.right * numLanes * 5);
         trafficLight.transform.Translate(Vector3.up * 2);
         float height = trafficLight.GetComponent<MeshRenderer>().bounds.size.y; //height
-        trafficLight.transform.position = new Vector3(trafficLight.transform.position.x,(height/2), trafficLight.transform.position.z);
+        trafficLight.transform.position = new Vector3(trafficLight.transform.position.x, (height / 2), trafficLight.transform.position.z);
 
         return trafficLight;
     }

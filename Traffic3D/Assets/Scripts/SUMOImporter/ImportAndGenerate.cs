@@ -206,7 +206,7 @@ public class ImportAndGenerate
             {
                 int lineCounter = 0;
                 GameObject spline = new GameObject("LaneSegment_" + l.id);
-                spline.AddComponent<Path>();
+                spline.AddComponent<RoadWay>();
                 spline.transform.SetParent(network.transform);
 
                 Spline splineObject = spline.AddComponent<Spline>();

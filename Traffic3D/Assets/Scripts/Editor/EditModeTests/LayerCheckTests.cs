@@ -1,7 +1,8 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.TestTools;
 
@@ -10,6 +11,12 @@ public class LayerCheckTests
 {
     readonly string mapFile = "Assets/Scripts/Editor/EditModeTests/MapFiles/SmallData.txt";
     ImportOsmUiWrapper osmWrapper;
+
+    [OneTimeSetUp]
+    public void SetUp()
+    {
+        EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+    }
 
     [Test]
     public void CheckIgnoreRayCastLayerNumber()
@@ -29,25 +36,25 @@ public class LayerCheckTests
             //Check all currently existing trafficlight names
             if (gameObj.name == "TrafficLight_1" || gameObj.name == "TrafficLight_2")
             {
-                Assert.True(gameObj.layer == 2);
+                Assert.True(gameObj.layer == LayerMask.NameToLayer("Ignore Raycast"));
             }
         }
     }
 
     //Check existing vehicle Paths to ensure they have 'ignore raycast' layer
     [Test]
-    public void PathsIgnoreRayCast()
+    public void RoadWaysIgnoreRayCast()
     {
         osmWrapper = new ImportOsmUiWrapper(null, mapFile, null, null, null);
         osmWrapper.Import();
 
         //get all objects with Path script
-        Path[] paths = (Path[])GameObject.FindObjectsOfType(typeof(Path));
+        RoadWay[] roadWays = GameObject.FindObjectsOfType<RoadWay>();
 
         //ensure all paths have 'ignore raycast' layer
-        foreach (Path path in paths)
+        foreach (RoadWay roadWay in roadWays)
         {
-            Assert.True(path.gameObject.layer == 2);
+            Assert.True(roadWay.gameObject.layer == LayerMask.NameToLayer("Ignore Raycast"));
         }
     }
 

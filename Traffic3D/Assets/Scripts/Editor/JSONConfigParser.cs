@@ -74,7 +74,7 @@ public class JSONConfigParser
         foreach (VehicleProbabilityConfig vehicleProbabilityConfig in config.vehicleFactoryConfig.vehicleProbabilities)
         {
             VehicleFactory.VehicleProbability vehicleProbability = new VehicleFactory.VehicleProbability();
-            vehicleProbability.vehicle = (Rigidbody)AssetDatabase.LoadAssetAtPath(vehicleProbabilityConfig.vehiclePath, typeof(Rigidbody));
+            vehicleProbability.vehicle = (GameObject)AssetDatabase.LoadAssetAtPath(vehicleProbabilityConfig.vehiclePath, typeof(GameObject));
             vehicleProbability.probability = vehicleProbabilityConfig.probability;
             vehicleFactory.vehicleProbabilities.Add(vehicleProbability);
         }

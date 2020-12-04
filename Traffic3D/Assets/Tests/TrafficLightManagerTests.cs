@@ -44,7 +44,7 @@ public class TrafficLightManagerTests : CommonSceneTest
         DisableLoops();
         yield return null;
         TrafficLightManager trafficLightManager = (TrafficLightManager)GameObject.FindObjectOfType(typeof(TrafficLightManager));
-        GameObject pathObject = new GameObject("TestPath", typeof(Path));
+        GameObject pathObject = new GameObject("TestWay", typeof(RoadWay));
         GameObject node1 = new GameObject("1");
         GameObject node2 = new GameObject("2");
         GameObject trafficLight = new GameObject("TrafficLight", typeof(TrafficLight));

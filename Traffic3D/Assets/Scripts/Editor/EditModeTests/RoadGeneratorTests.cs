@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.TestTools;
 
@@ -15,6 +16,7 @@ public class RoadGeneratorTests
     [OneTimeSetUp]
     public void OneTimeSetUp()
     {
+        EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         osmMapReader = new OpenStreetMapReader();
         osmMapReader.ImportFile(mapWithMaxNodes);
 

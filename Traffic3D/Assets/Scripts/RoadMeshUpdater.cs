@@ -9,7 +9,7 @@ using UnityEngine;
 public class RoadMeshUpdater : MonoBehaviour
 {
     public GameObject road; // Road to which this Script is attached
-    public Path vehiclePath;
+    public RoadWay roadWay;
     public int numLanes;
     public float laneWidth; // Width of each lane
 
@@ -20,10 +20,10 @@ public class RoadMeshUpdater : MonoBehaviour
     /// <param name="road">GameObject to which this script is attached to</param>
     /// <param name="path">GameObject of corresponding vehicle Path. Must have 'Path' component</param>
     /// <param name="laneWidth">Width of each lane</param>
-    public void SetValues(int numLanes, GameObject road, Path path, float laneWidth)
+    public void SetValues(int numLanes, GameObject road, RoadWay roadWay, float laneWidth)
     {
         this.road = road;
-        this.vehiclePath = path;
+        this.roadWay = roadWay;
         this.numLanes = numLanes;
         this.laneWidth = laneWidth;
     }
@@ -37,17 +37,15 @@ public class RoadMeshUpdater : MonoBehaviour
     {
         Mesh mesh = new Mesh(); //default = empty mesh
 
-        if (vehiclePath != null)
+        if (roadWay != null)
         {
-            vehiclePath.SetNodes(); //Updates node list to match child objects
-
-            if (vehiclePath.nodes.Count >1)
+            if (roadWay.nodes.Count > 1)
             {
                 //road center should be relative to path and no longer the map
-                road.transform.position = vehiclePath.transform.position;
+                road.transform.position = roadWay.transform.position;
 
                 Transform roadNameLabel = GetRoadLabel();
-                List<Vector3> roadNodePositions = ConvertPathToRoadVectorList(vehiclePath);
+                List<Vector3> roadNodePositions = ConvertRoadWayToRoadVectorList(roadWay);
                 RoadGenerationHandler rgh = new RoadGenerationHandler();
 
                 mesh = rgh.CreateRoadMesh(roadNodePositions, numLanes, laneWidth); // Generate Mesh
@@ -79,7 +77,7 @@ public class RoadMeshUpdater : MonoBehaviour
             RoadGenerationHandler rgh = new RoadGenerationHandler();
 
             //Move label to updated position
-            rgh.PositionRoadLabel(midNodePos, nextNodePos, nodePositions.Count, roadNameLabel.gameObject, roadNameLabel.GetComponent<TextMesh>(),true);
+            rgh.PositionRoadLabel(midNodePos, nextNodePos, nodePositions.Count, roadNameLabel.gameObject, roadNameLabel.GetComponent<TextMesh>(), true);
         }
     }
 
@@ -88,14 +86,14 @@ public class RoadMeshUpdater : MonoBehaviour
     /// </summary>
     /// <param name="path">Vehicle Path</param>
     /// <returns>List of Vector3s for the nodes in a path</returns>
-    List<Vector3> ConvertPathToRoadVectorList(Path path)
+    List<Vector3> ConvertRoadWayToRoadVectorList(RoadWay roadWay)
     {
-        List<Vector3> nodePos = new List<Vector3>(path.nodes.Count);
+        List<Vector3> nodePos = new List<Vector3>(roadWay.nodes.Count);
 
-        foreach (Transform t in path.nodes)
+        foreach (RoadNode t in roadWay.nodes)
         {
             //Vector position of road is -1 in Y-Axis of node y-position
-            Vector3 v = new Vector3(t.localPosition.x, t.localPosition.y -1, t.localPosition.z );
+            Vector3 v = new Vector3(t.transform.localPosition.x, t.transform.localPosition.y - 1, t.transform.localPosition.z);
             nodePos.Add(v);
         }
         return nodePos;
