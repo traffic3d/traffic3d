@@ -12,8 +12,7 @@ public class VehicleFactory : MonoBehaviour
     public float slowDownVehicleRateAt = 6;
     public float timeOfStartInvisibility = 1;
     public List<VehicleProbability> vehicleProbabilities;
-    public List<Path> paths;
-    public Dictionary<Rigidbody, Path> currentVehicles = new Dictionary<Rigidbody, Path>();
+    public List<GameObject> currentVehicles = new List<GameObject>();
 
     void Start()
     {
@@ -30,7 +29,10 @@ public class VehicleFactory : MonoBehaviour
         {
             throw new System.Exception("Vehicle Probabilities do not sum to 100%");
         }
-        StartCoroutine(GenerateVehicle());
+        if (SumoManager.GetInstance() == null)
+        {
+            StartCoroutine(GenerateVehicle());
+        }
     }
 
     /// <summary>
@@ -44,10 +46,10 @@ public class VehicleFactory : MonoBehaviour
             CleanVehicles();
             if (currentVehicles.Count < Random.Range(slowDownVehicleRateAt, maximumVehicleCount))
             {
-                Path path = GetRandomUnusedPath();
-                if (path != null)
+                RoadNode roadNode = RoadNetworkManager.GetInstance().GetRandomStartNode();
+                if (roadNode != null)
                 {
-                    SpawnVehicle(GetRandomVehicle(), path);
+                    SpawnVehicle(GetRandomVehicle(), roadNode);
                 }
             }
         }
@@ -58,7 +60,7 @@ public class VehicleFactory : MonoBehaviour
     /// </summary>
     public void CleanVehicles()
     {
-        foreach (Rigidbody key in currentVehicles.Keys.Where(vehicle => vehicle == null).ToList())
+        foreach (GameObject key in currentVehicles.Where(vehicle => vehicle == null).ToList())
         {
             currentVehicles.Remove(key);
         }
@@ -68,15 +70,19 @@ public class VehicleFactory : MonoBehaviour
     /// Create the vehicle with the path inputted.
     /// </summary>
     /// <param name="vehicle">The vehicle to create.</param>
-    /// <param name="path">The path to set the vehicle on.</param>
+    /// <param name="startRoadNode">The node the vehicle starts on.</param>
     /// <returns>The created vehicle.</returns>
-    public Rigidbody SpawnVehicle(Rigidbody vehicle, Path path)
+    public GameObject SpawnVehicle(GameObject vehicle, RoadNode startRoadNode)
     {
-        Rigidbody spawnedVehicle = Instantiate(vehicle, path.nodes[0].position, path.nodes[0].rotation);
+        if (!startRoadNode.CanSpawnVehicle(vehicle))
+        {
+            return null;
+        }
+        GameObject spawnedVehicle = Instantiate(vehicle, startRoadNode.transform.position, startRoadNode.transform.rotation);
         TemporarilyHideVehicle(spawnedVehicle, timeOfStartInvisibility);
         VehicleEngine vehicleEngine = spawnedVehicle.GetComponent<VehicleEngine>();
-        vehicleEngine.SetPath(path);
-        currentVehicles.Add(spawnedVehicle, path);
+        vehicleEngine.GenerateVehiclePath(startRoadNode);
+        currentVehicles.Add(spawnedVehicle);
         return spawnedVehicle;
     }
 
@@ -84,7 +90,7 @@ public class VehicleFactory : MonoBehaviour
     /// Gets a random vehicle from the vehicles list that is inputted by the user in Unity.
     /// </summary>
     /// <returns>The vehicle template.</returns>
-    public Rigidbody GetRandomVehicle()
+    public GameObject GetRandomVehicle()
     {
         float finalProbability = Random.value;
         float cumulativeProbability = 0.0F;
@@ -105,7 +111,7 @@ public class VehicleFactory : MonoBehaviour
     /// Please note that all vehicles already in the probability list will be removed.
     /// </summary>
     /// <param name="defaultVehicles">A list of default vehicles to set.</param>
-    public void SetDefaultVehicleProbabilities(List<Rigidbody> defaultVehicles)
+    public void SetDefaultVehicleProbabilities(List<GameObject> defaultVehicles)
     {
         vehicleProbabilities = new List<VehicleProbability>();
         if (defaultVehicles.Count == 0)
@@ -114,7 +120,7 @@ public class VehicleFactory : MonoBehaviour
         }
         float totalVehicles = defaultVehicles.Count;
         float vehicleProbabilityValue = 1f / totalVehicles;
-        foreach (Rigidbody vehicle in defaultVehicles)
+        foreach (GameObject vehicle in defaultVehicles)
         {
             VehicleProbability vehicleProbability = new VehicleProbability();
             vehicleProbability.vehicle = vehicle;
@@ -124,41 +130,18 @@ public class VehicleFactory : MonoBehaviour
     }
 
     /// <summary>
-    /// Gets a random path for the vehicles to use.
-    /// </summary>
-    /// <returns>The path chosen.</returns>
-    public Path GetRandomPath()
-    {
-        return paths[Random.Range(0, paths.Count - 1)];
-    }
-
-    /// <summary>
-    /// Gets a random path that is not currently used by any vehicles.
-    /// </summary>
-    /// <returns>The path chosen which is unused.</returns>
-    public Path GetRandomUnusedPath()
-    {
-        List<Path> unusedPaths = paths.FindAll(path => !currentVehicles.ContainsValue(path));
-        if (unusedPaths.Count == 0)
-        {
-            return null;
-        }
-        return unusedPaths[Random.Range(0, unusedPaths.Count - 1)];
-    }
-
-    /// <summary>
     /// Temporarily hide a selected vehicle. 
     /// Mainly used at the start of a vehicle's life so it looks like they spawn in smoother.
     /// </summary>
     /// <param name="vehicle">The vehicle to temporarily hide.</param>
     /// <param name="hideForSeconds">The amount of seconds as a float to hide the vehicle for.</param>
-    public void TemporarilyHideVehicle(Rigidbody vehicle, float hideForSeconds)
+    public void TemporarilyHideVehicle(GameObject vehicle, float hideForSeconds)
     {
         vehicle.GetComponentsInChildren<Renderer>().ToList().ForEach(renderer => renderer.enabled = false);
         StartCoroutine(WaitAndShowVehicle(vehicle, hideForSeconds));
     }
 
-    IEnumerator WaitAndShowVehicle(Rigidbody vehicle, float hideForSeconds)
+    IEnumerator WaitAndShowVehicle(GameObject vehicle, float hideForSeconds)
     {
         yield return new WaitForSeconds(hideForSeconds);
         vehicle.GetComponentsInChildren<Renderer>().ToList().ForEach(renderer => renderer.enabled = true);
@@ -167,7 +150,7 @@ public class VehicleFactory : MonoBehaviour
     [System.Serializable]
     public class VehicleProbability
     {
-        public Rigidbody vehicle;
+        public GameObject vehicle;
         public float probability;
     }
 

@@ -1,8 +1,8 @@
-﻿using System.Collections;
+﻿using NUnit.Framework;
 using System.Collections.Generic;
-using NUnit.Framework;
+using System.Linq;
+using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.TestTools;
 
 [Category("Tests")]
 public class PathGeneratorTests
@@ -11,7 +11,7 @@ public class PathGeneratorTests
     OpenStreetMapReader osmMapReader;
 
     int numRoads;
-        
+
     //required by pathGenerator class
     VehicleFactory vehicleFactory;
     Dictionary<MapXmlWay, GameObject> wayDic;
@@ -20,10 +20,9 @@ public class PathGeneratorTests
     [OneTimeSetUp]
     public void OneTimeSetUp()
     {
-        numRoads = 0;
+        EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
 
-        GameObject vehicleFactoryGameObject = new GameObject();
-        vehicleFactory = vehicleFactoryGameObject.AddComponent<VehicleFactory>();
+        numRoads = 0;
 
         wayDic = new Dictionary<MapXmlWay, GameObject>();
 
@@ -31,24 +30,15 @@ public class PathGeneratorTests
         osmMapReader.ImportFile(mapFile);
 
         foreach (var way in osmMapReader.ways)
-        {                
+        {
             if (way.IsRoad)
                 numRoads++;
-                    
+
             GameObject go = new GameObject(way.Name);
-            wayDic.Add(way,go);
+            wayDic.Add(way, go);
         }
 
         defaultDic = new Dictionary<MapXmlWay, GameObject>(wayDic); //clone
-    }
-
-    //reset vehicle factory after each test
-    [TearDown]
-    public void ResetVehicleFactory()
-    {
-        Object.DestroyImmediate(vehicleFactory);
-        GameObject vehicleFactoryGameObject = new GameObject();
-        vehicleFactory = vehicleFactoryGameObject.AddComponent<VehicleFactory>();
     }
 
     //reset dictionary after each test
@@ -60,37 +50,13 @@ public class PathGeneratorTests
 
     //check if number of paths created and added to vehicle factory is correct (before any roads are merged)
     [Test]
-    public void CorrectNumPathsGeneratedFromWays()
+    public void CorrectNumRoadWaysGeneratedFromWays()
     {
-        PathGenerator pathGenerator = new PathGenerator(osmMapReader, vehicleFactory);
+        PathGenerator pathGenerator = new PathGenerator(osmMapReader);
         pathGenerator.AddPathsToRoads(wayDic);
+        RoadNetworkManager.GetInstance().Reload();
 
-        Assert.True(vehicleFactory.paths.Count == numRoads);
-    }
-
-
-    /// <summary>
-    /// Check if roads with the same name, travelling in the same direction, connected at the same point, are merged together into a single road
-    /// Manually checked: for SmallData.txt there should initially be 102 roads and after merging, 64 roads should remain.
-    /// </summary>
-    [Test]
-    public void MergeRoadsWithSimilarNamesTest()
-    {
-        int numRoadsBeforeMerging = 102;
-        int numRoadsAfterMerging = 64;
-
-        PathGenerator pathGenerator = new PathGenerator(osmMapReader, vehicleFactory);
-        pathGenerator.AddPathsToRoads(wayDic);
-
-        Assert.True(vehicleFactory.paths.Count == numRoadsBeforeMerging);
-        Assert.True(pathGenerator.GetNumCreatedRoads() == numRoadsBeforeMerging);
-
-        //Check roads correctly merged
-        pathGenerator.JoinRoadsWithSameName();
-        pathGenerator.PopulateVehicleFactory(); // update vehicle factory
-
-        Assert.True(vehicleFactory.paths.Count == numRoadsAfterMerging);
-        Assert.True(pathGenerator.GetNumCreatedRoads() == numRoadsAfterMerging);
+        Assert.AreEqual(numRoads, RoadNetworkManager.GetInstance().GetWays().Count);
     }
 
     /// <summary>
@@ -100,15 +66,8 @@ public class PathGeneratorTests
     public void CorrectStartAndEndNodes()
     {
         //Before merging roads
-        PathGenerator pathGenerator = new PathGenerator(osmMapReader, vehicleFactory);
+        PathGenerator pathGenerator = new PathGenerator(osmMapReader);
         pathGenerator.AddPathsToRoads(wayDic);
-
-        Assert.True(pathGenerator.GetNumOfTotalEndNodes() == pathGenerator.GetNumCreatedRoads());
-        Assert.True(pathGenerator.GetNumOfTotalStartNodes() == pathGenerator.GetNumCreatedRoads());
-
-        //After merging roads
-        pathGenerator.JoinRoadsWithSameName();
-        pathGenerator.PopulateVehicleFactory();
 
         Assert.True(pathGenerator.GetNumOfTotalEndNodes() == pathGenerator.GetNumCreatedRoads());
         Assert.True(pathGenerator.GetNumOfTotalStartNodes() == pathGenerator.GetNumCreatedRoads());

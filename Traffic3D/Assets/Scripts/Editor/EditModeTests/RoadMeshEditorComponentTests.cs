@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using NUnit.Framework;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.TestTools;
 
@@ -11,16 +13,17 @@ public class RoadMeshEditorComponentTests
     GameObject parent;
     //create Road
     GameObject road;
-    //create Path
-    Path path;
+    //create RoadWay
+    RoadWay roadWay;
     //nodes
-    GameObject node1;
-    GameObject node2;
+    RoadNode node1;
+    RoadNode node2;
     RoadMeshUpdater updater;
 
     [SetUp]
     public void SetUp()
     {
+        EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         parent = new GameObject();
         road = new GameObject();
         GameObject pathObject = new GameObject();
@@ -29,34 +32,38 @@ public class RoadMeshEditorComponentTests
         road.AddComponent<MeshRenderer>();
         road.AddComponent<RoadMeshUpdater>();
 
-        path = pathObject.AddComponent<Path>();
+        roadWay = pathObject.AddComponent<RoadWay>();
 
         //give same Parent
         road.transform.parent = parent.transform;
-        path.transform.parent = parent.transform;
+        roadWay.transform.parent = parent.transform;
 
-        node1 = new GameObject("node1");
-        node2 = new GameObject("node2");
+        GameObject nodeGameObject1 = new GameObject("node1");
+        GameObject nodeGameObject2 = new GameObject("node2");
 
-        node1.transform.position = new Vector3(1, 1, 1);
-        node2.transform.position = new Vector3(11, 11, 11);
+        nodeGameObject1.transform.position = new Vector3(1, 1, 1);
+        nodeGameObject2.transform.position = new Vector3(11, 11, 11);
+
+        node1 = nodeGameObject1.AddComponent<RoadNode>();
+        node2 = nodeGameObject2.AddComponent<RoadNode>();
 
         updater = road.GetComponent<RoadMeshUpdater>();
         updater.road = road;
-        updater.vehiclePath = path;
+        updater.roadWay = roadWay;
     }
 
+    [TearDown]
+    public void ResetRoadWayNodes()
+    {
+        roadWay.nodes.Clear();
+    }
 
     // Mesh emty if 1 node
     [Test]
     public void EmptyWhenNoChildNode()
     {
-          
-        //update list
-        path.GetComponent<Path>().SetNodes();
         //update Road Mesh
         updater.UpdateRoadMesh();
-
         Assert.True(road.GetComponent<MeshFilter>().sharedMesh.vertexCount == 0);
     }
 
@@ -64,14 +71,10 @@ public class RoadMeshEditorComponentTests
     [Test]
     public void EmptyWhenOneChildNode()
     {
-        //Add Children
-        node1.transform.parent = path.transform;
-
-        //update list
-        path.GetComponent<Path>().SetNodes();
+        //Add Nodes
+        roadWay.nodes.Add(node1);
         //update Road Mesh
         updater.UpdateRoadMesh();
-
         Assert.True(road.GetComponent<MeshFilter>().sharedMesh.vertexCount == 0);
     }
 
@@ -79,15 +82,11 @@ public class RoadMeshEditorComponentTests
     [Test]
     public void MeshCreatedWhenValidChildNodes()
     {
-        //Add Children
-        node1.transform.parent = path.transform;
-        node2.transform.parent = path.transform;
-
-        //update list
-        path.GetComponent<Path>().SetNodes();
+        //Add Nodes
+        roadWay.nodes.Add(node1);
+        roadWay.nodes.Add(node2);
         //update road mesh
         updater.UpdateRoadMesh();
-
         Assert.True(road.GetComponent<MeshFilter>().sharedMesh.vertexCount > 0);
     }
 
@@ -95,13 +94,11 @@ public class RoadMeshEditorComponentTests
     [Test]
     public void EmptyWhenNoPathObject()
     {
-        GameObject.DestroyImmediate(path);
-            
+        GameObject.DestroyImmediate(roadWay);
         //update road mesh
         updater.UpdateRoadMesh();
-
         Assert.True(road.GetComponent<MeshFilter>().sharedMesh.vertexCount == 0);
-        Assert.True(updater.vehiclePath == null);
+        Assert.True(updater.roadWay == null);
     }
 
 }

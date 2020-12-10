@@ -299,7 +299,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1428463760430286}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.9183874, y: 12.99, z: 41.26703}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
@@ -314,7 +314,7 @@ Transform:
   - {fileID: 4351036958402072}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &54468209761808050
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -343,20 +343,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a84fd945f96726a4ea85aa1c60896077, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  path: {fileID: 0}
   maxSteerAngle: 45
   turnSpeed: 5
   wheelColliderFrontLeft: {fileID: 146333435579448610}
   wheelColliderFrontRight: {fileID: 146001553655897694}
   maxMotorTorque: 300
+  currentMotorTorque: 0
   normalBrakeTorque: 600
   maxBrakeTorque: 600
   currentSpeed: 0
   stoppingDistance: 7
   maxSpeed: 100
   maxSpeedTurning: 20
-  maxSpeedAproachingLightsLastNode: 7
-  maxSpeedAproachingLightsSecondLastNode: 30
+  maxSpeedApproachingLightsLastNode: 7
+  maxSpeedApproachingLightsSecondLastNode: 30
   centerOfMass: {x: 0, y: 0, z: 0}
   currentNode: {fileID: 0}
   currentNodeNumber: 0
@@ -365,6 +365,7 @@ MonoBehaviour:
   maxDistanceToMonitor: 80
   targetSpeed: 0
   startTime: 0
+  startDelayTime: -1
   startPos: {x: 0, y: 0, z: 0}
   nodeReadingOffset: 0
   engineStatus: 0

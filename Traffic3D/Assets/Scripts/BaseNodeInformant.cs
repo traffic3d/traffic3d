@@ -22,6 +22,8 @@ public abstract class BaseNodeInformant
     protected static HashSet<GameObject> createdRoads;
     //Holds VehiclePaths that were deleted after merging roads
     protected static List<GameObject> deletedVehiclePaths;
+    // Root for all Road Nodes
+    protected static GameObject roadNodeRootParent;
 
     protected void InitializeVariables()
     {
@@ -32,90 +34,10 @@ public abstract class BaseNodeInformant
         createdRoads = new HashSet<GameObject>();
         deletedVehiclePaths = new List<GameObject>();
         nodeObjectsByNodeId = new Dictionary<ulong, GameObject>();
-    }
-
-
-    /// <summary>
-    /// Will merge the secondary road into the primary road.
-    /// Requires roads to be travelling in the same direction.
-    /// </summary>
-    /// <param name="primary">GameObject with 'path' component. This road will be extended</param>
-    /// <param name="secondary">GameObject with 'path' component. This road Will be deleted</param>
-    /// <returns>Bool, If merged roads successfully (will fail if merging into itself e.g roundabout)</returns>
-    protected bool MergeTwoRoads(GameObject primary, GameObject secondary)
-    {
-        //Check if road is merging with itself (e.g roundabouts)
-        if (primary == secondary)
-            return false;
-
-        if (primary == null | secondary == null)
-            return false;
-
-        int primaryNodesCount = primary.GetComponent<Path>().nodes.Count;
-        DeleteMergingRoadReferences(primary, secondary);
-        //Move all nodes from secondary to primary path
-        foreach (var node in secondary.GetComponent<Path>().nodes)
+        if(roadNodeRootParent == null)
         {
-            //skip first node, as Secondary path begins where Primary path ends
-            if (node != secondary.GetComponent<Path>().nodes[0])
-            {
-                //re-name node
-                primaryNodesCount++;
-                node.name = "node" + primaryNodesCount;
-                //Make node a child of primary path
-                node.transform.SetParent(primary.transform, true);
-                //Replace node references
-                roadsIndexdByNodes[node.position].Remove(secondary);
-                roadsIndexdByNodes[node.position].Add(primary);
-            }
+            roadNodeRootParent = new GameObject("RoadNodes");
         }
-        //Replace node reference for first node (skipped in foreach loop)
-        roadsIndexdByNodes[secondary.GetComponent<Path>().nodes[0].position].Remove(secondary);
-        //Update Path class to recognise new nodes
-        primary.GetComponent<Path>().SetNodes();
-        //Mark as deleted
-        deletedVehiclePaths.Add(secondary);
-        //update road list
-        createdRoads.Remove(secondary); //remove deleted node
-        if (primary.name != secondary.name)
-        {
-            primary.transform.parent.name = primary.name + " + " + secondary.name;
-        }
-        return true;
-    }
-
-    /// <summary>
-    /// Delete & update 'start' and 'end' node references for the two merging roads 
-    /// </summary>
-    /// <param name="primary">GameObject with 'path' component. This road will be extended</param>
-    /// <param name="secondary">GameObject with 'path' component. This road Will be deleted</param>
-    void DeleteMergingRoadReferences(GameObject primary, GameObject secondary)
-    {
-        List<Transform> primaryPathNodes = primary.GetComponent<Path>().nodes;
-        List<Transform> secondaryPathNodes = secondary.GetComponent<Path>().nodes;
-        Vector3 secondaryPathEndNode = secondaryPathNodes[secondaryPathNodes.Count - 1].position;
-        Vector3 nodeWherePathsMeet = primaryPathNodes[primaryPathNodes.Count - 1].position;
-        // -- Primary path references
-        //Primary path will no longer end at node -> Delete end node reference
-        endNodes[nodeWherePathsMeet].Remove(primary);
-        //Primary path will end where secondary path ends -> Update end node reference
-        endNodes[secondaryPathEndNode].Add(primary);
-        // -- Secondary path references
-        //Secondary Path will be deleted -> Delete from "start_nodes"
-        startNodes[nodeWherePathsMeet][secondary.name].Remove(secondary);
-        //Check if 'any' roads with 'same name' still start at node
-        if (startNodes[nodeWherePathsMeet][secondary.name].Count == 0)
-        {
-            startNodes[nodeWherePathsMeet].Remove(secondary.name);
-            //check if 'any' roads still start at node
-            if (startNodes[nodeWherePathsMeet].Count == 0)
-                startNodes.Remove(nodeWherePathsMeet); // remove key
-        }
-        //Secondary Path will be deleted -> delete from "End_nodes"
-        endNodes[secondaryPathEndNode].Remove(secondary);
-        //Check if any paths still end at node
-        if (endNodes[nodeWherePathsMeet].Count == 0)
-            endNodes.Remove(nodeWherePathsMeet); // remove key
     }
 
     /// <summary>
@@ -129,28 +51,27 @@ public abstract class BaseNodeInformant
     /// <param name="currentNodeIndex">index of node in path</param>
     /// <param name="addBeforeCurrentNode">bool: do you want new node before the current node or after</param>
     /// <returns>New node created between two target nodes, or NULL if no new node created</returns>
-    protected GameObject InsertPathNodeBetweenDistantNodes(float maxDistanceAprat, float newNodedistanceApart, Path vehiclePath, Transform currentNode, Transform previousNode, int currentNodeIndex, bool addBeforeCurrentNode)
+    protected RoadNode InsertPathNodeBetweenDistantNodes(float maxDistanceAprat, float newNodedistanceApart, RoadWay roadWay, Transform currentNode, RoadNode previousNode, int currentNodeIndex, bool addBeforeCurrentNode)
     {
         //Get distance between junction node and previous node
-        float distance = Vector3.Distance(currentNode.position, previousNode.position);
+        float distance = Vector3.Distance(currentNode.transform.position, previousNode.transform.position);
         if (distance > maxDistanceAprat)
         {
-            GameObject newNode = new GameObject();
-            newNode.name = "node" + (vehiclePath.nodes.Count + 1);
-
-            //Add node to vehicle path
-            newNode.transform.parent = vehiclePath.transform;
+            GameObject newNodeGameObject = new GameObject();
+            newNodeGameObject.name = "node" + (roadWay.nodes.Count + 1);
+            newNodeGameObject.transform.SetParent(roadNodeRootParent.transform, true);
+            RoadNode newNode = newNodeGameObject.AddComponent<RoadNode>();
+            //Add node to roadway
             if (addBeforeCurrentNode)
-                newNode.transform.SetSiblingIndex(currentNodeIndex); //add just before junction
+                roadWay.nodes.Insert(currentNodeIndex, newNode); //add just before junction
             else
                 newNode.transform.SetSiblingIndex(currentNodeIndex + 1); //add just after junction
 
-            newNode.transform.position = currentNode.position;
-            vehiclePath.SetNodes();
+            newNode.transform.position = currentNode.transform.position;
             //Move towards previous node
-            newNode.transform.position = Vector3.MoveTowards(newNode.transform.position, previousNode.position, newNodedistanceApart);
+            newNode.transform.position = Vector3.MoveTowards(newNode.transform.position, previousNode.transform.position, newNodedistanceApart);
             //Add layer to ignore to raycasts
-            newNode.layer = LayerMask.NameToLayer("Ignore Raycast");
+            newNodeGameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
             return newNode;
         }
         return null;

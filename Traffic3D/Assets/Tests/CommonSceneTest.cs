@@ -29,5 +29,6 @@ public class CommonSceneTest
         {
             pedestrianFactory.StopAllCoroutines();
         }
+        RoadNetworkManager.GetInstance().Reload();
     }
 }

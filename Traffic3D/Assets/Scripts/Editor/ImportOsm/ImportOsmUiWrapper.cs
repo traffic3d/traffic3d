@@ -59,11 +59,11 @@ public class ImportOsmUiWrapper
         //Create scene objects 
         buildingGenerator = new BuildingGenerator(osmMapReader, building_material);
         roadGenerator = new RoadGenerator(osmMapReader, road_material);
-        pathGenerator = new PathGenerator(osmMapReader, vehicleFactory);
+        pathGenerator = new PathGenerator(osmMapReader);
         trafficLightGenerator = new TrafficLightGenerator(osmMapReader);
         junctionGenerator = new JunctionGenerator();
         //ProgressBar values
-        int totalTasks = 6;
+        int totalTasks = 4;
         int tasksComplete = 0;
         // - Spawn and connect each element in the Scene -
         ImportProgress("Generating Buildings", totalTasks, tasksComplete++);
@@ -74,11 +74,7 @@ public class ImportOsmUiWrapper
         MergeRoadsAndPaths();
         ImportProgress("Generating Junctions", totalTasks, tasksComplete++);
         GenerateJunctions();
-        ImportProgress("Removing roads with two nodes", totalTasks, tasksComplete++);
-        pathGenerator.RemovePathsWithTwoNodes();
-        ImportProgress("Populating vehicle factory", totalTasks, tasksComplete++);
-        pathGenerator.PopulateVehicleFactory();
-        //GenerateTrafficLights(pathGenerator.GetAllNodesInRoadNetwork()); //NOTE: No Longer supporting real-world trafficLights due to lack of trafficLights in map data. Junctions now spawn the trafficlights
+        // NOTE: No Longer supporting real-world trafficLights due to lack of trafficLights in map data. Junctions now spawn the trafficlights
         ImportProgress("Completed", totalTasks, tasksComplete++);
         return true;
     }
@@ -110,7 +106,6 @@ public class ImportOsmUiWrapper
     void MergeRoadsAndPaths()
     {
         //Combine all connected roads with the same name
-        pathGenerator.JoinRoadsWithSameName();
         UpdateRoadPathConnections();
     }
 
@@ -158,10 +153,10 @@ public class ImportOsmUiWrapper
             if (!roadMeshHolder.GetComponent<RoadMeshUpdater>())
             {
                 //Path = last child
-                Path path = RoadParentObject.transform.GetChild(RoadParentObject.transform.childCount - 1).GetComponent<Path>();
+                RoadWay roadWay = RoadParentObject.transform.GetChild(RoadParentObject.transform.childCount - 1).GetComponent<RoadWay>();
                 roadMeshHolder.AddComponent<RoadMeshUpdater>();
                 //Initializse values
-                roadMeshHolder.GetComponent<RoadMeshUpdater>().SetValues(kv.Key.Lanes, roadMeshHolder, path, roadGenerator.DefaultLaneWidth);
+                roadMeshHolder.GetComponent<RoadMeshUpdater>().SetValues(kv.Key.Lanes, roadMeshHolder, roadWay, roadGenerator.DefaultLaneWidth);
             }
             //Update road Mesh
             roadMeshHolder.GetComponent<RoadMeshUpdater>().UpdateRoadMesh();
@@ -235,10 +230,10 @@ public class ImportOsmUiWrapper
         GameObject vehicleFactoryGameObject = new GameObject("VehicleFactory");
         VehicleFactory vehicleFactory = vehicleFactoryGameObject.AddComponent<VehicleFactory>();
         string[] assets = Directory.GetFiles("Assets/Vehicles", "*.prefab");
-        List<Rigidbody> vehicles = new List<Rigidbody>();
+        List<GameObject> vehicles = new List<GameObject>();
         foreach (string path in assets)
         {
-            Rigidbody vehicle = AssetDatabase.LoadAssetAtPath<Rigidbody>(path);
+            GameObject vehicle = AssetDatabase.LoadAssetAtPath<GameObject>(path);
             if (vehicle != null)
             {
                 vehicles.Add(vehicle);

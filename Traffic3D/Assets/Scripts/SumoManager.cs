@@ -30,7 +30,7 @@ public class SumoManager : MonoBehaviour
     private bool connected = false;
     private TraCIClient client;
     private VehicleFactory vehicleFactory;
-    private Dictionary<string, Rigidbody> renderedVehicles = new Dictionary<string, Rigidbody>();
+    private Dictionary<string, GameObject> renderedVehicles = new Dictionary<string, GameObject>();
 
     private List<SumoTrafficLight> sumoTrafficLights = new List<SumoTrafficLight>();
 
@@ -231,8 +231,8 @@ public class SumoManager : MonoBehaviour
 
     public void CreateRenderedVehicle(string id)
     {
-        Rigidbody vehicle = Instantiate(vehicleFactory.GetRandomVehicle());
-        vehicle.isKinematic = true;
+        GameObject vehicle = Instantiate(vehicleFactory.GetRandomVehicle());
+        vehicle.GetComponent<Rigidbody>().isKinematic = true;
         vehicle.GetComponent<VehicleEngine>().enabled = false;
         foreach (BoxCollider boxCollider in vehicle.GetComponentsInChildren<BoxCollider>())
         {

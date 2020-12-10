@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.TestTools;
 
@@ -15,6 +16,7 @@ public class JunctionGeneratorTests
     [OneTimeSetUp]
     public void OneTimeSetUp()
     {
+        EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         osmMapReader = new OpenStreetMapReader();
         origionalWayDic = new Dictionary<MapXmlWay, GameObject>();
             
@@ -35,10 +37,8 @@ public class JunctionGeneratorTests
         var wayDicClone = new Dictionary<MapXmlWay, GameObject>(origionalWayDic);
 
         //run path generator 
-        PathGenerator pathGenerator = new PathGenerator(osmMapReader, vehicleFactory);
+        PathGenerator pathGenerator = new PathGenerator(osmMapReader);
         pathGenerator.AddPathsToRoads(wayDicClone);
-        pathGenerator.JoinRoadsWithSameName();
-        pathGenerator.PopulateVehicleFactory();
     }
         
     /// <summary>

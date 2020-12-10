@@ -20,7 +20,7 @@ public static class LatLonConverter
     private static readonly double DEG2RAD = Math.PI / 180.0;
     private static readonly double RAD2Deg = 180.0 / Math.PI;
     private static readonly double PI_2 = Math.PI / 2.0;
-    
+
     public static double lonToX(double lon)
     {
         return R_MAJOR * DegToRad(lon);

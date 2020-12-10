@@ -11,8 +11,11 @@ using UnityEngine;
 public class RoadGenerator : BaseAssetGenerator
 {
     public Material road_material;
+
+    // The average width of a road is 3.65m according to the following source:
+    // https://mocktheorytest.com/resources/how-wide-are-roads/
     public float DefaultLaneWidth { get; } = 3.65f;
-    
+
     /// <summary>
     /// Creates a floor gameobject on
     /// </summary>
@@ -73,7 +76,7 @@ public class RoadGenerator : BaseAssetGenerator
         foreach (ulong id in way.NodeIDs)
         {
             MapXmlNode node = osmMapReader.nodes[id];
-            VectorNodesInRoad.Add(node-origin);
+            VectorNodesInRoad.Add(node - origin);
         }
 
         RoadGenerationHandler rgh = new RoadGenerationHandler();
@@ -95,28 +98,21 @@ public class RoadGenerator : BaseAssetGenerator
             name = way.Name;
             GameObject roadName = new GameObject("Road_Name");
             roadName.AddComponent<TextMesh>();
-
             TextMesh roadNameLabel = roadName.GetComponent<TextMesh>();
-
             roadNameLabel.anchor = TextAnchor.MiddleCenter;
             roadNameLabel.text = name;
             roadNameLabel.characterSize = 4;
             roadNameLabel.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
             roadNameLabel.fontSize = 60;
-
             //Get middle Node index in path. 
-            int middleIndex = middleIndex = (int)Math.Floor((decimal)( (way.NodeIDs.Count-1) / 2));
-
+            int middleIndex = middleIndex = (int)Math.Floor((decimal)((way.NodeIDs.Count - 1) / 2));
             //rotate towards previous node
             Vector3 midNodePos = osmMapReader.nodes[way.NodeIDs[middleIndex]] - osmMapReader.bounds.Centre;
             Vector3 nextNodePos = osmMapReader.nodes[way.NodeIDs[middleIndex + 1]] - osmMapReader.bounds.Centre;
-
             //Position label above center of road
             roadNameLabel.transform.position = midNodePos;
-
             //add label to road gameObject
             roadName.transform.parent = wayObject.transform;
-
             RoadGenerationHandler rgh = new RoadGenerationHandler();
             rgh.PositionRoadLabel(midNodePos, nextNodePos, way.NodeIDs.Count, roadNameLabel.gameObject, roadNameLabel.GetComponent<TextMesh>(), false);
         }
@@ -164,7 +160,4 @@ public class RoadGenerator : BaseAssetGenerator
         GetWayObjects().Remove(parentObject.Key);
 
     }
-
-    
 }
-
