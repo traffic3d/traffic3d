@@ -55,7 +55,7 @@ public class BuildingGenerator : BaseAssetGenerator
         // First vector is the middle point in the roof
         vectors.Add(oTop); // Holds vectors
         normals.Add(Vector3.up); // holds normals
-        uvs.Add(new Vector2(0.5f, 0.5f)); // holds
+        uvs.Add(new Vector2(0.5f, 0.5f)); // holds UVs
 
 
         // Loop through all nodes in building

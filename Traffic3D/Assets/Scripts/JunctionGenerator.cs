@@ -20,6 +20,12 @@ public class JunctionGenerator : BaseNodeInformant
     GameObject rootParent = new GameObject("Junctions"); //store all junctions under same gameobject to keep things tidy
     int numCreatedJunctions = 0;
     private const float defaultJunctionWidth = 0.25f;
+    private const float junctionObjectPadding = 0.15f;
+    private const float maxNodeDistanceApart = 10f;
+    private const float newNodeDistanceApart = 12f;
+    private const float maxDensityNodeDistanceApartPadding = 8f;
+    private const float newDensityNodeDistanceApartPadding = 3f;
+    private readonly Vector3 defaultDensityNodeSize = new Vector3(3f, 5f, 3f);
 
     public void GenerateJunctions(TrafficLightGenerator trafficLightGenerator)
     {
@@ -197,7 +203,7 @@ public class JunctionGenerator : BaseNodeInformant
         if (scaledWidth <= 0)
             scaledWidth = defaultJunctionWidth;
 
-        plane.transform.localScale = new Vector3(0.15f + scaledWidth, planeHeight, 0.15f + scaledWidth);
+        plane.transform.localScale = new Vector3(junctionObjectPadding + scaledWidth, planeHeight, junctionObjectPadding + scaledWidth);
 
         //Transform
         Vector3 pos = plane.transform.position;
@@ -326,12 +332,12 @@ public class JunctionGenerator : BaseNodeInformant
         else
             trafficLightParent.transform.parent = junctionObject.transform;
 
-        //For each Path connected to Junction
+        // For each Path connected to Junction
         foreach (GameObject vehiclePath in vehiclePaths)
         {
             int numLanes = 1;
 
-            //attempt to update number of road lanes
+            // attempt to update number of road lanes
             try
             {
                 RoadMeshUpdater roadMeshUpdater = vehiclePath.transform.parent.GetComponentInChildren<RoadMeshUpdater>();
@@ -352,8 +358,8 @@ public class JunctionGenerator : BaseNodeInformant
             GameObject tmp = new GameObject();
             tmp.transform.position = midNode;
 
-            //If nodes far apart, create new node and insert into path
-            RoadNode newNode = InsertPathNodeBetweenDistantNodes(12f, 10f, roadWay, tmp.transform, NodeBeforeJunction, indexOfJunctionNode, true);
+            // If nodes far apart, create new node and insert into path
+            RoadNode newNode = InsertPathNodeBetweenDistantNodes(newNodeDistanceApart, maxNodeDistanceApart, roadWay, tmp.transform, NodeBeforeJunction, indexOfJunctionNode, true);
 
             GameObject.DestroyImmediate(tmp);
             if (newNode != null)
@@ -364,12 +370,12 @@ public class JunctionGenerator : BaseNodeInformant
             GameObject trafficLight = trafficLightGenerator.CreateTrafficLightModel(trafficLightParent, spawnTrafficLightPosition.transform.position, trafficLightId, NodeBeforeJunction.transform.position, trafficLightCount, numLanes);
             createdTrafficLights.Add(trafficLight);
 
-            //Add Stop Node To TrafficLight
+            // Add Stop Node To TrafficLight
             trafficLight.GetComponent<TrafficLight>().stopNodes.Add(spawnTrafficLightPosition.transform);
 
             trafficLightId++;
 
-            //Add node before trafficLight
+            // Add node before trafficLight
             InsertPathNodeBetweenDistantNodes(20f, 18f, roadWay, spawnTrafficLightPosition.transform, roadWay.nodes[indexOfJunctionNode - 1], indexOfJunctionNode, true);
         }
 
@@ -444,7 +450,7 @@ public class JunctionGenerator : BaseNodeInformant
             RoadNode NodeAfterJunction = roadWay.nodes[indexOfJunctionNode + 1];
 
             //If nodes far apart, create new node and insert into path
-            RoadNode densityNode = InsertPathNodeBetweenDistantNodes(junctionRadius + 8f, junctionRadius + 3f, roadWay, junction.transform, NodeAfterJunction, indexOfJunctionNode, false);
+            RoadNode densityNode = InsertPathNodeBetweenDistantNodes(junctionRadius + maxDensityNodeDistanceApartPadding, junctionRadius + newDensityNodeDistanceApartPadding, roadWay, junction.transform, NodeAfterJunction, indexOfJunctionNode, false);
 
             //null => NodeAfterJunction is close enough to be density measure point 
             if (densityNode != null)
@@ -455,7 +461,7 @@ public class JunctionGenerator : BaseNodeInformant
             densityNode.gameObject.AddComponent<BoxCollider>();
             BoxCollider col = densityNode.GetComponent<BoxCollider>();
             col.isTrigger = true;
-            col.size = new Vector3(3f, 5f, 3f);
+            col.size = defaultDensityNodeSize;
             densityNode.gameObject.AddComponent<DensityMeasurePoint>();
 
         }
@@ -468,10 +474,10 @@ public class JunctionGenerator : BaseNodeInformant
         int pathIndex = 0;
 
         //get index of junction node in path.nodes
-        foreach (RoadNode t in roadWay.nodes)
+        foreach (RoadNode roadNode in roadWay.nodes)
         {
             //check if transforms have same X & Y positions
-            if ((t.transform.position.x == pathNode.position.x) && (t.transform.position.z == pathNode.position.z))
+            if ((roadNode.transform.position.x == pathNode.position.x) && (roadNode.transform.position.z == pathNode.position.z))
             {
                 return pathIndex;
             }

@@ -19,6 +19,7 @@ public class RoadNetworkManager
 
     private List<RoadNode> nodes;
     private List<RoadWay> ways;
+    private const int maxInvalidPaths = 1000;
 
     public RoadNetworkManager()
     {
@@ -90,11 +91,11 @@ public class RoadNetworkManager
         {
             errorCount++;
             vehiclePath = GetRandomVehiclePath(startNode);
-            if (errorCount > 1000)
+            if (errorCount > maxInvalidPaths)
             {
                 try
                 {
-                    throw new System.Exception("Unable to get Valid Vehicle Path after 1000 attempts");
+                    throw new System.Exception("Unable to get Valid Vehicle Path after " + maxInvalidPaths + " attempts");
                 }
                 catch (Exception e)
                 {

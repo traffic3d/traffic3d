@@ -4,6 +4,7 @@ using UnityEngine;
 public class RoadWay : MonoBehaviour
 {
     public List<RoadNode> nodes = new List<RoadNode>();
+    private const float debugSphereSize = 0.25f;
 
     void OnDrawGizmosSelected()
     {
@@ -22,7 +23,7 @@ public class RoadWay : MonoBehaviour
                 currentNode = lastNode;
             }
             Gizmos.DrawLine(previousNode, currentNode);
-            Gizmos.DrawWireSphere(currentNode, 0.25f);
+            Gizmos.DrawWireSphere(currentNode, debugSphereSize);
         }
     }
 

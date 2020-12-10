@@ -7,6 +7,7 @@ public class TrafficLightGenerator
     private GameObject trafficLight_model;
     Dictionary<ulong, GameObject> trafficLights;
     int trafficLightCount = 0;
+    private const int trafficLightToSideRoadOffset = 5;
 
     //unique ID for each trafficlight in simulation
     private static int trafficLightId = 1;
@@ -172,7 +173,7 @@ public class TrafficLightGenerator
         }
 
         //offset to side of road
-        trafficLight.transform.Translate(Vector3.right * numLanes * 5);
+        trafficLight.transform.Translate(Vector3.right * numLanes * trafficLightToSideRoadOffset);
         trafficLight.transform.Translate(Vector3.up * 2);
         float height = trafficLight.GetComponent<MeshRenderer>().bounds.size.y; //height
         trafficLight.transform.position = new Vector3(trafficLight.transform.position.x, (height / 2), trafficLight.transform.position.z);

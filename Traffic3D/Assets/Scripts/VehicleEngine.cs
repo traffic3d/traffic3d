@@ -39,6 +39,7 @@ public class VehicleEngine : MonoBehaviour
     public EngineStatus engineStatus;
     public bool densityCountTriggered = false;
     public bool debug = false;
+    private const float debugSphereSize = 0.25f;
 
     void Start()
     {
@@ -347,7 +348,7 @@ public class VehicleEngine : MonoBehaviour
                 currentNode = lastNode;
             }
             Gizmos.DrawLine(previousNode, currentNode);
-            Gizmos.DrawWireSphere(currentNode, 0.25f);
+            Gizmos.DrawWireSphere(currentNode, debugSphereSize);
         }
     }
 }

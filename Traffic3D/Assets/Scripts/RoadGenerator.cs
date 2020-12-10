@@ -11,6 +11,9 @@ using UnityEngine;
 public class RoadGenerator : BaseAssetGenerator
 {
     public Material road_material;
+
+    // The average width of a road is 3.65m according to the following source:
+    // https://mocktheorytest.com/resources/how-wide-are-roads/
     public float DefaultLaneWidth { get; } = 3.65f;
 
     /// <summary>

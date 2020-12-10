@@ -63,7 +63,7 @@ public class ImportOsmUiWrapper
         trafficLightGenerator = new TrafficLightGenerator(osmMapReader);
         junctionGenerator = new JunctionGenerator();
         //ProgressBar values
-        int totalTasks = 6;
+        int totalTasks = 4;
         int tasksComplete = 0;
         // - Spawn and connect each element in the Scene -
         ImportProgress("Generating Buildings", totalTasks, tasksComplete++);
@@ -74,11 +74,7 @@ public class ImportOsmUiWrapper
         MergeRoadsAndPaths();
         ImportProgress("Generating Junctions", totalTasks, tasksComplete++);
         GenerateJunctions();
-        ImportProgress("Removing roads with two nodes", totalTasks, tasksComplete++);
-        //pathGenerator.RemovePathsWithTwoNodes();
-        ImportProgress("Populating vehicle factory", totalTasks, tasksComplete++);
-        //pathGenerator.PopulateVehicleFactory();
-        //GenerateTrafficLights(pathGenerator.GetAllNodesInRoadNetwork()); //NOTE: No Longer supporting real-world trafficLights due to lack of trafficLights in map data. Junctions now spawn the trafficlights
+        // NOTE: No Longer supporting real-world trafficLights due to lack of trafficLights in map data. Junctions now spawn the trafficlights
         ImportProgress("Completed", totalTasks, tasksComplete++);
         return true;
     }
@@ -110,7 +106,6 @@ public class ImportOsmUiWrapper
     void MergeRoadsAndPaths()
     {
         //Combine all connected roads with the same name
-        //pathGenerator.JoinRoadsWithSameName();
         UpdateRoadPathConnections();
     }
 
