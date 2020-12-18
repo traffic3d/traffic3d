@@ -10,11 +10,12 @@ using UnityEngine;
 /// </summary>
 public class RoadGenerator : BaseAssetGenerator
 {
+    public const float defaultLaneWidthStartValue = 3.65f;
     public Material road_material;
 
     // The average width of a road is 3.65m according to the following source:
     // https://mocktheorytest.com/resources/how-wide-are-roads/
-    public float DefaultLaneWidth { get; } = 3.65f;
+    public float defaultLaneWidth = defaultLaneWidthStartValue;
 
     /// <summary>
     /// Creates a floor gameobject on
@@ -22,9 +23,10 @@ public class RoadGenerator : BaseAssetGenerator
     /// <param name="mapReader"></param>
     /// <param name="roadMaterial"></param>
     /// <param name="floor_material"></param>
-    public RoadGenerator(OpenStreetMapReader mapReader, Material roadMaterial) : base(mapReader)
+    public RoadGenerator(OpenStreetMapReader mapReader, Material roadMaterial, float defaultLaneWidth = defaultLaneWidthStartValue) : base(mapReader)
     {
         road_material = roadMaterial;
+        this.defaultLaneWidth = defaultLaneWidth;
 
         //Initialize parent so all roads stored under same gameObject called 'Roads'
         InitializeRootParent("Roads");
@@ -80,8 +82,7 @@ public class RoadGenerator : BaseAssetGenerator
         }
 
         RoadGenerationHandler rgh = new RoadGenerationHandler();
-
-        return rgh.CreateRoadMesh(VectorNodesInRoad, way.Lanes, DefaultLaneWidth);
+        return rgh.CreateRoadMesh(VectorNodesInRoad, way.Lanes, defaultLaneWidth);
     }
 
     /// <summary>

@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEditor.SceneManagement;
-using System.Collections;
+using UnityEngine;
 
 /// <summary>
 /// GUI used to upload a .txt OpenStreetMap file, and asset textures
@@ -12,6 +11,7 @@ public class ImportOsmGui : EditorWindow
     private Material road_material;
     private Material building_material;
     private Material floor_material;
+    private float defaultLaneWidth = RoadGenerator.defaultLaneWidthStartValue;
 
     private bool isValidFile;
 
@@ -25,7 +25,7 @@ public class ImportOsmGui : EditorWindow
     /// Create UI pop-up
     /// </summary>
     public static void DisplayOsmGui()
-    {    
+    {
         var window = GetWindow<ImportOsmGui>();
         window.titleContent = new GUIContent("Import OpenStreetMap file");
         window.Show();
@@ -51,7 +51,7 @@ public class ImportOsmGui : EditorWindow
     {
         //textbox disabled (users must use button and cannot directly type file-path)
         EditorGUI.BeginDisabledGroup(true);
-            EditorGUILayout.TextField(filePath);
+        EditorGUILayout.TextField(filePath);
         EditorGUI.EndDisabledGroup();
 
         // -- UI-Element: Button which asks For File....
@@ -77,6 +77,8 @@ public class ImportOsmGui : EditorWindow
         // -- UI-Element: Ask For Building Material
         building_material = EditorGUILayout.ObjectField("Select Building Material:", building_material, typeof(Material), false) as Material;
 
+        // -- UI-Element: Ask For Default Lane Width
+        defaultLaneWidth = EditorGUILayout.FloatField("Default Lane Width:", defaultLaneWidth);
 
         // -- UI-Element: Import Button
         EditorGUI.BeginDisabledGroup(!isValidFile || isSceneActive);
@@ -85,7 +87,7 @@ public class ImportOsmGui : EditorWindow
         if (GUILayout.Button("Import Map File"))
         {
             //Import Map Data
-            var osmSceneGenerator = new ImportOsmUiWrapper(this, filePath, road_material, floor_material, building_material);
+            var osmSceneGenerator = new ImportOsmUiWrapper(this, filePath, road_material, floor_material, building_material, defaultLaneWidth);
             bool success = osmSceneGenerator.Import();
 
             if (!success)
