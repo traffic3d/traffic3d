@@ -46,28 +46,28 @@ public class MapXmlNode
             string node_attribute = GetAttribute<string>("k", tag.Attributes);
 
             //Flag if road has traffic lights
-            if (node_attribute == "highway")
+            if (node_attribute == OpenStreetMapTagName.highwayTag)
             {
-                if (GetAttribute<string>("v", tag.Attributes) == "traffic_signals")
+                if (GetAttribute<string>("v", tag.Attributes) == OpenStreetMapTagName.trafficSignalsTag)
                     hasTrafficLight = true;
             }
-            if (node_attribute == "traffic_signals")
+            if (node_attribute == OpenStreetMapTagName.trafficSignalsTag)
             {
-                if (GetAttribute<string>("v", tag.Attributes) == "signal")
+                if (GetAttribute<string>("v", tag.Attributes) == OpenStreetMapTagName.signalTag)
                     hasTrafficLight = true;
             }
-            if (node_attribute == "crossing")
+            if (node_attribute == OpenStreetMapTagName.crossingTag)
             {
-                if (GetAttribute<string>("v", tag.Attributes) == "traffic_signals")
+                if (GetAttribute<string>("v", tag.Attributes) == OpenStreetMapTagName.trafficSignalsTag)
                     hasTrafficLight = true;
             }
             // Flag if amenity
-            if (node_attribute == "amenity")
+            if (node_attribute == OpenStreetMapTagName.amenityTag)
             {
                 amenity = GetAttribute<string>("v", tag.Attributes);
             }
             // Flag if emergency
-            if(node_attribute == "emergency")
+            if(node_attribute == OpenStreetMapTagName.emergencyTag)
             {
                 emergency = GetAttribute<string>("v", tag.Attributes);
             }

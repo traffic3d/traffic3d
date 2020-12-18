@@ -28,13 +28,13 @@ public class StreetFurnitureGeneratorTests
         streetFurnitureGenerator.GenerateStreetFurniture();
         int currentPostBoxes = 0;
         int currentFireHydrant = 0;
-        foreach(Transform children in streetFurnitureGenerator.GetRootParent().transform)
+        foreach(Transform child in streetFurnitureGenerator.GetRootGameObject().transform)
         {
-            if (children.name.StartsWith("post_box"))
+            if (child.name.StartsWith(OpenStreetMapTagName.postBoxItemName))
             {
                 currentPostBoxes++;
             }
-            if (children.name.StartsWith("fire_hydrant"))
+            if (child.name.StartsWith(OpenStreetMapTagName.fireHydrantItemName))
             {
                 currentFireHydrant++;
             }
