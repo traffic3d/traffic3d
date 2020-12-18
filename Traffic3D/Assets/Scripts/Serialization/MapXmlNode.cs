@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
+﻿using System;
 using System.Xml;
+using UnityEngine;
 
 
- public class MapXmlNode 
+public class MapXmlNode
 {
     // <node id = "27457906" visible="true" version="17" changeset="67050987" timestamp="2019-02-09T14:57:21Z" user="mrpacmanmap" uid="563773" lat="52.5110832" lon="-2.0816813">
     public ulong ID { get; private set; }
@@ -14,7 +12,8 @@ using System.Xml;
     public float Latitude { get; private set; }
     public float Longitude { get; private set; }
     public bool hasTrafficLight = false;
-
+    public string amenity = null;
+    public string emergency = null;
 
     /// <summary>
     /// Convert xmlNode into Vector3
@@ -43,9 +42,9 @@ using System.Xml;
 
         foreach (XmlNode tag in ndNodeTags)
         {
-            
+
             string node_attribute = GetAttribute<string>("k", tag.Attributes);
-            
+
             //Flag if road has traffic lights
             if (node_attribute == "highway")
             {
@@ -62,7 +61,16 @@ using System.Xml;
                 if (GetAttribute<string>("v", tag.Attributes) == "traffic_signals")
                     hasTrafficLight = true;
             }
-            
+            // Flag if amenity
+            if (node_attribute == "amenity")
+            {
+                amenity = GetAttribute<string>("v", tag.Attributes);
+            }
+            // Flag if emergency
+            if(node_attribute == "emergency")
+            {
+                emergency = GetAttribute<string>("v", tag.Attributes);
+            }
         }
     }
 

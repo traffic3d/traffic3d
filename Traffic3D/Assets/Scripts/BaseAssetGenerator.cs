@@ -143,4 +143,9 @@ public abstract class BaseAssetGenerator
         parentObjectsForWays.Add(way, parent);
     }
 
+    public GameObject GetRootParent()
+    {
+        return rootParent;
+    }
+
 }

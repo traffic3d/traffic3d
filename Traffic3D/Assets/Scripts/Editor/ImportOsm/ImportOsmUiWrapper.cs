@@ -65,7 +65,7 @@ public class ImportOsmUiWrapper
         pathGenerator = new PathGenerator(osmMapReader);
         trafficLightGenerator = new TrafficLightGenerator(osmMapReader);
         junctionGenerator = new JunctionGenerator();
-        streetFurnitureGenerator = new StreetFurnitureGenerator();
+        streetFurnitureGenerator = new StreetFurnitureGenerator(osmMapReader);
         //ProgressBar values
         int totalTasks = 5;
         int tasksComplete = 0;
