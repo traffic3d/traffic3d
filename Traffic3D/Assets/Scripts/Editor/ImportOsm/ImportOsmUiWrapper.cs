@@ -20,6 +20,7 @@ public class ImportOsmUiWrapper
     Material road_material;
     Material building_material;
     Material floor_material;
+    float defaultLaneWidth;
     //Vars
     public Dictionary<MapXmlWay, GameObject> parentObjectsForWays; //{Key: Way, Value: Parent_object} - Ensures all elements of a Way are all connected to the same Parent_Object
     OpenStreetMapReader osmMapReader;
@@ -30,13 +31,14 @@ public class ImportOsmUiWrapper
     public TrafficLightGenerator trafficLightGenerator;
     public JunctionGenerator junctionGenerator;
 
-    public ImportOsmUiWrapper(ImportOsmGui osmGui, string osmFile, Material roadMat, Material floorMat, Material buildingMat)
+    public ImportOsmUiWrapper(ImportOsmGui osmGui, string osmFile, Material roadMat, Material floorMat, Material buildingMat, float defaultLaneWidth)
     {
         this.osmGui = osmGui;
         filePath = osmFile;
         road_material = roadMat;
         floor_material = floorMat;
         building_material = buildingMat;
+        this.defaultLaneWidth = defaultLaneWidth;
     }
 
     /// <summary>
@@ -58,7 +60,7 @@ public class ImportOsmUiWrapper
         parentObjectsForWays = new Dictionary<MapXmlWay, GameObject>(osmMapReader.ways.Count);
         //Create scene objects 
         buildingGenerator = new BuildingGenerator(osmMapReader, building_material);
-        roadGenerator = new RoadGenerator(osmMapReader, road_material);
+        roadGenerator = new RoadGenerator(osmMapReader, road_material, defaultLaneWidth);
         pathGenerator = new PathGenerator(osmMapReader);
         trafficLightGenerator = new TrafficLightGenerator(osmMapReader);
         junctionGenerator = new JunctionGenerator();
@@ -156,7 +158,7 @@ public class ImportOsmUiWrapper
                 RoadWay roadWay = RoadParentObject.transform.GetChild(RoadParentObject.transform.childCount - 1).GetComponent<RoadWay>();
                 roadMeshHolder.AddComponent<RoadMeshUpdater>();
                 //Initializse values
-                roadMeshHolder.GetComponent<RoadMeshUpdater>().SetValues(kv.Key.Lanes, roadMeshHolder, roadWay, roadGenerator.DefaultLaneWidth);
+                roadMeshHolder.GetComponent<RoadMeshUpdater>().SetValues(kv.Key.Lanes, roadMeshHolder, roadWay, defaultLaneWidth);
             }
             //Update road Mesh
             roadMeshHolder.GetComponent<RoadMeshUpdater>().UpdateRoadMesh();
