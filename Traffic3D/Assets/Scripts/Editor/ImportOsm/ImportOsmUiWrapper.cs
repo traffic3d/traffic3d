@@ -30,6 +30,7 @@ public class ImportOsmUiWrapper
     public PathGenerator pathGenerator;
     public TrafficLightGenerator trafficLightGenerator;
     public JunctionGenerator junctionGenerator;
+    public StreetFurnitureGenerator streetFurnitureGenerator;
 
     public ImportOsmUiWrapper(ImportOsmGui osmGui, string osmFile, Material roadMat, Material floorMat, Material buildingMat, float defaultLaneWidth)
     {
@@ -64,8 +65,9 @@ public class ImportOsmUiWrapper
         pathGenerator = new PathGenerator(osmMapReader);
         trafficLightGenerator = new TrafficLightGenerator(osmMapReader);
         junctionGenerator = new JunctionGenerator();
+        streetFurnitureGenerator = new StreetFurnitureGenerator(osmMapReader);
         //ProgressBar values
-        int totalTasks = 4;
+        int totalTasks = 5;
         int tasksComplete = 0;
         // - Spawn and connect each element in the Scene -
         ImportProgress("Generating Buildings", totalTasks, tasksComplete++);
@@ -76,6 +78,8 @@ public class ImportOsmUiWrapper
         MergeRoadsAndPaths();
         ImportProgress("Generating Junctions", totalTasks, tasksComplete++);
         GenerateJunctions();
+        ImportProgress("Generating Street Furniture", totalTasks, tasksComplete++);
+        GenerateStreetFurniture();
         // NOTE: No Longer supporting real-world trafficLights due to lack of trafficLights in map data. Junctions now spawn the trafficlights
         ImportProgress("Completed", totalTasks, tasksComplete++);
         return true;
@@ -130,6 +134,11 @@ public class ImportOsmUiWrapper
         UpdateRoadPathConnections();
         junctionGenerator.GenerateJunctions(trafficLightGenerator);
         UpdateRoadPathConnections();
+    }
+
+    void GenerateStreetFurniture()
+    {
+        streetFurnitureGenerator.GenerateStreetFurniture();
     }
 
     void GenerateTrafficLights(Dictionary<ulong, GameObject> roadNodesById)

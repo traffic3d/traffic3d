@@ -7,7 +7,7 @@ using UnityEngine;
 public abstract class BaseAssetGenerator
 {
     protected OpenStreetMapReader osmMapReader;
-    protected GameObject rootParent; // all object stored under same parent (e.g "Roads" -> road1,road2....)
+    protected GameObject rootGameObject; // all object stored under same parent (e.g "Roads" -> road1,road2....)
     
     private GameObject objectInstance; //the object instance e.g building
     private Dictionary<MapXmlWay, GameObject> parentObjectsForWays; //{Key: Way, Value: Parent_object} - Ensures all elements of a Way are all connected to the same Parent_Object
@@ -41,7 +41,7 @@ public abstract class BaseAssetGenerator
     /// <param name="child">object being stored under parent</param>
     protected void AddToRootParent(GameObject child)
     {
-        child.transform.parent = rootParent.transform;
+        child.transform.parent = rootGameObject.transform;
     }
     
 
@@ -111,7 +111,7 @@ public abstract class BaseAssetGenerator
     /// <param name="name">Name of Parent</param>
     protected void InitializeRootParent(string name)
     {
-        rootParent = new GameObject(name);
+        rootGameObject = new GameObject(name);
     }
 
 
@@ -141,6 +141,11 @@ public abstract class BaseAssetGenerator
     public void LinkWayToParent(MapXmlWay way,GameObject parent)
     {
         parentObjectsForWays.Add(way, parent);
+    }
+
+    public GameObject GetRootGameObject()
+    {
+        return rootGameObject;
     }
 
 }
