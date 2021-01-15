@@ -78,7 +78,6 @@ lint:
           when: never
         - when: always
     tags:
-        - test
         - shared
 
 test-playmode:
@@ -105,7 +104,6 @@ test-editmode:
                   - StandaloneOSX
                   - StandaloneWindows64
     tags:
-        - build
         - shared
 
 build:feature-branch:
@@ -146,5 +144,4 @@ benchmark:
         - when: manual
     allow_failure: true
     tags:
-        - benchmark
         - shared
