@@ -42,7 +42,6 @@ meta-build-image:
           when: always
         - when: never
     tags:
-        - dind
         - shared
 
 .unity_before_script: &unity_before_script
