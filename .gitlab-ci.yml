@@ -42,7 +42,7 @@ meta-build-image:
           when: always
         - when: never
     tags:
-        - dind
+        - shared
 
 .unity_before_script: &unity_before_script
     before_script:
@@ -78,7 +78,7 @@ lint:
           when: never
         - when: always
     tags:
-        - test
+        - shared
 
 test-playmode:
     <<: *test
@@ -104,7 +104,7 @@ test-editmode:
                   - StandaloneOSX
                   - StandaloneWindows64
     tags:
-        - build
+        - shared
 
 build:feature-branch:
     <<: *build
@@ -144,4 +144,4 @@ benchmark:
         - when: manual
     allow_failure: true
     tags:
-        - benchmark
+        - shared

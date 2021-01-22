@@ -54,7 +54,6 @@ ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x2
   -projectPath $(pwd)/Traffic3D \
   -testPlatform playmode \
   -testResults $(pwd)/playmode-results.xml \
-  -CacheServerIPAddress 172.17.0.1:8126 \
   -executeMethod CustomCommandLineArguments.Run \
   -JSONConfigFile "config.json" \
   -OpenScene "Scenes/NightDemo.unity" \
@@ -62,6 +61,8 @@ ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x2
   -logFile \
   -batchmode
 ```
+
+If you are using a [Unity cache server](https://github.com/Unity-Technologies/unity-cache-server) you can also add a line, such as: `-CacheServerIPAddress XXX.XXX.XXX.XXX:8126`.
 
 ## Config
 
