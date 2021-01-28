@@ -352,17 +352,28 @@ MonoBehaviour:
   normalBrakeTorque: 600
   maxBrakeTorque: 600
   currentSpeed: 0
+  maxFrictionStiffness: 2.5
+  minFrictionStiffness: 1
+  speedToFrictionStiffnessModifier: 0.1
   stoppingDistance: 7
   maxSpeed: 100
   maxSpeedTurning: 20
-  maxSpeedApproachingLightsLastNode: 7
-  maxSpeedApproachingLightsSecondLastNode: 30
+  distanceForSpeedCheck:
+  - 10
+  - 30
+  - 60
+  - 150
+  cornerThresholdDegrees: 90
+  cornerSensitivityModifier: 50
+  cornerMinSpeed: 10
+  trafficLightDistanceToSpeed: 0.4
+  trafficLightMaxSpeedOnGreen: 20
   centerOfMass: {x: 0, y: 0, z: 0}
   currentNode: {fileID: 0}
   currentNodeNumber: 0
   numberOfSensorRays: 5
   steerReduceRayConstant: 5
-  maxDistanceToMonitor: 80
+  maxDistanceToMonitor: 100
   targetSpeed: 0
   startTime: 0
   startDelayTime: -1

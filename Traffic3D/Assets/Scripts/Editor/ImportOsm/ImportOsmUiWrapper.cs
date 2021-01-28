@@ -56,6 +56,7 @@ public class ImportOsmUiWrapper
         //Create Traffic3D required Objects & scripts
         CreatePythonManager();
         CreateTrafficLightManager();
+        CreateEnvironmentSettings();
         VehicleFactory vehicleFactory = CreateVehicleFactory();
         //Defines the parent game object connected to each each Way (Key: "Way", Value: "Parent_Object") 
         parentObjectsForWays = new Dictionary<MapXmlWay, GameObject>(osmMapReader.ways.Count);
@@ -265,6 +266,11 @@ public class ImportOsmUiWrapper
     {
         GameObject tlm = new GameObject("TrafficLightManager");
         tlm.AddComponent<TrafficLightManager>();
+    }
+
+    void CreateEnvironmentSettings()
+    {
+        GameObject.Instantiate(Resources.Load<EnvironmentSettings>("Models/EnvironmentSettings"));
     }
 
     /// <summary>

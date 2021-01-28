@@ -46,6 +46,8 @@ public class RoadGenerator : BaseAssetGenerator
             {
                 // Create Road object and assign a Mesh
                 GameObject road = GenerateObject(way, road_material, way.Name);
+                road.AddComponent<MeshCollider>().sharedMesh = road.GetComponent<MeshFilter>().sharedMesh;
+                road.tag = "roadway";
 
                 //add text label above road
                 AddRoadNames(way, road);
