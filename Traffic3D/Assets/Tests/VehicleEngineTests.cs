@@ -11,6 +11,8 @@ public class VehicleEngineTests : CommonSceneTest
     public const int STOP_LIGHT_TIME = 20;
     public const int TIME_OUT_DESTROY_TIME = 60;
     public const int TIME_OUT_STOP_TIME = 60;
+    public const int CHECK_DISTANCE_AHEAD_SPEED_TEST = 5;
+    public const int CHECK_ANGLE_DIFFERENCE_SPEED_TEST = 2;
 
     [UnityTest]
     public IEnumerator VehicleEngineGoTest()
@@ -32,7 +34,7 @@ public class VehicleEngineTests : CommonSceneTest
         TrafficLightManager.GetInstance().SetAllToRed();
         GameObject vehicle = vehicleFactory.SpawnVehicle(vehicleFactory.GetRandomVehicle(), RoadNetworkManager.GetInstance().GetRandomStartNode());
         VehicleEngine vehicleEngine = vehicle.GetComponent<VehicleEngine>();
-        yield return new WaitForSeconds(STOP_LIGHT_TIME);
+        yield return new WaitUntil(() => TrafficLightManager.GetInstance().GetTrafficLightFromStopNode(vehicleEngine.currentNode) != null);
         Assert.True(vehicleEngine.GetEngineStatus() == VehicleEngine.EngineStatus.STOP || vehicleEngine.GetEngineStatus() == VehicleEngine.EngineStatus.HARD_STOP);
     }
 
@@ -91,38 +93,22 @@ public class VehicleEngineTests : CommonSceneTest
         }
         GameObject vehicle = vehicleFactory.SpawnVehicle(vehicleFactory.GetRandomVehicle(), roadWayWithTurning.nodes[0]);
         VehicleEngine vehicleEngine = vehicle.GetComponent<VehicleEngine>();
-        vehicleEngine.SetVehiclePath(roadWayWithTurning.ToDirectVehiclePath());
+        VehiclePath vehiclePath = roadWayWithTurning.ToDirectVehiclePath();
+        vehicleEngine.SetVehiclePath(vehiclePath);
         bool carIsDestroyed = false;
-        for (int i = 0; i <= TIME_OUT_DESTROY_TIME; i = i + 5)
+        for (int i = 0; i <= TIME_OUT_DESTROY_TIME; i = i + 1)
         {
-            yield return new WaitForSeconds(5);
+            yield return new WaitForSeconds(1);
 
             if (vehicle == null)
             {
                 carIsDestroyed = true;
                 break;
             }
-
-            if (Math.Abs(vehicleEngine.wheelColliderFrontLeft.steerAngle) > 2)
+            // While turning, speeds should be reduced.
+            if (vehiclePath.GetDirectionDifferenceToRoadAheadByDistanceMeasured(vehicleEngine.currentNode, vehicleEngine.transform, CHECK_DISTANCE_AHEAD_SPEED_TEST, false) > CHECK_ANGLE_DIFFERENCE_SPEED_TEST)
             {
-                Assert.AreEqual(vehicleEngine.maxSpeedTurning, vehicleEngine.targetSpeed, "Turning Speed");
-            }
-
-            if (vehicleEngine.currentNodeNumber + 1 < vehicleEngine.path.nodes.Count)
-            {
-                // If next node is a traffic light
-                if (TrafficLightManager.GetInstance().IsStopNode(vehicleEngine.path.nodes[vehicleEngine.currentNodeNumber + 1]))
-                {
-                    Assert.AreEqual(vehicleEngine.maxSpeedApproachingLightsLastNode, vehicleEngine.targetSpeed, "Speed Approaching last node");
-                }
-            }
-            if (vehicleEngine.currentNodeNumber + 2 < vehicleEngine.path.nodes.Count)
-            {
-                // If 2nd to next node is a traffic light
-                if (TrafficLightManager.GetInstance().IsStopNode(vehicleEngine.path.nodes[vehicleEngine.currentNodeNumber + 2]))
-                {
-                    Assert.AreEqual(vehicleEngine.maxSpeedApproachingLightsSecondLastNode, vehicleEngine.targetSpeed, "Speed Approaching second to last node");
-                }
+                Assert.Greater(vehicleEngine.maxSpeed, vehicleEngine.targetSpeed, "Turning Speed");
             }
 
         }

@@ -17,9 +17,12 @@ public class VehicleEngine : MonoBehaviour
     public float currentSpeed;
     public float stoppingDistance = 7f;
     public float maxSpeed = 100f;
-    public float maxSpeedTurning = 20f;
-    public float maxSpeedApproachingLightsLastNode = 7f;
-    public float maxSpeedApproachingLightsSecondLastNode = 30f;
+    public List<float> distanceForSpeedCheck = new List<float> { 10, 30, 60, 150 };
+    public float cornerThresholdDegrees = 90f;
+    public float cornerSensitivityModifier = 50f;
+    public float cornerMinSpeed = 10f;
+    public float trafficLightDistanceToSpeed = 0.4f;
+    public float trafficLightMaxSpeedOnGreen = 20f;
     public Vector3 centerOfMass;
     public Transform currentNode;
     public int currentNodeNumber;
@@ -27,7 +30,7 @@ public class VehicleEngine : MonoBehaviour
     private Renderer renderer;
     public float numberOfSensorRays = 5;
     public float steerReduceRayConstant = 5;
-    public float maxDistanceToMonitor = 80;
+    public float maxDistanceToMonitor = 100;
     private float distanceBetweenRays;
     private float shortestSide;
     private float longestSide;
@@ -40,6 +43,7 @@ public class VehicleEngine : MonoBehaviour
     public bool densityCountTriggered = false;
     public bool debug = false;
     private const float debugSphereSize = 0.25f;
+    private const float metresPerSecondToKilometresPerHourConversion = 3.6f;
 
     void Start()
     {
@@ -103,8 +107,7 @@ public class VehicleEngine : MonoBehaviour
             return;
         }
         ApplySteer();
-        WheelCollider nonePoweredWheel = GetComponentsInChildren<WheelCollider>().First(wheel => wheel != wheelColliderFrontLeft && wheel != wheelColliderFrontRight);
-        currentSpeed = 2 * Mathf.PI * nonePoweredWheel.radius * nonePoweredWheel.rpm * 60 / 1000;
+        currentSpeed = GetComponent<Rigidbody>().velocity.magnitude * metresPerSecondToKilometresPerHourConversion;
         SpeedCheck();
         SensorCheck();
         TrafficLight trafficLight = TrafficLightManager.GetInstance().GetTrafficLightFromStopNode(currentNode);
@@ -143,29 +146,52 @@ public class VehicleEngine : MonoBehaviour
     /// </summary>
     private void SpeedCheck()
     {
-        // If starting to turn
-        if (Math.Abs(wheelColliderFrontLeft.steerAngle) > 2)
+        // Reset Speed
+        // Corner Speed Check
+        SetTargetSpeed(maxSpeed);
+        // Store the distances with their angles
+        Dictionary<float, float> distanceAndAngles = new Dictionary<float, float>();
+        foreach (float distanceToCheck in distanceForSpeedCheck)
         {
-            SetTargetSpeed(maxSpeedTurning);
-        }
-        else
-        {
-            SetTargetSpeed(maxSpeed);
-        }
-        if (currentNodeNumber + 1 < path.nodes.Count)
-        {
-            // If next node is a traffic light
-            if (TrafficLightManager.GetInstance().IsStopNode(path.nodes[currentNodeNumber + 1]))
+            float angle = path.GetDirectionDifferenceToRoadAheadByDistanceMeasured(currentNode, transform, distanceToCheck, debug);
+            if (float.IsNaN(angle))
             {
-                SetTargetSpeed(maxSpeedApproachingLightsLastNode);
+                continue;
             }
+            distanceAndAngles.Add(distanceToCheck, angle);
         }
-        if (currentNodeNumber + 2 < path.nodes.Count)
+        // Ignore if there are no distances and angles
+        if (distanceAndAngles.Count > 0)
         {
-            // If 2nd to next node is a traffic light
-            if (TrafficLightManager.GetInstance().IsStopNode(path.nodes[currentNodeNumber + 2]))
+            float averageAngleDifference = 0;
+            foreach (KeyValuePair<float, float> entry in distanceAndAngles)
             {
-                SetTargetSpeed(maxSpeedApproachingLightsSecondLastNode);
+                averageAngleDifference = averageAngleDifference + entry.Value;
+            }
+            // Find the average angle using the mean of all angles found.
+            averageAngleDifference = averageAngleDifference / distanceAndAngles.Count;
+            // Put the averaged angle into a exponential decay curve formula where x is the angle and y is the speed output
+            double finalSpeed = Math.Pow(cornerSensitivityModifier, -averageAngleDifference / cornerThresholdDegrees) * maxSpeed;
+            // Keep final speed between the minimum corner speed and the max speed.
+            finalSpeed = Math.Max(cornerMinSpeed, Math.Min(finalSpeed, maxSpeed));
+            SetTargetSpeed((float)finalSpeed);
+        }
+        // Stop Node Check
+        Transform nextStopNode = path.GetNextStopNode(currentNode);
+        if (nextStopNode != null)
+        {
+            float distance = path.GetDistanceToNextStopNode(currentNode, transform);
+            if (!float.IsNaN(distance) && distance < maxDistanceToMonitor)
+            {
+                float speed = distance * trafficLightDistanceToSpeed;
+                if (TrafficLightManager.GetInstance().GetTrafficLightFromStopNode(nextStopNode).IsCurrentLightColour(TrafficLight.LightColour.RED))
+                {
+                    SetTargetSpeed(speed);
+                }
+                else
+                {
+                    SetTargetSpeed((speed < trafficLightMaxSpeedOnGreen ? trafficLightMaxSpeedOnGreen : speed));
+                }
             }
         }
     }
@@ -219,18 +245,12 @@ public class VehicleEngine : MonoBehaviour
             float dyanmicFriction = hit.collider.material.dynamicFriction;
             foreach (WheelCollider wheelCollider in GetComponentsInChildren<WheelCollider>())
             {
-                WheelFrictionCurve wheelFrictionCurveForward = new WheelFrictionCurve();
+                WheelFrictionCurve wheelFrictionCurveForward = CloneWheelFrictionCurve(wheelCollider.forwardFriction);
                 wheelFrictionCurveForward.extremumValue = staticFriction;
-                wheelFrictionCurveForward.extremumSlip = wheelCollider.forwardFriction.extremumSlip;
                 wheelFrictionCurveForward.asymptoteValue = dyanmicFriction;
-                wheelFrictionCurveForward.asymptoteSlip = wheelCollider.forwardFriction.asymptoteSlip;
-                wheelFrictionCurveForward.stiffness = wheelCollider.forwardFriction.stiffness;
-                WheelFrictionCurve wheelFrictionCurveSideways = new WheelFrictionCurve();
+                WheelFrictionCurve wheelFrictionCurveSideways = CloneWheelFrictionCurve(wheelCollider.sidewaysFriction);
                 wheelFrictionCurveSideways.extremumValue = staticFriction;
-                wheelFrictionCurveSideways.extremumSlip = wheelCollider.sidewaysFriction.extremumSlip;
                 wheelFrictionCurveSideways.asymptoteValue = dyanmicFriction;
-                wheelFrictionCurveSideways.asymptoteSlip = wheelCollider.sidewaysFriction.asymptoteSlip;
-                wheelFrictionCurveSideways.stiffness = wheelCollider.sidewaysFriction.stiffness;
                 wheelCollider.forwardFriction = wheelFrictionCurveForward;
                 wheelCollider.sidewaysFriction = wheelFrictionCurveSideways;
             }
@@ -325,6 +345,17 @@ public class VehicleEngine : MonoBehaviour
         ACCELERATE,
         STOP,
         HARD_STOP
+    }
+
+    private WheelFrictionCurve CloneWheelFrictionCurve(WheelFrictionCurve wheelFrictionCurveToClone)
+    {
+        WheelFrictionCurve newWheelFrictionCurve = new WheelFrictionCurve();
+        newWheelFrictionCurve.extremumValue = wheelFrictionCurveToClone.extremumValue;
+        newWheelFrictionCurve.extremumSlip = wheelFrictionCurveToClone.extremumSlip;
+        newWheelFrictionCurve.asymptoteValue = wheelFrictionCurveToClone.asymptoteValue;
+        newWheelFrictionCurve.asymptoteSlip = wheelFrictionCurveToClone.asymptoteSlip;
+        newWheelFrictionCurve.stiffness = wheelFrictionCurveToClone.stiffness;
+        return newWheelFrictionCurve;
     }
 
     void OnDrawGizmosSelected()

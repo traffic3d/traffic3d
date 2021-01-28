@@ -108,6 +108,10 @@ public class RoadNetworkManager
 
     public VehiclePath GetVehiclePath(RoadNode startNode, RoadNode endNode)
     {
+        if (startNode == endNode)
+        {
+            return null;
+        }
         List<RoadNodePathFindInfo> openNodes = new List<RoadNodePathFindInfo>();
         List<RoadNodePathFindInfo> closedNodes = new List<RoadNodePathFindInfo>();
         RoadNodePathFindInfo endNodeInfo = null;

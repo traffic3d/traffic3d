@@ -144,7 +144,10 @@ public class VehicleFactory : MonoBehaviour
     IEnumerator WaitAndShowVehicle(GameObject vehicle, float hideForSeconds)
     {
         yield return new WaitForSeconds(hideForSeconds);
-        vehicle.GetComponentsInChildren<Renderer>().ToList().ForEach(renderer => renderer.enabled = true);
+        if (vehicle != null)
+        {
+            vehicle.GetComponentsInChildren<Renderer>().ToList().ForEach(renderer => renderer.enabled = true);
+        }
     }
 
     [System.Serializable]
