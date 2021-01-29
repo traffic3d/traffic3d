@@ -17,7 +17,7 @@ public abstract class BaseNodeInformant
     //All nodes that connect to another road but aren't a end/start node
     protected static Dictionary<Vector3, HashSet<GameObject>> midConnectedNodes;
     //Links NodeID to VehiclePath
-    protected static Dictionary<ulong, GameObject> nodeObjectsByNodeId;
+    protected static Dictionary<string, GameObject> nodeObjectsByNodeId;
     //Holds all created VehiclePaths
     protected static HashSet<GameObject> createdRoads;
     //Holds VehiclePaths that were deleted after merging roads
@@ -33,7 +33,7 @@ public abstract class BaseNodeInformant
         midConnectedNodes = new Dictionary<Vector3, HashSet<GameObject>>();
         createdRoads = new HashSet<GameObject>();
         deletedVehiclePaths = new List<GameObject>();
-        nodeObjectsByNodeId = new Dictionary<ulong, GameObject>();
+        nodeObjectsByNodeId = new Dictionary<string, GameObject>();
         if(roadNodeRootParent == null)
         {
             roadNodeRootParent = new GameObject("RoadNodes");

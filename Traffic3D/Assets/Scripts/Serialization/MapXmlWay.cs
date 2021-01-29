@@ -18,6 +18,7 @@ public class MapXmlWay
     public bool IsRoad { get; private set; }
     public string Name { get; private set; }
     public int Lanes { get; private set; }
+    public Dictionary<string, string> Tags { get; private set; }
 
 
     //Development purposes: Help track what types of "Highways" are in the scene
@@ -71,10 +72,13 @@ public class MapXmlWay
 
         // Read the tags <way>...<tag k="building" v="apartments" />...</way>
         XmlNodeList ndNodeTags = node.SelectNodes("tag");
+        Tags = new Dictionary<string, string>();
 
         // Will Loop Through Each Tag (Attribute) and do something specific 
         foreach (XmlNode tag in ndNodeTags)
         {
+            // Add all tags to dictionary
+            Tags[GetAttribute<string>("k", tag.Attributes)] = GetAttribute<string>("v", tag.Attributes);
             string node_attribute = GetAttribute<string>("k", tag.Attributes);
             if (node_attribute == "highway")
             {

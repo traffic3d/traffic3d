@@ -7,7 +7,6 @@ using UnityEngine;
 public class PathGenerator : BaseNodeInformant
 {
     private OpenStreetMapReader osmMapReader;
-    private RoadWay roadWay;
 
     public PathGenerator(OpenStreetMapReader osmMapReader)
     {
@@ -26,17 +25,16 @@ public class PathGenerator : BaseNodeInformant
         {
             if (way.IsRoad)
             {
-                // Create GameObject to hold RoadWay
-                roadWay = new GameObject().AddComponent<RoadWay>();
-
-                // Create new path
-                CreateRoadWay(way, way.Name, roadWay);
+                // Create new paths
+                List<RoadWay> roadWays = CreateRoadWays(way, way.Name);
 
                 // Make vehicle path child of way objects' parent
-                SetParent(way, wayObjects);
-
-                // record as created
-                createdRoads.Add(roadWay.gameObject);
+                foreach (RoadWay roadWay in roadWays)
+                {
+                    RecordRoadWayData(roadWay.gameObject);
+                    SetParent(way, roadWay, wayObjects);
+                    createdRoads.Add(roadWay.gameObject);
+                }
             }
         }
     }
@@ -53,19 +51,52 @@ public class PathGenerator : BaseNodeInformant
     /// </summary>
     /// <param name="way">Way holding all nodes in the road</param>
     /// <param name="pathName">Name of the new vehicle path</param>
-    void CreateRoadWay(MapXmlWay way, string pathName, RoadWay roadWay)
+    List<RoadWay> CreateRoadWays(MapXmlWay way, string pathName)
     {
-        roadWay.name = string.IsNullOrEmpty(pathName) ? "Road_Path" : (pathName + "_Path");
-        Vector3 origin = GetCentre(way);
-        // Add layer to 'ignore raycasts' to path object
-        roadWay.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
-        GameObject firstNode = null;
+
+        int forwardLanes = 0;
+        int backwardLanes = 0;
+
+        if (way.Tags.ContainsKey("oneway") && (way.Tags["oneway"] == "yes" || way.Tags["oneway"] == "true" || way.Tags["oneway"] == "1"))
+        {
+            forwardLanes = 1;
+            backwardLanes = 0;
+            if (way.Tags.ContainsKey("lanes"))
+            {
+                int.TryParse(way.Tags["lanes"], out forwardLanes);
+            }
+        }
+        else
+        {
+            forwardLanes = 1;
+            backwardLanes = 1;
+            if (way.Tags.ContainsKey("lanes"))
+            {
+                int.TryParse(way.Tags["lanes"], out forwardLanes);
+                int.TryParse(way.Tags["lanes"], out backwardLanes);
+            }
+            if (way.Tags.ContainsKey("lanes:forward"))
+            {
+                int.TryParse(way.Tags["lanes:forward"], out forwardLanes);
+            }
+            if (way.Tags.ContainsKey("lanes:backward"))
+            {
+                int.TryParse(way.Tags["lanes:backward"], out backwardLanes);
+            }
+        }
+
+        List<Vector3> nodePositions = new List<Vector3>();
         for (int i = 0; i < way.NodeIDs.Count; i++)
         {
+            MapXmlNode currentNodeLocation = osmMapReader.nodes[way.NodeIDs[i]]; // Current Nodes' Location
+            Vector3 vCurrentNodeLocation = osmMapReader.bounds.Centre - currentNodeLocation; // Node vector location
+            vCurrentNodeLocation.y = vCurrentNodeLocation.y - 1; // move up along y-axis so node is above road
+            nodePositions.Add(vCurrentNodeLocation * (-1f));
+            /*
             RoadNode roadNode;
-            if (nodeObjectsByNodeId.ContainsKey(way.NodeIDs[i]))
+            if (nodeObjectsByNodeId.ContainsKey("" + way.NodeIDs[i]))
             {
-                GameObject existingNode = nodeObjectsByNodeId[way.NodeIDs[i]];
+                GameObject existingNode = nodeObjectsByNodeId["" + way.NodeIDs[i]];
                 roadNode = existingNode.GetComponent<RoadNode>();
             }
             else
@@ -83,7 +114,7 @@ public class PathGenerator : BaseNodeInformant
                 singleNode.transform.position = vCurrentNodeLocation * (-1f);
                 // Make node a child of main root
                 singleNode.transform.SetParent(roadNodeRootParent.transform, true);
-                StoreNodeObjectByNodeId(singleNode, way.NodeIDs[i]);
+                StoreNodeObjectByNodeId(singleNode, "" + way.NodeIDs[i]);
                 // Rotate the first node so it faces to the second. (Vehicle spawn in the direction of the first node)
                 if (i == 1 && firstNode != null)
                 {
@@ -101,9 +132,126 @@ public class PathGenerator : BaseNodeInformant
                 }
             }
             roadWay.nodes.Add(roadNode);
+            */
         }
         // Save details about nodes used in current path
-        RecordRoadWayData(roadWay.gameObject);
+        return CreateRoadWays(way, nodePositions, forwardLanes, backwardLanes);
+    }
+
+    private List<RoadWay> CreateRoadWays(MapXmlWay way, List<Vector3> nodePositions, int forwardLanes, int backwardLanes)
+    {
+        int numNodes = nodePositions.Count;
+        Vector3[] verts = new Vector3[numNodes * 2];
+        int vertIndex = 0;
+        Dictionary<float, List<RoadNode>> roadNodesWithLaneSpaces = new Dictionary<float, List<RoadNode>>();
+        List<float> laneSpaces = new List<float>();
+        int totalLanes = forwardLanes + backwardLanes;
+        Debug.Log("Total Lanes: " + totalLanes);
+
+        for (float i = -(totalLanes / 2f) + 0.5f; i <= (totalLanes / 2f) - 0.5f; i++)
+        {
+            laneSpaces.Add(i);
+            Debug.Log(i);
+        }
+
+        for (int i = 0; i < numNodes; i++)
+        {
+            Vector3 currentNodeLoc = nodePositions[i]; // Next Nodes' Location
+            Vector2 forward = Vector2.zero;
+            //For all but last node: Get forward between current & next Node
+            if (i < numNodes - 1)
+            {
+                Vector3 nextNodeLoc = nodePositions[i + 1];// Next Nodes' Location
+                Vector2 cur = new Vector2(currentNodeLoc.x, currentNodeLoc.z);
+                Vector2 next = new Vector2(nextNodeLoc.x, nextNodeLoc.z);
+                forward += next - cur;
+            }
+            //For all but first node: Get forward between current & previous Node
+            if (i > 0)
+            {
+                Vector3 prevNodeLoc = nodePositions[i - 1]; // Next Nodes' Location
+                Vector2 cur = new Vector2(currentNodeLoc.x, currentNodeLoc.z);
+                Vector2 prev = new Vector2(prevNodeLoc.x, prevNodeLoc.z);
+                forward += cur - prev;
+            }
+            forward.Normalize(); // Determine the average between the two forward vectors
+
+            Vector2 left = new Vector2(-forward.y, forward.x);
+            Vector3 vleft = new Vector3(left.x, 0, left.y);
+            foreach(float laneSpace in laneSpaces)
+            {
+                Vector3 nodeLocation = currentNodeLoc + vleft * RoadGenerator.defaultLaneWidth * laneSpace;
+                RoadNode roadNode = CreateRoadNode(Random.value + "", nodeLocation); // TODO CHANGE RANDON VALUE STRING
+                if (!roadNodesWithLaneSpaces.ContainsKey(laneSpace))
+                {
+                    roadNodesWithLaneSpaces[laneSpace] = new List<RoadNode>();
+                }
+                roadNodesWithLaneSpaces[laneSpace].Add(roadNode);
+            }
+        }
+
+        for (int i = 0; i < laneSpaces.Count; i++)
+        {
+            // Skip all forward lanes but reverse backwards lanes
+            if(i < forwardLanes)
+            {
+                continue;
+            }
+            roadNodesWithLaneSpaces[laneSpaces[i]].Reverse();
+        }
+
+        List<RoadWay> roadWays = new List<RoadWay>();
+        foreach(KeyValuePair<float, List<RoadNode>> entry in roadNodesWithLaneSpaces)
+        {
+            RoadNode firstNode = null;
+            RoadWay roadWay = CreateRoadWay(way, way.Name + "_" + entry.Key);
+            for (int i = 0; i < entry.Value.Count; i++)
+            {
+                if (i == 1 && firstNode != null)
+                {
+                    // Direction from 1st to 2nd node
+                    Vector3 relativePos = entry.Value[i].transform.position - firstNode.transform.position;
+                    // the second argument, upwards, defaults to Vector3.up
+                    Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);
+                    firstNode.transform.rotation = rotation;
+                }
+                if (i == 0)
+                {
+                    entry.Value[i].startNode = true;
+                    firstNode = entry.Value[i];
+                }
+                roadWay.nodes.Add(entry.Value[i]);
+            }
+            roadWays.Add(roadWay);
+        }
+
+        return roadWays;
+
+    }
+
+    private RoadWay CreateRoadWay(MapXmlWay way, string name)
+    {
+        RoadWay roadWay = new GameObject().AddComponent<RoadWay>();
+        roadWay.name = string.IsNullOrEmpty(name) ? "Road_Path" : (name + "_Path");
+        Vector3 origin = GetCentre(way);
+        // Add layer to 'ignore raycasts' to path object
+        roadWay.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+        return roadWay;
+    }
+
+    private RoadNode CreateRoadNode(string id, Vector3 position)
+    {
+        // Create GameObject for node
+        string name = "node" + id;
+        GameObject singleNode = new GameObject(name);
+        // Add layer to ignore to raycasts to node
+        singleNode.layer = LayerMask.NameToLayer("Ignore Raycast");
+        // Set position of Node to the vector
+        singleNode.transform.position = position;
+        // Make node a child of main root
+        singleNode.transform.SetParent(roadNodeRootParent.transform, true);
+        StoreNodeObjectByNodeId(singleNode, "" + id);
+        return singleNode.AddComponent<RoadNode>();
     }
 
     /// <summary>
@@ -111,7 +259,7 @@ public class PathGenerator : BaseNodeInformant
     /// </summary>
     /// <param name="singleNode">Node GameObject</param>
     /// <param name="id">node id</param>
-    void StoreNodeObjectByNodeId(GameObject singleNode, ulong id)
+    void StoreNodeObjectByNodeId(GameObject singleNode, string id)
     {
         if (!nodeObjectsByNodeId.ContainsKey(id))
             nodeObjectsByNodeId.Add(id, singleNode);
@@ -123,7 +271,7 @@ public class PathGenerator : BaseNodeInformant
     /// Return all nodes in road network
     /// </summary>
     /// <returns>Dictionary {Key: Node (MapXmlWay) ID, Value: Node Game Object}</returns>
-    public Dictionary<ulong, GameObject> GetAllNodesInRoadNetwork()
+    public Dictionary<string, GameObject> GetAllNodesInRoadNetwork()
     {
         return nodeObjectsByNodeId;
     }
@@ -133,7 +281,7 @@ public class PathGenerator : BaseNodeInformant
     /// </summary>
     /// <param name="way">way</param>
     /// <param name="wayObjects">Dictionary linking way to its parent object</param>
-    public void SetParent(MapXmlWay way, Dictionary<MapXmlWay, GameObject> wayObjects)
+    public void SetParent(MapXmlWay way, RoadWay roadWay, Dictionary<MapXmlWay, GameObject> wayObjects)
     {
         GameObject parent;
         if (wayObjects.ContainsKey(way))

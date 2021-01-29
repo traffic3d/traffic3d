@@ -15,7 +15,7 @@ public class RoadGenerator : BaseAssetGenerator
 
     // The average width of a road is 3.65m according to the following source:
     // https://mocktheorytest.com/resources/how-wide-are-roads/
-    public float defaultLaneWidth = defaultLaneWidthStartValue;
+    public static float defaultLaneWidth = defaultLaneWidthStartValue;
 
     /// <summary>
     /// Creates a floor gameobject on
@@ -23,10 +23,10 @@ public class RoadGenerator : BaseAssetGenerator
     /// <param name="mapReader"></param>
     /// <param name="roadMaterial"></param>
     /// <param name="floor_material"></param>
-    public RoadGenerator(OpenStreetMapReader mapReader, Material roadMaterial, float defaultLaneWidth = defaultLaneWidthStartValue) : base(mapReader)
+    public RoadGenerator(OpenStreetMapReader mapReader, Material roadMaterial, float defaultLaneWidthInput = defaultLaneWidthStartValue) : base(mapReader)
     {
         road_material = roadMaterial;
-        this.defaultLaneWidth = defaultLaneWidth;
+        defaultLaneWidth = defaultLaneWidthInput;
 
         //Initialize parent so all roads stored under same gameObject called 'Roads'
         InitializeRootParent("Roads");
