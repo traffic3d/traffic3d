@@ -45,9 +45,7 @@ public class RoadGenerator : BaseAssetGenerator
             if (way.IsRoad)
             {
                 // Create Road object and assign a Mesh
-                GameObject road = GenerateObject(way, road_material, way.Name);
-                road.AddComponent<MeshCollider>().sharedMesh = road.GetComponent<MeshFilter>().sharedMesh;
-                road.tag = "roadway";
+                GameObject road = new GameObject(way.Name);
 
                 //add text label above road
                 AddRoadNames(way, road);
@@ -59,6 +57,27 @@ public class RoadGenerator : BaseAssetGenerator
                 AddToRootParent(GetParent(way));
             }
 
+        }
+    }
+
+    public void RenderRoads()
+    {
+        RoadNetworkManager.GetInstance().Reload();
+        foreach(RoadWay roadWay in RoadNetworkManager.GetInstance().GetWays())
+        {
+            MeshFilter mf = roadWay.gameObject.AddComponent<MeshFilter>();
+            MeshRenderer mr = roadWay.gameObject.AddComponent<MeshRenderer>();
+
+            mr.material = road_material;
+            mr.sharedMaterial = road_material;
+
+            Vector3 downVector = new Vector3(0, -1, 0);
+            List<Vector3> VectorNodesInRoad = new List<Vector3>(roadWay.nodes.Select(n => n.transform.position + downVector));
+
+            RoadGenerationHandler rgh = new RoadGenerationHandler();
+            mf.sharedMesh = rgh.CreateRoadMesh(VectorNodesInRoad, 1, defaultLaneWidth);
+            roadWay.gameObject.AddComponent<MeshCollider>().sharedMesh = roadWay.gameObject.GetComponent<MeshFilter>().sharedMesh;
+            roadWay.gameObject.tag = "roadway";
         }
     }
 

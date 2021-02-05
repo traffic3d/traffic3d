@@ -99,6 +99,7 @@ public class ImportOsmUiWrapper
         MergeDictionary(parentObjectsForWays, roadGenerator.GetWayObjects());
         //If roads not generated first, displays nothing
         GenerateVehiclePaths();
+        roadGenerator.RenderRoads();
     }
 
     void GenerateVehiclePaths()
@@ -160,18 +161,20 @@ public class ImportOsmUiWrapper
             //Get the Parent_GameObject for the current way
             GameObject RoadParentObject = kv.Value;
             //RoadMesh = first child
-            GameObject roadMeshHolder = RoadParentObject.transform.GetChild(0).gameObject;
-            //Check if has component
-            if (!roadMeshHolder.GetComponent<RoadMeshUpdater>())
+            foreach (RoadWay roadWay in RoadParentObject.GetComponentsInChildren<RoadWay>())
             {
-                //Path = last child
-                RoadWay roadWay = RoadParentObject.transform.GetChild(RoadParentObject.transform.childCount - 1).GetComponent<RoadWay>();
-                roadMeshHolder.AddComponent<RoadMeshUpdater>();
-                //Initializse values
-                roadMeshHolder.GetComponent<RoadMeshUpdater>().SetValues(kv.Key.Lanes, roadMeshHolder, roadWay, defaultLaneWidth);
+                GameObject pathGameObject = roadWay.gameObject;
+                //Check if has component
+                if (!pathGameObject.GetComponent<RoadMeshUpdater>())
+                {
+                    pathGameObject.AddComponent<RoadMeshUpdater>();
+                    //Initializse values
+                    pathGameObject.GetComponent<RoadMeshUpdater>().SetValues(kv.Key.Lanes, pathGameObject, pathGameObject.GetComponent<RoadWay>(), defaultLaneWidth);
+                }
+                //Update road Mesh
+                pathGameObject.GetComponent<RoadMeshUpdater>().UpdateRoadMesh();
+
             }
-            //Update road Mesh
-            roadMeshHolder.GetComponent<RoadMeshUpdater>().UpdateRoadMesh();
         }
     }
 

@@ -63,6 +63,11 @@ public class RoadNetworkManager
         return ways.Where(way => way.nodes.Contains(roadNode)).ToList();
     }
 
+    public List<RoadWay> GetRoadWaysFromStartOrEndNode(RoadNode roadNode)
+    {
+        return ways.Where(way => roadNode.Equals(way.nodes.First()) || roadNode.Equals(way.nodes.Last())).ToList();
+    }
+
     public List<RoadNode> GetRoadNodeNeighbours(RoadNode roadNode)
     {
         List<RoadWay> roadWaysWithNode = GetRoadWaysFromNode(roadNode);
