@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PedestrianFactory : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class PedestrianFactory : MonoBehaviour
     public List<PedestrianProbability> pedestrianProbabilities;
 
     private PedestrianPoint[] pedestrianPoints;
+    private bool isUsingEvacuationBehaviour = false;
 
     void Start()
     {
@@ -19,6 +21,7 @@ public class PedestrianFactory : MonoBehaviour
             throw new System.Exception("There are no pedestrians to spawn.");
         }
         pedestrianPoints = FindObjectsOfType<PedestrianPoint>();
+        IsUsingEvacuationBehaviour();
         StartCoroutine(GeneratePedestrians());
     }
 
@@ -49,10 +52,20 @@ public class PedestrianFactory : MonoBehaviour
             cumulativeProbability += pedestrianProbability.probability;
             if (finalProbability <= cumulativeProbability)
             {
-                return pedestrianProbability.pedestrian;
+                Pedestrian pedestrian = pedestrianProbability.pedestrian;
+                pedestrian.isUsingEvacuationBehaviour = isUsingEvacuationBehaviour;
+                return pedestrian;
             }
         }
         return pedestrianProbabilities.Aggregate((highest, next) => highest.probability > next.probability ? highest : next).pedestrian;
+    }
+
+    private void IsUsingEvacuationBehaviour()
+    {
+        if (SceneManager.GetActiveScene().name.Equals(EvacuAgentSceneConstants.SCENE_NAME))
+        {
+            isUsingEvacuationBehaviour = true;
+        }
     }
 
     [System.Serializable]
