@@ -28,4 +28,27 @@ public class EvacuAgentPedestrianFactoryTests : EvacuAgentCommonSceneTest
         // Assert
         Assert.IsTrue(pedestrianTwo.isUsingEvacuationBehaviour);
     }
+
+    [UnityTest]
+    public IEnumerator PedestrianFactory_WillSpawnPedestrian_withFieldOfView_WhenIsUsingEvacuationBehaviourIsTrue()
+    {
+        // Arrange
+        DisableLoops();
+        yield return null;
+        foreach (Pedestrian pedestrian in GameObject.FindObjectsOfType<Pedestrian>())
+        {
+            GameObject.Destroy(pedestrian);
+        }
+        Assert.Zero(GameObject.FindObjectsOfType<Pedestrian>().Length);
+        PedestrianFactory pedestrianFactory = (PedestrianFactory)GameObject.FindObjectOfType(typeof(PedestrianFactory));
+
+        // Act
+        pedestrianFactory.SpawnPedestrian();
+        Pedestrian pedestrianTwo = GameObject.FindObjectOfType<Pedestrian>();
+        FieldOfView fieldOfView = pedestrianTwo.GetComponentInChildren<FieldOfView>();
+
+        // Assert
+        Assert.IsNotNull(fieldOfView);
+    }
 }
+
