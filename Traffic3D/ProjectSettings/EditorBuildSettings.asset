@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Sumo.unity
     guid: c8b3006946df9be4e94131bb7df427a8
+  - enabled: 1
+    path: Assets/Scenes/Evacu-agent.unity
+    guid: c66d45eed5f184d498bf46614bb7080c
   m_configObjects: {}
