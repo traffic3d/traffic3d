@@ -595,6 +595,9 @@ MonoBehaviour:
   maxSpeed: 5
   minSpeed: 1
   probabilityOfRunning: 0.1
+  isUsingEvacuationBehaviour: 0
+  fieldOfView: {fileID: 2004611204436190234, guid: 5455178a2bed02144baada0f8ac40583,
+    type: 3}
 --- !u!136 &4012293838445934057
 CapsuleCollider:
   m_ObjectHideFlags: 0
