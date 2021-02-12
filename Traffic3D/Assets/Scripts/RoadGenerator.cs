@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -46,6 +45,7 @@ public class RoadGenerator : BaseAssetGenerator
             {
                 // Create Road object and assign a Mesh
                 GameObject road = new GameObject(way.Name);
+                road.AddComponent<Road>();
 
                 //add text label above road
                 AddRoadNames(way, road);
@@ -63,7 +63,7 @@ public class RoadGenerator : BaseAssetGenerator
     public void RenderRoads()
     {
         RoadNetworkManager.GetInstance().Reload();
-        foreach(RoadWay roadWay in RoadNetworkManager.GetInstance().GetWays())
+        foreach (RoadWay roadWay in RoadNetworkManager.GetInstance().GetWays())
         {
             MeshFilter mf = roadWay.gameObject.AddComponent<MeshFilter>();
             MeshRenderer mr = roadWay.gameObject.AddComponent<MeshRenderer>();
@@ -75,8 +75,12 @@ public class RoadGenerator : BaseAssetGenerator
             List<Vector3> VectorNodesInRoad = new List<Vector3>(roadWay.nodes.Select(n => n.transform.position + downVector));
 
             RoadGenerationHandler rgh = new RoadGenerationHandler();
-            mf.sharedMesh = rgh.CreateRoadMesh(VectorNodesInRoad, 1, defaultLaneWidth);
-            roadWay.gameObject.AddComponent<MeshCollider>().sharedMesh = roadWay.gameObject.GetComponent<MeshFilter>().sharedMesh;
+            mf.sharedMesh = rgh.CreateRoadMesh(VectorNodesInRoad, defaultLaneWidth);
+            // If road doesn't have any length then leave meshcollider null
+            if (!roadWay.nodes.First().transform.position.Equals(roadWay.nodes.Last().transform.position))
+            {
+                roadWay.gameObject.AddComponent<MeshCollider>().sharedMesh = roadWay.gameObject.GetComponent<MeshFilter>().sharedMesh;
+            }
             roadWay.gameObject.tag = "roadway";
         }
     }
@@ -103,7 +107,7 @@ public class RoadGenerator : BaseAssetGenerator
         }
 
         RoadGenerationHandler rgh = new RoadGenerationHandler();
-        return rgh.CreateRoadMesh(VectorNodesInRoad, way.Lanes, defaultLaneWidth);
+        return rgh.CreateRoadMesh(VectorNodesInRoad, defaultLaneWidth);
     }
 
     /// <summary>

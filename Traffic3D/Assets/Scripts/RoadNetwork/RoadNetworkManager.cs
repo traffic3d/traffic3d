@@ -19,6 +19,7 @@ public class RoadNetworkManager
 
     private List<RoadNode> nodes;
     private List<RoadWay> ways;
+    private List<Road> roads;
     private const int maxInvalidPaths = 1000;
 
     public RoadNetworkManager()
@@ -30,6 +31,7 @@ public class RoadNetworkManager
     {
         nodes = new List<RoadNode>(GameObject.FindObjectsOfType<RoadNode>());
         ways = new List<RoadWay>(GameObject.FindObjectsOfType<RoadWay>());
+        roads = new List<Road>(GameObject.FindObjectsOfType<Road>());
     }
 
     public List<RoadNode> GetNodes()
@@ -40,6 +42,11 @@ public class RoadNetworkManager
     public List<RoadWay> GetWays()
     {
         return ways;
+    }
+
+    public List<Road> GetRoads()
+    {
+        return roads;
     }
 
     public RoadNode GetRandomStartNode()
@@ -66,6 +73,11 @@ public class RoadNetworkManager
     public List<RoadWay> GetRoadWaysFromStartOrEndNode(RoadNode roadNode)
     {
         return ways.Where(way => roadNode.Equals(way.nodes.First()) || roadNode.Equals(way.nodes.Last())).ToList();
+    }
+
+    public Road GetRoadFromRoadWay(RoadWay roadWay)
+    {
+        return roads.Find(road => road.roadWays.Contains(roadWay));
     }
 
     public List<RoadNode> GetRoadNodeNeighbours(RoadNode roadNode)

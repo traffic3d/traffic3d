@@ -12,12 +12,14 @@ public class PathGenerator : BaseNodeInformant
     private Dictionary<Vector3, int> sameNodeCount;
     private List<Vector3> connectionPositions;
     private const float maxConnectionDistance = 20f;
+    private bool isLeftHandDrive;
 
-    public PathGenerator(OpenStreetMapReader osmMapReader)
+    public PathGenerator(OpenStreetMapReader osmMapReader, bool isLeftHandDrive)
     {
         // Initialize base class variables
         InitializeVariables();
         this.osmMapReader = osmMapReader;
+        this.isLeftHandDrive = isLeftHandDrive;
         connectionPositions = new List<Vector3>();
         sameNodeCount = new Dictionary<Vector3, int>();
     }
@@ -41,6 +43,13 @@ public class PathGenerator : BaseNodeInformant
                     RecordRoadWayData(roadWay.gameObject);
                     SetParent(way, roadWay, wayObjects);
                     createdRoads.Add(roadWay.gameObject);
+                }
+
+                Road road = wayObjects[way].GetComponentInChildren<Road>();
+                if (road != null)
+                {
+                    road.roadWays.AddRange(roadWays);
+                    road.numberOfLanes = roadWays.Count;
                 }
             }
         }
@@ -208,11 +217,10 @@ public class PathGenerator : BaseNodeInformant
                 roadNodesWithLaneSpaces[laneSpace].Add(roadNode);
             }
         }
-
         for (int i = 0; i < laneSpaces.Count; i++)
         {
-            // Skip all forward lanes but reverse backwards lanes
-            if (i < forwardLanes)
+            // Depending on left hand drive skip all forward lanes but reverse backwards lanes
+            if((isLeftHandDrive && i >= forwardLanes) || (!isLeftHandDrive && i < forwardLanes))
             {
                 continue;
             }

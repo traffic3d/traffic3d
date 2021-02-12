@@ -10,7 +10,6 @@ public class RoadMeshUpdater : MonoBehaviour
 {
     public GameObject road; // Road to which this Script is attached
     public RoadWay roadWay;
-    public int numLanes;
     public float laneWidth; // Width of each lane
 
     /// <summary>
@@ -20,11 +19,10 @@ public class RoadMeshUpdater : MonoBehaviour
     /// <param name="road">GameObject to which this script is attached to</param>
     /// <param name="path">GameObject of corresponding vehicle Path. Must have 'Path' component</param>
     /// <param name="laneWidth">Width of each lane</param>
-    public void SetValues(int numLanes, GameObject road, RoadWay roadWay, float laneWidth)
+    public void SetValues(GameObject road, RoadWay roadWay, float laneWidth)
     {
         this.road = road;
         this.roadWay = roadWay;
-        this.numLanes = numLanes;
         this.laneWidth = laneWidth;
     }
 
@@ -48,7 +46,7 @@ public class RoadMeshUpdater : MonoBehaviour
                 List<Vector3> roadNodePositions = ConvertRoadWayToRoadVectorList(roadWay);
                 RoadGenerationHandler rgh = new RoadGenerationHandler();
 
-                mesh = rgh.CreateRoadMesh(roadNodePositions, numLanes, laneWidth); // Generate Mesh
+                mesh = rgh.CreateRoadMesh(roadNodePositions, laneWidth); // Generate Mesh
                 UpdateRoadLabelPosition(roadNodePositions); // update label position
             }
         }

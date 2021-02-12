@@ -48,17 +48,6 @@ public class PathGeneratorTests
         wayDic = new Dictionary<MapXmlWay, GameObject>(defaultDic); //clone origional
     }
 
-    //check if number of paths created and added to vehicle factory is correct (before any roads are merged)
-    [Test]
-    public void CorrectNumRoadWaysGeneratedFromWays()
-    {
-        PathGenerator pathGenerator = new PathGenerator(osmMapReader);
-        pathGenerator.AddPathsToRoads(wayDic);
-        RoadNetworkManager.GetInstance().Reload();
-
-        Assert.AreEqual(numRoads, RoadNetworkManager.GetInstance().GetWays().Count);
-    }
-
     /// <summary>
     /// Ensure the number of start-nodes and end-nodes is the same as the total number of roads in the scene.
     /// </summary>
@@ -66,7 +55,7 @@ public class PathGeneratorTests
     public void CorrectStartAndEndNodes()
     {
         //Before merging roads
-        PathGenerator pathGenerator = new PathGenerator(osmMapReader);
+        PathGenerator pathGenerator = new PathGenerator(osmMapReader, true);
         pathGenerator.AddPathsToRoads(wayDic);
 
         Assert.True(pathGenerator.GetNumOfTotalEndNodes() == pathGenerator.GetNumCreatedRoads());

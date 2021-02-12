@@ -37,7 +37,7 @@ public class JunctionGeneratorTests
         var wayDicClone = new Dictionary<MapXmlWay, GameObject>(origionalWayDic);
 
         //run path generator 
-        PathGenerator pathGenerator = new PathGenerator(osmMapReader);
+        PathGenerator pathGenerator = new PathGenerator(osmMapReader, true);
         pathGenerator.AddPathsToRoads(wayDicClone);
     }
         

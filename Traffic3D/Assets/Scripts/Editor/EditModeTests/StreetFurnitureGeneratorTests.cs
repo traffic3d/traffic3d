@@ -24,7 +24,7 @@ public class StreetFurnitureGeneratorTests
     [Test]
     public void CorrectNumAmenitiesAndEmergencyTest()
     {
-        StreetFurnitureGenerator streetFurnitureGenerator = new StreetFurnitureGenerator(osmMapReader);
+        StreetFurnitureGenerator streetFurnitureGenerator = new StreetFurnitureGenerator(osmMapReader, true);
         streetFurnitureGenerator.GenerateStreetFurniture();
         int currentPostBoxes = 0;
         int currentFireHydrant = 0;

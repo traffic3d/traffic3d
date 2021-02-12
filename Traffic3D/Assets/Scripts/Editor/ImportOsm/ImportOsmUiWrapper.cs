@@ -24,6 +24,7 @@ public class ImportOsmUiWrapper
     //Vars
     public Dictionary<MapXmlWay, GameObject> parentObjectsForWays; //{Key: Way, Value: Parent_object} - Ensures all elements of a Way are all connected to the same Parent_Object
     OpenStreetMapReader osmMapReader;
+    public bool isLeftHandDrive;
     //Generators
     public BuildingGenerator buildingGenerator;
     public RoadGenerator roadGenerator;
@@ -32,7 +33,7 @@ public class ImportOsmUiWrapper
     public JunctionGenerator junctionGenerator;
     public StreetFurnitureGenerator streetFurnitureGenerator;
 
-    public ImportOsmUiWrapper(ImportOsmGui osmGui, string osmFile, Material roadMat, Material floorMat, Material buildingMat, float defaultLaneWidth)
+    public ImportOsmUiWrapper(ImportOsmGui osmGui, string osmFile, Material roadMat, Material floorMat, Material buildingMat, float defaultLaneWidth, bool isLeftHandDrive)
     {
         this.osmGui = osmGui;
         filePath = osmFile;
@@ -40,6 +41,7 @@ public class ImportOsmUiWrapper
         floor_material = floorMat;
         building_material = buildingMat;
         this.defaultLaneWidth = defaultLaneWidth;
+        this.isLeftHandDrive = isLeftHandDrive;
     }
 
     /// <summary>
@@ -63,10 +65,10 @@ public class ImportOsmUiWrapper
         //Create scene objects 
         buildingGenerator = new BuildingGenerator(osmMapReader, building_material);
         roadGenerator = new RoadGenerator(osmMapReader, road_material, defaultLaneWidth);
-        pathGenerator = new PathGenerator(osmMapReader);
+        pathGenerator = new PathGenerator(osmMapReader, isLeftHandDrive);
         trafficLightGenerator = new TrafficLightGenerator(osmMapReader);
         junctionGenerator = new JunctionGenerator();
-        streetFurnitureGenerator = new StreetFurnitureGenerator(osmMapReader);
+        streetFurnitureGenerator = new StreetFurnitureGenerator(osmMapReader, isLeftHandDrive);
         //ProgressBar values
         int totalTasks = 5;
         int tasksComplete = 0;
@@ -169,7 +171,7 @@ public class ImportOsmUiWrapper
                 {
                     pathGameObject.AddComponent<RoadMeshUpdater>();
                     //Initializse values
-                    pathGameObject.GetComponent<RoadMeshUpdater>().SetValues(kv.Key.Lanes, pathGameObject, pathGameObject.GetComponent<RoadWay>(), defaultLaneWidth);
+                    pathGameObject.GetComponent<RoadMeshUpdater>().SetValues(pathGameObject, pathGameObject.GetComponent<RoadWay>(), defaultLaneWidth);
                 }
                 //Update road Mesh
                 pathGameObject.GetComponent<RoadMeshUpdater>().UpdateRoadMesh();
