@@ -20,5 +20,28 @@ namespace Tests
                 Debug.Log(e);
             }
         }
+
+        public void DisableVehicles()
+        {
+            VehicleFactory vehicleFactory = (VehicleFactory)GameObject.FindObjectOfType(typeof(VehicleFactory));
+            vehicleFactory.StopAllCoroutines();
+        }
+
+        public Pedestrian[] SpawnPedestrians(int numberOfPedestrians)
+        {
+            foreach (Pedestrian pedestrian in GameObject.FindObjectsOfType<Pedestrian>())
+            {
+                GameObject.Destroy(pedestrian);
+            }
+
+            PedestrianFactory pedestrianFactory = (PedestrianFactory)GameObject.FindObjectOfType(typeof(PedestrianFactory));
+
+            for (int index = 0; index < numberOfPedestrians; index++)
+            {
+                pedestrianFactory.SpawnPedestrian();
+            }
+
+            return GameObject.FindObjectsOfType<Pedestrian>();
+        }
     }
 }
