@@ -7,13 +7,9 @@ public class FieldOfView : MonoBehaviour
     [Range(0, 360)]
     public float viewAngle = 90;
 
-    [Range(0, 4)]
     public float findAgentsDelay = 1;
-
     public List<Pedestrian> visiblePedestrians = new List<Pedestrian>();
     public float viewRadius;
-
-    // Must be multiple of 3
     public float numberOfSegments = 21;
 
     [SerializeField]
