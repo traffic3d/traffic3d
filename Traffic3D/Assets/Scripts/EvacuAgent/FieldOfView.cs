@@ -11,7 +11,7 @@ public class FieldOfView : MonoBehaviour
     public float findAgentsDelay = 1;
 
     public List<Pedestrian> visiblePedestrians = new List<Pedestrian>();
-    public float viewRadius = 25;
+    public float viewRadius;
 
     // Must be multiple of 3
     public float numberOfSegments = 21;
@@ -69,11 +69,12 @@ public class FieldOfView : MonoBehaviour
             {
                 float distanceToAgent = Vector3.Distance(transform.position, agentTransform.position);
 
-                // Ensurs pedestrain does not detect self
-                if (distanceToAgent == 0f)
-                {
+                if(distanceToAgent > viewRadius)
                     continue;
-                }
+
+                // Ensure pedestrain does not detect self
+                if (distanceToAgent == 0f)
+                    continue;
 
                 if (!Physics.Raycast(transform.position, angleToAgent, distanceToAgent, obstacleLayer))
                 {
