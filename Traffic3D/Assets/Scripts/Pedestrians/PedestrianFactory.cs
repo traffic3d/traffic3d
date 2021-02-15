@@ -40,7 +40,12 @@ public class PedestrianFactory : MonoBehaviour
     public void SpawnPedestrian()
     {
         PedestrianPoint pedestrianPoint = pedestrianPoints[Random.Range(0, pedestrianPoints.Length)];
-        Instantiate(GetRandomPedestrian(), pedestrianPoint.GetPointLocation(), pedestrianPoint.transform.rotation);
+        Pedestrian pedestrian = Instantiate(GetRandomPedestrian(), pedestrianPoint.GetPointLocation(), pedestrianPoint.transform.rotation);
+
+        if (pedestrian.isUsingEvacuationBehaviour)
+        {
+            AddEvacuAgentBehaviour(pedestrian);
+        }
     }
 
     public Pedestrian GetRandomPedestrian()
@@ -65,6 +70,15 @@ public class PedestrianFactory : MonoBehaviour
         if (SceneManager.GetActiveScene().name.Equals(EvacuAgentSceneConstants.SCENE_NAME))
         {
             isUsingEvacuationBehaviour = true;
+        }
+    }
+
+    private void AddEvacuAgentBehaviour(Pedestrian pedestrian)
+    {
+        if (pedestrian.GetComponentInChildren<FieldOfView>() == null)
+        {
+            GameObject fieldOfView = Instantiate(pedestrian.fieldOfView, pedestrian.transform.position, Quaternion.identity);
+            fieldOfView.transform.SetParent(pedestrian.transform);
         }
     }
 
