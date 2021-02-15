@@ -381,7 +381,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 168912529}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -30.472393, y: -5.524315, z: 9.199966}
+  m_LocalPosition: {x: -30.472393, y: 0.15, z: 9.199966}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2050188551}
@@ -610,7 +610,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 218403217}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.6501, y: 0.42897, z: 25.072}
+  m_LocalPosition: {x: -4.6501, y: 1.8, z: 25.072}
   m_LocalScale: {x: 2.7461102, y: 1.6496, z: 4.0876527}
   m_Children:
   - {fileID: 2074951457}
@@ -634,7 +634,7 @@ GameObject:
   - component: {fileID: 242399878}
   - component: {fileID: 242399877}
   - component: {fileID: 242399876}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Stall 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -649,7 +649,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 242399874}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.30317, y: 0.41, z: 0.69946}
+  m_LocalPosition: {x: -0.30317, y: 0.34, z: 0.69946}
   m_LocalScale: {x: 0.20239516, y: 0.78393745, z: 0.8086417}
   m_Children: []
   m_Father: {fileID: 702097307}
@@ -1320,7 +1320,7 @@ GameObject:
   - component: {fileID: 396357053}
   - component: {fileID: 396357052}
   - component: {fileID: 396357051}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Building 5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1393,7 +1393,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 396357050}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.66604, y: 2.12, z: 0.77923}
+  m_LocalPosition: {x: 0.66604, y: 2.1, z: 0.77923}
   m_LocalScale: {x: 0.5975859, y: 4.2368736, z: 0.64495265}
   m_Children: []
   m_Father: {fileID: 702097307}
@@ -2184,7 +2184,7 @@ GameObject:
   - component: {fileID: 702097306}
   - component: {fileID: 702097305}
   - component: {fileID: 702097304}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2258,7 +2258,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 702097303}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.69578, y: -2.08, z: 6.7592}
+  m_LocalPosition: {x: -0.69578, y: -0.03, z: 6.7592}
   m_LocalScale: {x: 19.737608, y: 8.045734, z: 27.039932}
   m_Children:
   - {fileID: 1400368493}
@@ -2793,7 +2793,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 927231746}
   m_LocalRotation: {x: -0, y: 0.48928112, z: -0, w: 0.87212616}
-  m_LocalPosition: {x: 0.68254, y: -2.0784, z: -5.9058}
+  m_LocalPosition: {x: 0.68254, y: 0, z: -5.9058}
   m_LocalScale: {x: 1.488272, y: 2.0854244, z: 20.915846}
   m_Children:
   - {fileID: 1263803205}
@@ -3457,7 +3457,7 @@ GameObject:
   - component: {fileID: 1209629252}
   - component: {fileID: 1209629251}
   - component: {fileID: 1209629250}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Building 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3530,7 +3530,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1209629249}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.66604, y: 3.0233998, z: 1.9015}
+  m_LocalPosition: {x: 0.66604, y: 2.1, z: 1.9015}
   m_LocalScale: {x: 0.5975859, y: 6.123358, z: 0.64495265}
   m_Children: []
   m_Father: {fileID: 702097307}
@@ -4117,7 +4117,7 @@ GameObject:
   - component: {fileID: 1400368492}
   - component: {fileID: 1400368491}
   - component: {fileID: 1400368490}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Building 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4190,7 +4190,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1400368489}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.3218, y: 3.3333998, z: 0.19448}
+  m_LocalPosition: {x: -1.3218, y: 2.1, z: 0.19448}
   m_LocalScale: {x: 0.5975859, y: 6.614738, z: 0.64495265}
   m_Children: []
   m_Father: {fileID: 702097307}
@@ -4991,7 +4991,7 @@ GameObject:
   - component: {fileID: 1840999363}
   - component: {fileID: 1840999362}
   - component: {fileID: 1840999361}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Building 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5064,7 +5064,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1840999360}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.3218, y: 1.9725999, z: 1.25}
+  m_LocalPosition: {x: -1.3218, y: 1.785, z: 1.25}
   m_LocalScale: {x: 0.5975859, y: 3.8554473, z: 0.64495265}
   m_Children: []
   m_Father: {fileID: 702097307}
@@ -5543,7 +5543,7 @@ GameObject:
   - component: {fileID: 2041851582}
   - component: {fileID: 2041851581}
   - component: {fileID: 2041851580}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Stall 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5616,7 +5616,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2041851579}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.30317, y: 0.39434, z: 1.8639}
+  m_LocalPosition: {x: -0.30317, y: 0.34, z: 1.8639}
   m_LocalScale: {x: 0.20239516, y: 0.78393745, z: 0.8086417}
   m_Children: []
   m_Father: {fileID: 702097307}
@@ -5786,7 +5786,7 @@ PrefabInstance:
     - target: {fileID: 6088276054575079565, guid: d75b5ede3ea82df4aa0d388eaa24dc33,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.08
+      value: -0.34000003
       objectReference: {fileID: 0}
     - target: {fileID: 6088276054575079565, guid: d75b5ede3ea82df4aa0d388eaa24dc33,
         type: 3}
@@ -5877,7 +5877,7 @@ PrefabInstance:
     - target: {fileID: 8950408308118876602, guid: 9c7392d3017b12047b6179a5515f29f3,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.08
+      value: -0.34
       objectReference: {fileID: 0}
     - target: {fileID: 8950408308118876602, guid: 9c7392d3017b12047b6179a5515f29f3,
         type: 3}
@@ -5960,7 +5960,7 @@ GameObject:
   - component: {fileID: 2090403728}
   - component: {fileID: 2090403727}
   - component: {fileID: 2090403726}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Building 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6033,7 +6033,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2090403725}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.3218, y: 2.8646998, z: 2.3594}
+  m_LocalPosition: {x: -1.3218, y: 2.1, z: 2.3594}
   m_LocalScale: {x: 0.5975859, y: 5.5185814, z: 0.64495265}
   m_Children: []
   m_Father: {fileID: 702097307}
