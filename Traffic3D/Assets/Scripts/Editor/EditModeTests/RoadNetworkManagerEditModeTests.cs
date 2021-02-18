@@ -47,26 +47,69 @@ public class RoadNetworkManagerEditModeTests
         node4.transform.position = new Vector3(1, 1, 1);
         RoadNode node5 = new GameObject("Node5").AddComponent<RoadNode>();
         node5.transform.position = new Vector3(1, 1, -1);
-        RoadWay roadWay1 = new GameObject("RoadWay1").AddComponent<RoadWay>();
-        roadWay1.nodes.Add(node1);
-        roadWay1.nodes.Add(node2);
-        roadWay1.nodes.Add(node3);
-        RoadWay roadWay2 = new GameObject("RoadWay2").AddComponent<RoadWay>();
-        roadWay2.nodes.Add(node1);
-        roadWay2.nodes.Add(node4);
-        roadWay2.nodes.Add(node3);
-        RoadWay roadWay3 = new GameObject("RoadWay3").AddComponent<RoadWay>();
-        roadWay3.nodes.Add(node1);
-        roadWay3.nodes.Add(node5);
-        roadWay3.nodes.Add(node3);
+        RoadWay wrongRoadWay1 = new GameObject("WrongRoadWay1").AddComponent<RoadWay>();
+        wrongRoadWay1.nodes.Add(node1);
+        wrongRoadWay1.nodes.Add(node4);
+        wrongRoadWay1.nodes.Add(node3);
+        RoadWay correctRoadWay = new GameObject("CorrectRoadWay").AddComponent<RoadWay>();
+        correctRoadWay.nodes.Add(node1);
+        correctRoadWay.nodes.Add(node2);
+        correctRoadWay.nodes.Add(node3);
+        RoadWay wrongRoadWay2 = new GameObject("WrongRoadWay2").AddComponent<RoadWay>();
+        wrongRoadWay2.nodes.Add(node1);
+        wrongRoadWay2.nodes.Add(node5);
+        wrongRoadWay2.nodes.Add(node3);
         RoadNetworkManager.GetInstance().Reload();
         VehiclePath vehiclePath = RoadNetworkManager.GetInstance().GetVehiclePath(node1, node3);
         Assert.NotNull(vehiclePath);
-        // Path finding will always pick roadWay1 as its the shortest route
-        Assert.AreEqual(roadWay1.nodes.Count, vehiclePath.nodes.Count);
+        // Path finding will always pick CorrectRoadWay as its the shortest route
+        Assert.AreEqual(correctRoadWay.nodes.Count, vehiclePath.nodes.Count);
         for (int i = 0; i < vehiclePath.nodes.Count; i++)
         {
-            Assert.AreEqual(roadWay1.nodes[i].transform, vehiclePath.nodes[i]);
+            Assert.AreEqual(correctRoadWay.nodes[i].transform, vehiclePath.nodes[i]);
+        }
+    }
+
+    [Test]
+    public void RoadNetworkComplexPathFindTest()
+    {
+        RoadNode startNode = new GameObject("StartNode").AddComponent<RoadNode>();
+        startNode.transform.position = new Vector3(0, 1, 0);
+        startNode.startNode = true;
+        RoadNode node1 = new GameObject("Node1").AddComponent<RoadNode>();
+        node1.transform.position = new Vector3(0, 1, 3);
+        RoadNode node2 = new GameObject("Node2").AddComponent<RoadNode>();
+        node2.transform.position = new Vector3(1, 1, 5);
+        RoadNode node3 = new GameObject("Node3").AddComponent<RoadNode>();
+        node3.transform.position = new Vector3(2, 1, 5);
+        RoadNode node4 = new GameObject("Node4").AddComponent<RoadNode>();
+        node4.transform.position = new Vector3(3, 1, 5);
+        RoadNode endNode = new GameObject("EndNode").AddComponent<RoadNode>();
+        endNode.transform.position = new Vector3(5, 1, 5);
+        RoadNode node5 = new GameObject("Node5").AddComponent<RoadNode>();
+        node5.transform.position = new Vector3(2, 1, 1);
+        RoadNode node6 = new GameObject("Node6").AddComponent<RoadNode>();
+        node6.transform.position = new Vector3(4, 1, 3);
+        RoadWay wrongRoadWay1 = new GameObject("WrongRoadWay1").AddComponent<RoadWay>();
+        wrongRoadWay1.nodes.Add(startNode);
+        wrongRoadWay1.nodes.Add(node1);
+        wrongRoadWay1.nodes.Add(node2);
+        wrongRoadWay1.nodes.Add(node3);
+        wrongRoadWay1.nodes.Add(node4);
+        wrongRoadWay1.nodes.Add(endNode);
+        RoadWay correctRoadWay = new GameObject("CorrectRoadWay").AddComponent<RoadWay>();
+        correctRoadWay.nodes.Add(startNode);
+        correctRoadWay.nodes.Add(node5);
+        correctRoadWay.nodes.Add(node6);
+        correctRoadWay.nodes.Add(endNode);
+        RoadNetworkManager.GetInstance().Reload();
+        VehiclePath vehiclePath = RoadNetworkManager.GetInstance().GetVehiclePath(startNode, endNode);
+        Assert.NotNull(vehiclePath);
+        // Path finding will always pick CorrectRoadWay as its the shortest route
+        Assert.AreEqual(correctRoadWay.nodes.Count, vehiclePath.nodes.Count);
+        for (int i = 0; i < vehiclePath.nodes.Count; i++)
+        {
+            Assert.AreEqual(correctRoadWay.nodes[i].transform, vehiclePath.nodes[i]);
         }
     }
 }

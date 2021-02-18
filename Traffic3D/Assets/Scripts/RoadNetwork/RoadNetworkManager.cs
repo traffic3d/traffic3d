@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -153,7 +153,7 @@ public class RoadNetworkManager
 
         while (openNodes.Count > 0)
         {
-            RoadNodePathFindInfo currentNode = openNodes.Aggregate((x, y) => x.hCost + x.gCost > y.hCost + y.gCost ? x : y);
+            RoadNodePathFindInfo currentNode = openNodes.Aggregate((x, y) => x.hCost + x.gCost < y.hCost + y.gCost ? x : y);
             closedNodes.Add(currentNode);
             openNodes.Remove(currentNode);
             if (currentNode.roadNode.Equals(endNode))
