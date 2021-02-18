@@ -74,13 +74,13 @@ public class PathGenerator : BaseNodeInformant
                     {
                         continue;
                     }
-                    List<RoadWay> currentRoadWays = RoadNetworkManager.GetInstance().GetRoadWaysFromStartOrEndNode(roadNodeDistanceCurrent.Key);
+                    List<RoadWay> currentRoadWays = RoadNetworkManager.GetInstance().GetRoadWaysFromNode(roadNodeDistanceCurrent.Key);
                     List<RoadWay> compareRoadWays = RoadNetworkManager.GetInstance().GetRoadWaysFromNode(roadNodeDistanceCompare.Key);
                     foreach (RoadWay currentRoadWay in currentRoadWays)
                     {
                         foreach (RoadWay compareRoadWay in compareRoadWays)
                         {
-                            if (roadWaysConnected.Any(l => l.Equals(new List<RoadWay>() { currentRoadWay, compareRoadWay })))
+                            if (roadWaysConnected.Any(l => l.First().Equals(currentRoadWay) && l.Last().Equals(compareRoadWay)))
                             {
                                 continue;
                             }

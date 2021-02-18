@@ -17,8 +17,8 @@ public class PathGeneratorTests
     Dictionary<MapXmlWay, GameObject> wayDic;
     Dictionary<MapXmlWay, GameObject> defaultDic; // used to reset dictionary after each test 
 
-    [OneTimeSetUp]
-    public void OneTimeSetUp()
+    [SetUp]
+    public void SetUp()
     {
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
 

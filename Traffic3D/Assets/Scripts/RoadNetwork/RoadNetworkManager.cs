@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -20,6 +20,7 @@ public class RoadNetworkManager
     private List<RoadNode> nodes;
     private List<RoadWay> ways;
     private List<Road> roads;
+    private Dictionary<RoadNode, List<RoadWay>> nodeRelatedRoadWays;
     private const int maxInvalidPaths = 1000;
 
     public RoadNetworkManager()
@@ -32,6 +33,21 @@ public class RoadNetworkManager
         nodes = new List<RoadNode>(GameObject.FindObjectsOfType<RoadNode>());
         ways = new List<RoadWay>(GameObject.FindObjectsOfType<RoadWay>());
         roads = new List<Road>(GameObject.FindObjectsOfType<Road>());
+        nodeRelatedRoadWays = new Dictionary<RoadNode, List<RoadWay>>();
+        foreach(RoadWay way in ways)
+        {
+            foreach(RoadNode roadNode in way.nodes)
+            {
+                if (nodeRelatedRoadWays.ContainsKey(roadNode))
+                {
+                    nodeRelatedRoadWays[roadNode].Add(way);
+                }
+                else
+                {
+                    nodeRelatedRoadWays.Add(roadNode, new List<RoadWay> { way });
+                }
+            }
+        }
     }
 
     public List<RoadNode> GetNodes()
@@ -67,12 +83,12 @@ public class RoadNetworkManager
 
     public List<RoadWay> GetRoadWaysFromNode(RoadNode roadNode)
     {
-        return ways.Where(way => way.nodes.Contains(roadNode)).ToList();
+        return nodeRelatedRoadWays[roadNode];
     }
 
     public List<RoadWay> GetRoadWaysFromStartOrEndNode(RoadNode roadNode)
     {
-        return ways.Where(way => roadNode.Equals(way.nodes.First()) || roadNode.Equals(way.nodes.Last())).ToList();
+        return nodeRelatedRoadWays[roadNode].Where(way => roadNode.Equals(way.nodes.First()) || roadNode.Equals(way.nodes.Last())).ToList();
     }
 
     public Road GetRoadFromRoadWay(RoadWay roadWay)
