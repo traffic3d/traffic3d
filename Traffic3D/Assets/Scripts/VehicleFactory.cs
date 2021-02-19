@@ -50,7 +50,14 @@ public class VehicleFactory : MonoBehaviour
                 RoadNode roadNode = RoadNetworkManager.GetInstance().GetRandomStartNode();
                 if (roadNode != null)
                 {
-                    SpawnVehicle(GetRandomVehicle(), roadNode);
+                    try
+                    {
+                        SpawnVehicle(GetRandomVehicle(), roadNode);
+                    }
+                    catch (System.Exception e)
+                    {
+                        Debug.LogError("Unable to spawn vehicle: " + e.Message);
+                    }
                 }
             }
         }

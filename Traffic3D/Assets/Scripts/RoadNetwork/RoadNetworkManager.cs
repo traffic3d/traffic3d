@@ -34,9 +34,9 @@ public class RoadNetworkManager
         ways = new List<RoadWay>(GameObject.FindObjectsOfType<RoadWay>());
         roads = new List<Road>(GameObject.FindObjectsOfType<Road>());
         nodeRelatedRoadWays = new Dictionary<RoadNode, List<RoadWay>>();
-        foreach(RoadWay way in ways)
+        foreach (RoadWay way in ways)
         {
-            foreach(RoadNode roadNode in way.nodes)
+            foreach (RoadNode roadNode in way.nodes)
             {
                 if (nodeRelatedRoadWays.ContainsKey(roadNode))
                 {
@@ -126,14 +126,7 @@ public class RoadNetworkManager
             vehiclePath = GetRandomVehiclePath(startNode);
             if (errorCount > maxInvalidPaths)
             {
-                try
-                {
-                    throw new System.Exception("Unable to get Valid Vehicle Path after " + maxInvalidPaths + " attempts");
-                }
-                catch (Exception e)
-                {
-                    Debug.Log(e.ToString());
-                }
+                throw new System.Exception("Unable to get Valid Vehicle Path after " + maxInvalidPaths + " attempts");
             }
         }
         return vehiclePath;
