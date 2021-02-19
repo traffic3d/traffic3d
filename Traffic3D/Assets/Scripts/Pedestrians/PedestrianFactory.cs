@@ -11,6 +11,9 @@ public class PedestrianFactory : MonoBehaviour
     public int maximumPedestrianCount = 20;
     public List<PedestrianProbability> pedestrianProbabilities;
 
+    [SerializeField]
+    private GameObject fieldOfViewPrefab;
+
     private PedestrianPoint[] pedestrianPoints;
     private bool isUsingEvacuationBehaviour = false;
 
@@ -77,9 +80,11 @@ public class PedestrianFactory : MonoBehaviour
     {
         if (pedestrian.GetComponentInChildren<FieldOfView>() == null)
         {
-            GameObject fieldOfView = Instantiate(pedestrian.fieldOfView, pedestrian.transform.position, Quaternion.identity);
+            GameObject fieldOfView = Instantiate(fieldOfViewPrefab, pedestrian.transform.position, Quaternion.identity);
             fieldOfView.transform.SetParent(pedestrian.transform);
         }
+
+        pedestrian.gameObject.AddComponent<PedestrianPathCreator>();
     }
 
     [System.Serializable]
