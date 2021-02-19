@@ -17,12 +17,17 @@ public class MapXmlWay
     public bool isBuilding { get; private set; }
     public bool IsRoad { get; private set; }
     public string Name { get; private set; }
+    // Road Specific
     public int Lanes { get; private set; }
+    public int ForwardLanes { get; private set; }
+    public int BackwardLanes { get; private set; }
+    public bool IsOneWay { get; private set; }
+
     public Dictionary<string, string> Tags { get; private set; }
 
 
     //Development purposes: Help track what types of "Highways" are in the scene
-    static Dictionary<String, int> Highways = new Dictionary<string, int>(); 
+    static Dictionary<String, int> Highways = new Dictionary<string, int>();
     public void PrintDictionary()
     {
         foreach (KeyValuePair<String, int> kvp in Highways)
@@ -39,10 +44,12 @@ public class MapXmlWay
 
         //List of all child node ref ID (<nd ref="" />) 
         NodeIDs = new List<ulong>();
-        
+
         //Default values
         buildingHeight = 7.0f;
-        Lanes = 1;      
+        Lanes = 1;
+        ForwardLanes = 1;
+        BackwardLanes = 0;
         Name = "";
 
         // Get the data from the attributes
@@ -78,15 +85,15 @@ public class MapXmlWay
         foreach (XmlNode tag in ndNodeTags)
         {
             // Add all tags to dictionary
-            Tags[GetAttribute<string>("k", tag.Attributes)] = GetAttribute<string>("v", tag.Attributes);
             string node_attribute = GetAttribute<string>("k", tag.Attributes);
+            Tags[node_attribute] = GetAttribute<string>("v", tag.Attributes);
             if (node_attribute == "highway")
             {
                 String tagValue = GetAttribute<string>("v", tag.Attributes);
 
 
                 //A value of "ROAD" implies the road type was not known during the mapping process. Therefore, it's likely a tag we to ignore.
-                if ( tagValue != "footway" && tagValue != "steps" && tagValue != "cycleway" && tagValue != "pedestrian" && tagValue != "construction" && tagValue != "service" && tagValue != "motorway" && tagValue != "track")
+                if (tagValue != "footway" && tagValue != "steps" && tagValue != "cycleway" && tagValue != "pedestrian" && tagValue != "construction" && tagValue != "service" && tagValue != "motorway" && tagValue != "track")
                 {
                     IsRoad = true;
                 }
@@ -95,7 +102,7 @@ public class MapXmlWay
             else if (node_attribute == "building:levels" || node_attribute == "building:height")
             {
                 //Building height is recorded in floors. 1 floor == ~4m
-                buildingHeight = GetAttribute<float>("v",tag.Attributes) * 6.2f; 
+                buildingHeight = GetAttribute<float>("v", tag.Attributes) * 6.2f;
             }
             else if (node_attribute == "lanes")
             {
@@ -112,11 +119,38 @@ public class MapXmlWay
                 {
                     isBuilding = true;
                 }
-
+            }
+            else if (node_attribute == "oneway")
+            {
+                string value = GetAttribute<string>("v", tag.Attributes);
+                IsOneWay = value == "yes" || value == "true" || value == "1";
             }
 
         }
-        
+
+        // Check road lanes
+        if (IsRoad)
+        {
+            if (IsOneWay)
+            {
+                ForwardLanes = Lanes;
+                BackwardLanes = 0;
+            }
+            else
+            {
+                ForwardLanes = Lanes;
+                BackwardLanes = Lanes;
+                if (Tags.ContainsKey("lanes:forward"))
+                {
+                    ForwardLanes = int.Parse(Tags["lanes:forward"]);
+                }
+                if (Tags.ContainsKey("lanes:backward"))
+                {
+                    BackwardLanes = int.Parse(Tags["lanes:backward"]);
+                }
+            }
+        }
+
     }
 
     protected T GetAttribute<T>(string attrName, XmlAttributeCollection attributes)

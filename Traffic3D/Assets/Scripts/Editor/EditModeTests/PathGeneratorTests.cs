@@ -9,6 +9,7 @@ public class PathGeneratorTests
 {
     readonly string mapFile = "Assets/Scripts/Editor/EditModeTests/MapFiles/SmallData.txt";
     OpenStreetMapReader osmMapReader;
+    private PathGenerator pathGenerator;
 
     int numRoads;
 
@@ -29,23 +30,11 @@ public class PathGeneratorTests
         osmMapReader = new OpenStreetMapReader();
         osmMapReader.ImportFile(mapFile);
 
-        foreach (var way in osmMapReader.ways)
-        {
-            if (way.IsRoad)
-                numRoads++;
-
-            GameObject go = new GameObject(way.Name);
-            wayDic.Add(way, go);
-        }
-
-        defaultDic = new Dictionary<MapXmlWay, GameObject>(wayDic); //clone
-    }
-
-    //reset dictionary after each test
-    [TearDown]
-    public void ResetDictionary()
-    {
-        wayDic = new Dictionary<MapXmlWay, GameObject>(defaultDic); //clone origional
+        RoadGenerator roadGenerator = new RoadGenerator(osmMapReader, null);
+        roadGenerator.GenerateRoads();
+        pathGenerator = new PathGenerator(osmMapReader, true);
+        pathGenerator.AddPathsToRoads(roadGenerator.GetWayObjects());
+        RoadNetworkManager.GetInstance().Reload();
     }
 
     /// <summary>
@@ -54,12 +43,28 @@ public class PathGeneratorTests
     [Test]
     public void CorrectStartAndEndNodes()
     {
-        //Before merging roads
-        PathGenerator pathGenerator = new PathGenerator(osmMapReader, true);
-        pathGenerator.AddPathsToRoads(wayDic);
-
         Assert.True(pathGenerator.GetNumOfTotalEndNodes() == pathGenerator.GetNumCreatedRoads());
         Assert.True(pathGenerator.GetNumOfTotalStartNodes() == pathGenerator.GetNumCreatedRoads());
+    }
+
+    /// <summary>
+    /// Ensure correct number of lanes are generated
+    /// </summary>
+    [Test]
+    public void CorrectNumberOfLanesGenerated()
+    {
+        List<Road> roadsToEvaluate = RoadNetworkManager.GetInstance().GetRoads();
+        foreach (MapXmlWay way in osmMapReader.ways)
+        {
+            if (!way.IsRoad)
+            {
+                continue;
+            }
+            Road foundRoad = roadsToEvaluate.Find(r => r.name == way.Name && r.numberOfLanes == (way.ForwardLanes + way.BackwardLanes));
+            Assert.IsNotNull(foundRoad, way.Name + " not generated.");
+            roadsToEvaluate.Remove(foundRoad);
+        }
+        Assert.IsEmpty(roadsToEvaluate, "Unknown roads were generated.");
     }
 
 }

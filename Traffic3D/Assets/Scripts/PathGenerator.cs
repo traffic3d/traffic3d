@@ -116,9 +116,10 @@ public class PathGenerator : BaseNodeInformant
     List<RoadWay> CreateRoadWays(MapXmlWay way, string pathName)
     {
 
-        int forwardLanes = 0;
-        int backwardLanes = 0;
+        int forwardLanes = way.ForwardLanes;
+        int backwardLanes = way.BackwardLanes;
 
+        /*
         if (way.Tags.ContainsKey("oneway") && (way.Tags["oneway"] == "yes" || way.Tags["oneway"] == "true" || way.Tags["oneway"] == "1"))
         {
             forwardLanes = 1;
@@ -146,6 +147,7 @@ public class PathGenerator : BaseNodeInformant
                 int.TryParse(way.Tags["lanes:backward"], out backwardLanes);
             }
         }
+        */
 
         List<Vector3> nodePositions = new List<Vector3>();
         for (int i = 0; i < way.NodeIDs.Count; i++)
