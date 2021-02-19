@@ -119,36 +119,6 @@ public class PathGenerator : BaseNodeInformant
         int forwardLanes = way.ForwardLanes;
         int backwardLanes = way.BackwardLanes;
 
-        /*
-        if (way.Tags.ContainsKey("oneway") && (way.Tags["oneway"] == "yes" || way.Tags["oneway"] == "true" || way.Tags["oneway"] == "1"))
-        {
-            forwardLanes = 1;
-            backwardLanes = 0;
-            if (way.Tags.ContainsKey("lanes"))
-            {
-                int.TryParse(way.Tags["lanes"], out forwardLanes);
-            }
-        }
-        else
-        {
-            forwardLanes = 1;
-            backwardLanes = 1;
-            if (way.Tags.ContainsKey("lanes"))
-            {
-                int.TryParse(way.Tags["lanes"], out forwardLanes);
-                int.TryParse(way.Tags["lanes"], out backwardLanes);
-            }
-            if (way.Tags.ContainsKey("lanes:forward"))
-            {
-                int.TryParse(way.Tags["lanes:forward"], out forwardLanes);
-            }
-            if (way.Tags.ContainsKey("lanes:backward"))
-            {
-                int.TryParse(way.Tags["lanes:backward"], out backwardLanes);
-            }
-        }
-        */
-
         List<Vector3> nodePositions = new List<Vector3>();
         for (int i = 0; i < way.NodeIDs.Count; i++)
         {
