@@ -39,6 +39,9 @@ public class Pedestrian : MonoBehaviour
     private PedestrianPathCreator pedestrianPathCreator;
     private int currentPathIndex = 0;
     private int sizeOfPath = 4;
+    private float radiusToConsiderPedestrianPoints = 100f;
+    private float footfallWeighting = 0.7f;
+    private float distanceWeighting = 0.3f;
 
     void Start()
     {
@@ -255,16 +258,16 @@ public class Pedestrian : MonoBehaviour
         // Follow closest target in field of view
         if (fieldOfView.visiblePedestrians.Count >= 1)
         {
-            currentPathIndex = sizeOfPath;
+            currentPathIndex = sizeOfPath - 1;
             StartCoroutine(FindTargetsWithDelay());
             return;
         }
 
-        // If no visible target create a path of pedestrian points to travel to
-        if (currentPath[currentPathIndex] == null || currentPathIndex + 1 >= sizeOfPath)
+        // If no visible target, create a path of pedestrian points to travel to
+        if (currentPath[currentPathIndex] == null || currentPathIndex == sizeOfPath - 1)
         {
             currentPathIndex = 0;
-            currentPath = pedestrianPathCreator.CalculateRankedShooterAgentPath(100f, transform, sizeOfPath, 0.7f, 0.3f);
+            currentPath = pedestrianPathCreator.CalculateRankedShooterAgentPath(radiusToConsiderPedestrianPoints, transform, sizeOfPath, footfallWeighting, distanceWeighting);
             navMeshAgent.SetDestination(currentPath[currentPathIndex].transform.position);
             return;
         }
@@ -280,8 +283,8 @@ public class Pedestrian : MonoBehaviour
 
     IEnumerator FindTargetsWithDelay()
     {
-        yield return new WaitForSeconds(shooterSeekingFrequency);
         FollowClosestPedestrian();
+        yield return new WaitForSeconds(shooterSeekingFrequency);
     }
 
     private void FollowClosestPedestrian()
