@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class PedestrianPathCreator : MonoBehaviour
 {
-    public float CurrentMaximumFootfall { get; set; }
-    public float CurrentMinimumDistance { get; set; }
     public Dictionary<int, float> CriteriaMinMaxValues { get; set; }
 
     private const string footfall = "footfall";
@@ -14,6 +11,8 @@ public class PedestrianPathCreator : MonoBehaviour
     private const int distanceMinMaxIndex = 1;
     private const string pedestrianPointLayerMaskName = "PedestrianPoint";
 
+    private float CurrentMaximumFootfall;
+    private float CurrentMinimumDistance;
     private LayerMask pedestrianPointLayer;
 
     private void Awake()
@@ -24,10 +23,6 @@ public class PedestrianPathCreator : MonoBehaviour
 
     public PedestrianPoint[] CalculateRankedShooterAgentPath(float radius, Transform transform, int sizeOfPath, float footfallWeighting, float distanceWeighting)
     {
-        CurrentMaximumFootfall = 0f;
-        CurrentMinimumDistance = float.MaxValue;
-        CriteriaMinMaxValues.Clear();
-
         PedestrianPoint[] pedestrianPoints = GetAllPedestrianPointsInRadius(transform, radius);
         List<PathDecisionOption> pathDecisionOptions = CreatePathDecisionMatrix(pedestrianPoints, transform, footfallWeighting, distanceWeighting);
         CalculateWeightedSumOfNormalisedPathOptions(pathDecisionOptions);
@@ -52,6 +47,10 @@ public class PedestrianPathCreator : MonoBehaviour
     public List<PathDecisionOption> CreatePathDecisionMatrix(PedestrianPoint[] pedestrianPoints, Transform transform, float footfallWeighting, float distanceWeighting)
     {
         List<PathDecisionOption> pathDecisionOptions = new List<PathDecisionOption>();
+
+        CurrentMaximumFootfall = 0f;
+        CurrentMinimumDistance = float.MaxValue;
+        CriteriaMinMaxValues.Clear();
 
         for (int outerIndex = 0; outerIndex < pedestrianPoints.Length; outerIndex++)
         {
@@ -136,46 +135,5 @@ public class PedestrianPathCreator : MonoBehaviour
         }
 
         return pedestrianPoints;
-    }
-}
-
-public class PathDecisionOption
-{
-    public PedestrianPoint PedestrianPoint { get; set; }
-    public int PathDecisionRank { get; set; }
-    public float WeightedSumOfPathNodes { get; set; }
-    public List<PathDecisionNode> PathDecisionNodes { get; set; }
-
-    public PathDecisionOption()
-    {
-        PathDecisionNodes = new List<PathDecisionNode>();
-    }
-}
-
-public class PathDecisionNode
-{
-    public float DecisionNodeValue { get; set; }
-    public bool IsDecisionNodeBeneficial { get; set; }
-    public int MinMaxValueIndex { get; set; }
-    public float NodeWeighting { get; set; }
-}
-
-public static class CriteriaValues
-{
-    private static Dictionary<string, bool> criteriaDictionary = new Dictionary<string, bool>()
-    {
-        { "footfall", true },
-        { "distance", false }
-    };
-
-    public static bool GetCriteriaValueFromName(string name)
-    {
-        if (criteriaDictionary.ContainsKey(name))
-        {
-            return criteriaDictionary[name];
-        }
-
-        Debug.Log($"The name \"{name}\" is not in the CriteriaValueDictionary");
-        throw new ArgumentException();
     }
 }

@@ -88,20 +88,23 @@ public class Pedestrian : MonoBehaviour
 
         if (!isUsingEvacuationBehaviour)
         {
+            DestroyCheck();
             CrossingCheck();
             SpeedUpdate();
-        }
-
-        DestroyCheck();
-
-
-        if (isShooterAgent == true)
-        {
-            ShooterSeekingBehaviour();
+            LocationUpdate();
         }
         else
         {
-            LocationUpdate();
+            DestroyCheck();
+
+            if (isShooterAgent == true)
+            {
+                ShooterSeekingBehaviour();
+            }
+            else
+            {
+                LocationUpdate();
+            }
         }
     }
 
