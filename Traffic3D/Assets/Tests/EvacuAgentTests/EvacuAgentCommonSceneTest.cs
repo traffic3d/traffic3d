@@ -7,6 +7,8 @@ namespace Tests
 {
     public class EvacuAgentCommonSceneTest : CommonSceneTest
     {
+        public readonly float floatingPointTolerance = 0.005f;
+
         [SetUp]
         public override void SetUpTest()
         {
@@ -42,6 +44,14 @@ namespace Tests
             }
 
             return GameObject.FindObjectsOfType<Pedestrian>();
+        }
+
+        public void StopAllPedstrianCoroutines()
+        {
+            foreach (Pedestrian pedestrian in GameObject.FindObjectsOfType<Pedestrian>())
+            {
+                pedestrian.StopAllCoroutines();
+            }
         }
     }
 }
