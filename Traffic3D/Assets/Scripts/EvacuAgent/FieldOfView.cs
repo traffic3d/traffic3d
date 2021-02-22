@@ -31,6 +31,8 @@ public class FieldOfView : MonoBehaviour
 
     void Start()
     {
+        gameObject.AddComponent<MeshFilter>();
+        gameObject.AddComponent<MeshRenderer>();
         mesh = gameObject.GetComponent<MeshFilter>().mesh;
         BuildMesh();
         StartCoroutine(FindAgentsWithDelay());
