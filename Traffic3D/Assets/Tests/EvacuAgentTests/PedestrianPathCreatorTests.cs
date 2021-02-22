@@ -28,12 +28,12 @@ public class PedestrianPathCreatorTests : EvacuAgentCommonSceneTest
     private const float pedPointBuilding3DistanceValue = 6.301397f;
     private const float pedPointBuilding5DistanceValue = 3.352163f;
 
-    private const bool isBeneficialFirstNode = true;
-    private const bool isBeneficialSecondNode = false;
-    private const int minMaxValueFirstNode = 0;
-    private const int minMaxValueSecondNode = 1;
-    private const float weightingFirstNode = 0.7f;
-    private const float weightingSecondNode = 0.3f;
+    private const bool isBeneficialFootfall = true;
+    private const bool isBeneficialDistance = false;
+    private const int minMaxIndexFootfall = 0;
+    private const int minMaxIndexDistance = 1;
+    private const float weightingFootfall = 0.7f;
+    private const float weightingDistance = 0.3f;
 
     // Weighted sums
     private const float nodeOneExpectedWeightSum = 0.8578f;
@@ -86,8 +86,8 @@ public class PedestrianPathCreatorTests : EvacuAgentCommonSceneTest
 
         // Assert
         Assert.AreEqual(actualDecisionOptions.Count, expectedNumberOfDecisionOptions);
-        Assert.That(pedestrianPathCreator.CurrentMaximumFootfall, Is.EqualTo(expectedCurrentMaximumFootfall).Within(floatingPointTolerance));
-        Assert.That(pedestrianPathCreator.CurrentMinimumDistance, Is.EqualTo(expectedCurrentMinimumDistance).Within(floatingPointTolerance));
+        Assert.That(pedestrianPathCreator.CriteriaMinMaxValues[0], Is.EqualTo(expectedCurrentMaximumFootfall).Within(floatingPointTolerance));
+        Assert.That(pedestrianPathCreator.CriteriaMinMaxValues[1], Is.EqualTo(expectedCurrentMinimumDistance).Within(floatingPointTolerance));
     }
 
     [UnityTest]
@@ -235,18 +235,6 @@ public class PedestrianPathCreatorTests : EvacuAgentCommonSceneTest
         return GameObject.Find($"{pedestrianPointPrefix} {name}").GetComponent<PedestrianPoint>();
     }
 
-    private Pedestrian SetUpPedestrian()
-    {
-        Pedestrian pedestrian = base.SpawnPedestrians(1)[0];
-        pedestrian.gameObject.AddComponent<PedestrianPathCreator>();
-        PedestrianPathCreator pedestrianPathCreator = pedestrian.GetComponent<PedestrianPathCreator>();
-        pedestrianPathCreator.CurrentMaximumFootfall = 0f;
-        pedestrianPathCreator.CurrentMinimumDistance = float.MaxValue;
-        pedestrian.transform.position = new Vector3(0, 0, 0);
-
-        return pedestrian;
-    }
-
     private List<PathDecisionOption> GetExpectedPathDecisionOptions()
     {
         List<PedestrianPoint> pedestrianPoints = GetExpectedPedestrianPoints(3);
@@ -259,10 +247,10 @@ public class PedestrianPathCreatorTests : EvacuAgentCommonSceneTest
                 pedestrianPoints[0],
 
                 // Footfall node
-                CreatePathDecisionNode(pedPointFrontLeftFootfallValue, isBeneficialFirstNode, minMaxValueFirstNode, weightingFirstNode),
+                CreatePathDecisionNode(pedPointFrontLeftFootfallValue, isBeneficialFootfall, minMaxIndexFootfall, weightingFootfall),
 
                 // Distance node
-                CreatePathDecisionNode(pedPointFrontLeftDistanceValue, isBeneficialSecondNode, minMaxValueSecondNode, weightingSecondNode)),
+                CreatePathDecisionNode(pedPointFrontLeftDistanceValue, isBeneficialDistance, minMaxIndexDistance, weightingDistance)),
 
             // Building 3 node
             CreatePathDecisionOption(
@@ -270,10 +258,10 @@ public class PedestrianPathCreatorTests : EvacuAgentCommonSceneTest
                 pedestrianPoints[1],
 
                 // Footfall Node
-                CreatePathDecisionNode(pedPointBuilding3FootfallValue, isBeneficialFirstNode, minMaxValueFirstNode, weightingFirstNode),
+                CreatePathDecisionNode(pedPointBuilding3FootfallValue, isBeneficialFootfall, minMaxIndexFootfall, weightingFootfall),
 
                 // Distance Node
-                CreatePathDecisionNode(pedPointBuilding3DistanceValue, isBeneficialSecondNode, minMaxValueSecondNode, weightingSecondNode)),
+                CreatePathDecisionNode(pedPointBuilding3DistanceValue, isBeneficialDistance, minMaxIndexDistance, weightingDistance)),
 
             // Building 5 node
             CreatePathDecisionOption(
@@ -281,10 +269,10 @@ public class PedestrianPathCreatorTests : EvacuAgentCommonSceneTest
                 pedestrianPoints[2],
 
                 // Footfall Node
-                CreatePathDecisionNode(pedPointBuilding5FootfallValue, isBeneficialFirstNode, minMaxValueFirstNode, weightingFirstNode),
+                CreatePathDecisionNode(pedPointBuilding5FootfallValue, isBeneficialFootfall, minMaxIndexFootfall, weightingFootfall),
 
                 // Distance Node
-                CreatePathDecisionNode(pedPointBuilding5DistanceValue, isBeneficialSecondNode, minMaxValueSecondNode, weightingSecondNode))
+                CreatePathDecisionNode(pedPointBuilding5DistanceValue, isBeneficialDistance, minMaxIndexDistance, weightingDistance))
         };
     }
 
@@ -310,6 +298,16 @@ public class PedestrianPathCreatorTests : EvacuAgentCommonSceneTest
             MinMaxValueIndex = minMaxIndex,
             NodeWeighting = nodeWeighting
         };
+    }
+
+    private Pedestrian SetUpPedestrian()
+    {
+        Pedestrian pedestrian = base.SpawnPedestrians(1)[0];
+        pedestrian.gameObject.AddComponent<PedestrianPathCreator>();
+        PedestrianPathCreator pedestrianPathCreator = pedestrian.GetComponent<PedestrianPathCreator>();
+        pedestrian.transform.position = new Vector3(0, 0, 0);
+
+        return pedestrian;
     }
 
     private PedestrianPathCreator SetUpPedestrianPathCreator()
