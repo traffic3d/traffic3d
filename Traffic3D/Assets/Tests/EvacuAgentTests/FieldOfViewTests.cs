@@ -9,13 +9,13 @@ using UnityEngine.TestTools;
 public class FieldOfViewTests : EvacuAgentCommonSceneTest
 {
     private const float DEFAULT_VIEW_ANGLE = 90f;
-    private const float DEFAULT_VIEW_RADIUS = 50f;
+    private const float DEFAULT_VIEW_RADIUS = 100f;
     private const string OBSTACLE_LAYER_MASK = "Obstacle";
     private const string DEFAULT_LAYER_MASK = "Default";
 
     private Vector3 viewingPedestrianPosition = new Vector3(0, 0, 0);
     private Vector3 insideViewAngleAndInsideRadius = new Vector3(5, 0, 10);
-    private Vector3 insideViewAngleAndOutsideRadius = new Vector3(0, 0, 60);
+    private Vector3 insideViewAngleAndOutsideRadius = new Vector3(0, 0, 150);
     private Vector3 outsideViewAngleAndInsideRadius = new Vector3(15, 0, -5);
 
     private Vector3 obstructionScale = new Vector3(20, 15, 2);
