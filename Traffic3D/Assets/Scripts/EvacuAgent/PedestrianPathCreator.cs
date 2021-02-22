@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class PedestrianPathCreator : MonoBehaviour
 {
+    public float CurrentMaximumFootfall { get; set; }
+    public float CurrentMinimumDistance { get; set; }
+    public Dictionary<int, float> CriteriaMinMaxValues { get; set; }
+
     private const string footfall = "footfall";
     private const string distance = "distance";
     private const int footfallMinMaxIndex = 0;
@@ -11,26 +15,23 @@ public class PedestrianPathCreator : MonoBehaviour
     private const string pedestrianPointLayerMaskName = "PedestrianPoint";
 
     private LayerMask pedestrianPointLayer;
-    private float currentMaximumFootfall = 0f;
-    private float currentMinimumDistance = float.MaxValue;
-    private Dictionary<int, float> criteriaMinMaxValues;
 
     private void Awake()
     {
         pedestrianPointLayer = LayerMask.GetMask(pedestrianPointLayerMaskName);
-        criteriaMinMaxValues = new Dictionary<int, float>();
+        CriteriaMinMaxValues = new Dictionary<int, float>();
     }
 
     public PedestrianPoint[] CalculateRankedShooterAgentPath(float radius, Transform transform, int sizeOfPath, float footfallWeighting, float distanceWeighting)
     {
-        currentMaximumFootfall = 0f;
-        currentMinimumDistance = float.MaxValue;
-        criteriaMinMaxValues.Clear();
+        CurrentMaximumFootfall = 0f;
+        CurrentMinimumDistance = float.MaxValue;
+        CriteriaMinMaxValues.Clear();
 
         PedestrianPoint[] pedestrianPoints = GetAllPedestrianPointsInRadius(transform, radius);
         List<PathDecisionOption> pathDecisionOptions = CreatePathDecisionMatrix(pedestrianPoints, transform, footfallWeighting, distanceWeighting);
-        CalculateWeightedSumOfPathOption(pathDecisionOptions);
-        pathDecisionOptions.Sort((x, y) => x.WeightedSumOfPathNodes.CompareTo(y.WeightedSumOfPathNodes));
+        CalculateWeightedSumOfNormalisedPathOptions(pathDecisionOptions);
+        pathDecisionOptions.Sort((x, y) => y.WeightedSumOfPathNodes.CompareTo(x.WeightedSumOfPathNodes));
 
         return GetRankedPedestrianPoints(pathDecisionOptions, sizeOfPath);
     }
@@ -52,7 +53,7 @@ public class PedestrianPathCreator : MonoBehaviour
     {
         List<PathDecisionOption> pathDecisionOptions = new List<PathDecisionOption>();
 
-        for (int outerIndex = 0; outerIndex < pedestrianPoints.Length - 1; outerIndex++)
+        for (int outerIndex = 0; outerIndex < pedestrianPoints.Length; outerIndex++)
         {
             PathDecisionNode footfallNode = new PathDecisionNode()
             {
@@ -70,11 +71,11 @@ public class PedestrianPathCreator : MonoBehaviour
                 NodeWeighting = distanceWeighting
             };
 
-            if (footfallNode.DecisionNodeValue > currentMaximumFootfall)
-                currentMaximumFootfall = footfallNode.DecisionNodeValue;
+            if (footfallNode.DecisionNodeValue > CurrentMaximumFootfall)
+                CurrentMaximumFootfall = footfallNode.DecisionNodeValue;
 
-            if (distanceNode.DecisionNodeValue < currentMinimumDistance)
-                currentMinimumDistance = distanceNode.DecisionNodeValue;
+            if (distanceNode.DecisionNodeValue < CurrentMinimumDistance)
+                CurrentMinimumDistance = distanceNode.DecisionNodeValue;
 
             pathDecisionOptions.Add(
                 new PathDecisionOption()
@@ -87,13 +88,13 @@ public class PedestrianPathCreator : MonoBehaviour
                 });
         }
 
-        criteriaMinMaxValues.Add(footfallMinMaxIndex, currentMaximumFootfall);
-        criteriaMinMaxValues.Add(distanceMinMaxIndex, currentMinimumDistance);
+        CriteriaMinMaxValues.Add(footfallMinMaxIndex, CurrentMaximumFootfall);
+        CriteriaMinMaxValues.Add(distanceMinMaxIndex, CurrentMinimumDistance);
 
         return pathDecisionOptions;
     }
 
-    public void CalculateWeightedSumOfPathOption(List<PathDecisionOption> pathDecisionOptions)
+    public void CalculateWeightedSumOfNormalisedPathOptions(List<PathDecisionOption> pathDecisionOptions)
     {
         foreach(PathDecisionOption pathDecisionOption in pathDecisionOptions)
         {
@@ -101,7 +102,7 @@ public class PedestrianPathCreator : MonoBehaviour
 
             foreach(PathDecisionNode pathDecisionNode in pathDecisionOption.PathDecisionNodes)
             {
-                pathDecisionNode.DecisionNodeValue = NormaliseValue(pathDecisionNode.DecisionNodeValue, pathDecisionNode.IsDecisionNodeBeneficial, criteriaMinMaxValues[pathDecisionNode.MinMaxValueIndex]);
+                pathDecisionNode.DecisionNodeValue = NormaliseValue(pathDecisionNode.DecisionNodeValue, pathDecisionNode.IsDecisionNodeBeneficial, CriteriaMinMaxValues[pathDecisionNode.MinMaxValueIndex]);
                 sumOfDecisionNodeValues += GetWeightedValueOfNode(pathDecisionNode);
             }
 
@@ -114,19 +115,6 @@ public class PedestrianPathCreator : MonoBehaviour
         return pathDecisionNode.DecisionNodeValue * pathDecisionNode.NodeWeighting;
     }
 
-    public PedestrianPoint[] GetRankedPedestrianPoints(List<PathDecisionOption> pathDecisionOptions, int sizeOfPath)
-    {
-        pathDecisionOptions.Sort((x, y) => x.WeightedSumOfPathNodes.CompareTo(y.WeightedSumOfPathNodes));
-        PedestrianPoint[] pedestrianPoints = new PedestrianPoint[sizeOfPath];
-
-        for(int index = 0; index < sizeOfPath; index++)
-        {
-            pedestrianPoints[index] = pathDecisionOptions[index].PedestrianPoint;
-        }
-
-        return pedestrianPoints;
-    }
-
     public float NormaliseValue(float valueToNormalise, bool isbeneficial, float valueToAdjustBy)
     {
         if (isbeneficial)
@@ -135,6 +123,19 @@ public class PedestrianPathCreator : MonoBehaviour
         }
 
         return valueToAdjustBy / valueToNormalise;
+    }
+
+    public PedestrianPoint[] GetRankedPedestrianPoints(List<PathDecisionOption> pathDecisionOptions, int sizeOfPath)
+    {
+        pathDecisionOptions.Sort((x, y) => y.WeightedSumOfPathNodes.CompareTo(x.WeightedSumOfPathNodes));
+        PedestrianPoint[] pedestrianPoints = new PedestrianPoint[sizeOfPath];
+
+        for(int index = 0; index < sizeOfPath; index++)
+        {
+            pedestrianPoints[index] = pathDecisionOptions[index].PedestrianPoint;
+        }
+
+        return pedestrianPoints;
     }
 }
 
