@@ -12,9 +12,9 @@ public class CriteriaValues_GetCriteriaValueFromName_ReturnsCorrectIndexForFootf
     public override IEnumerator PerformTest()
     {
         yield return null;
-        this.Arrange();
-        this.Act();
-        this.Assertion();
+        Arrange();
+        Act();
+        Assertion();
     }
 
     public override void Arrange()
@@ -45,9 +45,9 @@ public class CriteriaValues_GetCriteriaValueFromName_ReturnsCorrectIndexForDista
     public override IEnumerator PerformTest()
     {
         yield return null;
-        this.Arrange();
-        this.Act();
-        this.Assertion();
+        Arrange();
+        Act();
+        Assertion();
     }
 
     public override void Arrange()
@@ -77,8 +77,8 @@ public class CriteriaValues_GetCriteriaValueFromName_ThrowsExceptionForInvalidSt
     public override IEnumerator PerformTest()
     {
         yield return null;
-        this.Arrange();
-        this.Assertion();
+        Arrange();
+        Assertion();
     }
 
     public override void Arrange()
