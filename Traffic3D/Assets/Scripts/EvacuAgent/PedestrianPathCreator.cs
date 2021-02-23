@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PedestrianPathCreator : MonoBehaviour
 {
     public Dictionary<int, float> CriteriaMinMaxValues { get; set; }
 
+    private InvalidCriteriaValuePopup invalidCriteriaValuePopup;
     private const string footfall = "footfall";
     private const string distance = "distance";
     private const int footfallMinMaxIndex = 0;
@@ -14,9 +16,11 @@ public class PedestrianPathCreator : MonoBehaviour
     private float CurrentMaximumFootfall;
     private float CurrentMinimumDistance;
     private LayerMask pedestrianPointLayer;
+    private const bool invalidCriteriaValueBool = true;
 
     private void Awake()
     {
+        invalidCriteriaValuePopup = GameObject.FindObjectOfType<InvalidCriteriaValuePopup>();
         pedestrianPointLayer = LayerMask.GetMask(pedestrianPointLayerMaskName);
         CriteriaMinMaxValues = new Dictionary<int, float>();
     }
@@ -27,7 +31,6 @@ public class PedestrianPathCreator : MonoBehaviour
         List<PathDecisionOption> pathDecisionOptions = CreatePathDecisionMatrix(pedestrianPoints, transform, footfallWeighting, distanceWeighting);
         CalculateWeightedSumOfNormalisedPathOptions(pathDecisionOptions);
         pathDecisionOptions.Sort((x, y) => y.WeightedSumOfPathNodes.CompareTo(x.WeightedSumOfPathNodes));
-
         return GetRankedPedestrianPoints(pathDecisionOptions, sizeOfPath);
     }
 
@@ -57,7 +60,7 @@ public class PedestrianPathCreator : MonoBehaviour
             PathDecisionNode footfallNode = new PathDecisionNode()
             {
                 DecisionNodeValue = pedestrianPoints[outerIndex].footfall,
-                IsDecisionNodeBeneficial = CriteriaValues.GetCriteriaValueFromName(footfall),
+                IsDecisionNodeBeneficial = TryGetCriteriaValueFromName("test", transform),
                 MinMaxValueIndex = footfallMinMaxIndex,
                 NodeWeighting = footfallWeighting
             };
@@ -65,7 +68,7 @@ public class PedestrianPathCreator : MonoBehaviour
             PathDecisionNode distanceNode = new PathDecisionNode()
             {
                 DecisionNodeValue = Vector3.Distance(transform.position, pedestrianPoints[outerIndex].transform.position),
-                IsDecisionNodeBeneficial = CriteriaValues.GetCriteriaValueFromName(distance),
+                IsDecisionNodeBeneficial = TryGetCriteriaValueFromName(distance, transform),
                 MinMaxValueIndex = distanceMinMaxIndex,
                 NodeWeighting = distanceWeighting
             };
@@ -114,9 +117,9 @@ public class PedestrianPathCreator : MonoBehaviour
         return pathDecisionNode.DecisionNodeValue * pathDecisionNode.NodeWeighting;
     }
 
-    public float NormaliseValue(float valueToNormalise, bool isbeneficial, float valueToAdjustBy)
+    public float NormaliseValue(float valueToNormalise, bool isBeneficial, float valueToAdjustBy)
     {
-        if (isbeneficial)
+        if (isBeneficial)
         {
             return valueToNormalise / valueToAdjustBy;
         }
@@ -135,5 +138,20 @@ public class PedestrianPathCreator : MonoBehaviour
         }
 
         return pedestrianPoints;
+    }
+
+    public bool TryGetCriteriaValueFromName(string name, Transform transform)
+    {
+        try
+        {
+            CriteriaValues.GetCriteriaValueFromName(name);
+        }
+        catch (ArgumentException e)
+        {
+            invalidCriteriaValuePopup.CreateCriteriaValuePopup(name, invalidCriteriaValueBool, transform);
+            return invalidCriteriaValueBool;
+        }
+
+        return CriteriaValues.GetCriteriaValueFromName(name);
     }
 }

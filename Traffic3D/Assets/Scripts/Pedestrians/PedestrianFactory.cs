@@ -14,6 +14,9 @@ public class PedestrianFactory : MonoBehaviour
     [SerializeField]
     private GameObject fieldOfViewPrefab;
 
+    [SerializeField]
+    private GameObject testCanvasPrefab;
+
     private PedestrianPoint[] pedestrianPoints;
     private bool isUsingEvacuationBehaviour = false;
 
