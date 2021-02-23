@@ -29,7 +29,7 @@ namespace Tests
             vehicleFactory.StopAllCoroutines();
         }
 
-        public Pedestrian[] SpawnPedestrians(int numberOfPedestrians)
+        public static Pedestrian[] SpawnPedestrians(int numberOfPedestrians)
         {
             foreach (Pedestrian pedestrian in GameObject.FindObjectsOfType<Pedestrian>())
             {
