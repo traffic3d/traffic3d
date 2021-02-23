@@ -60,7 +60,7 @@ public class PedestrianPathCreator : MonoBehaviour
             PathDecisionNode footfallNode = new PathDecisionNode()
             {
                 DecisionNodeValue = pedestrianPoints[outerIndex].footfall,
-                IsDecisionNodeBeneficial = TryGetCriteriaValueFromName("test", transform),
+                IsDecisionNodeBeneficial = TryGetCriteriaValueFromName(footfall, transform),
                 MinMaxValueIndex = footfallMinMaxIndex,
                 NodeWeighting = footfallWeighting
             };
