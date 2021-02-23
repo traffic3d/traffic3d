@@ -40,7 +40,7 @@ public class FieldOfViewTests : EvacuAgentCommonSceneTest
         DisableLoops();
         yield return null;
 
-        Pedestrian[] pedestrians = base.SpawnPedestrians(2);
+        Pedestrian[] pedestrians = SpawnPedestrians(2);
 
         FieldOfView viewingPedestrianFov = SetUpViewingPedestrian(pedestrians[0]);
 
@@ -62,7 +62,7 @@ public class FieldOfViewTests : EvacuAgentCommonSceneTest
         DisableLoops();
         yield return null;
 
-        Pedestrian[] pedestrians = base.SpawnPedestrians(2);
+        Pedestrian[] pedestrians = SpawnPedestrians(2);
 
         FieldOfView viewingPedestrianFov = SetUpViewingPedestrian(pedestrians[0]);
 
@@ -83,7 +83,7 @@ public class FieldOfViewTests : EvacuAgentCommonSceneTest
         DisableLoops();
         yield return null;
 
-        Pedestrian[] pedestrians = base.SpawnPedestrians(2);
+        Pedestrian[] pedestrians = SpawnPedestrians(2);
 
         FieldOfView viewingPedestrianFov = SetUpViewingPedestrian(pedestrians[0]);
 
@@ -105,7 +105,7 @@ public class FieldOfViewTests : EvacuAgentCommonSceneTest
         yield return null;
 
         SetUpNonPedestrianObject(obstructionScale, obstructionPosition, OBSTACLE_LAYER_MASK);
-        Pedestrian[] pedestrians = base.SpawnPedestrians(2);
+        Pedestrian[] pedestrians = SpawnPedestrians(2);
 
         FieldOfView viewingPedestrianFov = SetUpViewingPedestrian(pedestrians[0]);
 
@@ -126,7 +126,7 @@ public class FieldOfViewTests : EvacuAgentCommonSceneTest
         DisableLoops();
         yield return null;
 
-        Pedestrian[] pedestrians = base.SpawnPedestrians(2);
+        Pedestrian[] pedestrians = SpawnPedestrians(2);
         SetUpNonPedestrianObject(nonObstructingObjectScale, nonObstructingObjectPosition, DEFAULT_LAYER_MASK);
 
         FieldOfView viewingPedestrianFov = SetUpViewingPedestrian(pedestrians[0]);
