@@ -1,59 +1,97 @@
 ﻿using System;
 using System.Collections;
 using NUnit.Framework;
-using Tests;
 using UnityEngine.TestTools;
 
-
-[Category("Tests")]
-public class CriteriaValuesTests : EvacuAgentCommonSceneTest
+public class CriteriaValues_GetCriteriaValueFromName_ReturnsCorrectIndexForFootfall : ArrangeActAssertStrategy
 {
-    private const string footfall = "footfall";
-    private const string distance = "distance";
-    private const string invalidString = "invalidString";
-
-    [UnitySetUp]
-    public IEnumerator UnitySetUp()
-    {
-        yield return null;
-    }
+    private bool actualBool;
+    private string footfall;
 
     [UnityTest]
-    public IEnumerator CriteriaValues_GetCriteriaValueFromName_ReturnsCorrectIndexForFootfall()
+    public override IEnumerator PerformTest()
     {
-        // Arrange
         yield return null;
+        this.Arrange();
+        this.Act();
+        this.Assertion();
+    }
+
+    public override void Arrange()
+    {
         DisableLoops();
+        actualBool = false;
+        footfall = "footfall";
+    }
 
-        // Act
-        bool actualBool = CriteriaValues.GetCriteriaValueFromName(footfall);
+    public override void Act()
+    {
+        actualBool = CriteriaValues.GetCriteriaValueFromName(footfall);
+    }
 
-        // Assert
+    public override IEnumerator Assertion()
+    {
+        yield return null;
         Assert.IsTrue(actualBool);
     }
+}
+
+public class CriteriaValues_GetCriteriaValueFromName_ReturnsCorrectIndexForDistance: ArrangeActAssertStrategy
+{
+    private bool actualBool;
+    private string distance;
 
     [UnityTest]
-    public IEnumerator CriteriaValues_GetCriteriaValueFromName_ReturnsCorrectIndexForDistance()
+    public override IEnumerator PerformTest()
     {
-        // Arrange
         yield return null;
-        DisableLoops();
-
-        // Act
-        bool actualBool = CriteriaValues.GetCriteriaValueFromName(distance);
-
-        // Assert
-        Assert.IsFalse(actualBool);
+        this.Arrange();
+        this.Act();
+        this.Assertion();
     }
 
-    [UnityTest]
-    public IEnumerator CriteriaValues_GetCriteriaValueFromName_ThrowsException_WhenInputStringIsInvalid()
+    public override void Arrange()
     {
-        // Arrange
-        yield return null;
         DisableLoops();
+        actualBool = false;
+        distance = "distance";
+    }
 
-        // Assert
+    public override void Act()
+    {
+        actualBool = CriteriaValues.GetCriteriaValueFromName(distance);
+    }
+
+    public override IEnumerator Assertion()
+    {
+        yield return null;
+        Assert.IsFalse(actualBool);
+    }
+}
+
+public class CriteriaValues_GetCriteriaValueFromName_ThrowsExceptionForInvalidString : ArrangeActAssertStrategy
+{
+    private string invalidString;
+
+    [UnityTest]
+    public override IEnumerator PerformTest()
+    {
+        yield return null;
+        this.Arrange();
+        this.Assertion();
+    }
+
+    public override void Arrange()
+    {
+        DisableLoops();
+        invalidString = "invalidString";
+    }
+
+    public override void Act() {}
+
+    public override IEnumerator Assertion()
+    {
+        yield return null;
         Assert.Throws<ArgumentException>(() => CriteriaValues.GetCriteriaValueFromName(invalidString));
     }
 }
