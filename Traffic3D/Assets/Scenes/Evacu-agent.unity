@@ -172,7 +172,7 @@ GameObject:
   m_Layer: 11
   m_Name: PedestrianPoint building 2
   m_TagString: Untagged
-  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -276,7 +276,7 @@ GameObject:
   m_Layer: 11
   m_Name: PedestrianPoint back right
   m_TagString: Untagged
-  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -480,6 +480,72 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &183556024
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 183556027}
+  - component: {fileID: 183556026}
+  - component: {fileID: 183556025}
+  m_Layer: 0
+  m_Name: EventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &183556025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 183556024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1077351063, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
+--- !u!114 &183556026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 183556024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -619905303, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
+--- !u!4 &183556027
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 183556024}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &188233889
 GameObject:
   m_ObjectHideFlags: 0
@@ -540,7 +606,7 @@ GameObject:
   m_Layer: 11
   m_Name: PedestrianPoint middle right 2
   m_TagString: Untagged
-  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -734,6 +800,8 @@ MonoBehaviour:
       type: 3}
     probability: 0.25
   fieldOfViewPrefab: {fileID: 2004611204436190234, guid: 5455178a2bed02144baada0f8ac40583,
+    type: 3}
+  testCanvasPrefab: {fileID: 3155959038652921837, guid: c1ec766e3ce4e3149b62bdef0e2fba47,
     type: 3}
 --- !u!4 &218403219
 Transform:
@@ -1189,7 +1257,7 @@ GameObject:
   m_Layer: 11
   m_Name: PedestrianPoint front right
   m_TagString: Untagged
-  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1863,13 +1931,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 494007805}
-  m_LocalRotation: {x: 0.12602584, y: 0, z: 0, w: 0.992027}
-  m_LocalPosition: {x: 0, y: 3.39, z: -10.88}
+  m_LocalRotation: {x: 0.1616496, y: -0, z: -0, w: 0.98684824}
+  m_LocalPosition: {x: -11.4, y: 9.26, z: -22.27}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 14.48, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 18.605001, y: 0, z: 0}
 --- !u!1 &500897553
 GameObject:
   m_ObjectHideFlags: 0
@@ -1884,7 +1952,7 @@ GameObject:
   m_Layer: 11
   m_Name: PedestrianPoint front left
   m_TagString: Untagged
-  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3293,7 +3361,7 @@ GameObject:
   m_Layer: 11
   m_Name: PedestrianPoint building 3
   m_TagString: Untagged
-  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3687,7 +3755,7 @@ GameObject:
   m_Layer: 11
   m_Name: PedestrianPoint building 1
   m_TagString: Untagged
-  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -4362,7 +4430,7 @@ GameObject:
   m_Layer: 11
   m_Name: PedestrianPoint middle right
   m_TagString: Untagged
-  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -5064,7 +5132,7 @@ GameObject:
   m_Layer: 11
   m_Name: PedestrianPoint building 4
   m_TagString: Untagged
-  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -5352,7 +5420,7 @@ GameObject:
   m_Layer: 11
   m_Name: PedestrianPoint middle left 2
   m_TagString: Untagged
-  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -5781,7 +5849,7 @@ GameObject:
   m_Layer: 11
   m_Name: PedestrianPoint middle left 1
   m_TagString: Untagged
-  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -5839,7 +5907,7 @@ GameObject:
   m_Layer: 11
   m_Name: PedestrianPoint building 5
   m_TagString: Untagged
-  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -6227,7 +6295,7 @@ GameObject:
   m_Layer: 11
   m_Name: PedestrianPoint back left
   m_TagString: Untagged
-  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -6728,3 +6796,78 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2141393713}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &5125510370532882680
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7560512707508180983, guid: dbe3bec22eedef24b94e9d251e1ddd14,
+        type: 3}
+      propertyPath: m_Name
+      value: CriteriaValuesPopupController
+      objectReference: {fileID: 0}
+    - target: {fileID: 4505886234893493665, guid: dbe3bec22eedef24b94e9d251e1ddd14,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -6.265589
+      objectReference: {fileID: 0}
+    - target: {fileID: 4505886234893493665, guid: dbe3bec22eedef24b94e9d251e1ddd14,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 25.224129
+      objectReference: {fileID: 0}
+    - target: {fileID: 4505886234893493665, guid: dbe3bec22eedef24b94e9d251e1ddd14,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 42.61725
+      objectReference: {fileID: 0}
+    - target: {fileID: 4505886234893493665, guid: dbe3bec22eedef24b94e9d251e1ddd14,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4505886234893493665, guid: dbe3bec22eedef24b94e9d251e1ddd14,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4505886234893493665, guid: dbe3bec22eedef24b94e9d251e1ddd14,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4505886234893493665, guid: dbe3bec22eedef24b94e9d251e1ddd14,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4505886234893493665, guid: dbe3bec22eedef24b94e9d251e1ddd14,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4505886234893493665, guid: dbe3bec22eedef24b94e9d251e1ddd14,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4505886234893493665, guid: dbe3bec22eedef24b94e9d251e1ddd14,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4505886234893493665, guid: dbe3bec22eedef24b94e9d251e1ddd14,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5184245785571489461, guid: dbe3bec22eedef24b94e9d251e1ddd14,
+        type: 3}
+      propertyPath: exclamationMarkPrefab
+      value: 
+      objectReference: {fileID: 1719666366554557893, guid: 18a23795b0ea2724ca8146a869f43f99,
+        type: 3}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: dbe3bec22eedef24b94e9d251e1ddd14, type: 3}
