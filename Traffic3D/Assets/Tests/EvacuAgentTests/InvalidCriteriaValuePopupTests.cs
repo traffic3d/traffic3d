@@ -67,6 +67,9 @@ public class InvalidCriteriaValuePopup_CreateCriteriaValuePopup_QueuesOnlyOneMes
         DisableLoops();
         invalidCriteriaValuePopup = InvalidCriteriaValuePopupTestHelper.GetCriteriaValuesPopupController();
         invalidCriteriaValuePopup.StopAllCoroutines();
+
+        // Stops fixed update being called
+        invalidCriteriaValuePopup.enabled = false;
         transforms = InvalidCriteriaValuePopupTestHelper.SetUpTransforms(1);
         transform = transforms[0];
         firstErrorMessage = "First error message";
@@ -132,6 +135,7 @@ public class InvalidCriteriaValuePopup_DequeueCanvasAndDestroyAfterDelay_Destroy
 public static class InvalidCriteriaValuePopupTestHelper
 {
     public static readonly string invalidCriterisPopupTag = "criteriaValueError";
+
     public static InvalidCriteriaValuePopup GetCriteriaValuesPopupController()
     {
         InvalidCriteriaValuePopup invalidCriteriaValuePopup = GameObject.FindObjectOfType<InvalidCriteriaValuePopup>();
