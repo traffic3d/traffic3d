@@ -29,9 +29,8 @@ public class CriteriaValues_GetCriteriaValueFromName_ReturnsCorrectIndexForFootf
         actualBool = CriteriaValues.GetCriteriaValueFromName(footfall);
     }
 
-    public override IEnumerator Assertion()
+    public override void Assertion()
     {
-        yield return null;
         Assert.IsTrue(actualBool);
     }
 }
@@ -62,9 +61,8 @@ public class CriteriaValues_GetCriteriaValueFromName_ReturnsCorrectIndexForDista
         actualBool = CriteriaValues.GetCriteriaValueFromName(distance);
     }
 
-    public override IEnumerator Assertion()
+    public override void Assertion()
     {
-        yield return null;
         Assert.IsFalse(actualBool);
     }
 }
@@ -89,9 +87,8 @@ public class CriteriaValues_GetCriteriaValueFromName_ThrowsExceptionForInvalidSt
 
     public override void Act() {}
 
-    public override IEnumerator Assertion()
+    public override void Assertion()
     {
-        yield return null;
         Assert.Throws<ArgumentException>(() => CriteriaValues.GetCriteriaValueFromName(invalidString));
     }
 }

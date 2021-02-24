@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3155959038652921834}
   m_Layer: 5
   m_Name: CriteriaValuesInvalidStringWarning
-  m_TagString: Untagged
+  m_TagString: criteriaValueError
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
