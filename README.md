@@ -10,6 +10,10 @@ Traffic3D can facilitate research across multiple domains, including reinforceme
 
 For more details please see [https://traffic3d.org](https://traffic3d.org).
 
+[[_TOC_]]
+
+---
+
 ## Bugs and feature requests
 
 Please report issues via the [issue tracker](https://gitlab.com/traffic3d/traffic3d/issues).

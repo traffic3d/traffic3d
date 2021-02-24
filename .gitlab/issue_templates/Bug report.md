@@ -6,6 +6,10 @@ Please answer the following questions for yourself before submitting an issue. *
 - [ ] I have checked the documentation and found no answer.
 - [ ] I checked to make sure that this issue has not already been filed.
 
+[[_TOC_]]
+
+---
+
 ## What is the current *bug* behaviour?
 
 What is the current, incorrect, behaviour?

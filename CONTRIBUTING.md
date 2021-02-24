@@ -1,5 +1,9 @@
 # Contributing to the Traffic 3D project
 
+[[_TOC_]]
+
+---
+
 ## Technologies
 
 This project is based on the [Unity 3d games engine](https://unity3d.com/unity).

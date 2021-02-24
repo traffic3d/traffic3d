@@ -2,6 +2,10 @@
 
 Describe your proposed change, and why you think it will improve the code base.
 
+[[_TOC_]]
+
+---
+
 ## Test coverage
 
 What test cases will need to be written to cover the changes you propose?
