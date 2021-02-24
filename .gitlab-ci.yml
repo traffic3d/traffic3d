@@ -60,7 +60,7 @@ meta-build-image:
 
 lint:
     stage: lint
-    image: ruby:2.6
+    image: ruby:2.7
     before_script:
         - gem install mdl
     script:
