@@ -172,8 +172,8 @@ public class FieldOfView_OnlyAddsPedestriansToVisiblePedestrainList : ArrangeAct
     private FieldOfView viewingPedestrianFov;
     private Pedestrian targetPedestrian;
     private Vector3 insideViewAngleAndInsideRadius;
-    private Vector3 nonObstructingObjectScale = new Vector3(2, 2, 2);
-    private Vector3 nonObstructingObjectPosition = new Vector3(8, 0, 10);
+    private Vector3 nonObstructingObjectScale;
+    private Vector3 nonObstructingObjectPosition;
     private string defaultLayerMask;
 
     [UnityTest]
@@ -191,6 +191,7 @@ public class FieldOfView_OnlyAddsPedestriansToVisiblePedestrainList : ArrangeAct
 
         nonObstructingObjectScale = new Vector3(2, 2, 2);
         nonObstructingObjectPosition = new Vector3(8, 0, 10);
+        insideViewAngleAndInsideRadius = new Vector3(5, 0, 10);
         defaultLayerMask = "Default";
         FieldOfViewTestsHelper.SetUpNonPedestrianObject(nonObstructingObjectScale, nonObstructingObjectPosition, defaultLayerMask);
 
