@@ -10,6 +10,7 @@ TagManager:
   - unhap
   - roadway
   - pathway
+  - criteriaValueError
   layers:
   - Default
   - TransparentFX

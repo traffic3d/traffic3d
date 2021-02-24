@@ -36,9 +36,8 @@ public class FieldOfView_CanDetectOtherPedestrian_WhenPedestrianIsWithinViewAngl
         viewingPedestrianFov.GetAllAgentsInViewAngle();
     }
 
-    public override IEnumerator Assertion()
+    public override void Assertion()
     {
-        yield return null;
         Assert.AreEqual(1, viewingPedestrianFov.visiblePedestrians.Count);
         Assert.AreSame(viewingPedestrianFov.visiblePedestrians.First(), targetPedestrian);
     }
@@ -76,9 +75,8 @@ public class FieldOfView_CannnotDetectOtherPedestrian_WhenPedestrianIsWithinView
         viewingPedestrianFov.GetAllAgentsInViewAngle();
     }
 
-    public override IEnumerator Assertion()
+    public override void Assertion()
     {
-        yield return null;
         Assert.AreEqual(0, viewingPedestrianFov.visiblePedestrians.Count);
     }
 }
@@ -115,9 +113,8 @@ public class FieldOfView_CannnotDetectOtherPedestrian_WhenPedestrianIsOutsideOfV
         viewingPedestrianFov.GetAllAgentsInViewAngle();
     }
 
-    public override IEnumerator Assertion()
+    public override void Assertion()
     {
-        yield return null;
         Assert.AreEqual(0, viewingPedestrianFov.visiblePedestrians.Count);
     }
 }
@@ -163,9 +160,8 @@ public class FieldOfView_CannnotDetectOtherPedestrian_WhenPedestrianIsWithinView
         viewingPedestrianFov.GetAllAgentsInViewAngle();
     }
 
-    public override IEnumerator Assertion()
+    public override void Assertion()
     {
-        yield return null;
         Assert.AreEqual(0, viewingPedestrianFov.visiblePedestrians.Count);
     }
 }
@@ -210,9 +206,8 @@ public class FieldOfView_OnlyAddsPedestriansToVisiblePedestrainList : ArrangeAct
         viewingPedestrianFov.GetAllAgentsInViewAngle();
     }
 
-    public override IEnumerator Assertion()
+    public override void Assertion()
     {
-        yield return null;
         Assert.AreEqual(1, viewingPedestrianFov.visiblePedestrians.Count);
         Assert.IsInstanceOf(typeof(Pedestrian), viewingPedestrianFov.visiblePedestrians[0]);
     }

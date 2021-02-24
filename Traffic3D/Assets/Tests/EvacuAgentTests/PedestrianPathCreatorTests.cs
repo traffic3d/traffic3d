@@ -36,9 +36,8 @@ public class PedestrianPathCreator_GetAllPedestrianPointsInRadius_ReturnsCorrect
         actualPedestrianPoints = pedestrianPathCreator.GetAllPedestrianPointsInRadius(pedestrianPathCreator.transform, radius);
     }
 
-    public override IEnumerator Assertion()
+    public override void Assertion()
     {
-        yield return null;
         Assert.AreEqual(actualPedestrianPoints.Length, expectedNumberOfPedestrianPoints);
         Assert.That(actualPedestrianPoints, Is.EquivalentTo(expectedPedestrianPoints));
     }
@@ -83,9 +82,8 @@ public class PedestrianPathCreator_CreatePathDecisionMatrix_ReturnsCorrectCollec
         actualDecisionOptions = pedestrianPathCreator.CreatePathDecisionMatrix(pedestrianPoints.ToArray(), pedestrianPathCreator.transform, footfallWeighting, distanceWeighting);
     }
 
-    public override IEnumerator Assertion()
+    public override void Assertion()
     {
-        yield return null;
         Assert.AreEqual(actualDecisionOptions.Count, expectedNumberOfDecisionOptions);
         Assert.That(pedestrianPathCreator.CriteriaMinMaxValues[0], Is.EqualTo(expectedCurrentMaximumFootfall).Within(floatingPointTolerance));
         Assert.That(pedestrianPathCreator.CriteriaMinMaxValues[1], Is.EqualTo(expectedCurrentMinimumDistance).Within(floatingPointTolerance));
@@ -135,9 +133,8 @@ public class PedestrianPathCreator_CalculateRankedShooterAgentPath_ReturnsCorrec
         actualPedestrianPoints = pedestrianPathCreator.CalculateRankedShooterAgentPath(radius, pedestrianPathCreator.transform, sizeOfPath, footfallWeighting, distanceWeighting);
     }
 
-    public override IEnumerator Assertion()
+    public override void Assertion()
     {
-        yield return null;
         Assert.AreEqual(actualPedestrianPoints.Length, sizeOfPath);
         Assert.That(actualPedestrianPoints[0], Is.EqualTo(building5));
         Assert.That(actualPedestrianPoints[1], Is.EqualTo(building3));
@@ -178,9 +175,8 @@ public class PedestrianPathCreator_NormaliseValue_ReturnsCorrectValue_WhenIsBene
         actualNormalisedValue = pedestrianPathCreator.NormaliseValue(valueToNormalise, isBeneficial, valueToAdjustBy);
     }
 
-    public override IEnumerator Assertion()
+    public override void Assertion()
     {
-        yield return null;
         Assert.That(actualNormalisedValue, Is.EqualTo(expectedNormalisedValue).Within(floatingPointTolerance));
     }
 }
@@ -218,9 +214,8 @@ public class PedestrianPathCreator_NormaliseValue_ReturnsCorrectValue_WhenIsBene
         actualNormalisedValue = pedestrianPathCreator.NormaliseValue(valueToNormalise, isBeneficial, valueToAdjustBy);
     }
 
-    public override IEnumerator Assertion()
+    public override void Assertion()
     {
-        yield return null;
         Assert.That(actualNormalisedValue, Is.EqualTo(expectedNormalisedValue).Within(floatingPointTolerance));
     }
 }
@@ -255,9 +250,8 @@ public class PedestrianPathCreator_GetWeightedValueOfNode_ReturnsCorrectValue : 
         actualEightedSumValue = pedestrianPathCreator.GetWeightedValueOfNode(pathDecisionNode);
     }
 
-    public override IEnumerator Assertion()
+    public override void Assertion()
     {
-        yield return null;
         Assert.That(actualEightedSumValue, Is.EqualTo(expectedWeightedSumValue).Within(floatingPointTolerance));
     }
 }
@@ -293,9 +287,8 @@ public class PedestrianPathCreator_CalculateWeightedSumOfNormalisedPathOptions_R
         pedestrianPathCreator.CalculateWeightedSumOfNormalisedPathOptions(pathDecisionOptions);
     }
 
-    public override IEnumerator Assertion()
+    public override void Assertion()
     {
-        yield return null;
         Assert.That(pathDecisionOptions[0].WeightedSumOfPathNodes, Is.EqualTo(nodeOneExpectedWeightSum).Within(floatingPointTolerance));
         Assert.That(pathDecisionOptions[1].WeightedSumOfPathNodes, Is.EqualTo(nodeTwoExpectedWeightSum).Within(floatingPointTolerance));
         Assert.That(pathDecisionOptions[2].WeightedSumOfPathNodes, Is.EqualTo(nodeThreeExpectedWeightSum).Within(floatingPointTolerance));
@@ -344,9 +337,8 @@ public class PedestrianPathCreator_GetRankedPedestrianPoints_ReturnsCorrectOrder
         orderedPedestrianPoints = pedestrianPathCreator.GetRankedPedestrianPoints(pathDecisionOptions, sizeOfPath);
     }
 
-    public override IEnumerator Assertion()
+    public override void Assertion()
     {
-        yield return null;
         Assert.AreEqual(orderedPedestrianPoints.Length, sizeOfPath);
         Assert.That(orderedPedestrianPoints[0], Is.EqualTo(pedestrianPoints[2]));
         Assert.That(orderedPedestrianPoints[1], Is.EqualTo(pedestrianPoints[1]));
