@@ -36,9 +36,8 @@ public class PedestrianFactory_WillSpawnPedestrian_WithIsUsingEvacuationBehaviou
         pedestrianTwo = GameObject.FindObjectOfType<Pedestrian>();
     }
 
-    public override IEnumerator Assertion()
+    public override void Assertion()
     {
-        yield return null;
         Assert.IsTrue(pedestrianTwo.isUsingEvacuationBehaviour);
     }
 }
@@ -78,9 +77,8 @@ public class PedestrianFactory_WillSpawnPedestrian_withFieldOfView_WhenIsUsingEv
         fieldOfView = pedestrianTwo.GetComponentInChildren<FieldOfView>();
     }
 
-    public override IEnumerator Assertion()
+    public override void Assertion()
     {
-        yield return null;
         Assert.IsNotNull(fieldOfView);
     }
 }
