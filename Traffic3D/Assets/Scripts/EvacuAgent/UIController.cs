@@ -20,11 +20,20 @@ public class UIController : MonoBehaviour
     [SerializeField]
     private Animator menuPanelParentAnimator;
 
+    [SerializeField]
+    private Text NumberOfPedestriansText;
+
+    [SerializeField]
+    private Text NumberOfShootersText;
+
     private GameObject currentMenuContentPanel;
+    private SimulationDataTracker simulationDataTracker;
     private const string isMenuMinimisedAnimatorString = "isMenuMinimised";
+    private const string shooterTag = "shooter";
 
     private void Start()
     {
+        simulationDataTracker = GameObject.FindObjectOfType<SimulationDataTracker>();
         currentMenuContentPanel = menuSimulationPanel;
         currentMenuContentPanel.SetActive(true);
     }
@@ -32,6 +41,11 @@ public class UIController : MonoBehaviour
     void Update()
     {
         timerTextComponent.text = Time.timeSinceLevelLoad.ToString();
+
+        if (currentMenuContentPanel.Equals(menuInformationPanel))
+        {
+            UpdateInformationPanel();
+        }
     }
 
     public void OnButtonClickChangeMenuContentState(int menuContentState)
@@ -65,6 +79,12 @@ public class UIController : MonoBehaviour
         {
             menuPanelParentAnimator.SetBool(isMenuMinimisedAnimatorString, !isMenuMinimised);
         }
+    }
+
+    private void UpdateInformationPanel()
+    {
+        NumberOfPedestriansText.text = simulationDataTracker.GetNumberOfType(typeof(Pedestrian)).ToString();
+        NumberOfShootersText.text = simulationDataTracker.GetNumberOfObjectsWithTag(shooterTag).ToString();
     }
 }
 
