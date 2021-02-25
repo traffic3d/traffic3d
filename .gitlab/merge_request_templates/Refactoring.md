@@ -2,6 +2,10 @@
 
 Describe your proposed change, and why you think it will improve the code base.
 
+[[_TOC_]]
+
+---
+
 ## Test coverage
 
 Which test cases cover the changes you have made in this merge request?
