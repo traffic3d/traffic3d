@@ -3163,6 +3163,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 948085642}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &970821388 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1240357514829149751, guid: 0f660394136effb40aad2fbd9f1cddf4,
+    type: 3}
+  m_PrefabInstance: {fileID: 1334056662}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &975296004
 GameObject:
   m_ObjectHideFlags: 0
@@ -4326,6 +4338,16 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9121431956647673631, guid: 0f660394136effb40aad2fbd9f1cddf4,
+        type: 3}
+      propertyPath: NumberOfPedestriansText
+      value: 
+      objectReference: {fileID: 1195357888}
+    - target: {fileID: 9121431956647673631, guid: 0f660394136effb40aad2fbd9f1cddf4,
+        type: 3}
+      propertyPath: NumberOfShootersText
+      value: 
+      objectReference: {fileID: 970821388}
     - target: {fileID: 9121431956889859678, guid: 0f660394136effb40aad2fbd9f1cddf4,
         type: 3}
       propertyPath: m_AnchoredPosition.x
