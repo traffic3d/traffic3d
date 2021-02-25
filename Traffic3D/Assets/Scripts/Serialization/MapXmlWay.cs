@@ -87,43 +87,41 @@ public class MapXmlWay
             // Add all tags to dictionary
             string node_attribute = GetAttribute<string>("k", tag.Attributes);
             Tags[node_attribute] = GetAttribute<string>("v", tag.Attributes);
-            if (node_attribute == "highway")
+            if (node_attribute == OpenStreetMapTagName.highwayTag)
             {
                 String tagValue = GetAttribute<string>("v", tag.Attributes);
 
 
                 //A value of "ROAD" implies the road type was not known during the mapping process. Therefore, it's likely a tag we to ignore.
-                if (tagValue != "footway" && tagValue != "steps" && tagValue != "cycleway" && tagValue != "pedestrian" && tagValue != "construction" && tagValue != "service" && tagValue != "motorway" && tagValue != "track")
+                if (tagValue != OpenStreetMapTagName.footwayTag && tagValue != OpenStreetMapTagName.stepsTag &&
+                    tagValue != OpenStreetMapTagName.cyclewayTag && tagValue != OpenStreetMapTagName.pedestrianTag &&
+                    tagValue != OpenStreetMapTagName.constructionTag && tagValue != OpenStreetMapTagName.serviceTag &&
+                    tagValue != OpenStreetMapTagName.motorwayTag && tagValue != OpenStreetMapTagName.trackTag)
                 {
                     IsRoad = true;
                 }
 
             }
-            else if (node_attribute == "building:levels" || node_attribute == "building:height")
+            else if (node_attribute == OpenStreetMapTagName.buildingLevelsTag || node_attribute == OpenStreetMapTagName.buildingHeightTag)
             {
                 //Building height is recorded in floors. 1 floor == ~4m
                 buildingHeight = GetAttribute<float>("v", tag.Attributes) * 6.2f;
             }
-            else if (node_attribute == "lanes")
+            else if (node_attribute == OpenStreetMapTagName.lanesTag)
             {
                 Lanes = GetAttribute<int>("v", tag.Attributes);
             }
-            else if (node_attribute == "name")
+            else if (node_attribute == OpenStreetMapTagName.nameTag)
             {
                 Name = GetAttribute<string>("v", tag.Attributes);
             }
-            else if (node_attribute == "building")
+            else if (node_attribute == OpenStreetMapTagName.buildingTag)
             {
-                isBuilding = false;
-                if (GetAttribute<string>("v", tag.Attributes) == "yes")
-                {
-                    isBuilding = true;
-                }
+                isBuilding = Utils.IsTruthy(GetAttribute<string>("v", tag.Attributes));
             }
-            else if (node_attribute == "oneway")
+            else if (node_attribute == OpenStreetMapTagName.onewayTag)
             {
-                string value = GetAttribute<string>("v", tag.Attributes);
-                IsOneWay = value == "yes" || value == "true" || value == "1";
+                IsOneWay = Utils.IsTruthy(GetAttribute<string>("v", tag.Attributes));
             }
 
         }
@@ -140,13 +138,13 @@ public class MapXmlWay
             {
                 ForwardLanes = Lanes;
                 BackwardLanes = Lanes;
-                if (Tags.ContainsKey("lanes:forward"))
+                if (Tags.ContainsKey(OpenStreetMapTagName.lanesForwardTag))
                 {
-                    ForwardLanes = int.Parse(Tags["lanes:forward"]);
+                    ForwardLanes = int.Parse(Tags[OpenStreetMapTagName.lanesForwardTag]);
                 }
-                if (Tags.ContainsKey("lanes:backward"))
+                if (Tags.ContainsKey(OpenStreetMapTagName.lanesBackwardTag))
                 {
-                    BackwardLanes = int.Parse(Tags["lanes:backward"]);
+                    BackwardLanes = int.Parse(Tags[OpenStreetMapTagName.lanesBackwardTag]);
                 }
             }
         }
