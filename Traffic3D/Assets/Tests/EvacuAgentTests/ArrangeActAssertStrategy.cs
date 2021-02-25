@@ -1,7 +1,8 @@
-﻿using System.Collections;
+﻿using NUnit.Framework;
+using System.Collections;
 using Tests;
-using UnityEngine.TestTools;
 
+[Category("Tests")]
 public abstract class ArrangeActAssertStrategy : EvacuAgentCommonSceneTest
 {
     public abstract IEnumerator PerformTest();
