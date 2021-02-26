@@ -46,6 +46,79 @@ public class VehiclePath
         return null;
     }
 
+    public float GetDistanceFromVehicleToIntersectionPoint(Transform currentNode, Transform vehicleTransform, PathIntersectionPoint pathIntersectionPoint)
+    {
+        if (pathIntersectionPoint.IsNodeAfterIntersection(currentNode))
+        {
+            // TODO NOT WORKING: Need to check if vehicle is already past the intersection point by calculating the ratio of the vehicle from the between nodes and checking the distance of the vehicle
+            // It currently returns a distance once the vehicle has gone past the intersection, causing the value to go up as they drive away from the intersection point.
+            // Return direct distance as current node is after intersection point, meaning vehicle is right next to it.
+            return Vector3.Distance(vehicleTransform.position, pathIntersectionPoint.intersection);
+        }
+        if ((nodes.Contains(pathIntersectionPoint.line1p1Node) && nodes.IndexOf(pathIntersectionPoint.line1p1Node) < nodes.IndexOf(currentNode)) ||
+            (nodes.Contains(pathIntersectionPoint.line2p1Node) && nodes.IndexOf(pathIntersectionPoint.line2p1Node) < nodes.IndexOf(currentNode)))
+        {
+            // Intersection point behind current node, return NaN.
+            return float.NaN;
+        }
+        float totalDistance = Vector3.Distance(currentNode.position, vehicleTransform.position);
+        for (int i = nodes.IndexOf(currentNode) + 1; i < nodes.Count; i++)
+        {
+            Transform lastNode = nodes[i - 1];
+            Transform node = nodes[i];
+            float distanceBetweenNodes = Vector3.Distance(lastNode.position, node.position);
+            totalDistance = totalDistance + distanceBetweenNodes;
+            if (pathIntersectionPoint.IsNodeBeforeIntersection(node))
+            {
+                return totalDistance + Vector3.Distance(node.position, pathIntersectionPoint.intersection);
+            }
+        }
+        // No intersection point found, return NaN.
+        return float.NaN;
+    }
+
+    /// <summary>
+    /// Get Intersection points along this path and another path.
+    /// Note that this only works on a flat plane.
+    /// </summary>
+    /// <param name="otherPath">The other path to compare</param>
+    /// <returns>A list of points where the paths intersect</returns>
+    public HashSet<PathIntersectionPoint> GetIntersectionPoints(VehiclePath otherPath)
+    {
+        HashSet<PathIntersectionPoint> results = new HashSet<PathIntersectionPoint>();
+        HashSet<Vector3> addedVectors = new HashSet<Vector3>();
+        for (int nodeIndex = 0; nodeIndex < nodes.Count - 1; nodeIndex++)
+        {
+            for (int otherNodeIndex = 0; otherNodeIndex < otherPath.nodes.Count - 1; otherNodeIndex++)
+            {
+                Vector2 node1 = new Vector2(nodes[nodeIndex].position.x, nodes[nodeIndex].position.z);
+                Vector2 node2 = new Vector2(nodes[nodeIndex + 1].position.x, nodes[nodeIndex + 1].position.z);
+                Vector2 otherNode1 = new Vector2(otherPath.nodes[otherNodeIndex].position.x, otherPath.nodes[otherNodeIndex].position.z);
+                Vector2 otherNode2 = new Vector2(otherPath.nodes[otherNodeIndex + 1].position.x, otherPath.nodes[otherNodeIndex + 1].position.z);
+                if (node1.Equals(otherNode1) && node2.Equals(otherNode2))
+                {
+                    continue;
+                }
+                else if (node1.Equals(otherNode1))
+                {
+                    addedVectors.Add(nodes[nodeIndex].position);
+                    results.Add(new PathIntersectionPoint(nodes[nodeIndex], nodes[nodeIndex], otherPath.nodes[otherNodeIndex], otherPath.nodes[otherNodeIndex], nodes[nodeIndex].position));
+                }
+                else if (node2.Equals(otherNode2) && !addedVectors.Contains(nodes[nodeIndex + 1].position))
+                {
+                    addedVectors.Add(nodes[nodeIndex + 1].position);
+                    results.Add(new PathIntersectionPoint(nodes[nodeIndex + 1], nodes[nodeIndex + 1], otherPath.nodes[otherNodeIndex + 1], otherPath.nodes[otherNodeIndex + 1], nodes[nodeIndex + 1].position));
+                }
+                else if (Utils.GetLineIntersection(node1, node2, otherNode1, otherNode2, out Vector2 intersection))
+                {
+                    addedVectors.Add(new Vector3(intersection.x, nodes[nodeIndex].position.y, intersection.y));
+                    results.Add(new PathIntersectionPoint(nodes[nodeIndex], nodes[nodeIndex + 1], otherPath.nodes[otherNodeIndex], otherPath.nodes[otherNodeIndex + 1], new Vector3(intersection.x, nodes[nodeIndex].position.y, intersection.y)));
+                }
+            }
+        }
+        return results;
+    }
+
     /// <summary>
     /// First, gets the position on the road which uses distanceAhead to find that position from the vehicle
     /// Then returns the angle in degrees from the vehicle direction to the direction of the position.
