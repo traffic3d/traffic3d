@@ -1,159 +1,237 @@
 ﻿using NUnit.Framework;
 using System.Collections;
 using System.Linq;
-using Tests;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-[Category("Tests")]
-public class FieldOfViewTests : EvacuAgentCommonSceneTest
+public class FieldOfView_CanDetectOtherPedestrian_WhenPedestrianIsWithinViewAngleAndViewRadius : ArrangeActAssertStrategy
 {
-    private const float DEFAULT_VIEW_ANGLE = 90f;
-    private const float DEFAULT_VIEW_RADIUS = 50f;
-    private const string OBSTACLE_LAYER_MASK = "Obstacle";
-    private const string DEFAULT_LAYER_MASK = "Default";
-
-    private Vector3 viewingPedestrianPosition = new Vector3(0, 0, 0);
-    private Vector3 insideViewAngleAndInsideRadius = new Vector3(5, 0, 10);
-    private Vector3 insideViewAngleAndOutsideRadius = new Vector3(0, 0, 60);
-    private Vector3 outsideViewAngleAndInsideRadius = new Vector3(15, 0, -5);
-
-    private Vector3 obstructionScale = new Vector3(20, 15, 2);
-    private Vector3 obstructionPosition = new Vector3(-5, 0, 5);
-    private Vector3 nonObstructingObjectScale= new Vector3(2, 2, 2);
-    private Vector3 nonObstructingObjectPosition = new Vector3(8, 0, 10);
-
-    [UnitySetUp]
-    public IEnumerator UnitySetUp()
-    {
-        yield return null;
-        foreach (Pedestrian pedestrian in GameObject.FindObjectsOfType<Pedestrian>())
-        {
-            GameObject.Destroy(pedestrian);
-        }
-    }
+    private Pedestrian[] pedestrians;
+    private FieldOfView viewingPedestrianFov;
+    private Pedestrian targetPedestrian;
+    private Vector3 insideViewAngleAndInsideRadius;
 
     [UnityTest]
-    public IEnumerator FieldOfView_CanDetectOtherPedestrian_WhenPedestrianIsWithinViewAngleAndViewRadius()
+    public override IEnumerator PerformTest()
     {
-        // Arrange
-        DisableLoops();
         yield return null;
+        Arrange();
+        Act();
+        Assertion();
+    }
 
-        Pedestrian[] pedestrians = base.SpawnPedestrians(2);
+    public override void Arrange()
+    {
+        DisableLoops();
+        pedestrians = SpawnPedestrians(2);
+        viewingPedestrianFov = FieldOfViewTestsHelper.SetUpViewingPedestrian(pedestrians[0]);
 
-        FieldOfView viewingPedestrianFov = SetUpViewingPedestrian(pedestrians[0]);
-
-        Pedestrian targetPedestrian = pedestrians[1];
+        targetPedestrian = pedestrians[1];
+        insideViewAngleAndInsideRadius = new Vector3(5, 0, 10);
         targetPedestrian.transform.position = insideViewAngleAndInsideRadius;
+    }
 
-        // Act
+    public override void Act()
+    {
         viewingPedestrianFov.GetAllAgentsInViewAngle();
+    }
 
-        // Assert
+    public override void Assertion()
+    {
         Assert.AreEqual(1, viewingPedestrianFov.visiblePedestrians.Count);
         Assert.AreSame(viewingPedestrianFov.visiblePedestrians.First(), targetPedestrian);
     }
+}
+
+public class FieldOfView_CannnotDetectOtherPedestrian_WhenPedestrianIsWithinViewAngle_AndOutsideOfViewRadius : ArrangeActAssertStrategy
+{
+    private Pedestrian[] pedestrians;
+    private FieldOfView viewingPedestrianFov;
+    private Pedestrian targetPedestrian;
+    private Vector3 insideViewAngleAndOutsideRadius;
 
     [UnityTest]
-    public IEnumerator FieldOfView_CannnotDetectOtherPedestrian_WhenPedestrianIsWithinViewAngle_AndOutsideOfViewRadius()
+    public override IEnumerator PerformTest()
     {
-        // Arrange
-        DisableLoops();
         yield return null;
+        Arrange();
+        Act();
+        Assertion();
+    }
 
-        Pedestrian[] pedestrians = base.SpawnPedestrians(2);
+    public override void Arrange()
+    {
+        DisableLoops();
+        pedestrians = SpawnPedestrians(2);
+        viewingPedestrianFov = FieldOfViewTestsHelper.SetUpViewingPedestrian(pedestrians[0]);
 
-        FieldOfView viewingPedestrianFov = SetUpViewingPedestrian(pedestrians[0]);
-
-        Pedestrian targetPedestrian = pedestrians[1];
+        targetPedestrian = pedestrians[1];
+        insideViewAngleAndOutsideRadius = new Vector3(0, 0, 150);
         targetPedestrian.transform.position = insideViewAngleAndOutsideRadius;
-
-        // Act
-        viewingPedestrianFov.GetAllAgentsInViewAngle();
-
-        // Assert
-        Assert.AreEqual(0, viewingPedestrianFov.visiblePedestrians.Count);
     }
 
-    [UnityTest]
-    public IEnumerator FieldOfView_CannnotDetectOtherPedestrian_WhenPedestrianIsOutsideOfViewAngle_AndInsideOfViewRadius()
+    public override void Act()
     {
-        // Arrange
-        DisableLoops();
+        viewingPedestrianFov.GetAllAgentsInViewAngle();
+    }
+
+    public override void Assertion()
+    {
+        Assert.AreEqual(0, viewingPedestrianFov.visiblePedestrians.Count);
+    }
+}
+
+public class FieldOfView_CannnotDetectOtherPedestrian_WhenPedestrianIsOutsideOfViewAngle_AndInsideOfViewRadius : ArrangeActAssertStrategy
+{
+    private Pedestrian[] pedestrians;
+    private FieldOfView viewingPedestrianFov;
+    private Pedestrian targetPedestrian;
+    private Vector3 outsideViewAngleAndInsideRadius;
+
+    [UnityTest]
+    public override IEnumerator PerformTest()
+    {
         yield return null;
+        Arrange();
+        Act();
+        Assertion();
+    }
 
-        Pedestrian[] pedestrians = base.SpawnPedestrians(2);
+    public override void Arrange()
+    {
+        DisableLoops();
+        pedestrians = SpawnPedestrians(2);
+        viewingPedestrianFov = FieldOfViewTestsHelper.SetUpViewingPedestrian(pedestrians[0]);
 
-        FieldOfView viewingPedestrianFov = SetUpViewingPedestrian(pedestrians[0]);
-
-        Pedestrian targetPedestrian = pedestrians[1];
+        targetPedestrian = pedestrians[1];
+        outsideViewAngleAndInsideRadius = new Vector3(15, 0, -5);
         targetPedestrian.transform.position = outsideViewAngleAndInsideRadius;
-
-        // Act
-        viewingPedestrianFov.GetAllAgentsInViewAngle();
-
-        // Assert
-        Assert.AreEqual(0, viewingPedestrianFov.visiblePedestrians.Count);
     }
 
-    [UnityTest]
-    public IEnumerator FieldOfView_CannnotDetectOtherPedestrian_WhenPedestrianIsWithinViewAngleAndViewRadius_WhenObstacleInBetween()
+    public override void Act()
     {
-        // Arrange
-        DisableLoops();
-        yield return null;
-
-        SetUpNonPedestrianObject(obstructionScale, obstructionPosition, OBSTACLE_LAYER_MASK);
-        Pedestrian[] pedestrians = base.SpawnPedestrians(2);
-
-        FieldOfView viewingPedestrianFov = SetUpViewingPedestrian(pedestrians[0]);
-
-        Pedestrian targetPedestrian = pedestrians[1];
-        targetPedestrian.transform.position = insideViewAngleAndInsideRadius;
-
-        // Act
         viewingPedestrianFov.GetAllAgentsInViewAngle();
-
-        // Assert
-        Assert.AreEqual(0, viewingPedestrianFov.visiblePedestrians.Count);
     }
 
-    [UnityTest]
-    public IEnumerator FieldOfView_OnlyAddsPedestriansToVisiblePedestrainList()
+    public override void Assertion()
     {
-        // Arrange
-        DisableLoops();
+        Assert.AreEqual(0, viewingPedestrianFov.visiblePedestrians.Count);
+    }
+}
+
+public class FieldOfView_CannnotDetectOtherPedestrian_WhenPedestrianIsWithinViewAngleAndViewRadius_WhenObstacleInBetween : ArrangeActAssertStrategy
+{
+    private Pedestrian[] pedestrians;
+    private FieldOfView viewingPedestrianFov;
+    private Pedestrian targetPedestrian;
+    private Vector3 insideViewAngleAndInsideRadius;
+    private Vector3 obstructionScale;
+    private Vector3 obstructionPosition;
+    private string obstacleLayerMask;
+
+    [UnityTest]
+    public override IEnumerator PerformTest()
+    {
         yield return null;
+        Arrange();
+        Act();
+        Assertion();
+    }
 
-        Pedestrian[] pedestrians = base.SpawnPedestrians(2);
-        SetUpNonPedestrianObject(nonObstructingObjectScale, nonObstructingObjectPosition, DEFAULT_LAYER_MASK);
+    public override void Arrange()
+    {
+        DisableLoops();
 
-        FieldOfView viewingPedestrianFov = SetUpViewingPedestrian(pedestrians[0]);
+        obstructionScale = new Vector3(20, 15, 2);
+        obstructionPosition = new Vector3(-5, 0, 5);
+        obstacleLayerMask = "Obstacle";
+        FieldOfViewTestsHelper.SetUpNonPedestrianObject(obstructionScale, obstructionPosition, obstacleLayerMask);
 
-        Pedestrian targetPedestrian = pedestrians[1];
+        pedestrians = SpawnPedestrians(2);
+        viewingPedestrianFov = FieldOfViewTestsHelper.SetUpViewingPedestrian(pedestrians[0]);
+
+        targetPedestrian = pedestrians[1];
+        insideViewAngleAndInsideRadius = new Vector3(5, 0, 10);
         targetPedestrian.transform.position = insideViewAngleAndInsideRadius;
+    }
 
-        // Act
+    public override void Act()
+    {
         viewingPedestrianFov.GetAllAgentsInViewAngle();
+    }
 
-        // Assert
+    public override void Assertion()
+    {
+        Assert.AreEqual(0, viewingPedestrianFov.visiblePedestrians.Count);
+    }
+}
+
+public class FieldOfView_OnlyAddsPedestriansToVisiblePedestrainList : ArrangeActAssertStrategy
+{
+    private Pedestrian[] pedestrians;
+    private FieldOfView viewingPedestrianFov;
+    private Pedestrian targetPedestrian;
+    private Vector3 insideViewAngleAndInsideRadius;
+    private Vector3 nonObstructingObjectScale;
+    private Vector3 nonObstructingObjectPosition;
+    private string defaultLayerMask;
+
+    [UnityTest]
+    public override IEnumerator PerformTest()
+    {
+        yield return null;
+        Arrange();
+        Act();
+        Assertion();
+    }
+
+    public override void Arrange()
+    {
+        DisableLoops();
+
+        nonObstructingObjectScale = new Vector3(2, 2, 2);
+        nonObstructingObjectPosition = new Vector3(8, 0, 10);
+        insideViewAngleAndInsideRadius = new Vector3(5, 0, 10);
+        defaultLayerMask = "Default";
+        FieldOfViewTestsHelper.SetUpNonPedestrianObject(nonObstructingObjectScale, nonObstructingObjectPosition, defaultLayerMask);
+
+        pedestrians = SpawnPedestrians(2);
+        viewingPedestrianFov = FieldOfViewTestsHelper.SetUpViewingPedestrian(pedestrians[0]);
+
+        targetPedestrian = pedestrians[1];
+        targetPedestrian.transform.position = insideViewAngleAndInsideRadius;
+    }
+
+    public override void Act()
+    {
+        viewingPedestrianFov.GetAllAgentsInViewAngle();
+    }
+
+    public override void Assertion()
+    {
         Assert.AreEqual(1, viewingPedestrianFov.visiblePedestrians.Count);
         Assert.IsInstanceOf(typeof(Pedestrian), viewingPedestrianFov.visiblePedestrians[0]);
     }
+}
 
-    private FieldOfView SetUpViewingPedestrian(Pedestrian pedestrian)
+public static class FieldOfViewTestsHelper
+{
+    public static FieldOfView SetUpViewingPedestrian(Pedestrian pedestrian)
     {
+        Vector3 viewingPedestrianPosition = new Vector3(0, 0, 0);
+        float defaultViewAngle = 90f;
+        float defaultViewRadius = 100f;
+
         pedestrian.transform.position = viewingPedestrianPosition;
         FieldOfView viewingPedestrianFov = pedestrian.GetComponentInChildren<FieldOfView>();
-        viewingPedestrianFov.viewAngle = DEFAULT_VIEW_ANGLE;
-        viewingPedestrianFov.viewRadius = DEFAULT_VIEW_RADIUS;
+        viewingPedestrianFov.viewAngle = defaultViewAngle;
+        viewingPedestrianFov.viewRadius = defaultViewRadius;
         viewingPedestrianFov.visiblePedestrians.Clear();
 
         return viewingPedestrianFov;
     }
 
-    private GameObject SetUpNonPedestrianObject(Vector3 scale, Vector3 position, string layerMask)
+    public static GameObject SetUpNonPedestrianObject(Vector3 scale, Vector3 position, string layerMask)
     {
         GameObject nonPedestrianObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
         nonPedestrianObject.transform.localScale = scale;
