@@ -73,7 +73,7 @@ public class PedestrianFactory : MonoBehaviour
 
     private void IsUsingEvacuationBehaviour()
     {
-        if (SceneManager.GetActiveScene().name.Equals(EvacuAgentSceneConstants.SCENE_NAME))
+        if (SceneManager.GetActiveScene().name.Equals(EvacuAgentSceneParamaters.SCENE_NAME))
         {
             isUsingEvacuationBehaviour = true;
         }
@@ -85,6 +85,7 @@ public class PedestrianFactory : MonoBehaviour
         {
             GameObject fieldOfView = Instantiate(fieldOfViewPrefab, pedestrian.transform.position, Quaternion.identity);
             fieldOfView.transform.SetParent(pedestrian.transform);
+            fieldOfView.GetComponent<MeshRenderer>().enabled = EvacuAgentSceneParamaters.IS_FOV_VISUAL_ENABLED;
         }
 
         pedestrian.gameObject.AddComponent<PedestrianPathCreator>();

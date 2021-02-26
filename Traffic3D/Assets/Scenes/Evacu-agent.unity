@@ -3163,18 +3163,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 948085642}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &970821388 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1240357514829149751, guid: 0f660394136effb40aad2fbd9f1cddf4,
-    type: 3}
-  m_PrefabInstance: {fileID: 1334056662}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &975296004
 GameObject:
   m_ObjectHideFlags: 0
@@ -3360,23 +3348,11 @@ MeshFilter:
   m_GameObject: {fileID: 975634202}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1013959186
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
   - component: {fileID: 1013959187}
   - component: {fileID: 1013959188}
   - component: {fileID: 1013959189}
   m_Layer: 11
   m_Name: PedestrianPoint building 3
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!4 &1013959187
 Transform:
   m_ObjectHideFlags: 0
@@ -3392,24 +3368,11 @@ Transform:
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1013959188
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1013959186}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 729cdce3c307f93459efb3c98a558d4e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   footfall: 20
 --- !u!65 &1013959189
 BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1013959186}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -3786,17 +3749,11 @@ Transform:
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1184351229
-MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1184351227}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 729cdce3c307f93459efb3c98a558d4e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   footfall: 20
 --- !u!65 &1184351230
 BoxCollider:
@@ -4338,53 +4295,7 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9121431956647673631, guid: 0f660394136effb40aad2fbd9f1cddf4,
-        type: 3}
-      propertyPath: NumberOfPedestriansText
-      value: 
-      objectReference: {fileID: 1195357888}
-    - target: {fileID: 9121431956647673631, guid: 0f660394136effb40aad2fbd9f1cddf4,
-        type: 3}
-      propertyPath: NumberOfShootersText
-      value: 
-      objectReference: {fileID: 970821388}
-    - target: {fileID: 9121431956889859678, guid: 0f660394136effb40aad2fbd9f1cddf4,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 87.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 9121431956889859678, guid: 0f660394136effb40aad2fbd9f1cddf4,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: -175.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 9121431958517087362, guid: 0f660394136effb40aad2fbd9f1cddf4,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9121431958517087362, guid: 0f660394136effb40aad2fbd9f1cddf4,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9121431958517087362, guid: 0f660394136effb40aad2fbd9f1cddf4,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 180
-      objectReference: {fileID: 0}
-    - target: {fileID: 9121431958517087363, guid: 0f660394136effb40aad2fbd9f1cddf4,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: MinimiseMaximiseMenu
-      objectReference: {fileID: 0}
-    - target: {fileID: 5000750750692338788, guid: 0f660394136effb40aad2fbd9f1cddf4,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 58889f4b652aa83459ff3d69bd88cb5b, type: 2}
-    m_RemovedComponents:
-    - {fileID: 5872067757356549585, guid: 0f660394136effb40aad2fbd9f1cddf4, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f660394136effb40aad2fbd9f1cddf4, type: 3}
 --- !u!1 &1344088435
 GameObject:
