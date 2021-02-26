@@ -10,6 +10,7 @@ TagManager:
   - unhap
   - roadway
   - pathway
+  - criteriaValueError
   layers:
   - Default
   - TransparentFX
@@ -22,7 +23,7 @@ TagManager:
   - PostProcessing
   - Pedestrian
   - Obstacle
-  - 
+  - PedestrianPoint
   - 
   - 
   - 
