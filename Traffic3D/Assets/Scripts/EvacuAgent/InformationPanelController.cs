@@ -1,20 +1,40 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class InformationPanelController : MonoBehaviour
 {
-    [SerializeField]
-    private Text NumberOfPedestriansText;
+    public Text NumberOfPedestriansText;
+    public Text NumberOfShootersText;
 
     public void Update()
     {
-        NumberOfPedestriansText.text = GetNumberOfType(typeof(Pedestrian)).ToString();
-        //NumberOfShootersText.text = simulationDataTracker.GetNumberOfObjectsWithTag(shooterTag).ToString(); commented out as the shooter tag does not exist yet
+        UpdateNumberOfPedestrianText();
+        UpdateNumberOfShootersText();
     }
 
-    public int GetNumberOfType(System.Type type)
+    public void UpdateNumberOfPedestrianText()
     {
-        return GameObject.FindObjectsOfType(type).Length;
+        NumberOfPedestriansText.text = GetNumberOfPedestrianWithoutGivenTags(new List<string> { EvacuAgentSceneParamaters.SHOOTER_TAG }).ToString();
+    }
+
+    public void UpdateNumberOfShootersText()
+    {
+        NumberOfShootersText.text = GetNumberOfObjectsWithTag(EvacuAgentSceneParamaters.SHOOTER_TAG).ToString();
+    }
+
+    public int GetNumberOfPedestrianWithoutGivenTags(List<string> tagsToNotCount)
+    {
+        int counter = 0;
+
+        foreach (Pedestrian pedestrian in GameObject.FindObjectsOfType<Pedestrian>())
+        {
+            if (!tagsToNotCount.Contains(pedestrian.tag))
+            {
+                counter++;
+            }
+        }
+        return counter;
     }
 
     public int GetNumberOfObjectsWithTag(string tag)
