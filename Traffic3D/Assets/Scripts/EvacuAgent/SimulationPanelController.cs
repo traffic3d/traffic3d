@@ -11,4 +11,12 @@ public class SimulationPanelController : MonoBehaviour
             fieldOfView.GetComponent<MeshRenderer>().enabled = isTurnedOn;
         }
     }
+
+    public void ToggleShooterPedestrianColour(bool isHighlightToggledOn)
+    {
+        foreach (GameObject shooterHighlight in GameObject.FindGameObjectsWithTag(EvacuAgentSceneParamaters.SHOOTER_HIGHLIGHT_TAG))
+        {
+            shooterHighlight.GetComponent<MeshRenderer>().enabled =  isHighlightToggledOn;
+        }
+    }
 }
