@@ -3,6 +3,8 @@ using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
+    public GameObject currentMenuContentPanel;
+
     [SerializeField]
     private Text timerTextComponent;
 
@@ -18,7 +20,6 @@ public class UIController : MonoBehaviour
     [SerializeField]
     private Text NumberOfShootersText;
 
-    private GameObject currentMenuContentPanel;
     private const string isMenuMinimisedAnimatorString = "isMenuMinimised";
 
     private void Start()
@@ -38,7 +39,9 @@ public class UIController : MonoBehaviour
 
         switch ((MenuContentState)menuContentState)
         {
-            case MenuContentState.SimulationMenuContent: currentMenuContentPanel = menuSimulationPanel;
+            default:
+            case MenuContentState.SimulationMenuContent:
+                currentMenuContentPanel = menuSimulationPanel;
                 break;
             case MenuContentState.InformationMenuContent:
                 currentMenuContentPanel = menuInformationPanel;
