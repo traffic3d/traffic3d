@@ -74,7 +74,7 @@ public class PedestrianPathCreator_CreatePathDecisionMatrix_ReturnsCorrectCollec
         footfallWeighting = 0.7f;
         distanceWeighting = 0.3f;
         expectedCurrentMaximumFootfall = 22f;
-        expectedCurrentMinimumDistance = 21.946f;
+        expectedCurrentMinimumDistance = 21.994f;
     }
 
     public override void Act()
