@@ -1,7 +1,7 @@
 FROM gableroux/unity3d:2018.3.11f1
 
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y autoconf moreutils && \
+    apt-get install --no-install-recommends -y autoconf moreutils libsaxonb-java && \
     wget https://github.com/ltratt/multitime/archive/multitime-1.4.tar.gz && \
     tar -xvzf multitime-1.4.tar.gz && \
     rm multitime-1.4.tar.gz && \
