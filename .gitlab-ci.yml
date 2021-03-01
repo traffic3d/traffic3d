@@ -58,13 +58,25 @@ meta-build-image:
     before_script:
         - chmod +x ./ci/before_script.sh && ./ci/before_script.sh
 
-lint:
+lint:mdl:
     stage: lint
     image: ruby:2.7
     before_script:
         - gem install mdl
     script:
         - git ls-files -z '*.md' | xargs -0 mdl --style .mdl.rb
+    rules:
+        - if: '$CI_COMMIT_BRANCH == "master"'
+          when: never
+        - when: always
+    tags:
+        - shared
+
+lint:metalint:
+    stage: lint
+    script:
+        - chmod +x ci/metalint.sh
+        - ./ci/metalint.sh
     rules:
         - if: '$CI_COMMIT_BRANCH == "master"'
           when: never
