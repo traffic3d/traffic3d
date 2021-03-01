@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
@@ -32,19 +30,18 @@ public class CameraController : MonoBehaviour
     private Vector3 zoomAmount;
 
     [SerializeField]
-    private Vector3 newPosition;
-
-    [SerializeField]
     private Quaternion newRotation;
 
-    [SerializeField]
-    private Vector3 newZoom;
+    private const float buttonNotPressedValue = 0f;
+    private const string horizonatalAxis = "Horizontal";
+    private const string verticalAxis = "Vertical";
+    private const string rotationAxis = "Fire1";
+    private const string zoomAxis = "Fire2";
+    private const string increasedPanSpeedAxis = "Fire3";
 
     void Start()
     {
-        newPosition = transform.position;
         newRotation = transform.rotation;
-        newZoom = cameraTranfrom.localPosition;
     }
 
     void Update()
@@ -58,7 +55,11 @@ public class CameraController : MonoBehaviour
     {
         Vector3 temporaryPosition = transform.position;
 
-        if (Input.GetKey(KeyCode.LeftShift))
+        float horizontalPanVale = Input.GetAxis(horizonatalAxis);
+        float verticalPanValue = Input.GetAxis(verticalAxis);
+        float increasedPanSpeed = Input.GetAxis(increasedPanSpeedAxis);
+
+        if (increasedPanSpeed > buttonNotPressedValue)
         {
             movementSpeed = fastSpeed;
         }
@@ -68,27 +69,27 @@ public class CameraController : MonoBehaviour
         }
 
         // Forward
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+        if (verticalPanValue > buttonNotPressedValue)
         {
             temporaryPosition += (transform.forward * movementSpeed);
         }
         // Backwards
-        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+        if (verticalPanValue < buttonNotPressedValue)
         {
             temporaryPosition += (transform.forward * -movementSpeed);
         }
         // Right
-        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        if (horizontalPanVale > buttonNotPressedValue)
         {
             temporaryPosition += (transform.right * movementSpeed);
         }
         // Left
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        if (horizontalPanVale < buttonNotPressedValue)
         {
             temporaryPosition += (transform.right * -movementSpeed);
         }
 
-        // Limits the camera to a given position in the x and z axis (we use a vector2 where the y position is actuall the z for our panning)
+        // Limits the camera to a given position in the x and z axis (we use a vector2 where the y position is actually the z for our panning)
         temporaryPosition.x = Mathf.Clamp(temporaryPosition.x, -panLimit.x, panLimit.x);
         temporaryPosition.z = Mathf.Clamp(temporaryPosition.z, -panLimit.y, panLimit.y);
 
@@ -98,13 +99,15 @@ public class CameraController : MonoBehaviour
 
     public void HandleCameraRotation()
     {
+        float rotationValue = Input.GetAxis(rotationAxis);
+
         // Rotate left
-        if (Input.GetKey(KeyCode.Q))
+        if (rotationValue < buttonNotPressedValue)
         {
             newRotation *= Quaternion.Euler(Vector3.up * -rotationAmount);
         }
         // Rotate right
-        if (Input.GetKey(KeyCode.E))
+        if (rotationValue > buttonNotPressedValue)
         {
             newRotation *= Quaternion.Euler(Vector3.up * rotationAmount);
         }
@@ -116,14 +119,15 @@ public class CameraController : MonoBehaviour
     public void HandleCameraZoom()
     {
         Vector3 temporaryZoom = cameraTranfrom.localPosition;
+        float zoomValue = Input.GetAxis(zoomAxis);
 
         // Zoom in
-        if (Input.GetKey(KeyCode.Z))
+        if (zoomValue < buttonNotPressedValue)
         {
             temporaryZoom += zoomAmount;
         }
         // Zoom out
-        if (Input.GetKey(KeyCode.C))
+        if (zoomValue > buttonNotPressedValue)
         {
             temporaryZoom -= zoomAmount;
         }
