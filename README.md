@@ -81,6 +81,7 @@ Garg, D., Chli, M. and Vogiatzis, G., 2019, May. Traffic3D: A New Traffic Simula
 Current developers:
 
 * Callum Bugajski - @callumbugajski via [Beautiful Canoe](https://beautifulcanoe.com/)
+* Josh Leeder - @leeder.josh via [Beautiful Canoe](https://beautifulcanoe.com/)
 
 Previous developers:
 
@@ -102,3 +103,28 @@ Copies of the license can also be obtained [directly from Mozilla](https://mozil
 ## Getting started with development
 
 Please read [CONTRIBUTING.md](/CONTRIBUTING.md) before you start working on this repository.
+
+## EvacuAgent
+
+EvacuAgent is an evacuation simulation that extends the pedestrian behaviour in Traffic3D.
+
+### Camera Controls
+
+Panning:
+
+* Pan up: `up arrow`, `w`.
+* Pan left: `left arrow`, `a`.
+* Pan down: `down arrow`, `s`.
+* Pan right: `right arrow`, `d`.
+* Increase pan speed while pressed: `left shift`.
+
+Rotating:
+
+* Rotate left: `q`.
+* Rotate right: `e`.
+
+Zooming:
+
+* Zoom out: `z`.
+* Zoom in: `c`.
+
