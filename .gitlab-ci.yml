@@ -58,7 +58,7 @@ meta-build-image:
     before_script:
         - chmod +x ./ci/before_script.sh && ./ci/before_script.sh
 
-lint:
+lint:mdl:
     stage: lint
     image: ruby:2.7
     before_script:
@@ -72,17 +72,32 @@ lint:
     tags:
         - shared
 
+lint:metalint:
+    stage: lint
+    script:
+        - chmod +x ci/metalint.sh
+        - ./ci/metalint.sh
+    rules:
+        - if: '$CI_COMMIT_BRANCH == "master"'
+          when: never
+        - when: always
+    tags:
+        - shared
+
 .test: &test
     image: $DOCKER_IMAGE_NAME:$FEATURE_BRANCH_TAG
     stage: test
     <<: *unity_before_script
     script:
         - chmod +x ./ci/test.sh && ./ci/test.sh
+        - test -f $CI_PROJECT_DIR/$TEST_PLATFORM-results.xml
+        - saxonb-xslt -s $CI_PROJECT_DIR/$TEST_PLATFORM-results.xml -xsl $CI_PROJECT_DIR/ci/nunit-transforms/nunit3-junit.xslt >$CI_PROJECT_DIR/$TEST_PLATFORM-junit-results.xml
+        - test -f $CI_PROJECT_DIR/$TEST_PLATFORM-junit-results.xml
     artifacts:
-        name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME-$TEST_PLATFORM-results"
         when: always
-        paths:
-            - $(pwd)/$TEST_PLATFORM-results.xml
+        reports:
+            junit: $CI_PROJECT_DIR/$TEST_PLATFORM-junit-results.xml
+        expire_in: 2 weeks
     rules:
         - if: $CI_COMMIT_TAG
           when: never
