@@ -11,6 +11,9 @@ TagManager:
   - roadway
   - pathway
   - criteriaValueError
+  - shooter
+  - Undefined
+  - shooterHighlight
   layers:
   - Default
   - TransparentFX
