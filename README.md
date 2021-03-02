@@ -91,6 +91,7 @@ Based on original code by Deepeka Garg - @gargd03.
 ## Credits
 
 * [LatLonConverter Class](http://wiki.openstreetmap.org/wiki/Mercator#C_implementation) - Licensed under Creative Commons Attribution-ShareAlike 2.0 (CC BY-SA) - developed by Florian Müller
+* The [NUnit to JUnit XSLT translator](https://gitlab.com/traffic3d/traffic3d/-/tree/develop/ci/nunit-transforms) is from the project [nunit/nunit-transforms](https://github.com/nunit/nunit-transforms/tree/master/nunit3-junit), published under the MIT license by Paul Hicks.
 
 ## License
 
