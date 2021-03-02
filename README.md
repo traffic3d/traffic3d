@@ -14,31 +14,6 @@ For more details please see [https://traffic3d.org](https://traffic3d.org).
 
 ---
 
-## Bugs and feature requests
-
-Please report issues via the [issue tracker](https://gitlab.com/traffic3d/traffic3d/issues).
-
-## Developers
-
-Current developers:
-
-* Callum Bugajski - @callumbugajski via [Beautiful Canoe](https://beautifulcanoe.com/)
-
-Previous developers:
-
-* Hishaam Iqbal - @iqbalh7
-
-Based on original code by Deepeka Garg - @gargd03.
-
-## License
-
-This software is licensed under the [Mozilla Public License Version 2.0](/LICENSE).
-Copies of the license can also be obtained [directly from Mozilla](https://mozilla.org/MPL/2.0/).
-
-## Getting Started with Development
-
-Please read [CONTRIBUTING.md](/CONTRIBUTING.md) before you start working on this repository.
-
 ## CLI Options
 
 Traffic3D has custom command line options using following flag:
@@ -68,7 +43,7 @@ ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x2
 
 If you are using a [Unity cache server](https://github.com/Unity-Technologies/unity-cache-server) you can also add a line, such as: `-CacheServerIPAddress XXX.XXX.XXX.XXX:8126`.
 
-## Config
+## Configuration
 
 Configuration is used to bulk import initialisation values into the Traffic3D system.
 Normally the values are direct mappings of the values that can be changed within the Unity UI.
@@ -78,6 +53,10 @@ e.g. The `highRangeRespawnTime` field in the config maps to the `highRangeRespaw
 ### Examples
 
 See [test_config.json](/Traffic3D/Assets/Tests/TestFiles/test_config.json) for an example of how to structure the file.
+
+## Bugs and feature requests
+
+Please report issues via the [issue tracker](https://gitlab.com/traffic3d/traffic3d/issues).
 
 ## Citing the Traffi3D software
 
@@ -97,6 +76,27 @@ Garg, D., Chli, M. and Vogiatzis, G., 2019, June. Traffic3D: A Rich 3D-Traffic E
 
 Garg, D., Chli, M. and Vogiatzis, G., 2019, May. Traffic3D: A New Traffic Simulation Paradigm. In Proceedings of the 18th International Conference on Autonomous Agents and MultiAgent Systems (pp. 2354-2356). International Foundation for Autonomous Agents and Multiagent Systems.
 
+## Developers
+
+Current developers:
+
+* Callum Bugajski - @callumbugajski via [Beautiful Canoe](https://beautifulcanoe.com/)
+
+Previous developers:
+
+* Hishaam Iqbal - @iqbalh7
+
+Based on original code by Deepeka Garg - @gargd03.
+
 ## Credits
 
 * [LatLonConverter Class](http://wiki.openstreetmap.org/wiki/Mercator#C_implementation) - Licensed under Creative Commons Attribution-ShareAlike 2.0 (CC BY-SA) - developed by Florian Müller
+
+## License
+
+This software is licensed under the [Mozilla Public License Version 2.0](/LICENSE).
+Copies of the license can also be obtained [directly from Mozilla](https://mozilla.org/MPL/2.0/).
+
+## Getting Started with Development
+
+Please read [CONTRIBUTING.md](/CONTRIBUTING.md) before you start working on this repository.
