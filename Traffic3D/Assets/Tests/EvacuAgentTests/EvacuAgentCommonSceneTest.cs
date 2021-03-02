@@ -53,5 +53,12 @@ namespace Tests
                 pedestrian.StopAllCoroutines();
             }
         }
+
+        public static GameObject SpawnGameObjectWithInactivePedestrianScript()
+        {
+            GameObject gameObject = GameObject.Instantiate(new GameObject());
+            gameObject.AddComponent<Pedestrian>().enabled = false;
+            return gameObject;
+        }
     }
 }

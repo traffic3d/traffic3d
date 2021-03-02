@@ -11,14 +11,9 @@ public class PedestrianFactory : MonoBehaviour
     public int maximumPedestrianCount = 20;
     public List<PedestrianProbability> pedestrianProbabilities;
 
-    [SerializeField]
-    private GameObject fieldOfViewPrefab;
-
-    [SerializeField]
-    private GameObject testCanvasPrefab;
-
     private PedestrianPoint[] pedestrianPoints;
     private bool isUsingEvacuationBehaviour = false;
+    private PedestrianBehaviourFactory pedestrianBehaviourFactory;
 
     void Start()
     {
@@ -28,6 +23,7 @@ public class PedestrianFactory : MonoBehaviour
         }
         pedestrianPoints = FindObjectsOfType<PedestrianPoint>();
         IsUsingEvacuationBehaviour();
+        pedestrianBehaviourFactory = gameObject.GetComponent<PedestrianBehaviourFactory>();
         StartCoroutine(GeneratePedestrians());
     }
 
@@ -50,7 +46,7 @@ public class PedestrianFactory : MonoBehaviour
 
         if (pedestrian.isUsingEvacuationBehaviour)
         {
-            AddEvacuAgentBehaviour(pedestrian);
+            pedestrianBehaviourFactory.AddEvacuAgentBehaviour(pedestrian);
         }
     }
 
@@ -73,21 +69,10 @@ public class PedestrianFactory : MonoBehaviour
 
     private void IsUsingEvacuationBehaviour()
     {
-        if (SceneManager.GetActiveScene().name.Equals(EvacuAgentSceneConstants.SCENE_NAME))
+        if (SceneManager.GetActiveScene().name.Equals(EvacuAgentSceneParamaters.SCENE_NAME))
         {
             isUsingEvacuationBehaviour = true;
         }
-    }
-
-    private void AddEvacuAgentBehaviour(Pedestrian pedestrian)
-    {
-        if (pedestrian.GetComponentInChildren<FieldOfView>() == null)
-        {
-            GameObject fieldOfView = Instantiate(fieldOfViewPrefab, pedestrian.transform.position, Quaternion.identity);
-            fieldOfView.transform.SetParent(pedestrian.transform);
-        }
-
-        pedestrian.gameObject.AddComponent<PedestrianPathCreator>();
     }
 
     [System.Serializable]

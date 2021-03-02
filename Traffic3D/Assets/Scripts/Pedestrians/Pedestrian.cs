@@ -12,11 +12,8 @@ public class Pedestrian : MonoBehaviour
     public float minSpeed = 1f;
     public float probabilityOfRunning = 0.1f;
     public bool isUsingEvacuationBehaviour;
-    public bool isCriteriaValueErrorMessageActive = false;
+    public bool isShooterAgent;
     private FieldOfView fieldOfView;
-
-    [SerializeField]
-    private bool isShooterAgent;
 
     [SerializeField]
     private PedestrianPoint[] currentPath;
@@ -43,7 +40,6 @@ public class Pedestrian : MonoBehaviour
     private float radiusToConsiderPedestrianPoints = 100f;
     private float footfallWeighting = 0.7f;
     private float distanceWeighting = 0.3f;
-    private int criteriaValueErrorTimer = 5;
 
     void Start()
     {
@@ -100,14 +96,13 @@ public class Pedestrian : MonoBehaviour
         }
         else
         {
-            DestroyCheck();
-
             if (isShooterAgent == true)
             {
                 ShooterSeekingBehaviour();
             }
             else
             {
+                DestroyCheck();
                 LocationUpdate();
             }
         }
@@ -287,13 +282,6 @@ public class Pedestrian : MonoBehaviour
     {
         FollowClosestPedestrian();
         yield return new WaitForSeconds(shooterSeekingFrequency);
-    }
-
-    public IEnumerator SetCriteriaValueErrorActive()
-    {
-        isCriteriaValueErrorMessageActive = true;
-        yield return new WaitForSeconds(criteriaValueErrorTimer);
-        isCriteriaValueErrorMessageActive = false;
     }
 
     private void FollowClosestPedestrian()
