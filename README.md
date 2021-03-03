@@ -14,7 +14,7 @@ For more details please see [https://traffic3d.org](https://traffic3d.org).
 
 ---
 
-## CLI Options
+## CLI options
 
 Traffic3D has custom command line options using following flag:
 `-executeMethod CustomCommandLineArguments.Run`
@@ -98,6 +98,6 @@ Based on original code by Deepeka Garg - @gargd03.
 This software is licensed under the [Mozilla Public License Version 2.0](/LICENSE).
 Copies of the license can also be obtained [directly from Mozilla](https://mozilla.org/MPL/2.0/).
 
-## Getting Started with Development
+## Getting started with development
 
 Please read [CONTRIBUTING.md](/CONTRIBUTING.md) before you start working on this repository.
