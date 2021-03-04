@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
@@ -12,11 +11,7 @@ public class Pedestrian : MonoBehaviour
     public float minSpeed = 1f;
     public float probabilityOfRunning = 0.1f;
     public bool isUsingEvacuationBehaviour;
-    public bool isShooterAgent;
-    private FieldOfView fieldOfView;
-
-    [SerializeField]
-    private PedestrianPoint[] currentPath;
+    public bool isShooterAgent = false;
 
     // If changed, the animation controller needs the running value changed too.
     private float runSpeed = 2.5f;
@@ -32,14 +27,6 @@ public class Pedestrian : MonoBehaviour
     private int roadAreaMask;
     private int walkableAreaMask;
     private int pedestrianCrossingAreaMask;
-    private int shooterSeekingFrequency = 4;
-    private float navMeshSampleDistance = 30f;
-    private PedestrianPathCreator pedestrianPathCreator;
-    private int currentPathIndex = 0;
-    private int sizeOfPath = 4;
-    private float radiusToConsiderPedestrianPoints = 100f;
-    private float footfallWeighting = 0.7f;
-    private float distanceWeighting = 0.3f;
 
     void Start()
     {
@@ -73,13 +60,6 @@ public class Pedestrian : MonoBehaviour
             navMeshAgent.SetAreaCost(roadAreaMask, walkingInRoadAreaCost);
         }
 
-        if (isUsingEvacuationBehaviour)
-        {
-            currentPath = new PedestrianPoint[sizeOfPath];
-            fieldOfView = GetComponentInChildren<FieldOfView>();
-            pedestrianPathCreator = GetComponent<PedestrianPathCreator>();
-        }
-
         GoToRandomPossibleLocation();
     }
 
@@ -94,32 +74,13 @@ public class Pedestrian : MonoBehaviour
             SpeedUpdate();
             LocationUpdate();
         }
-        else
-        {
-            if (isShooterAgent == true)
-            {
-                ShooterSeekingBehaviour();
-            }
-            else
-            {
-                DestroyCheck();
-                LocationUpdate();
-            }
-        }
     }
 
     public void DestroyCheck()
     {
         if (Vector3.Distance(transform.position, location) < 1f)
         {
-            if (isUsingEvacuationBehaviour)
-            {
-                GoToRandomPossibleLocation();
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
+             Destroy(gameObject);
         }
     }
 
@@ -248,60 +209,6 @@ public class Pedestrian : MonoBehaviour
     private Vector3 FindNearestGeneralPathPoint()
     {
         return generalPathCorners.Aggregate((nearestPoint, next) => Vector3.Distance(transform.position, next) < Vector3.Distance(transform.position, nearestPoint) ? next : nearestPoint);
-    }
-
-    public void ShooterSeekingBehaviour()
-    {
-        // Follow closest target in field of view
-        if (fieldOfView.visiblePedestrians.Count >= 1)
-        {
-            currentPathIndex = sizeOfPath - 1;
-            StartCoroutine(FindTargetsWithDelay());
-            return;
-        }
-
-        // If no visible target, create a path of pedestrian points to travel to
-        if (currentPath[currentPathIndex] == null || currentPathIndex == sizeOfPath - 1)
-        {
-            currentPathIndex = 0;
-            currentPath = pedestrianPathCreator.CalculateRankedShooterAgentPath(radiusToConsiderPedestrianPoints, transform, sizeOfPath, footfallWeighting, distanceWeighting);
-            navMeshAgent.SetDestination(currentPath[currentPathIndex].transform.position);
-            return;
-        }
-
-        // If at current destination, assign next destination
-        if (Vector3.Distance(transform.position, navMeshAgent.destination) < 1f)
-        {
-            currentPathIndex++;
-            navMeshAgent.SetDestination(currentPath[currentPathIndex].transform.position);
-            return;
-        }
-    }
-
-    IEnumerator FindTargetsWithDelay()
-    {
-        FollowClosestPedestrian();
-        yield return new WaitForSeconds(shooterSeekingFrequency);
-    }
-
-    private void FollowClosestPedestrian()
-    {
-        Transform cloststTransform = fieldOfView.visiblePedestrians.First().transform;
-        float currentSmallestDistance = Vector3.Distance(transform.position, cloststTransform.position);
-
-        foreach (Pedestrian pedestrian in fieldOfView.visiblePedestrians)
-        {
-            float distanceToAgent = Vector3.Distance(transform.position, pedestrian.transform.position);
-
-            if (distanceToAgent > currentSmallestDistance)
-            {
-                cloststTransform = pedestrian.transform;
-                currentSmallestDistance = distanceToAgent;
-            }
-        }
-
-        navMeshAgent.ResetPath();
-        navMeshAgent.SetDestination(cloststTransform.position);
     }
 }
 
