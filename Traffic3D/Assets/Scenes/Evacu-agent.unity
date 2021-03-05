@@ -840,7 +840,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 725275f3caaf0b1478a0fd4aee102c13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shooterBehaviourCollectionFactory: {fileID: 0}
+  shooterBehaviourCollectionFactory: {fileID: 218403221}
   fieldOfViewPrefab: {fileID: 2004611204436190234, guid: 5455178a2bed02144baada0f8ac40583,
     type: 3}
   shooterHighlightPrefab: {fileID: 4757276257460740152, guid: 0e7d6d5ec441c9945b6b8b88f962f78a,
