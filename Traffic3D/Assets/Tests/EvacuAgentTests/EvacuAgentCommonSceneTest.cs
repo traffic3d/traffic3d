@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -37,13 +38,21 @@ namespace Tests
             }
 
             PedestrianFactory pedestrianFactory = (PedestrianFactory)GameObject.FindObjectOfType(typeof(PedestrianFactory));
+            //PedestrianBehaviourFactory pedestrianBehaviourFactory = pedestrianFactory.GetComponent<PedestrianBehaviourFactory>();
 
             for (int index = 0; index < numberOfPedestrians; index++)
             {
                 pedestrianFactory.SpawnPedestrian();
             }
 
-            return GameObject.FindObjectsOfType<Pedestrian>();
+            Pedestrian[] pedestrians = GameObject.FindObjectsOfType<Pedestrian>();
+
+            foreach (Pedestrian pedestrian in pedestrians)
+            {
+                //pedestrianBehaviourFactory.AddEvacuAgentBehaviour(pedestrian);
+            }
+
+            return pedestrians;
         }
 
         public void StopAllPedstrianCoroutines()
