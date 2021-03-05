@@ -46,17 +46,25 @@ public class VehiclePath
         return null;
     }
 
-    public float GetDistanceFromVehicleToIntersectionPoint(Transform currentNode, Transform vehicleTransform, PathIntersectionPoint pathIntersectionPoint)
+    public float GetDistanceFromVehicleToIntersectionPoint(VehiclePath vehiclePath, int currentNodeNumber, Transform vehicleTransform, PathIntersectionPoint pathIntersectionPoint)
     {
+        Transform currentNode = vehiclePath.nodes[currentNodeNumber];
         if (pathIntersectionPoint.IsNodeAfterIntersection(currentNode))
         {
-            // TODO NOT WORKING: Need to check if vehicle is already past the intersection point by calculating the ratio of the vehicle from the between nodes and checking the distance of the vehicle
-            // It currently returns a distance once the vehicle has gone past the intersection, causing the value to go up as they drive away from the intersection point.
-            // Return direct distance as current node is after intersection point, meaning vehicle is right next to it.
-            return Vector3.Distance(vehicleTransform.position, pathIntersectionPoint.intersection);
+            // Returns a calculated distance to the intersection point.
+            float distanceToIntersection = pathIntersectionPoint.CalculateVehicleDistanceToIntersectionWithinIntersection(vehicleTransform, vehiclePath.nodes[currentNodeNumber - 1], currentNode);
+            if (distanceToIntersection != 0)
+            {
+                return distanceToIntersection;
+            }
+            else
+            {
+                // Intersection point behind current node, return NaN.
+                return float.NaN;
+            }
         }
-        if ((nodes.Contains(pathIntersectionPoint.line1p1Node) && nodes.IndexOf(pathIntersectionPoint.line1p1Node) < nodes.IndexOf(currentNode)) ||
-            (nodes.Contains(pathIntersectionPoint.line2p1Node) && nodes.IndexOf(pathIntersectionPoint.line2p1Node) < nodes.IndexOf(currentNode)))
+        if ((nodes.Contains(pathIntersectionPoint.line1.firstPoint) && nodes.IndexOf(pathIntersectionPoint.line1.firstPoint) < nodes.IndexOf(currentNode)) ||
+            (nodes.Contains(pathIntersectionPoint.line2.firstPoint) && nodes.IndexOf(pathIntersectionPoint.line2.firstPoint) < nodes.IndexOf(currentNode)))
         {
             // Intersection point behind current node, return NaN.
             return float.NaN;
@@ -85,16 +93,22 @@ public class VehiclePath
     /// <returns>A list of points where the paths intersect</returns>
     public HashSet<PathIntersectionPoint> GetIntersectionPoints(VehiclePath otherPath)
     {
+        System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+        System.Diagnostics.Stopwatch stopwatchInternalLoop = new System.Diagnostics.Stopwatch();
+        stopwatch.Start();
         HashSet<PathIntersectionPoint> results = new HashSet<PathIntersectionPoint>();
         HashSet<Vector3> addedVectors = new HashSet<Vector3>();
+        List<Vector2> flattenedPath = nodes.Select(t => new Vector2(t.position.x, t.position.z)).ToList();
+        List<Vector2> flattenedOtherPath = otherPath.nodes.Select(t => new Vector2(t.position.x, t.position.z)).ToList();
         for (int nodeIndex = 0; nodeIndex < nodes.Count - 1; nodeIndex++)
         {
             for (int otherNodeIndex = 0; otherNodeIndex < otherPath.nodes.Count - 1; otherNodeIndex++)
             {
-                Vector2 node1 = new Vector2(nodes[nodeIndex].position.x, nodes[nodeIndex].position.z);
-                Vector2 node2 = new Vector2(nodes[nodeIndex + 1].position.x, nodes[nodeIndex + 1].position.z);
-                Vector2 otherNode1 = new Vector2(otherPath.nodes[otherNodeIndex].position.x, otherPath.nodes[otherNodeIndex].position.z);
-                Vector2 otherNode2 = new Vector2(otherPath.nodes[otherNodeIndex + 1].position.x, otherPath.nodes[otherNodeIndex + 1].position.z);
+                stopwatchInternalLoop.Start();
+                Vector2 node1 = flattenedPath[nodeIndex];
+                Vector2 node2 = flattenedPath[nodeIndex + 1];
+                Vector2 otherNode1 = flattenedOtherPath[otherNodeIndex];
+                Vector2 otherNode2 = flattenedOtherPath[otherNodeIndex + 1];
                 if (node1.Equals(otherNode1) && node2.Equals(otherNode2))
                 {
                     continue;
@@ -114,8 +128,14 @@ public class VehiclePath
                     addedVectors.Add(new Vector3(intersection.x, nodes[nodeIndex].position.y, intersection.y));
                     results.Add(new PathIntersectionPoint(nodes[nodeIndex], nodes[nodeIndex + 1], otherPath.nodes[otherNodeIndex], otherPath.nodes[otherNodeIndex + 1], new Vector3(intersection.x, nodes[nodeIndex].position.y, intersection.y)));
                 }
+                stopwatchInternalLoop.Stop();
             }
         }
+        stopwatch.Stop();
+        Debug.Log("Found Intersections: " + results.Count);
+        Debug.Log("GetIntersectionPoints: " + stopwatch.ElapsedMilliseconds + "ms");
+        Debug.Log("Internal Loop: " + stopwatchInternalLoop.ElapsedMilliseconds + "ms");
+        Debug.Log("Looping Through: " + (nodes.Count * otherPath.nodes.Count));
         return results;
     }
 

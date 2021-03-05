@@ -83,6 +83,7 @@ public class VehicleFactory : MonoBehaviour
         VehicleEngine vehicleEngine = spawnedVehicle.GetComponent<VehicleEngine>();
         vehicleEngine.GenerateVehiclePath(startRoadNode);
         currentVehicles.Add(spawnedVehicle);
+        EventManager.GetInstance().CallVehicleSpawnEvent(this, new VehicleEventArgs(vehicleEngine));
         return spawnedVehicle;
     }
 

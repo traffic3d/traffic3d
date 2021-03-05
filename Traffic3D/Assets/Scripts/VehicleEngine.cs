@@ -59,6 +59,13 @@ public class VehicleEngine : MonoBehaviour
         engineStatus = EngineStatus.STOP;
         targetSpeed = maxSpeed;
         currentMotorTorque = maxMotorTorque;
+        EventManager.GetInstance().VehicleSpawnEvent += OnVehicleSpawnEvent;
+        EventManager.GetInstance().VehicleDestroyEvent += OnVehicleDestroyEvent;
+        // Find all vehicles and intersection paths
+        foreach (VehicleEngine vehicleEngine in FindObjectsOfType<VehicleEngine>())
+        {
+            AddVehicleIntersectionPoint(vehicleEngine);
+        }
     }
 
     /// <summary>
@@ -75,6 +82,31 @@ public class VehicleEngine : MonoBehaviour
         this.path = vehiclePath;
         currentNodeNumber = 1;
         currentNode = path.nodes[currentNodeNumber];
+    }
+
+    public void OnVehicleSpawnEvent(object sender, VehicleEventArgs args)
+    {
+        AddVehicleIntersectionPoint(args.vehicleEngine);
+    }
+
+    public void OnVehicleDestroyEvent(object sender, VehicleEventArgs args)
+    {
+        vehicleIntersectionPoints.Remove(args.vehicleEngine);
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.GetInstance().VehicleSpawnEvent -= OnVehicleSpawnEvent;
+        EventManager.GetInstance().VehicleDestroyEvent -= OnVehicleDestroyEvent;
+        EventManager.GetInstance().CallVehicleDestroyEvent(this, new VehicleEventArgs(this));
+    }
+
+    public void AddVehicleIntersectionPoint(VehicleEngine otherVehicle)
+    {
+        if (otherVehicle != null && otherVehicle != this)
+        {
+            vehicleIntersectionPoints.Add(otherVehicle, path.GetIntersectionPoints(otherVehicle.path));
+        }
     }
 
     public void OnCollisionEnter(Collision other)
@@ -241,19 +273,6 @@ public class VehicleEngine : MonoBehaviour
 
     private void MergeCheck()
     {
-        List<VehicleEngine> nearbyVehicles = GetNearbyVehicles(mergeRadiusCheck);
-        foreach (VehicleEngine vehicleEngine in nearbyVehicles)
-        {
-            if (vehicleIntersectionPoints.ContainsKey(vehicleEngine))
-            {
-                continue;
-            }
-            vehicleIntersectionPoints.Add(vehicleEngine, path.GetIntersectionPoints(vehicleEngine.path));
-        }
-        if (nearbyVehicles.Count == 0)
-        {
-            return;
-        }
         foreach (VehicleEngine vehicleEngine in vehicleIntersectionPoints.Keys.Where(v => v == null).ToList())
         {
             vehicleIntersectionPoints.Remove(vehicleEngine);
@@ -261,11 +280,6 @@ public class VehicleEngine : MonoBehaviour
         Dictionary<PathIntersectionPoint, HashSet<VehicleEngine>> vehiclesAtIntersectionPoint = new Dictionary<PathIntersectionPoint, HashSet<VehicleEngine>>();
         foreach (KeyValuePair<VehicleEngine, HashSet<PathIntersectionPoint>> entry in vehicleIntersectionPoints)
         {
-            if (entry.Key == null)
-            {
-                vehicleIntersectionPoints.Remove(entry.Key);
-                continue;
-            }
             foreach (PathIntersectionPoint intersectionPoint in entry.Value)
             {
                 if (vehiclesAtIntersectionPoint.ContainsKey(intersectionPoint))
@@ -282,21 +296,17 @@ public class VehicleEngine : MonoBehaviour
         {
             return;
         }
-        //List<Vector3> orderedIntersectionPoints = vehiclesAtIntersectionPoint.Keys.Where(v => Vector3.Distance(transform.position, v) <= mergeRadiusCheck).OrderBy(v => Vector3.Distance(transform.position, v)).ToList();
-        HashSet<PathIntersectionPoint> pathIntersectionPoints = new HashSet<PathIntersectionPoint>(vehiclesAtIntersectionPoint.Keys.Where(i => path.GetDistanceFromVehicleToIntersectionPoint(currentNode, transform, i) <= mergeRadiusCheck)); //.OrderByDescending(intersectionPoint => path.GetDistanceFromVehicleToIntersectionPoint(currentNode, transform, intersectionPoint)).ToList();
+        HashSet<PathIntersectionPoint> pathIntersectionPoints = new HashSet<PathIntersectionPoint>(vehiclesAtIntersectionPoint.Keys.Where(i => path.GetDistanceFromVehicleToIntersectionPoint(path, currentNodeNumber, transform, i) <= mergeRadiusCheck)); //.OrderByDescending(intersectionPoint => path.GetDistanceFromVehicleToIntersectionPoint(currentNode, transform, intersectionPoint)).ToList();
         foreach (PathIntersectionPoint pathIntersectionPoint in pathIntersectionPoints)
         {
             Debug.DrawLine(pathIntersectionPoint.intersection, pathIntersectionPoint.intersection + Vector3.up * 5, Color.red);
             HashSet<VehicleEngine> vehiclesWithSameIntersection = vehiclesAtIntersectionPoint[pathIntersectionPoint];
-            float currentDistance = path.GetDistanceFromVehicleToIntersectionPoint(currentNode, transform, pathIntersectionPoint);
+            float currentDistance = path.GetDistanceFromVehicleToIntersectionPoint(path, currentNodeNumber, transform, pathIntersectionPoint);
             float distanceAhead = int.MaxValue;
-            float distanceBehind = int.MaxValue;
             VehicleEngine vehicleAhead = null;
-            VehicleEngine vehicleBehind = null;
             foreach (VehicleEngine otherVehicle in vehiclesWithSameIntersection)
             {
-                float otherVehicleDistance = otherVehicle.path.GetDistanceFromVehicleToIntersectionPoint(otherVehicle.currentNode, otherVehicle.transform, pathIntersectionPoint);
-                Debug.Log("Vehicle: " + otherVehicle.name + " - " + otherVehicleDistance);
+                float otherVehicleDistance = otherVehicle.path.GetDistanceFromVehicleToIntersectionPoint(otherVehicle.path, otherVehicle.currentNodeNumber, otherVehicle.transform, pathIntersectionPoint);
                 if (otherVehicleDistance == float.NaN)
                 {
                     // Vehicle is now past intersection point
@@ -308,22 +318,14 @@ public class VehicleEngine : MonoBehaviour
                     distanceAhead = relativeDistance;
                     vehicleAhead = otherVehicle;
                 }
-                else if (relativeDistance < 0 && distanceBehind > -relativeDistance)
-                {
-                    distanceBehind = -relativeDistance;
-                    vehicleBehind = otherVehicle;
-                }
             }
-            if (vehicleAhead != null || vehicleBehind != null)
-            {
-                Debug.Log("Vehicle: " + this.name + " - Ahead: " + vehicleAhead + " @ " + distanceAhead + " - Behind: " + vehicleBehind + " @ " + distanceBehind);
-            }
-            if (distanceAhead - longestSide - stoppingDistance > currentSpeed)
+            if (distanceAhead - longestSide > currentSpeed) //|| (vehicleAhead.currentSpeed < 0.1 && currentDistance > currentSpeed))
             {
                 SetTargetSpeed(targetSpeed);
             }
             else
             {
+                Debug.Log("Vehicle: " + name + " is waiting on " + vehicleAhead.name);
                 SetTargetSpeed(0);
             }
         }
@@ -385,11 +387,6 @@ public class VehicleEngine : MonoBehaviour
             currentNodeNumber++;
         }
         currentNode = path.nodes[currentNodeNumber];
-    }
-
-    public List<VehicleEngine> GetNearbyVehicles(float radius)
-    {
-        return FindObjectsOfType<VehicleEngine>().Where(v => v != this && Vector3.Distance(v.transform.position, this.transform.position) <= radius).ToList();
     }
 
     /// <summary>
