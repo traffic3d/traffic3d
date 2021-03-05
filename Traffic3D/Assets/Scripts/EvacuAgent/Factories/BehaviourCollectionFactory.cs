@@ -10,6 +10,7 @@ public class BehaviourCollectionFactory : MonoBehaviour
     {
         GameObject behaviourCollectionInstance = Instantiate(behaviourCollectionPrefab, behaviourController.transform);
         BehaviourCollection behaviourCollection = behaviourCollectionInstance.GetComponent<BehaviourCollection>();
+        behaviourCollectionInstance.transform.SetParent(behaviourController.transform);
 
         foreach (Enum behaviourType in Enum.GetValues(behaviourTypeEnum))
         {

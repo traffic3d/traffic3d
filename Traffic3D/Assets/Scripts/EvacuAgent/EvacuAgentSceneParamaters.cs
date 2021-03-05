@@ -6,4 +6,5 @@
     public static bool IS_FOV_VISUAL_ENABLED = true;
     public static bool IS_SHOOTER_HIGHTLIGHT_VISUAL_ENABLED = false;
     public static int NUMBER_OF_SHOOTER_AGENTS = 1;
+    public static string RESEOURCES_PREFABS_PREFIX = "EvacuAgent/Prefabs/";
 }

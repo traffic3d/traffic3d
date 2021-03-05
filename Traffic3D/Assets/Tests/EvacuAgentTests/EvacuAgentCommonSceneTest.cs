@@ -38,21 +38,13 @@ namespace Tests
             }
 
             PedestrianFactory pedestrianFactory = (PedestrianFactory)GameObject.FindObjectOfType(typeof(PedestrianFactory));
-            //PedestrianBehaviourFactory pedestrianBehaviourFactory = pedestrianFactory.GetComponent<PedestrianBehaviourFactory>();
 
             for (int index = 0; index < numberOfPedestrians; index++)
             {
                 pedestrianFactory.SpawnPedestrian();
             }
 
-            Pedestrian[] pedestrians = GameObject.FindObjectsOfType<Pedestrian>();
-
-            foreach (Pedestrian pedestrian in pedestrians)
-            {
-                //pedestrianBehaviourFactory.AddEvacuAgentBehaviour(pedestrian);
-            }
-
-            return pedestrians;
+            return GameObject.FindObjectsOfType<Pedestrian>();
         }
 
         public void StopAllPedstrianCoroutines()
@@ -63,10 +55,11 @@ namespace Tests
             }
         }
 
-        public static GameObject SpawnGameObjectWithInactivePedestrianScript()
+        public static GameObject SpawnGameObjectWithInactivePedestrianScript(string tag = "Untagged")
         {
             GameObject gameObject = GameObject.Instantiate(new GameObject());
             gameObject.AddComponent<Pedestrian>().enabled = false;
+            gameObject.tag = tag;
             return gameObject;
         }
     }
