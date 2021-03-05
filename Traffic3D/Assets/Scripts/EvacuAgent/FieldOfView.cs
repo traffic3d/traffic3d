@@ -13,11 +13,9 @@ public class FieldOfView : MonoBehaviour
     public float numberOfSegments = 21;
 
     [SerializeField]
-    private LayerMask targetLayer;
+    public LayerMask targetLayer;
 
-    [SerializeField]
-    private LayerMask obstacleLayer;
-
+    private const string obstacleLayer = "Obstacle";
     private Mesh mesh;
     private Vector3[] vertices;
     private Vector3[] normals;
@@ -28,9 +26,11 @@ public class FieldOfView : MonoBehaviour
     private const float heightOfFieldOfView = 0.1f;
     private const float opacityFieldOfView = 0.1f;
     private float convertedAngle;
+    private int obstacleBitmask;
 
     void Start()
     {
+        obstacleBitmask = 1 << LayerMask.NameToLayer(obstacleLayer);
         mesh = gameObject.GetComponent<MeshFilter>().mesh;
         BuildMesh();
         StartCoroutine(FindAgentsWithDelay());
@@ -72,8 +72,12 @@ public class FieldOfView : MonoBehaviour
                 if (distanceToAgent == 0f)
                     continue;
 
-                if (!Physics.Raycast(transform.position, angleToAgent, distanceToAgent, obstacleLayer))
+                Debug.DrawRay(transform.position, agentTransform.position);
+                RaycastHit raycastHit;
+
+                if (!Physics.Raycast(transform.position, angleToAgent, out raycastHit, distanceToAgent, obstacleBitmask))
                 {
+                    Debug.DrawRay(transform.position, agentTransform.position);
                     visiblePedestrians.Add(agentTransform.GetComponentInParent<Pedestrian>());
                 }
             }

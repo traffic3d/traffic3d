@@ -8,7 +8,7 @@ public class BehaviourController : MonoBehaviour
     public BehaviourCollection currentBehaviourColection { get; set; }
     public GameObject fieldOfView;
 
-    public void Update()
+    private void FixedUpdate()
     {
         currentBehaviourColection.PerformBehaviours();
     }
