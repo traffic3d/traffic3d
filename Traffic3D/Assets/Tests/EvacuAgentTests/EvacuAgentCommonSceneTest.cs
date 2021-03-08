@@ -57,7 +57,7 @@ namespace Tests
 
         public static GameObject SpawnGameObjectWithInactivePedestrianScript(string tag = "Untagged")
         {
-            GameObject gameObject = GameObject.Instantiate(new GameObject());
+            GameObject gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             gameObject.AddComponent<Pedestrian>().enabled = false;
             gameObject.tag = tag;
             return gameObject;

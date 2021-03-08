@@ -23,8 +23,6 @@ public class PedestrianBehaviourFactory_AddEvacuAgentBehaviour_CorrectlyAddsNonS
         pedestrianBehaviourFactory = GameObject.FindObjectOfType<PedestrianBehaviourFactory>();
         gameObject = SpawnGameObjectWithInactivePedestrianScript();
         pedestrian = gameObject.GetComponent<Pedestrian>();
-
-        Assert.Null(pedestrian.GetComponent<FieldOfView>());
         Assert.Null(pedestrian.GetComponentInChildren<FieldOfView>());
     }
 
@@ -36,6 +34,12 @@ public class PedestrianBehaviourFactory_AddEvacuAgentBehaviour_CorrectlyAddsNonS
     public override void Assertion()
     {
         Assert.NotNull(pedestrian.GetComponentInChildren<FieldOfView>());
+    }
+
+    [UnityTearDown]
+    public IEnumerator TearDown()
+    {
+        yield return new ExitPlayMode();
     }
 }
 
@@ -83,5 +87,11 @@ public class PedestrianBehaviourFactory_AddEvacuAgentBehaviour_CorrectlyAddsShoo
 
         Assert.AreEqual(1, GameObject.FindGameObjectsWithTag(EvacuAgentSceneParamaters.SHOOTER_HIGHLIGHT_TAG).Length);
         Assert.False(GameObject.FindGameObjectWithTag(EvacuAgentSceneParamaters.SHOOTER_HIGHLIGHT_TAG).GetComponent<MeshRenderer>().enabled);
+    }
+
+    [UnityTearDown]
+    public IEnumerator TearDown()
+    {
+        yield return new ExitPlayMode();
     }
 }

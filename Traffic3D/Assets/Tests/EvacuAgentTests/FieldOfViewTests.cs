@@ -207,7 +207,7 @@ public static class FieldOfViewTestsHelper
     public static Vector3 viewingObjectPosition = new Vector3(0, 0, 0);
     public const string pedestrianLayerMask = "Pedestrian";
 
-    private const string fieldFOViewPrefabPath = "EvacuAgent/Prefabs/FieldOfView";
+    private static string fieldFOViewPrefabPath = $"{EvacuAgentSceneParamaters.RESEOURCES_PREFABS_PREFIX}FieldOfView";
 
     public static FieldOfView SetUpViewingGameObject()
     {
