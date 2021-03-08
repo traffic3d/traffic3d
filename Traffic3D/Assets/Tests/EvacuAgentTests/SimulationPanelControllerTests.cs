@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
+using Tests;
 using UnityEngine;
 using UnityEngine.TestTools;
 
@@ -8,9 +9,10 @@ using UnityEngine.TestTools;
 public class SimulationPanelController_TogglePedestrianFieldOfViewVisuals_CorrectlyEnablesFieldOfViewMeshRenderers : ArrangeActAssertStrategy
 {
     private SimulationPanelController simulationPanelController;
-    private Pedestrian[] pedestrians;
+    private FieldOfView[] fieldOfViews;
     private MeshRenderer[] fieldOfViewmeshRenderers;
     private bool isTurnedOn;
+    private int numberOfFieldOfViews;
 
     [UnityTest]
     public override IEnumerator PerformTest()
@@ -23,12 +25,20 @@ public class SimulationPanelController_TogglePedestrianFieldOfViewVisuals_Correc
 
     public override void Arrange()
     {
+        numberOfFieldOfViews = 3;
         simulationPanelController = SimulationPanelControllerTestsHelper.GetSimulationPanelController();
-        pedestrians = SpawnPedestrians(3);
         isTurnedOn = false;
-        EvacuAgentSceneParamaters.IS_FOV_VISUAL_ENABLED = !isTurnedOn;
-        fieldOfViewmeshRenderers = SimulationPanelControllerTestsHelper.SetUpInitialFieldOfViewMeshRenderers(pedestrians, !isTurnedOn);
 
+        fieldOfViews = new FieldOfView[numberOfFieldOfViews];
+        fieldOfViewmeshRenderers = new MeshRenderer[numberOfFieldOfViews];
+
+        for (int index = 0; index < numberOfFieldOfViews; index++)
+        {
+            fieldOfViews[index] = SimulationPanelControllerTestsHelper.SetUpFieldOfView(!isTurnedOn);
+            fieldOfViewmeshRenderers[index] = fieldOfViews[index].GetComponent<MeshRenderer>();
+        }
+
+        EvacuAgentSceneParamaters.IS_FOV_VISUAL_ENABLED = !isTurnedOn;
         Assert.AreEqual(3, fieldOfViewmeshRenderers.Length);
         Assert.IsTrue(fieldOfViewmeshRenderers[0].enabled);
         Assert.IsTrue(fieldOfViewmeshRenderers[1].enabled);
@@ -53,9 +63,10 @@ public class SimulationPanelController_TogglePedestrianFieldOfViewVisuals_Correc
 public class SimulationPanelController_TogglePedestrianFieldOfViewVisuals_CorrectlyDisablesFieldOfViewMeshRenderers : ArrangeActAssertStrategy
 {
     private SimulationPanelController simulationPanelController;
-    private Pedestrian[] pedestrians;
+    private FieldOfView[] fieldOfViews;
     private MeshRenderer[] fieldOfViewmeshRenderers;
     private bool isTurnedOn;
+    private int numberOfFieldOfViews;
 
     [UnityTest]
     public override IEnumerator PerformTest()
@@ -68,12 +79,20 @@ public class SimulationPanelController_TogglePedestrianFieldOfViewVisuals_Correc
 
     public override void Arrange()
     {
+        numberOfFieldOfViews = 3;
         simulationPanelController = SimulationPanelControllerTestsHelper.GetSimulationPanelController();
-        pedestrians = SpawnPedestrians(3);
         isTurnedOn = true;
-        EvacuAgentSceneParamaters.IS_FOV_VISUAL_ENABLED = !isTurnedOn;
-        fieldOfViewmeshRenderers = SimulationPanelControllerTestsHelper.SetUpInitialFieldOfViewMeshRenderers(pedestrians, !isTurnedOn);
 
+        fieldOfViews = new FieldOfView[numberOfFieldOfViews];
+        fieldOfViewmeshRenderers = new MeshRenderer[numberOfFieldOfViews];
+
+        for (int index = 0; index < numberOfFieldOfViews; index++)
+        {
+            fieldOfViews[index] = SimulationPanelControllerTestsHelper.SetUpFieldOfView(!isTurnedOn);
+            fieldOfViewmeshRenderers[index] = fieldOfViews[index].GetComponent<MeshRenderer>();
+        }
+
+        EvacuAgentSceneParamaters.IS_FOV_VISUAL_ENABLED = !isTurnedOn;
         Assert.AreEqual(3, fieldOfViewmeshRenderers.Length);
         Assert.IsFalse(fieldOfViewmeshRenderers[0].enabled);
         Assert.IsFalse(fieldOfViewmeshRenderers[1].enabled);
@@ -98,9 +117,9 @@ public class SimulationPanelController_TogglePedestrianFieldOfViewVisuals_Correc
 public class SimulationPanelController_ToggleShooterPedestrianColour_CorrectlyEnablesShooterHighlightMeshRenderers : ArrangeActAssertStrategy
 {
     private SimulationPanelController simulationPanelController;
-    private Pedestrian[] pedestrians;
     private List<MeshRenderer> meshRenderers;
     private bool isHighlightToggledOn;
+    private int numberOfHighlights;
 
     [UnityTest]
     public override IEnumerator PerformTest()
@@ -114,14 +133,16 @@ public class SimulationPanelController_ToggleShooterPedestrianColour_CorrectlyEn
     public override void Arrange()
     {
         simulationPanelController = SimulationPanelControllerTestsHelper.GetSimulationPanelController();
-        EvacuAgentSceneParamaters.NUMBER_OF_SHOOTER_AGENTS = 2;
+        numberOfHighlights = 2;
+        meshRenderers = new List<MeshRenderer>();
 
-        pedestrians = SpawnPedestrians(2);
-        Assert.IsTrue(pedestrians[0].isShooterAgent);
-        Assert.IsTrue(pedestrians[1].isShooterAgent);
+        for (int index = 0; index < numberOfHighlights; index++)
+        {
+            GameObject gameObject = EvacuAgentCommonSceneTest.SpawnGameObjectWithInactivePedestrianScript(EvacuAgentSceneParamaters.SHOOTER_HIGHLIGHT_TAG);
+            meshRenderers.Add(gameObject.GetComponent<MeshRenderer>());
+        }
 
         isHighlightToggledOn = true;
-
         meshRenderers = SimulationPanelControllerTestsHelper.SetUpInitialShooterHighlightMeshRenderers(!isHighlightToggledOn);
     }
 
@@ -141,9 +162,9 @@ public class SimulationPanelController_ToggleShooterPedestrianColour_CorrectlyEn
 public class SimulationPanelController_ToggleShooterPedestrianColour_CorrectlyDisablesShooterHighlightMeshRenderers : ArrangeActAssertStrategy
 {
     private SimulationPanelController simulationPanelController;
-    private Pedestrian[] pedestrians;
     private List<MeshRenderer> meshRenderers;
     private bool isHighlightToggledOn;
+    private int numberOfHighlights;
 
     [UnityTest]
     public override IEnumerator PerformTest()
@@ -157,14 +178,16 @@ public class SimulationPanelController_ToggleShooterPedestrianColour_CorrectlyDi
     public override void Arrange()
     {
         simulationPanelController = SimulationPanelControllerTestsHelper.GetSimulationPanelController();
-        EvacuAgentSceneParamaters.NUMBER_OF_SHOOTER_AGENTS = 2;
+        numberOfHighlights = 2;
+        meshRenderers = new List<MeshRenderer>();
 
-        pedestrians = SpawnPedestrians(2);
-        Assert.IsTrue(pedestrians[0].isShooterAgent);
-        Assert.IsTrue(pedestrians[1].isShooterAgent);
+        for (int index = 0; index < numberOfHighlights; index++)
+        {
+            GameObject gameObject = EvacuAgentCommonSceneTest.SpawnGameObjectWithInactivePedestrianScript(EvacuAgentSceneParamaters.SHOOTER_HIGHLIGHT_TAG);
+            meshRenderers.Add(gameObject.GetComponent<MeshRenderer>());
+        }
 
         isHighlightToggledOn = false;
-
         meshRenderers = SimulationPanelControllerTestsHelper.SetUpInitialShooterHighlightMeshRenderers(!isHighlightToggledOn);
     }
 
@@ -183,9 +206,14 @@ public class SimulationPanelController_ToggleShooterPedestrianColour_CorrectlyDi
 
 public static class SimulationPanelControllerTestsHelper
 {
+    public static string untaggedString = "Untagged";
+    private static string userInterfacePrefabPathWay = $"{EvacuAgentSceneParamaters.RESEOURCES_PREFABS_PREFIX}UserInterface";
+    private static string fieldofViewPrefabPath = $"{EvacuAgentSceneParamaters.RESEOURCES_PREFABS_PREFIX}FieldOfView";
+
     public static SimulationPanelController GetSimulationPanelController()
     {
-        return GameObject.FindObjectOfType<SimulationPanelController>();
+        GameObject userInterface = GameObject.Instantiate(new GameObject());
+        return userInterface.AddComponent<SimulationPanelController>();
     }
 
     public static MeshRenderer[] SetUpInitialFieldOfViewMeshRenderers(Pedestrian[] pedestrians, bool isTurnedOnBeforeToggle)
@@ -212,5 +240,16 @@ public static class SimulationPanelControllerTestsHelper
         }
 
         return shooterHighlightMeshRenderers;
+    }
+
+    public static FieldOfView SetUpFieldOfView(bool isTurnedOnBeforeToggle)
+    {
+        GameObject fovGameObject = (GameObject)GameObject.Instantiate(Resources.Load(fieldofViewPrefabPath));
+        FieldOfView fov = fovGameObject.GetComponent<FieldOfView>();
+        fov.GetComponent<FieldOfView>().enabled = false;
+        fov.GetComponent<MeshRenderer>().enabled = isTurnedOnBeforeToggle;
+        fov.StopAllCoroutines();
+
+        return fov;
     }
 }
