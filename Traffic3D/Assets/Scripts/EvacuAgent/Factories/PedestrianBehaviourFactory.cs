@@ -54,7 +54,7 @@ public class PedestrianBehaviourFactory : MonoBehaviour
     private void AddBehaviourCollection(BehaviourController behaviourController, Type behaviourType)
     {
         BehaviourCollection behaviourCollection = shooterBehaviourCollectionFactory.GenerateShooterBehaviourCollection(behaviourController, behaviourType);
-        behaviourController.currentBehaviourColection = behaviourCollection;
+        behaviourController.currentBehaviourCollection = behaviourCollection;
         behaviourController.behaviourCollections.Add(behaviourCollection);
     }
 }
