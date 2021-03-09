@@ -25,7 +25,7 @@ public class FollowClosestTargetBehaviour : BehaviourStrategy
     {
         if(fieldOfView.visiblePedestrians.Count >= 1 && isAbleToTargetNewPedestrian)
         {
-            StartCoroutine(FolowNewPedestrianCoolDown());
+            StartCoroutine(FollowNewPedestrianCoolDown());
             return true;
         }
 
@@ -52,7 +52,7 @@ public class FollowClosestTargetBehaviour : BehaviourStrategy
         navMeshAgent.SetDestination(cloststTransform.position);
     }
 
-    private IEnumerator FolowNewPedestrianCoolDown()
+    private IEnumerator FollowNewPedestrianCoolDown()
     {
         isAbleToTargetNewPedestrian = false;
         yield return new WaitForSeconds(targettingCoolDown);
