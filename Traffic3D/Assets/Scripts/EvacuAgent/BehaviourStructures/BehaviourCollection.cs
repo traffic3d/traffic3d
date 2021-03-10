@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BehaviourCollection : BehaviourCollectionStrategy
+public class BehaviourCollection : MonoBehaviour
 {
+    public List<BehaviourStrategy> behaviours = new List<BehaviourStrategy>();
+
     [SerializeField]
     private BehaviourStrategy currentBehaviour;
 
-    public override void PerformBehaviours()
+    public void PerformBehaviours()
     {
         foreach(BehaviourStrategy behaviourStrategy in behaviours)
         {
