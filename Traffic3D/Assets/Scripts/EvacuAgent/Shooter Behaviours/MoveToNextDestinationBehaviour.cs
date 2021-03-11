@@ -4,11 +4,7 @@ using UnityEngine.AI;
 public class MoveToNextDestinationBehaviour : BehaviourStrategy
 {
     private CreateWeightedPathOfPedestrianPointsBehaviour createWeightedPathOfPedestrianPointsBehaviour;
-
-    [SerializeField]
     private NavMeshAgent navMeshAgent;
-
-
     private readonly float proximityToDestination = 1f;
 
     private void Start()
