@@ -6,16 +6,13 @@ using UnityEngine.AI;
 public class FollowClosestTargetBehaviour : BehaviourStrategy
 {
     private FieldOfView fieldOfView;
-
-    [SerializeField]
     private NavMeshAgent navMeshAgent;
-
     private bool isAbleToTargetNewPedestrian;
     private int targettingCoolDown;
 
     public void Start()
     {
-        fieldOfView = transform.parent.GetComponentInChildren<FieldOfView>();
+        fieldOfView = GetComponentInParent<Pedestrian>().GetComponentInChildren<FieldOfView>();
         navMeshAgent = GetComponentInParent<NavMeshAgent>();
         isAbleToTargetNewPedestrian = true;
         targettingCoolDown = 4;

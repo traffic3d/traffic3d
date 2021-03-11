@@ -72,9 +72,7 @@ public class FieldOfView : MonoBehaviour
                 if (distanceToAgent == 0f)
                     continue;
 
-                Debug.DrawRay(transform.position, agentTransform.position);
                 RaycastHit raycastHit;
-
                 if (!Physics.Raycast(transform.position, angleToAgent, out raycastHit, distanceToAgent, obstacleBitmask))
                 {
                     Debug.DrawRay(transform.position, agentTransform.position);

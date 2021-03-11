@@ -15,7 +15,13 @@ public class PedestrianBehaviourFactory : MonoBehaviour
     [SerializeField]
     private GameObject behaviourControllerPrefab;
 
+    private ShooterBehaviourTypeOrder shooterBehaviourTypeOrder;
     private int numberOfShooterAgentsSpawned = 0;
+
+    private void Start()
+    {
+        shooterBehaviourTypeOrder = GetComponent<ShooterBehaviourTypeOrder>();
+    }
 
     public void AddEvacuAgentBehaviour(Pedestrian pedestrian)
     {
@@ -25,7 +31,7 @@ public class PedestrianBehaviourFactory : MonoBehaviour
         if (pedestrian.GetComponentInChildren<FieldOfView>() == null)
         {
             GameObject fieldOfView = Instantiate(behaviourController.fieldOfView, behaviourControllerInstance.transform.position, Quaternion.identity);
-            fieldOfView.transform.SetParent(behaviourControllerInstance.transform);
+            fieldOfView.transform.SetParent(pedestrian.transform);
             fieldOfView.GetComponent<MeshRenderer>().enabled = EvacuAgentSceneParamaters.IS_FOV_VISUAL_ENABLED;
         }
 
@@ -35,7 +41,7 @@ public class PedestrianBehaviourFactory : MonoBehaviour
             pedestrian.isShooterAgent = true;
             AddTag(pedestrian, EvacuAgentSceneParamaters.SHOOTER_TAG);
             AddPedestrianHighlighter(pedestrian, shooterHighlightPrefab, EvacuAgentSceneParamaters.IS_SHOOTER_HIGHTLIGHT_VISUAL_ENABLED);
-            AddBehaviourCollection(behaviourController, typeof(ShooterBehaviourTypes));
+            AddBehaviourCollection(behaviourController, shooterBehaviourTypeOrder);
         }
     }
 
@@ -51,9 +57,9 @@ public class PedestrianBehaviourFactory : MonoBehaviour
         highlight.GetComponent<MeshRenderer>().enabled = isHighlightEnabled;
     }
 
-    private void AddBehaviourCollection(BehaviourController behaviourController, Type behaviourType)
+    private void AddBehaviourCollection(BehaviourController behaviourController, BehaviourTypeOrder behaviourTypeOrder)
     {
-        BehaviourCollection behaviourCollection = shooterBehaviourCollectionFactory.GenerateShooterBehaviourCollection(behaviourController, behaviourType);
+        BehaviourCollection behaviourCollection = shooterBehaviourCollectionFactory.GenerateShooterBehaviourCollection(behaviourController, behaviourTypeOrder);
         behaviourController.currentBehaviourCollection = behaviourCollection;
         behaviourController.behaviourCollections.Add(behaviourCollection);
     }
