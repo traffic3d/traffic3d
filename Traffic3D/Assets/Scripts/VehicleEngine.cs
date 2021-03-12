@@ -43,6 +43,9 @@ public class VehicleEngine : MonoBehaviour
     public EngineStatus engineStatus;
     public bool densityCountTriggered = false;
     public bool debug = false;
+    public VehicleEngine waitingForVehicleAhead = null;
+    public VehicleEngine waitingForVehicleBehind = null;
+    private bool isLeftHandDrive;
     private const float debugSphereSize = 0.25f;
     private const float metresPerSecondToKilometresPerHourConversion = 3.6f;
     private Dictionary<VehicleEngine, HashSet<PathIntersectionPoint>> vehicleIntersectionPoints = new Dictionary<VehicleEngine, HashSet<PathIntersectionPoint>>();
@@ -59,6 +62,7 @@ public class VehicleEngine : MonoBehaviour
         engineStatus = EngineStatus.STOP;
         targetSpeed = maxSpeed;
         currentMotorTorque = maxMotorTorque;
+        isLeftHandDrive = FindObjectOfType<VehicleFactory>().isLeftHandDrive;
         EventManager.GetInstance().VehicleSpawnEvent += OnVehicleSpawnEvent;
         EventManager.GetInstance().VehicleDestroyEvent += OnVehicleDestroyEvent;
         // Find all vehicles and intersection paths
@@ -299,15 +303,26 @@ public class VehicleEngine : MonoBehaviour
         HashSet<PathIntersectionPoint> pathIntersectionPoints = new HashSet<PathIntersectionPoint>(vehiclesAtIntersectionPoint.Keys.Where(i => path.GetDistanceFromVehicleToIntersectionPoint(path, currentNodeNumber, transform, i) <= mergeRadiusCheck)); //.OrderByDescending(intersectionPoint => path.GetDistanceFromVehicleToIntersectionPoint(currentNode, transform, intersectionPoint)).ToList();
         foreach (PathIntersectionPoint pathIntersectionPoint in pathIntersectionPoints)
         {
-            Debug.DrawLine(pathIntersectionPoint.intersection, pathIntersectionPoint.intersection + Vector3.up * 5, Color.red);
+            PathIntersectionLine currentIntersectionLine = pathIntersectionPoint.GetLineFromPath(path);
+            if ((isLeftHandDrive && !pathIntersectionPoint.IsOtherPathComingFromTheRight(currentIntersectionLine)) ||
+                (!isLeftHandDrive && !pathIntersectionPoint.IsOtherPathComingFromTheLeft(currentIntersectionLine)))
+            {
+                continue;
+            }
+            if (debug)
+            {
+                Debug.DrawLine(pathIntersectionPoint.intersection, pathIntersectionPoint.intersection + Vector3.up * 5, Color.red);
+            }
             HashSet<VehicleEngine> vehiclesWithSameIntersection = vehiclesAtIntersectionPoint[pathIntersectionPoint];
             float currentDistance = path.GetDistanceFromVehicleToIntersectionPoint(path, currentNodeNumber, transform, pathIntersectionPoint);
-            float distanceAhead = int.MaxValue;
+            float distanceAhead = float.MaxValue;
+            float distanceBehind = float.MaxValue;
             VehicleEngine vehicleAhead = null;
+            VehicleEngine vehicleBehind = null;
             foreach (VehicleEngine otherVehicle in vehiclesWithSameIntersection)
             {
                 float otherVehicleDistance = otherVehicle.path.GetDistanceFromVehicleToIntersectionPoint(otherVehicle.path, otherVehicle.currentNodeNumber, otherVehicle.transform, pathIntersectionPoint);
-                if (otherVehicleDistance == float.NaN)
+                if (float.IsNaN(otherVehicleDistance))
                 {
                     // Vehicle is now past intersection point
                     continue;
@@ -318,14 +333,34 @@ public class VehicleEngine : MonoBehaviour
                     distanceAhead = relativeDistance;
                     vehicleAhead = otherVehicle;
                 }
+                else if (relativeDistance < 0 && distanceBehind > -relativeDistance)
+                {
+                    distanceBehind = -relativeDistance;
+                    vehicleBehind = otherVehicle;
+                }
             }
-            if (distanceAhead - longestSide > currentSpeed) //|| (vehicleAhead.currentSpeed < 0.1 && currentDistance > currentSpeed))
+            if (distanceAhead - longestSide <= currentSpeed)
             {
-                SetTargetSpeed(targetSpeed);
+                waitingForVehicleAhead = vehicleAhead;
             }
             else
             {
-                Debug.Log("Vehicle: " + name + " is waiting on " + vehicleAhead.name);
+                waitingForVehicleAhead = null;
+            }
+            if (distanceBehind <= maxSpeed)
+            {
+                waitingForVehicleBehind = vehicleBehind;
+            }
+            else
+            {
+                waitingForVehicleBehind = null;
+            }
+            if (distanceAhead - longestSide > currentSpeed && distanceBehind > maxSpeed)
+            {
+                SetTargetSpeed(Math.Min(targetSpeed, distanceAhead));
+            }
+            else
+            {
                 SetTargetSpeed(0);
             }
         }

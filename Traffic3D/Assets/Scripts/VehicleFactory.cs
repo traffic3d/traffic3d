@@ -11,6 +11,7 @@ public class VehicleFactory : MonoBehaviour
     public float maximumVehicleCount = 8;
     public float slowDownVehicleRateAt = 6;
     public float timeOfStartInvisibility = 1;
+    public bool isLeftHandDrive = true;
     public List<VehicleProbability> vehicleProbabilities;
     public List<GameObject> currentVehicles = new List<GameObject>();
 

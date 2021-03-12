@@ -63,8 +63,7 @@ public class VehiclePath
                 return float.NaN;
             }
         }
-        if ((nodes.Contains(pathIntersectionPoint.line1.firstPoint) && nodes.IndexOf(pathIntersectionPoint.line1.firstPoint) < nodes.IndexOf(currentNode)) ||
-            (nodes.Contains(pathIntersectionPoint.line2.firstPoint) && nodes.IndexOf(pathIntersectionPoint.line2.firstPoint) < nodes.IndexOf(currentNode)))
+        else if (pathIntersectionPoint.IsNodeAheadOfIntersection(currentNode, this))
         {
             // Intersection point behind current node, return NaN.
             return float.NaN;
@@ -93,9 +92,6 @@ public class VehiclePath
     /// <returns>A list of points where the paths intersect</returns>
     public HashSet<PathIntersectionPoint> GetIntersectionPoints(VehiclePath otherPath)
     {
-        System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
-        System.Diagnostics.Stopwatch stopwatchInternalLoop = new System.Diagnostics.Stopwatch();
-        stopwatch.Start();
         HashSet<PathIntersectionPoint> results = new HashSet<PathIntersectionPoint>();
         HashSet<Vector3> addedVectors = new HashSet<Vector3>();
         List<Vector2> flattenedPath = nodes.Select(t => new Vector2(t.position.x, t.position.z)).ToList();
@@ -104,7 +100,6 @@ public class VehiclePath
         {
             for (int otherNodeIndex = 0; otherNodeIndex < otherPath.nodes.Count - 1; otherNodeIndex++)
             {
-                stopwatchInternalLoop.Start();
                 Vector2 node1 = flattenedPath[nodeIndex];
                 Vector2 node2 = flattenedPath[nodeIndex + 1];
                 Vector2 otherNode1 = flattenedOtherPath[otherNodeIndex];
@@ -128,14 +123,8 @@ public class VehiclePath
                     addedVectors.Add(new Vector3(intersection.x, nodes[nodeIndex].position.y, intersection.y));
                     results.Add(new PathIntersectionPoint(nodes[nodeIndex], nodes[nodeIndex + 1], otherPath.nodes[otherNodeIndex], otherPath.nodes[otherNodeIndex + 1], new Vector3(intersection.x, nodes[nodeIndex].position.y, intersection.y)));
                 }
-                stopwatchInternalLoop.Stop();
             }
         }
-        stopwatch.Stop();
-        Debug.Log("Found Intersections: " + results.Count);
-        Debug.Log("GetIntersectionPoints: " + stopwatch.ElapsedMilliseconds + "ms");
-        Debug.Log("Internal Loop: " + stopwatchInternalLoop.ElapsedMilliseconds + "ms");
-        Debug.Log("Looping Through: " + (nodes.Count * otherPath.nodes.Count));
         return results;
     }
 
