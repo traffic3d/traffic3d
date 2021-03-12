@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -8,6 +9,7 @@ public class InformationPanelController_UpdateNumberOfPedestrianText_GetsCorrect
 {
     private InformationPanelController informationPanelController;
     private string expectedNumberOfPedestrians;
+    private List<string> tags;
 
     [UnityTest]
     public override IEnumerator PerformTest()
@@ -22,9 +24,14 @@ public class InformationPanelController_UpdateNumberOfPedestrianText_GetsCorrect
     {
         informationPanelController = InformationPanelControllerTestsHelper.GetInformationPanelController();
         InformationPanelControllerTestsHelper.ClearAllTextFields(informationPanelController);
+
+        tags = new List<string> { InformationPanelControllerTestsHelper.untaggedString, InformationPanelControllerTestsHelper.untaggedString, EvacuAgentSceneParamaters.SHOOTER_TAG };
         expectedNumberOfPedestrians = "2";
-        EvacuAgentSceneParamaters.NUMBER_OF_SHOOTER_AGENTS = 1;
-        SpawnPedestrians(3);
+
+        foreach(string tag in tags)
+        {
+            SpawnGameObjectWithInactivePedestrianScript(tag);
+        }
     }
 
     public override void Act()
@@ -42,7 +49,7 @@ public class InformationPanelController_GetNumberOfObjectsWithTag_GetsCorrectNum
 {
     private InformationPanelController informationPanelController;
     private string expectedNumberOfShooter;
-    private Pedestrian[] pedestrians;
+    private List<string> tags;
 
     [UnityTest]
     public override IEnumerator PerformTest()
@@ -57,9 +64,14 @@ public class InformationPanelController_GetNumberOfObjectsWithTag_GetsCorrectNum
     {
         informationPanelController = InformationPanelControllerTestsHelper.GetInformationPanelController();
         InformationPanelControllerTestsHelper.ClearAllTextFields(informationPanelController);
+
+        tags = new List<string> { InformationPanelControllerTestsHelper.untaggedString, InformationPanelControllerTestsHelper.untaggedString, EvacuAgentSceneParamaters.SHOOTER_TAG };
         expectedNumberOfShooter = "1";
-        EvacuAgentSceneParamaters.NUMBER_OF_SHOOTER_AGENTS = 1;
-        pedestrians = SpawnPedestrians(3);
+
+        foreach (string tag in tags)
+        {
+            SpawnGameObjectWithInactivePedestrianScript(tag);
+        }
     }
 
     public override void Act()
@@ -75,11 +87,13 @@ public class InformationPanelController_GetNumberOfObjectsWithTag_GetsCorrectNum
 
 public static class InformationPanelControllerTestsHelper
 {
+    public static string untaggedString = "Untagged";
+    private static string userInterfacePrefabPathWay = $"{EvacuAgentSceneParamaters.RESEOURCES_PREFABS_PREFIX}UserInterface";
+
     public static InformationPanelController GetInformationPanelController()
     {
-        UIController uIController = GameObject.FindObjectOfType<UIController>();
-        uIController.GetComponentInChildren<InformationPanelController>().gameObject.SetActive(true);
-        return uIController.GetComponentInChildren<InformationPanelController>();
+        GameObject userInterface = GameObject.Instantiate(Resources.Load<GameObject>(userInterfacePrefabPathWay));
+        return userInterface.GetComponent<InformationPanelController>();
     }
 
     public static void ClearAllTextFields(InformationPanelController informationPanelController)
