@@ -12,6 +12,7 @@ public class PedestrianFactory : MonoBehaviour
     public List<PedestrianProbability> pedestrianProbabilities;
 
     private PedestrianPoint[] pedestrianPoints;
+    private List<PedestrianPoint> evacuAgentSpawnPedestrianPoints;
     private bool isUsingEvacuationBehaviour = false;
     private PedestrianBehaviourFactory pedestrianBehaviourFactory;
 
@@ -22,7 +23,9 @@ public class PedestrianFactory : MonoBehaviour
             throw new System.Exception("There are no pedestrians to spawn.");
         }
         pedestrianPoints = FindObjectsOfType<PedestrianPoint>();
+        evacuAgentSpawnPedestrianPoints = new List<PedestrianPoint>();
         IsUsingEvacuationBehaviour();
+        GetSpawnPedestrianPoints();
         pedestrianBehaviourFactory = gameObject.GetComponent<PedestrianBehaviourFactory>();
         StartCoroutine(GeneratePedestrians());
     }
@@ -72,6 +75,30 @@ public class PedestrianFactory : MonoBehaviour
         if (SceneManager.GetActiveScene().name.Equals(EvacuAgentSceneParamaters.SCENE_NAME))
         {
             isUsingEvacuationBehaviour = true;
+            maximumPedestrianCount = GetNumberOfEvacuAgentPedestrians();
+        }
+    }
+
+    private int GetNumberOfEvacuAgentPedestrians()
+    {
+        return EvacuAgentSceneParamaters.NUMBER_OF_WORKER_AGENTS + EvacuAgentSceneParamaters.NUMBER_OF_SHOOTER_AGENTS;
+    }
+
+    private PedestrianPoint GetPedestrianPoint()
+    {
+        if (isUsingEvacuationBehaviour)
+
+            return evacuAgentSpawnPedestrianPoints[RandomNumberGenerator.GetInstance().Range(0, evacuAgentSpawnPedestrianPoints.Count)];
+
+        return pedestrianPoints[RandomNumberGenerator.GetInstance().Range(0, pedestrianPoints.Length)];
+    }
+
+    private void GetSpawnPedestrianPoints()
+    {
+        foreach(PedestrianPoint pedestrianPoint in pedestrianPoints)
+        {
+            if (pedestrianPoint.PedestrianPointType.Equals(PedestrianPointType.Spawn))
+                evacuAgentSpawnPedestrianPoints.Add(pedestrianPoint);
         }
     }
 
@@ -81,5 +108,4 @@ public class PedestrianFactory : MonoBehaviour
         public Pedestrian pedestrian;
         public float probability;
     }
-
 }
