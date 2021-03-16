@@ -2,7 +2,7 @@
 
 public class GenericMoveToNextDestinationBehaviour : BehaviourStrategy
 {
-    public PedestrianPoint currentPedestrianPointDestination { get; private set; }
+    public PedestrianPoint CurrentPedestrianPointDestination { get; private set; }
     private GenericPathCreationBehaviour genericPathCreationBehaviour;
     private NavMeshAgent navMeshAgent;
     private int currentPathIndex;
@@ -12,7 +12,7 @@ public class GenericMoveToNextDestinationBehaviour : BehaviourStrategy
     {
         genericPathCreationBehaviour = GetComponent<GenericPathCreationBehaviour>();
         navMeshAgent = GetComponentInParent<NavMeshAgent>();
-        currentPathIndex = 0;
+        currentPathIndex = 1;
     }
 
     public override bool ShouldTriggerBehaviour()
@@ -27,10 +27,10 @@ public class GenericMoveToNextDestinationBehaviour : BehaviourStrategy
 
     public override void PerformBehaviour()
     {
-        if (currentPathIndex + 1 <= genericPathCreationBehaviour.PathOfPedestrianPoints.Count)
+        if (currentPathIndex < genericPathCreationBehaviour.PathOfPedestrianPoints.Count)
         {
-            currentPedestrianPointDestination = genericPathCreationBehaviour.PathOfPedestrianPoints[currentPathIndex];
-            navMeshAgent.SetDestination(currentPedestrianPointDestination.GetPointLocation());
+            CurrentPedestrianPointDestination = genericPathCreationBehaviour.PathOfPedestrianPoints[currentPathIndex];
+            navMeshAgent.SetDestination(CurrentPedestrianPointDestination.GetPointLocation());
             currentPathIndex++;
         }
     }
