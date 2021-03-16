@@ -46,7 +46,7 @@ public class BehaviourCollectionFactory_CorrectlyCreatesBehaviourCollection : Ar
         Assert.IsNotNull(behaviourCollection);
         Assert.AreEqual(2, behaviourCollection.behaviours.Count);
         Assert.IsInstanceOf(typeof(FollowClosestTargetBehaviour), actualBehaviourStrategies[0]);
-        Assert.IsInstanceOf(typeof(MoveToNextDestinationBehaviour), actualBehaviourStrategies[1]);
+        Assert.IsInstanceOf(typeof(GenericMoveToNextDestinationBehaviour), actualBehaviourStrategies[1]);
     }
 }
 

@@ -4,8 +4,8 @@ using UnityEngine.AI;
 public class PedestrianPoint : MonoBehaviour
 {
     public float footfall;
-
     private Vector3 location = Vector3.negativeInfinity;
+    public PedestrianPointType PedestrianPointType;
 
     public Vector3 GetPointLocation()
     {
