@@ -5,10 +5,10 @@ using Tests;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-public class PedestrianPathCreator_GetAllPedestrianPointsInRadius_ReturnsCorrectCollectionOfPedestrianPoints : ArrangeActAssertStrategy
+public class shooterPathCreator_GetAllPedestrianPointsInRadius_ReturnsCorrectCollectionOfPedestrianPoints : ArrangeActAssertStrategy
 {
     private PedestrianPoint[] expectedPedestrianPoints;
-    private PedestrianPathCreator pedestrianPathCreator;
+    private ShooterPathCreator shooterPathCreator;
     private PedestrianPoint[] actualPedestrianPoints;
     private float radius;
     private int expectedNumberOfPedestrianPoints;
@@ -25,15 +25,15 @@ public class PedestrianPathCreator_GetAllPedestrianPointsInRadius_ReturnsCorrect
     public override void Arrange()
     {
         DisableLoops();
-        expectedPedestrianPoints = PedestrianPathCreatorTestsHelper.GetExpectedPedestrianPoints(5).ToArray();
-        pedestrianPathCreator = PedestrianPathCreatorTestsHelper.SetUpPedestrianPathCreator();
+        expectedPedestrianPoints = shooterPathCreatorTestsHelper.GetExpectedPedestrianPoints(5).ToArray();
+        shooterPathCreator = shooterPathCreatorTestsHelper.SetUpshooterPathCreator();
         radius = 45f;
         expectedNumberOfPedestrianPoints = 5;
     }
 
     public override void Act()
     {
-        actualPedestrianPoints = pedestrianPathCreator.GetAllPedestrianPointsInRadius(pedestrianPathCreator.transform, radius);
+        actualPedestrianPoints = shooterPathCreator.GetAllPedestrianPointsInRadius(shooterPathCreator.transform, radius);
     }
 
     public override void Assertion()
@@ -43,10 +43,10 @@ public class PedestrianPathCreator_GetAllPedestrianPointsInRadius_ReturnsCorrect
     }
 }
 
-public class PedestrianPathCreator_CreatePathDecisionMatrix_ReturnsCorrectCollectionOfPathDecisionOptions_AndCorrectDistanceFootfallValues : ArrangeActAssertStrategy
+public class shooterPathCreator_CreatePathDecisionMatrix_ReturnsCorrectCollectionOfPathDecisionOptions_AndCorrectDistanceFootfallValues : ArrangeActAssertStrategy
 {
     private List<PedestrianPoint> pedestrianPoints;
-    private PedestrianPathCreator pedestrianPathCreator;
+    private ShooterPathCreator shooterPathCreator;
     private List<PathDecisionOption> actualDecisionOptions;
     private float footfallWeighting;
     private float distanceWeighting;
@@ -66,34 +66,34 @@ public class PedestrianPathCreator_CreatePathDecisionMatrix_ReturnsCorrectCollec
     public override void Arrange()
     {
         DisableLoops();
-        pedestrianPoints = PedestrianPathCreatorTestsHelper.GetExpectedPedestrianPoints(3);
-        pedestrianPathCreator = PedestrianPathCreatorTestsHelper.SetUpPedestrianPathCreator();
-        pedestrianPathCreator.CriteriaMinMaxValues.Clear();
+        pedestrianPoints = shooterPathCreatorTestsHelper.GetExpectedPedestrianPoints(3);
+        shooterPathCreator = shooterPathCreatorTestsHelper.SetUpshooterPathCreator();
+        shooterPathCreator.CriteriaMinMaxValues.Clear();
 
         expectedNumberOfDecisionOptions = 3;
         footfallWeighting = 0.7f;
         distanceWeighting = 0.3f;
         expectedCurrentMaximumFootfall = 22f;
-        expectedCurrentMinimumDistance = 21.994f;
+        expectedCurrentMinimumDistance = 21.933f;
     }
 
     public override void Act()
     {
-        actualDecisionOptions = pedestrianPathCreator.CreatePathDecisionMatrix(pedestrianPoints.ToArray(), pedestrianPathCreator.transform, footfallWeighting, distanceWeighting);
+        actualDecisionOptions = shooterPathCreator.CreatePathDecisionMatrix(pedestrianPoints.ToArray(), shooterPathCreator.transform, footfallWeighting, distanceWeighting);
     }
 
     public override void Assertion()
     {
         Assert.AreEqual(actualDecisionOptions.Count, expectedNumberOfDecisionOptions);
-        Assert.That(pedestrianPathCreator.CriteriaMinMaxValues[0], Is.EqualTo(expectedCurrentMaximumFootfall).Within(floatingPointTolerance));
-        Assert.That(pedestrianPathCreator.CriteriaMinMaxValues[1], Is.EqualTo(expectedCurrentMinimumDistance).Within(floatingPointTolerance));
+        Assert.That(shooterPathCreator.CriteriaMinMaxValues[0], Is.EqualTo(expectedCurrentMaximumFootfall).Within(floatingPointTolerance));
+        Assert.That(shooterPathCreator.CriteriaMinMaxValues[1], Is.EqualTo(expectedCurrentMinimumDistance).Within(floatingPointTolerance));
     }
 }
 
-public class PedestrianPathCreator_CalculateRankedShooterAgentPath_ReturnsCorrectPath : ArrangeActAssertStrategy
+public class shooterPathCreator_CalculateRankedShooterAgentPath_ReturnsCorrectPath : ArrangeActAssertStrategy
 {
     private List<PedestrianPoint> expectedPedestrianPoints;
-    private PedestrianPathCreator pedestrianPathCreator;
+    private ShooterPathCreator shooterPathCreator;
     private PedestrianPoint[] actualPedestrianPoints;
     private PedestrianPoint building5;
     private PedestrianPoint building3;
@@ -115,8 +115,8 @@ public class PedestrianPathCreator_CalculateRankedShooterAgentPath_ReturnsCorrec
     public override void Arrange()
     {
         DisableLoops();
-        expectedPedestrianPoints = PedestrianPathCreatorTestsHelper.GetExpectedPedestrianPoints(5);
-        pedestrianPathCreator = PedestrianPathCreatorTestsHelper.SetUpPedestrianPathCreator();
+        expectedPedestrianPoints = shooterPathCreatorTestsHelper.GetExpectedPedestrianPoints(5);
+        shooterPathCreator = shooterPathCreatorTestsHelper.SetUpshooterPathCreator();
 
         radius = 45f;
         footfallWeighting = 0.7f;
@@ -130,7 +130,7 @@ public class PedestrianPathCreator_CalculateRankedShooterAgentPath_ReturnsCorrec
 
     public override void Act()
     {
-        actualPedestrianPoints = pedestrianPathCreator.CalculateRankedShooterAgentPath(radius, pedestrianPathCreator.transform, sizeOfPath, footfallWeighting, distanceWeighting);
+        actualPedestrianPoints = shooterPathCreator.CalculateRankedShooterAgentPath(radius, shooterPathCreator.transform, sizeOfPath, footfallWeighting, distanceWeighting);
     }
 
     public override void Assertion()
@@ -142,9 +142,9 @@ public class PedestrianPathCreator_CalculateRankedShooterAgentPath_ReturnsCorrec
     }
 }
 
-public class PedestrianPathCreator_NormaliseValue_ReturnsCorrectValue_WhenIsBeneficialIsTrue : ArrangeActAssertStrategy
+public class shooterPathCreator_NormaliseValue_ReturnsCorrectValue_WhenIsBeneficialIsTrue : ArrangeActAssertStrategy
 {
-    private PedestrianPathCreator pedestrianPathCreator;
+    private ShooterPathCreator shooterPathCreator;
     private bool isBeneficial;
     private float expectedNormalisedValue;
     private float actualNormalisedValue;
@@ -163,7 +163,7 @@ public class PedestrianPathCreator_NormaliseValue_ReturnsCorrectValue_WhenIsBene
     public override void Arrange()
     {
         DisableLoops();
-        pedestrianPathCreator = PedestrianPathCreatorTestsHelper.SetUpPedestrianPathCreator();
+        shooterPathCreator = shooterPathCreatorTestsHelper.SetUpshooterPathCreator();
         isBeneficial = true;
         expectedNormalisedValue = 3.912f;
         valueToNormalise = 20.346f;
@@ -172,7 +172,7 @@ public class PedestrianPathCreator_NormaliseValue_ReturnsCorrectValue_WhenIsBene
 
     public override void Act()
     {
-        actualNormalisedValue = pedestrianPathCreator.NormaliseValue(valueToNormalise, isBeneficial, valueToAdjustBy);
+        actualNormalisedValue = shooterPathCreator.NormaliseValue(valueToNormalise, isBeneficial, valueToAdjustBy);
     }
 
     public override void Assertion()
@@ -181,9 +181,9 @@ public class PedestrianPathCreator_NormaliseValue_ReturnsCorrectValue_WhenIsBene
     }
 }
 
-public class PedestrianPathCreator_NormaliseValue_ReturnsCorrectValue_WhenIsBeneficialIsFalse : ArrangeActAssertStrategy
+public class shooterPathCreator_NormaliseValue_ReturnsCorrectValue_WhenIsBeneficialIsFalse : ArrangeActAssertStrategy
 {
-    private PedestrianPathCreator pedestrianPathCreator;
+    private ShooterPathCreator shooterPathCreator;
     private bool isBeneficial;
     private float expectedNormalisedValue;
     private float actualNormalisedValue;
@@ -202,7 +202,7 @@ public class PedestrianPathCreator_NormaliseValue_ReturnsCorrectValue_WhenIsBene
     public override void Arrange()
     {
         DisableLoops();
-        pedestrianPathCreator = PedestrianPathCreatorTestsHelper.SetUpPedestrianPathCreator();
+        shooterPathCreator = shooterPathCreatorTestsHelper.SetUpshooterPathCreator();
         isBeneficial = false;
         expectedNormalisedValue = 0.255f;
         valueToNormalise = 20.346f;
@@ -211,7 +211,7 @@ public class PedestrianPathCreator_NormaliseValue_ReturnsCorrectValue_WhenIsBene
 
     public override void Act()
     {
-        actualNormalisedValue = pedestrianPathCreator.NormaliseValue(valueToNormalise, isBeneficial, valueToAdjustBy);
+        actualNormalisedValue = shooterPathCreator.NormaliseValue(valueToNormalise, isBeneficial, valueToAdjustBy);
     }
 
     public override void Assertion()
@@ -220,9 +220,9 @@ public class PedestrianPathCreator_NormaliseValue_ReturnsCorrectValue_WhenIsBene
     }
 }
 
-public class PedestrianPathCreator_GetWeightedValueOfNode_ReturnsCorrectValue : ArrangeActAssertStrategy
+public class shooterPathCreator_GetWeightedValueOfNode_ReturnsCorrectValue : ArrangeActAssertStrategy
 {
-    private PedestrianPathCreator pedestrianPathCreator;
+    private ShooterPathCreator shooterPathCreator;
     private PathDecisionOption pathDecisionOption;
     private PathDecisionNode pathDecisionNode;
     private float expectedWeightedSumValue;
@@ -239,15 +239,15 @@ public class PedestrianPathCreator_GetWeightedValueOfNode_ReturnsCorrectValue : 
 
     public override void Arrange()
     {
-        pedestrianPathCreator = PedestrianPathCreatorTestsHelper.SetUpPedestrianPathCreator();
-        pathDecisionOption = PedestrianPathCreatorTestsHelper.GetExpectedPathDecisionOptions()[0];
+        shooterPathCreator = shooterPathCreatorTestsHelper.SetUpshooterPathCreator();
+        pathDecisionOption = shooterPathCreatorTestsHelper.GetExpectedPathDecisionOptions()[0];
         pathDecisionNode = pathDecisionOption.PathDecisionNodes[0];
         expectedWeightedSumValue = 9.1f;
     }
 
     public override void Act()
     {
-        actualEightedSumValue = pedestrianPathCreator.GetWeightedValueOfNode(pathDecisionNode);
+        actualEightedSumValue = shooterPathCreator.GetWeightedValueOfNode(pathDecisionNode);
     }
 
     public override void Assertion()
@@ -256,9 +256,9 @@ public class PedestrianPathCreator_GetWeightedValueOfNode_ReturnsCorrectValue : 
     }
 }
 
-public class PedestrianPathCreator_CalculateWeightedSumOfNormalisedPathOptions_ReturnsCorrectValue : ArrangeActAssertStrategy
+public class shooterPathCreator_CalculateWeightedSumOfNormalisedPathOptions_ReturnsCorrectValue : ArrangeActAssertStrategy
 {
-    private PedestrianPathCreator pedestrianPathCreator;
+    private ShooterPathCreator shooterPathCreator;
     private List<PathDecisionOption> pathDecisionOptions;
     private float nodeOneExpectedWeightSum;
     private float nodeTwoExpectedWeightSum;
@@ -275,8 +275,8 @@ public class PedestrianPathCreator_CalculateWeightedSumOfNormalisedPathOptions_R
 
     public override void Arrange()
     {
-        pedestrianPathCreator = PedestrianPathCreatorTestsHelper.SetUpPedestrianPathCreator();
-        pathDecisionOptions = PedestrianPathCreatorTestsHelper.GetExpectedPathDecisionOptions();
+        shooterPathCreator = shooterPathCreatorTestsHelper.SetUpshooterPathCreator();
+        pathDecisionOptions = shooterPathCreatorTestsHelper.GetExpectedPathDecisionOptions();
         nodeOneExpectedWeightSum = 0.8578f;
         nodeTwoExpectedWeightSum = 1.6800f;
         nodeThreeExpectedWeightSum = 2.6640f;
@@ -284,7 +284,7 @@ public class PedestrianPathCreator_CalculateWeightedSumOfNormalisedPathOptions_R
 
     public override void Act()
     {
-        pedestrianPathCreator.CalculateWeightedSumOfNormalisedPathOptions(pathDecisionOptions);
+        shooterPathCreator.CalculateWeightedSumOfNormalisedPathOptions(pathDecisionOptions);
     }
 
     public override void Assertion()
@@ -295,9 +295,9 @@ public class PedestrianPathCreator_CalculateWeightedSumOfNormalisedPathOptions_R
     }
 }
 
-public class PedestrianPathCreator_GetRankedPedestrianPoints_ReturnsCorrectOrderOfPedestrianPoints : ArrangeActAssertStrategy
+public class shooterPathCreator_GetRankedPedestrianPoints_ReturnsCorrectOrderOfPedestrianPoints : ArrangeActAssertStrategy
 {
-    private PedestrianPathCreator pedestrianPathCreator;
+    private ShooterPathCreator shooterPathCreator;
     private List<PathDecisionOption> pathDecisionOptions;
     private List<PedestrianPoint> pedestrianPoints;
     private PedestrianPoint[] orderedPedestrianPoints;
@@ -317,8 +317,8 @@ public class PedestrianPathCreator_GetRankedPedestrianPoints_ReturnsCorrectOrder
 
     public override void Arrange()
     {
-        pedestrianPathCreator = PedestrianPathCreatorTestsHelper.SetUpPedestrianPathCreator();
-        pathDecisionOptions = PedestrianPathCreatorTestsHelper.GetExpectedPathDecisionOptions();
+        shooterPathCreator = shooterPathCreatorTestsHelper.SetUpshooterPathCreator();
+        pathDecisionOptions = shooterPathCreatorTestsHelper.GetExpectedPathDecisionOptions();
 
         nodeOneExpectedWeightSum = 0.8578f;
         nodeTwoExpectedWeightSum = 1.6800f;
@@ -328,13 +328,13 @@ public class PedestrianPathCreator_GetRankedPedestrianPoints_ReturnsCorrectOrder
         pathDecisionOptions[1].WeightedSumOfPathNodes = nodeTwoExpectedWeightSum;
         pathDecisionOptions[2].WeightedSumOfPathNodes = nodeThreeExpectedWeightSum;
 
-        pedestrianPoints = PedestrianPathCreatorTestsHelper.GetExpectedPedestrianPoints(3);
+        pedestrianPoints = shooterPathCreatorTestsHelper.GetExpectedPedestrianPoints(3);
         sizeOfPath = 3;
     }
 
     public override void Act()
     {
-        orderedPedestrianPoints = pedestrianPathCreator.GetRankedPedestrianPoints(pathDecisionOptions, sizeOfPath);
+        orderedPedestrianPoints = shooterPathCreator.GetRankedPedestrianPoints(pathDecisionOptions, sizeOfPath);
     }
 
     public override void Assertion()
@@ -346,7 +346,7 @@ public class PedestrianPathCreator_GetRankedPedestrianPoints_ReturnsCorrectOrder
     }
 }
 
-public static class PedestrianPathCreatorTestsHelper
+public static class shooterPathCreatorTestsHelper
 {
     // Expected values
     private static readonly float expectedCurrentMaximumFootfall = 22f;
@@ -459,23 +459,23 @@ public static class PedestrianPathCreatorTestsHelper
     public static Pedestrian SetUpPedestrian()
     {
         Pedestrian pedestrian = EvacuAgentCommonSceneTest.SpawnPedestrians(1)[0];
-        pedestrian.gameObject.AddComponent<PedestrianPathCreator>();
-        PedestrianPathCreator pedestrianPathCreator = pedestrian.GetComponent<PedestrianPathCreator>();
+        pedestrian.gameObject.AddComponent<ShooterPathCreator>();
+        ShooterPathCreator shooterPathCreator = pedestrian.GetComponent<ShooterPathCreator>();
         pedestrian.transform.position = new Vector3(0, 0, 0);
 
         return pedestrian;
     }
 
-    public static PedestrianPathCreator SetUpPedestrianPathCreator()
+    public static ShooterPathCreator SetUpshooterPathCreator()
     {
         Pedestrian pedestrian = SetUpPedestrian();
-        PedestrianPathCreator pedestrianPathCreator = pedestrian.GetComponent<PedestrianPathCreator>();
-        pedestrianPathCreator.CriteriaMinMaxValues = new Dictionary<int, float>
+        ShooterPathCreator shooterPathCreator = pedestrian.GetComponent<ShooterPathCreator>();
+        shooterPathCreator.CriteriaMinMaxValues = new Dictionary<int, float>
         {
             { 0, expectedCurrentMaximumFootfall },
             { 1, expectedCurrentMinimumDistance }
         };
 
-        return pedestrianPathCreator;
+        return shooterPathCreator;
     }
 }
