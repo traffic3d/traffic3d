@@ -27,9 +27,9 @@ public class GenericMoveToNextDestinationBehaviour : BehaviourStrategy
 
     public override void PerformBehaviour()
     {
-        if (currentPathIndex + 1 <= genericPathCreationBehaviour.pathOfPedestrianPoints.Count)
+        if (currentPathIndex + 1 <= genericPathCreationBehaviour.PathOfPedestrianPoints.Count)
         {
-            currentPedestrianPointDestination = genericPathCreationBehaviour.pathOfPedestrianPoints[currentPathIndex];
+            currentPedestrianPointDestination = genericPathCreationBehaviour.PathOfPedestrianPoints[currentPathIndex];
             navMeshAgent.SetDestination(currentPedestrianPointDestination.GetPointLocation());
             currentPathIndex++;
         }
