@@ -12,7 +12,7 @@
     public static int NUMBER_OF_WORKER_AGENTS = 10;
 
     // Worker pedestrians
-    public static float WORKER_CHANCE_TO_VISIT_HOSPITALITY_POINT_IN_ROUTE = 0.33f;
+    public static float WORKER_CHANCE_TO_VISIT_HOSPITALITY_POINT_IN_ROUTE = 0.5f;
 
     // Wait time for hospitality
     public static int HOSPITALITY_WAIT_TIME_LOWER_BOUND = 0;
