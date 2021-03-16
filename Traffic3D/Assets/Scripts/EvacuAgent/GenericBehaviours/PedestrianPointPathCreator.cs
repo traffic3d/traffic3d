@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PedestrianPointPathCreator : MonoBehaviour
 {
-    PedestrianPoint[] allPedestrianPoints;
-    Dictionary<PedestrianPointType, List<PedestrianPoint>> pedestrianPointDictionary;
+    private PedestrianPoint[] allPedestrianPoints;
+    private Dictionary<PedestrianPointType, List<PedestrianPoint>> pedestrianPointDictionary;
 
     private void Start()
     {
