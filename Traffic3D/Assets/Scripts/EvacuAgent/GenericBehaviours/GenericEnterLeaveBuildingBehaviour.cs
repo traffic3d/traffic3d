@@ -4,15 +4,15 @@ using UnityEngine.AI;
 
 public class GenericEnterLeaveBuildingBehaviour : BehaviourStrategy
 {
-    private Vector3 inBuildingScale = new Vector3(0.0001f, 0.0001f, 0.0001f);
+    private Vector3 inBuildingScale = new Vector3(0.0001f, 0.0001f, 0.0001f); // These values are aritrary, they are used to shrink Pedestrians to a size the user cannot see to simulate being inside a building
     private Vector3 originalScale;
-    private CapsuleCollider capsuleCollider;
+    private Collider pedestrianCollider;
     private Pedestrian pedestrian;
     private NavMeshAgent navMeshAgent;
     private bool isAbleToEnterBuilding;
     private int secondsToWait;
     private bool isEnterBuildingCoolDownActive;
-    private int enterBuildingCoolDown;
+    private int enterBuildingCoolDownSeconds;
 
 
     private void Start()
@@ -20,10 +20,10 @@ public class GenericEnterLeaveBuildingBehaviour : BehaviourStrategy
         navMeshAgent = GetComponentInParent<NavMeshAgent>();
         pedestrian = GetComponentInParent<Pedestrian>();
         originalScale = pedestrian.transform.localScale;
-        capsuleCollider = GetComponentInParent<CapsuleCollider>();
+        pedestrianCollider = GetComponentInParent<Collider>();
         isAbleToEnterBuilding = false;
         isEnterBuildingCoolDownActive = false;
-        enterBuildingCoolDown = 5;
+        enterBuildingCoolDownSeconds = 5;
     }
 
     public override bool ShouldTriggerBehaviour()
@@ -36,36 +36,36 @@ public class GenericEnterLeaveBuildingBehaviour : BehaviourStrategy
 
     public override void PerformBehaviour()
     {
-        StartCoroutine(StartAgentWaitAtCoffeeShop());
+        StartCoroutine(StartAgentWaitAtBuilding());
     }
 
     public void SetBuildingStayParamaters(int secondsToWait, bool isAbleToEnterBuilding)
     {
-        if(isEnterBuildingCoolDownActive == false)
+        if(!isEnterBuildingCoolDownActive)
         {
             this.isAbleToEnterBuilding = isAbleToEnterBuilding;
             this.secondsToWait = secondsToWait;
         }
     }
 
-    IEnumerator StartAgentWaitAtCoffeeShop()
+    // Ensures the pedestrian cannot continually enter the same building
+    public IEnumerator StartEnterBuildingCooldown()
+    {
+        isEnterBuildingCoolDownActive = true;
+        yield return new WaitForSeconds(enterBuildingCoolDownSeconds);
+        isEnterBuildingCoolDownActive = false;
+    }
+
+    IEnumerator StartAgentWaitAtBuilding()
     {
         isAbleToEnterBuilding = false;
         pedestrian.transform.localScale = inBuildingScale;
         navMeshAgent.isStopped = true;
-        capsuleCollider.enabled = false;
+        pedestrianCollider.enabled = false;
         yield return new WaitForSeconds(secondsToWait);
         navMeshAgent.isStopped = false;
         pedestrian.transform.localScale = originalScale;
-        capsuleCollider.enabled = true;
+        pedestrianCollider.enabled = true;
         StartCoroutine(StartEnterBuildingCooldown());
-    }
-
-    // Ensures the pedestrian cannot continually enter the same building
-    IEnumerator StartEnterBuildingCooldown()
-    {
-        isEnterBuildingCoolDownActive = true;
-        yield return new WaitForSeconds(enterBuildingCoolDown);
-        isEnterBuildingCoolDownActive = false;
     }
 }
