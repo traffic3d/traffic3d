@@ -10,7 +10,7 @@ public class PedestrianPointBuildingEnterence : MonoBehaviour
     private void Start()
     {
         pedestrianPoint = GetComponent<PedestrianPoint>();
-        GetSecondsToWait();
+        SetSecondsToWaitBounds();
     }
 
     void OnTriggerEnter(Collider collider)
@@ -28,7 +28,7 @@ public class PedestrianPointBuildingEnterence : MonoBehaviour
         }
     }
 
-    private void GetSecondsToWait()
+    private void SetSecondsToWaitBounds()
     {
         if(pedestrianPoint.PedestrianPointType == PedestrianPointType.Hospitality)
         {
