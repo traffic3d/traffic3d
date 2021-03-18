@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PedestrianPathCreator : MonoBehaviour
+public class ShooterPathCreator : MonoBehaviour
 {
     public Dictionary<int, float> CriteriaMinMaxValues { get; set; }
 
