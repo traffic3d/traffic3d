@@ -6,7 +6,7 @@ public class CreateWeightedPathOfPedestrianPointsBehaviour : BehaviourStrategy
     public int CurrentPathIndex { get; set; } = 0;
     public PedestrianPoint[] CurrentPath { get; set; }
 
-    private PedestrianPathCreator pedestrianPathCreator;
+    private ShooterPathCreator pedestrianPathCreator;
     private NavMeshAgent navMeshAgent;
     private float radiusToConsiderPedestrianPoints = 100f;
     private float footfallWeighting = 0.7f;
@@ -14,7 +14,7 @@ public class CreateWeightedPathOfPedestrianPointsBehaviour : BehaviourStrategy
 
     private void Start()
     {
-        pedestrianPathCreator = gameObject.AddComponent<PedestrianPathCreator>();
+        pedestrianPathCreator = gameObject.AddComponent<ShooterPathCreator>();
         CurrentPath = new PedestrianPoint[SizeOfPath];
         navMeshAgent = GetComponentInParent<NavMeshAgent>();
     }

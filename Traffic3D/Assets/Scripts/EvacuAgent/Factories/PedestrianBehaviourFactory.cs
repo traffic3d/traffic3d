@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PedestrianBehaviourFactory : MonoBehaviour
 {
@@ -16,11 +15,14 @@ public class PedestrianBehaviourFactory : MonoBehaviour
     private GameObject behaviourControllerPrefab;
 
     private ShooterBehaviourTypeOrder shooterBehaviourTypeOrder;
+    private WorkerBehaviourTypeOrder workerBehaviourTypeOrder;
     private int numberOfShooterAgentsSpawned = 0;
+    private int numberOfWorkerAgentsSpawned = 0;
 
     private void Start()
     {
         shooterBehaviourTypeOrder = GetComponent<ShooterBehaviourTypeOrder>();
+        workerBehaviourTypeOrder = GetComponent<WorkerBehaviourTypeOrder>();
     }
 
     public void AddEvacuAgentBehaviour(Pedestrian pedestrian)
@@ -42,6 +44,13 @@ public class PedestrianBehaviourFactory : MonoBehaviour
             AddTag(pedestrian, EvacuAgentSceneParamaters.SHOOTER_TAG);
             AddPedestrianHighlighter(pedestrian, shooterHighlightPrefab, EvacuAgentSceneParamaters.IS_SHOOTER_HIGHTLIGHT_VISUAL_ENABLED);
             AddBehaviourCollection(behaviourController, shooterBehaviourTypeOrder);
+            pedestrian.pedestrianType = PedestrianType.Shooter;
+        }
+        else if (numberOfWorkerAgentsSpawned < EvacuAgentSceneParamaters.NUMBER_OF_WORKER_AGENTS)
+        {
+            numberOfWorkerAgentsSpawned++;
+            AddBehaviourCollection(behaviourController, workerBehaviourTypeOrder);
+            pedestrian.pedestrianType = PedestrianType.Worker;
         }
     }
 
