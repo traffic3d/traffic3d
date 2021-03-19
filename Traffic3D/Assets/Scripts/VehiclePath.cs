@@ -104,19 +104,24 @@ public class VehiclePath
                 Vector2 node2 = flattenedPath[nodeIndex + 1];
                 Vector2 otherNode1 = flattenedOtherPath[otherNodeIndex];
                 Vector2 otherNode2 = flattenedOtherPath[otherNodeIndex + 1];
-                if (node1.Equals(otherNode1) && node2.Equals(otherNode2))
+                if (node1.Equals(node2) || otherNode1.Equals(otherNode2))
+                {
+                    // No length to one of the paths.
+                    continue;
+                }
+                else if (node1.Equals(otherNode1) && node2.Equals(otherNode2))
                 {
                     continue;
                 }
                 else if (node1.Equals(otherNode1))
                 {
                     addedVectors.Add(nodes[nodeIndex].position);
-                    results.Add(new PathIntersectionPoint(nodes[nodeIndex], nodes[nodeIndex], otherPath.nodes[otherNodeIndex], otherPath.nodes[otherNodeIndex], nodes[nodeIndex].position));
+                    results.Add(new PathIntersectionPoint(nodes[nodeIndex], nodes[nodeIndex + 1], otherPath.nodes[otherNodeIndex], otherPath.nodes[otherNodeIndex + 1], nodes[nodeIndex].position));
                 }
                 else if (node2.Equals(otherNode2) && !addedVectors.Contains(nodes[nodeIndex + 1].position))
                 {
                     addedVectors.Add(nodes[nodeIndex + 1].position);
-                    results.Add(new PathIntersectionPoint(nodes[nodeIndex + 1], nodes[nodeIndex + 1], otherPath.nodes[otherNodeIndex + 1], otherPath.nodes[otherNodeIndex + 1], nodes[nodeIndex + 1].position));
+                    results.Add(new PathIntersectionPoint(nodes[nodeIndex], nodes[nodeIndex + 1], otherPath.nodes[otherNodeIndex], otherPath.nodes[otherNodeIndex + 1], nodes[nodeIndex + 1].position));
                 }
                 else if (Utils.GetLineIntersection(node1, node2, otherNode1, otherNode2, out Vector2 intersection))
                 {

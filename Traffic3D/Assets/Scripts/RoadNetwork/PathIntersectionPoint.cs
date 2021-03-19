@@ -15,10 +15,7 @@ public class PathIntersectionPoint
         this.intersection = intersection;
         Vector3 line1Vector = line1p2Node.position - line1p1Node.position;
         Vector3 line2Vector = line2p2Node.position - line2p1Node.position;
-        Debug.Log("Main: " + line1Vector.ToString());
-        Debug.Log("Line2: " + line2Vector.ToString());
         angleFromLine1ToLine2 = Vector3.SignedAngle(line1Vector, line2Vector, Vector3.up);
-        Debug.Log("Angle: " + angleFromLine1ToLine2);
     }
 
     public bool IsNodeBeforeIntersection(Transform node)

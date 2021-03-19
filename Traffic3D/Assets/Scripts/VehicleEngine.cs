@@ -107,7 +107,7 @@ public class VehicleEngine : MonoBehaviour
 
     public void AddVehicleIntersectionPoint(VehicleEngine otherVehicle)
     {
-        if (otherVehicle != null && otherVehicle != this)
+        if (otherVehicle != null && !otherVehicle.Equals(this))
         {
             vehicleIntersectionPoints.Add(otherVehicle, path.GetIntersectionPoints(otherVehicle.path));
         }
