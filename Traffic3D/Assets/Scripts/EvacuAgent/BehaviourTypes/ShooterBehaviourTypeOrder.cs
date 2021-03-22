@@ -6,7 +6,7 @@ public class ShooterBehaviourTypeOrder : BehaviourTypeOrder
     *  Meaning it will be iterated over first and potentially chosen over other behaviours
     *  1f here is the chance the behaviour has of being added to a BehaviourCollection (this is not used yet, 09/03/21)
     */
-    private void Start()
+    private void Awake()
     {
         behaviourTypes = new List<BehaviourType>()
         {

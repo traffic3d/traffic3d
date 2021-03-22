@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: c5e5a72a5fede924e9a3bba64eff7dec
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - behaviourControllerPrefab: {instanceID: 0}
+  - pedestrianHighlightPrefab: {instanceID: 0}
+  - behaviourController: {instanceID: 0}
+  - fieldOfView: {instanceID: 0}
+  - PedestrianPointPathCreator: {instanceID: 0}
+  - behaviourTypeOrder: {instanceID: 0}
+  - pedestrian: {instanceID: 0}
+  - workerHighlightPrefab: {fileID: 4757276257460740152, guid: 0e7d6d5ec441c9945b6b8b88f962f78a,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,12 +1,31 @@
 ﻿using System;
 using UnityEngine;
 
-public class BehaviourCollectionFactory : MonoBehaviour
+public abstract class AbstractEvacuAgentPedestrianFactory : MonoBehaviour
 {
     [SerializeField]
     private GameObject behaviourCollectionPrefab;
 
-    public BehaviourCollection GenerateShooterBehaviourCollection(BehaviourController behaviourController, BehaviourTypeOrder behaviourTypeOrder)
+    [SerializeField]
+    protected GameObject pedestrianTypePrefab;
+
+    public abstract EvacuAgentPedestrianBase CreateEvacuaAgentPedestrian(Pedestrian pedestrian);
+
+    protected void AddPedestrianHighlighter(Pedestrian pedestrian, GameObject prefab, bool isHighlightEnabled)
+    {
+        GameObject highlight = Instantiate(prefab, pedestrian.transform.position, Quaternion.identity);
+        highlight.transform.SetParent(pedestrian.transform);
+        highlight.GetComponent<MeshRenderer>().enabled = isHighlightEnabled;
+    }
+
+    protected void AddBehaviourCollection(BehaviourController behaviourController, BehaviourTypeOrder behaviourTypeOrder)
+    {
+        BehaviourCollection behaviourCollection = GenerateBehaviourCollection(behaviourController, behaviourTypeOrder);
+        behaviourController.currentBehaviourCollection = behaviourCollection;
+        behaviourController.behaviourCollections.Add(behaviourCollection);
+    }
+
+    private BehaviourCollection GenerateBehaviourCollection(BehaviourController behaviourController, BehaviourTypeOrder behaviourTypeOrder)
     {
         GameObject behaviourCollectionInstance = Instantiate(behaviourCollectionPrefab, behaviourController.transform);
         BehaviourCollection behaviourCollection = behaviourCollectionInstance.GetComponent<BehaviourCollection>();

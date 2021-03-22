@@ -1,21 +1,19 @@
-﻿using UnityEngine.AI;
+﻿using System.Collections.Generic;
+using UnityEngine.AI;
 
 public class CreateWeightedPathOfPedestrianPointsBehaviour : BehaviourStrategy
 {
     public int SizeOfPath { get; set; } = 4;
     public int CurrentPathIndex { get; set; } = 0;
-    public PedestrianPoint[] CurrentPath { get; set; }
+    public List<PedestrianPoint> CurrentPath { get; set; }
 
-    private ShooterPathCreator pedestrianPathCreator;
+    private ShooterPedestrianPointPathCreator pedestrianPathCreator;
     private NavMeshAgent navMeshAgent;
-    private float radiusToConsiderPedestrianPoints = 100f;
-    private float footfallWeighting = 0.7f;
-    private float distanceWeighting = 0.3f;
 
     private void Start()
     {
-        pedestrianPathCreator = gameObject.AddComponent<ShooterPathCreator>();
-        CurrentPath = new PedestrianPoint[SizeOfPath];
+        pedestrianPathCreator = gameObject.AddComponent<ShooterPedestrianPointPathCreator>();
+        CurrentPath = new List<PedestrianPoint>();
         navMeshAgent = GetComponentInParent<NavMeshAgent>();
     }
 
@@ -32,7 +30,7 @@ public class CreateWeightedPathOfPedestrianPointsBehaviour : BehaviourStrategy
     public override void PerformBehaviour()
     {
         CurrentPathIndex = 0;
-        CurrentPath = pedestrianPathCreator.CalculateRankedShooterAgentPath(radiusToConsiderPedestrianPoints, transform, SizeOfPath, footfallWeighting, distanceWeighting);
+        CurrentPath = pedestrianPathCreator.CreatePath();
         navMeshAgent.SetDestination(CurrentPath[CurrentPathIndex].transform.position);
     }
 }
