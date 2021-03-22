@@ -32,7 +32,7 @@ public class BehaviourCollectionFactory_CorrectlyCreatesBehaviourCollection : Ar
 
     public override void Act()
     {
-        behaviourCollection = behaviourCollectionFactory.GenerateShooterBehaviourCollection(behaviourController, mockBehaviourTypeOrder);
+        behaviourCollection = behaviourCollectionFactory.GenerateBehaviourCollection(behaviourController, mockBehaviourTypeOrder);
 
         foreach (BehaviourStrategy behaviourStrategy in behaviourCollection.behaviours)
         {

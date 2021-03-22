@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShooterPathCreator : MonoBehaviour
+public class ShooterPedestrianPointPathCreator : PedestrianPointPathCreator
 {
     public Dictionary<int, float> CriteriaMinMaxValues { get; set; }
 
@@ -17,6 +17,11 @@ public class ShooterPathCreator : MonoBehaviour
     private float CurrentMinimumDistance;
     private LayerMask pedestrianPointLayer;
     private const bool invalidCriteriaValueBool = true;
+    private float radius = 100f;
+    private int sizeOfPath = 4;
+    private float footfallWeighting = 0.7f;
+    private float distanceWeighting = 0.3f;
+
 
     private void Awake()
     {
@@ -25,29 +30,29 @@ public class ShooterPathCreator : MonoBehaviour
         CriteriaMinMaxValues = new Dictionary<int, float>();
     }
 
-    public PedestrianPoint[] CalculateRankedShooterAgentPath(float radius, Transform transform, int sizeOfPath, float footfallWeighting, float distanceWeighting)
+    public override List<PedestrianPoint> CreatePath()
     {
-        PedestrianPoint[] pedestrianPoints = GetAllPedestrianPointsInRadius(transform, radius);
+        List<PedestrianPoint> pedestrianPoints = GetAllPedestrianPointsInRadius(transform, radius);
         List<PathDecisionOption> pathDecisionOptions = CreatePathDecisionMatrix(pedestrianPoints, transform, footfallWeighting, distanceWeighting);
         CalculateWeightedSumOfNormalisedPathOptions(pathDecisionOptions);
         pathDecisionOptions.Sort((x, y) => y.WeightedSumOfPathNodes.CompareTo(x.WeightedSumOfPathNodes));
         return GetRankedPedestrianPoints(pathDecisionOptions, sizeOfPath);
     }
 
-    public PedestrianPoint[] GetAllPedestrianPointsInRadius(Transform transform, float radius)
+    public List<PedestrianPoint> GetAllPedestrianPointsInRadius(Transform transform, float radius)
     {
         Collider[] collidersInRadius = Physics.OverlapSphere(transform.position, radius, pedestrianPointLayer);
         List<PedestrianPoint> pedestrianPoints = new List<PedestrianPoint>();
 
-        foreach(Collider collider in collidersInRadius)
+        foreach (Collider collider in collidersInRadius)
         {
             pedestrianPoints.Add(collider.GetComponent<PedestrianPoint>());
         }
 
-        return pedestrianPoints.ToArray();
+        return pedestrianPoints;
     }
 
-    public List<PathDecisionOption> CreatePathDecisionMatrix(PedestrianPoint[] pedestrianPoints, Transform transform, float footfallWeighting, float distanceWeighting)
+    public List<PathDecisionOption> CreatePathDecisionMatrix(List<PedestrianPoint> pedestrianPoints, Transform transform, float footfallWeighting, float distanceWeighting)
     {
         List<PathDecisionOption> pathDecisionOptions = new List<PathDecisionOption>();
 
@@ -55,7 +60,7 @@ public class ShooterPathCreator : MonoBehaviour
         CurrentMinimumDistance = float.MaxValue;
         CriteriaMinMaxValues.Clear();
 
-        for (int outerIndex = 0; outerIndex < pedestrianPoints.Length; outerIndex++)
+        for (int outerIndex = 0; outerIndex < pedestrianPoints.Count; outerIndex++)
         {
             PathDecisionNode footfallNode = new PathDecisionNode()
             {
@@ -127,14 +132,14 @@ public class ShooterPathCreator : MonoBehaviour
         return valueToAdjustBy / valueToNormalise;
     }
 
-    public PedestrianPoint[] GetRankedPedestrianPoints(List<PathDecisionOption> pathDecisionOptions, int sizeOfPath)
+    public List<PedestrianPoint> GetRankedPedestrianPoints(List<PathDecisionOption> pathDecisionOptions, int sizeOfPath)
     {
         pathDecisionOptions.Sort((x, y) => y.WeightedSumOfPathNodes.CompareTo(x.WeightedSumOfPathNodes));
-        PedestrianPoint[] pedestrianPoints = new PedestrianPoint[sizeOfPath];
+        List<PedestrianPoint> pedestrianPoints = new List<PedestrianPoint>();
 
         for(int index = 0; index < sizeOfPath; index++)
         {
-            pedestrianPoints[index] = pathDecisionOptions[index].PedestrianPoint;
+            pedestrianPoints.Add(pathDecisionOptions[index].PedestrianPoint);
         }
 
         return pedestrianPoints;
