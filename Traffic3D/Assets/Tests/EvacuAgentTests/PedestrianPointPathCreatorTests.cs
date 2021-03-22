@@ -7,7 +7,7 @@ using UnityEngine.TestTools;
 
 public class PedestrianPointPathCreator_ReturnsCorrectPath_WithHospitalityPoint_WhenPedestrianTypeIsWorker : ArrangeActAssertStrategy
 {
-    private PedestrianPointPathCreator pedestrianPointPathCreator;
+    private NonShooterPedestrianPointPathCreator pedestrianPointPathCreator;
     private PedestrianType pedestrianType;
     private List<PedestrianPoint> actualPedestrianPoints;
     private float hopsitalityChanceOriginalValue;
@@ -33,7 +33,7 @@ public class PedestrianPointPathCreator_ReturnsCorrectPath_WithHospitalityPoint_
 
     public override void Act()
     {
-        actualPedestrianPoints = pedestrianPointPathCreator.GeneratePathBasedOnPedestrianType(pedestrianType);
+        actualPedestrianPoints = pedestrianPointPathCreator.CreatePath();
     }
 
     public override void Assertion()
@@ -52,7 +52,7 @@ public class PedestrianPointPathCreator_ReturnsCorrectPath_WithHospitalityPoint_
 
 public class PedestrianPointPathCreator_ReturnsCorrectPath_WithoutHospitalityPoint_WhenPedestrianTypeIsWorker : ArrangeActAssertStrategy
 {
-    private PedestrianPointPathCreator pedestrianPointPathCreator;
+    private NonShooterPedestrianPointPathCreator pedestrianPointPathCreator;
     private PedestrianType pedestrianType;
     private List<PedestrianPoint> actualPedestrianPoints;
     private float hopsitalityChanceOriginalValue;
@@ -78,7 +78,7 @@ public class PedestrianPointPathCreator_ReturnsCorrectPath_WithoutHospitalityPoi
 
     public override void Act()
     {
-        actualPedestrianPoints = pedestrianPointPathCreator.GeneratePathBasedOnPedestrianType(pedestrianType);
+        actualPedestrianPoints = pedestrianPointPathCreator.CreatePath();
     }
 
     public override void Assertion()
@@ -96,7 +96,7 @@ public class PedestrianPointPathCreator_ReturnsCorrectPath_WithoutHospitalityPoi
 
 public class PedestrianPointPathCreator_ReturnsCorrectPath_WhenPedestrianTypeIsShooter : ArrangeActAssertStrategy
 {
-    private PedestrianPointPathCreator pedestrianPointPathCreator;
+    private NonShooterPedestrianPointPathCreator pedestrianPointPathCreator;
     private PedestrianType pedestrianType;
     private List<PedestrianPoint> actualPedestrianPoints;
     private float hopsitalityChanceOriginalValue;
@@ -122,7 +122,7 @@ public class PedestrianPointPathCreator_ReturnsCorrectPath_WhenPedestrianTypeIsS
 
     public override void Act()
     {
-        actualPedestrianPoints = pedestrianPointPathCreator.GeneratePathBasedOnPedestrianType(pedestrianType);
+        actualPedestrianPoints = pedestrianPointPathCreator.CreatePath();
     }
 
     public override void Assertion()
@@ -140,9 +140,9 @@ public class PedestrianPointPathCreator_ReturnsCorrectPath_WhenPedestrianTypeIsS
 
 public static class PedestrianPointPathCreatorTestsHelper
 {
-    public static PedestrianPointPathCreator SetUpPedestrianPointPathCreator()
+    public static NonShooterPedestrianPointPathCreator SetUpPedestrianPointPathCreator()
     {
         GameObject gameObject = GameObject.Instantiate(new GameObject());
-        return gameObject.AddComponent<PedestrianPointPathCreator>();
+        return gameObject.AddComponent<NonShooterPedestrianPointPathCreator>();
     }
 }

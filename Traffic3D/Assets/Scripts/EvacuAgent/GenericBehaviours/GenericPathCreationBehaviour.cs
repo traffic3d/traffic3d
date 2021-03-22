@@ -4,15 +4,17 @@ using UnityEngine.AI;
 public class GenericPathCreationBehaviour : BehaviourStrategy
 {
     public List<PedestrianPoint> PathOfPedestrianPoints { get; set; }
-    private PedestrianPointPathCreator pedestrianPointPathCreator;
-    private PedestrianType pedestrianType;
+    public NonShooterPedestrianPointPathCreator PedestrianPointPathCreator { get; private set; }
     private NavMeshAgent navMeshAgent;
 
     private void Start()
     {
-        pedestrianPointPathCreator = gameObject.AddComponent<PedestrianPointPathCreator>();
-        pedestrianType = GetComponentInParent<Pedestrian>().pedestrianType;
         navMeshAgent = GetComponentInParent<NavMeshAgent>();
+    }
+
+    public void InitialiseScript(NonShooterPedestrianPointPathCreator pedestrianPointPathCreator) // This doesn't seem like a good way of doing this
+    {
+        PedestrianPointPathCreator = pedestrianPointPathCreator;
     }
 
     public override bool ShouldTriggerBehaviour()
@@ -25,7 +27,7 @@ public class GenericPathCreationBehaviour : BehaviourStrategy
 
     public override void PerformBehaviour()
     {
-        PathOfPedestrianPoints = pedestrianPointPathCreator.GeneratePathBasedOnPedestrianType(pedestrianType);
+        PathOfPedestrianPoints = PedestrianPointPathCreator.CreatePath();
         navMeshAgent.SetDestination(PathOfPedestrianPoints[0].GetPointLocation());
     }
 }

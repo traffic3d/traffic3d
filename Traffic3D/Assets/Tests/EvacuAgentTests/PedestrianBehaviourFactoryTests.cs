@@ -5,7 +5,7 @@ using UnityEngine.TestTools;
 
 public class PedestrianBehaviourFactory_AddEvacuAgentBehaviour_CorrectlyAddsNonShooterBehaviour : ArrangeActAssertStrategy
 {
-    private PedestrianBehaviourFactory pedestrianBehaviourFactory;
+    private AbstractEvacuAgentPedestrianFactory pedestrianBehaviourFactory;
     private BehaviourController behaviourController;
     private Pedestrian pedestrian;
     private GameObject gameObject;
@@ -21,7 +21,7 @@ public class PedestrianBehaviourFactory_AddEvacuAgentBehaviour_CorrectlyAddsNonS
 
     public override void Arrange()
     {
-        pedestrianBehaviourFactory = GameObject.FindObjectOfType<PedestrianBehaviourFactory>();
+        pedestrianBehaviourFactory = GameObject.FindObjectOfType<AbstractEvacuAgentPedestrianFactory>();
         gameObject = SpawnGameObjectWithInactivePedestrianScript();
         pedestrian = gameObject.GetComponent<Pedestrian>();
         Assert.Null(pedestrian.GetComponentInChildren<FieldOfView>());
@@ -31,7 +31,7 @@ public class PedestrianBehaviourFactory_AddEvacuAgentBehaviour_CorrectlyAddsNonS
 
     public override void Act()
     {
-        pedestrianBehaviourFactory.AddEvacuAgentBehaviour(pedestrian);
+        pedestrianBehaviourFactory.CreateEvacuaAgentPedestrian(pedestrian);
         behaviourController = pedestrian.GetComponentInChildren<BehaviourController>();
         behaviourController.enabled = false;
     }
@@ -51,7 +51,7 @@ public class PedestrianBehaviourFactory_AddEvacuAgentBehaviour_CorrectlyAddsNonS
 
 public class PedestrianBehaviourFactory_AddEvacuAgentBehaviour_CorrectlyAddsShooterBehaviour : ArrangeActAssertStrategy
 {
-    private PedestrianBehaviourFactory pedestrianBehaviourFactory;
+    private AbstractEvacuAgentPedestrianFactory pedestrianBehaviourFactory;
     private BehaviourController shooterBehaviourController;
     private BehaviourController nonShooterbehaviourController;
     private Pedestrian nonShooterPedestrian;
@@ -70,7 +70,7 @@ public class PedestrianBehaviourFactory_AddEvacuAgentBehaviour_CorrectlyAddsShoo
 
     public override void Arrange()
     {
-        pedestrianBehaviourFactory = GameObject.FindObjectOfType<PedestrianBehaviourFactory>();
+        pedestrianBehaviourFactory = GameObject.FindObjectOfType<AbstractEvacuAgentPedestrianFactory>();
 
         shooterGameObject = SpawnGameObjectWithInactivePedestrianScript();
         shooterPedestrian = shooterGameObject.GetComponent<Pedestrian>();
@@ -81,10 +81,10 @@ public class PedestrianBehaviourFactory_AddEvacuAgentBehaviour_CorrectlyAddsShoo
 
     public override void Act()
     {
-        pedestrianBehaviourFactory.AddEvacuAgentBehaviour(shooterPedestrian);
+        pedestrianBehaviourFactory.CreateEvacuaAgentPedestrian(shooterPedestrian);
         shooterBehaviourController = shooterPedestrian.GetComponentInChildren<BehaviourController>();
         shooterBehaviourController.enabled = false;
-        pedestrianBehaviourFactory.AddEvacuAgentBehaviour(nonShooterPedestrian);
+        pedestrianBehaviourFactory.CreateEvacuaAgentPedestrian(nonShooterPedestrian);
         nonShooterbehaviourController = nonShooterPedestrian.GetComponentInChildren<BehaviourController>();
         nonShooterbehaviourController.enabled = false;
 
