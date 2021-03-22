@@ -10,11 +10,7 @@ public class GenericPathCreationBehaviour : BehaviourStrategy
     private void Start()
     {
         navMeshAgent = GetComponentInParent<NavMeshAgent>();
-    }
-
-    public void InitialiseScript(NonShooterPedestrianPointPathCreator pedestrianPointPathCreator) // This doesn't seem like a good way of doing this
-    {
-        PedestrianPointPathCreator = pedestrianPointPathCreator;
+        PedestrianPointPathCreator = (NonShooterPedestrianPointPathCreator)GetComponentInParent<PedestrianPointPathCreator>();
     }
 
     public override bool ShouldTriggerBehaviour()
