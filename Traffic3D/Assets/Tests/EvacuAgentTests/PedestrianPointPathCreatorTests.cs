@@ -8,7 +8,6 @@ using UnityEngine.TestTools;
 public class PedestrianPointPathCreator_ReturnsCorrectPath_WithHospitalityPoint_WhenPedestrianTypeIsWorker : ArrangeActAssertStrategy
 {
     private NonShooterPedestrianPointPathCreator pedestrianPointPathCreator;
-    private PedestrianType pedestrianType;
     private List<PedestrianPoint> actualPedestrianPoints;
     private float hopsitalityChanceOriginalValue;
     private int expectedNumberOfElements;
@@ -25,7 +24,6 @@ public class PedestrianPointPathCreator_ReturnsCorrectPath_WithHospitalityPoint_
     public override void Arrange()
     {
         pedestrianPointPathCreator = PedestrianPointPathCreatorTestsHelper.SetUpPedestrianPointPathCreator();
-        pedestrianType = PedestrianType.Worker;
         hopsitalityChanceOriginalValue = EvacuAgentSceneParamaters.WORKER_CHANCE_TO_VISIT_HOSPITALITY_POINT_IN_ROUTE;
         EvacuAgentSceneParamaters.WORKER_CHANCE_TO_VISIT_HOSPITALITY_POINT_IN_ROUTE = 1f;
         expectedNumberOfElements = 2;
@@ -53,7 +51,6 @@ public class PedestrianPointPathCreator_ReturnsCorrectPath_WithHospitalityPoint_
 public class PedestrianPointPathCreator_ReturnsCorrectPath_WithoutHospitalityPoint_WhenPedestrianTypeIsWorker : ArrangeActAssertStrategy
 {
     private NonShooterPedestrianPointPathCreator pedestrianPointPathCreator;
-    private PedestrianType pedestrianType;
     private List<PedestrianPoint> actualPedestrianPoints;
     private float hopsitalityChanceOriginalValue;
     private int expectedNumberOfElements;
@@ -69,8 +66,6 @@ public class PedestrianPointPathCreator_ReturnsCorrectPath_WithoutHospitalityPoi
 
     public override void Arrange()
     {
-        pedestrianPointPathCreator = PedestrianPointPathCreatorTestsHelper.SetUpPedestrianPointPathCreator();
-        pedestrianType = PedestrianType.Worker;
         hopsitalityChanceOriginalValue = EvacuAgentSceneParamaters.WORKER_CHANCE_TO_VISIT_HOSPITALITY_POINT_IN_ROUTE;
         EvacuAgentSceneParamaters.WORKER_CHANCE_TO_VISIT_HOSPITALITY_POINT_IN_ROUTE = 0f;
         expectedNumberOfElements = 1;
@@ -97,7 +92,6 @@ public class PedestrianPointPathCreator_ReturnsCorrectPath_WithoutHospitalityPoi
 public class PedestrianPointPathCreator_ReturnsCorrectPath_WhenPedestrianTypeIsShooter : ArrangeActAssertStrategy
 {
     private NonShooterPedestrianPointPathCreator pedestrianPointPathCreator;
-    private PedestrianType pedestrianType;
     private List<PedestrianPoint> actualPedestrianPoints;
     private float hopsitalityChanceOriginalValue;
     private int expectedNumberOfElements;
@@ -114,7 +108,6 @@ public class PedestrianPointPathCreator_ReturnsCorrectPath_WhenPedestrianTypeIsS
     public override void Arrange()
     {
         pedestrianPointPathCreator = PedestrianPointPathCreatorTestsHelper.SetUpPedestrianPointPathCreator();
-        pedestrianType = PedestrianType.Worker;
         hopsitalityChanceOriginalValue = EvacuAgentSceneParamaters.WORKER_CHANCE_TO_VISIT_HOSPITALITY_POINT_IN_ROUTE;
         EvacuAgentSceneParamaters.WORKER_CHANCE_TO_VISIT_HOSPITALITY_POINT_IN_ROUTE = 0f;
         expectedNumberOfElements = 1;

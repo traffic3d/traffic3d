@@ -12,7 +12,6 @@ public class Pedestrian : MonoBehaviour
     public float probabilityOfRunning = 0.1f;
     public bool isUsingEvacuationBehaviour;
     public bool isShooterAgent = false;
-    public PedestrianType pedestrianType;
 
     // If changed, the animation controller needs the running value changed too.
     private float runSpeed = 2.5f;
