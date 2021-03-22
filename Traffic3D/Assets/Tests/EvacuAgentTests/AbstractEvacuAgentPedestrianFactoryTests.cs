@@ -4,10 +4,10 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-public class BehaviourCollectionFactory_CorrectlyCreatesBehaviourCollection : ArrangeActAssertStrategy
+public class AbstractEvacuAgentPedestrianFactory_CorrectlyCreatesBehaviourCollection : ArrangeActAssertStrategy
 {
     private BehaviourTypeOrder mockBehaviourTypeOrder;
-    private BehaviourCollectionFactory behaviourCollectionFactory;
+    private WorkerPedestrianFactory workerPedestrianFactory;
     private BehaviourCollection behaviourCollection;
     private BehaviourController behaviourController;
     private List<BehaviourStrategy> actualBehaviourStrategies;
@@ -26,13 +26,13 @@ public class BehaviourCollectionFactory_CorrectlyCreatesBehaviourCollection : Ar
         mockBehaviourTypeOrder = BehaviourCollectionFactoryTestsHelper.GetMockBehaviourTypeOrder();
         behaviourController = BehaviourCollectionFactoryTestsHelper.GetBehaviourController();
         behaviourController.isUpdateOn = false;
-        behaviourCollectionFactory = BehaviourCollectionFactoryTestsHelper.GetBehaviourCollectionFactory();
+        workerPedestrianFactory = BehaviourCollectionFactoryTestsHelper.GetBehaviourCollectionFactory();
         actualBehaviourStrategies = new List<BehaviourStrategy>();
     }
 
     public override void Act()
     {
-        behaviourCollection = behaviourCollectionFactory.GenerateBehaviourCollection(behaviourController, mockBehaviourTypeOrder);
+        behaviourCollection = workerPedestrianFactory.GenerateBehaviourCollection(behaviourController, mockBehaviourTypeOrder);
 
         foreach (BehaviourStrategy behaviourStrategy in behaviourCollection.behaviours)
         {
@@ -58,9 +58,9 @@ public static class BehaviourCollectionFactoryTestsHelper
         return shooterBehaviourTypeOrderGameObject.AddComponent<MockBehaviourTypeOrder>();
     }
 
-    public static BehaviourCollectionFactory GetBehaviourCollectionFactory()
+    public static WorkerPedestrianFactory GetBehaviourCollectionFactory()
     {
-        return GameObject.FindObjectOfType<BehaviourCollectionFactory>();
+        return GameObject.FindObjectOfType<WorkerPedestrianFactory>();
     }
 
     public static BehaviourController GetBehaviourController()

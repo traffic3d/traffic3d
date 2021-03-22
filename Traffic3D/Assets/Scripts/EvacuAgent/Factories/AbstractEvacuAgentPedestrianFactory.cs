@@ -25,7 +25,7 @@ public abstract class AbstractEvacuAgentPedestrianFactory : MonoBehaviour
         behaviourController.behaviourCollections.Add(behaviourCollection);
     }
 
-    private BehaviourCollection GenerateBehaviourCollection(BehaviourController behaviourController, BehaviourTypeOrder behaviourTypeOrder)
+    public BehaviourCollection GenerateBehaviourCollection(BehaviourController behaviourController, BehaviourTypeOrder behaviourTypeOrder)
     {
         GameObject behaviourCollectionInstance = Instantiate(behaviourCollectionPrefab, behaviourController.transform);
         BehaviourCollection behaviourCollection = behaviourCollectionInstance.GetComponent<BehaviourCollection>();

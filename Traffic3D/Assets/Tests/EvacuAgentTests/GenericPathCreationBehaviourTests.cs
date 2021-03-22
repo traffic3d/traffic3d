@@ -12,7 +12,6 @@ public class GenericPathCreationBehaviour_PerformBehaviour_CorrectlyAddsElements
     private Pedestrian pedestrian;
     private GenericPathCreationBehaviour genericPathCreationBehaviour;
     private List<PedestrianPoint> actualPathOfpedestrianPoints;
-    private PedestrianType pedestrianType;
     private NavMeshAgent navMeshAgent;
     private int expectedNumberOfElements;
 
@@ -30,8 +29,7 @@ public class GenericPathCreationBehaviour_PerformBehaviour_CorrectlyAddsElements
         pedestrianGameObject = SpawnGameObjectWithInactivePedestrianScript();
 
         pedestrian = pedestrianGameObject.GetComponent<Pedestrian>();
-        pedestrianType = PedestrianType.Worker;
-        pedestrian.pedestrianType = pedestrianType;
+        pedestrian.gameObject.AddComponent<WorkerPedestrianPointPathCreator>();
         navMeshAgent = pedestrian.gameObject.AddComponent<NavMeshAgent>();
 
         genericPathCreationBehaviour = pedestrianGameObject.AddComponent<GenericPathCreationBehaviour>();
