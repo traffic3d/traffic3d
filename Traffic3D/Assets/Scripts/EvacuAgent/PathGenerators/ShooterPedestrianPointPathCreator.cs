@@ -18,7 +18,7 @@ public class ShooterPedestrianPointPathCreator : PedestrianPointPathCreator
     private LayerMask pedestrianPointLayer;
     private const bool invalidCriteriaValueBool = true;
     private float radius = 100f;
-    private int sizeOfPath = 4;
+    private int sizeOfPath = 3;
     private float footfallWeighting = 0.7f;
     private float distanceWeighting = 0.3f;
 

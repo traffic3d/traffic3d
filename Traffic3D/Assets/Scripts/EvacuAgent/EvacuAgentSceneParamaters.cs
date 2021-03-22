@@ -8,7 +8,7 @@
     public static bool IS_SHOOTER_HIGHTLIGHT_VISUAL_ENABLED = false;
     public static bool IS_WORKER_HIGHTLIGHT_VISUAL_ENABLED = false;
 
-    // Pefabs
+    // Prefabs
     public static string RESEOURCES_PREFABS_PREFIX = "EvacuAgent/Prefabs/";
     public static string BEHAVIOUR_CONTROLLER_PREFAB = "EvacuAgent/Prefabs/BehaviourController";
     public static string SHOOTER_HIGHLIGHT_PREFAB = "EvacuAgent/Prefabs/ShooterHighlight";
