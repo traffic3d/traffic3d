@@ -18,8 +18,8 @@
 
     // Number of agent type
     public static int NUMBER_OF_SHOOTER_AGENTS = 1;
-    public static int NUMBER_OF_WORKER_AGENTS = 10;
-    public static int NUMBER_OF_FRIEND_GROUP_AGENTS = 25;
+    public static int NUMBER_OF_WORKER_AGENTS = 1;
+    public static int NUMBER_OF_FRIEND_GROUP_AGENTS = 1;
 
     // Worker pedestrians
     public static float WORKER_CHANCE_TO_VISIT_HOSPITALITY_POINT_IN_ROUTE = 0.5f;

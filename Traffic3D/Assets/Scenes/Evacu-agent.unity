@@ -798,6 +798,7 @@ GameObject:
   - component: {fileID: 218403223}
   - component: {fileID: 218403225}
   - component: {fileID: 218403224}
+  - component: {fileID: 218403220}
   m_Layer: 0
   m_Name: PedestrianFactory
   m_TagString: Untagged
@@ -872,6 +873,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &218403220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218403217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d426a8d057b36e249ba13e19af0581b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  behaviourCollectionPrefab: {fileID: 2839513278162346427, guid: 661ab49e6250bcb4f89ce78ea4776860,
+    type: 3}
+  pedestrianTypePrefab: {fileID: 3091836226254721903, guid: 6b943d729ec2bbe4f9b8b8f47811bfa0,
+    type: 3}
+  followerPedestrianTypePrefab: {fileID: 0}
 --- !u!114 &218403222
 MonoBehaviour:
   m_ObjectHideFlags: 0

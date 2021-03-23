@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class LeaderFollowerPedestrianFactory : AbstractEvacuAgentPedestrianFactory
 {
+    [SerializeField]
+    private GameObject followerPedestrianTypePrefab;
+
     private EvacuAgentPedestrianBase currentLeaderPedestrian;
     private int numberOfFollowersSpawnedInCurrentGroup;
 
@@ -17,9 +20,7 @@ public class LeaderFollowerPedestrianFactory : AbstractEvacuAgentPedestrianFacto
     {
         numPedestriansToSpawn--;
         numberOfFollowersSpawnedInCurrentGroup++;
-        CreatePedestrianType(pedestrian, EvacuAgentSceneParamaters.IS_FRIEND_GROUP_HIGHTLIGHT_VISUAL_ENABLED, pedestrianTypePrefab);
-
-        return null; // CHANGE
+        return CreatePedestrianType(pedestrian, EvacuAgentSceneParamaters.IS_FRIEND_GROUP_HIGHTLIGHT_VISUAL_ENABLED, pedestrianTypePrefab);
     }
 
     private int GetNumberOfFollowersForCurrentGroup()

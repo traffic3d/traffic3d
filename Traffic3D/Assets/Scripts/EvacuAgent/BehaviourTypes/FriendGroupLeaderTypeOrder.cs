@@ -8,7 +8,6 @@ public class FriendGroupLeaderTypeOrder : BehaviourTypeOrder
     {
         behaviourTypes = new List<BehaviourType>()
         {
-            new ChooseMeetingLocationBehaviourType(),
             new GenericPathCreationBehaviourType(),
             new GenericEnterLeaveBuildingBehaviourType(),
             new GenericMoveToNextDestinationBehaviourType(),
@@ -48,15 +47,6 @@ public class FriendGroupLeaderTypeOrder : BehaviourTypeOrder
     private class GenericNoNewBehaviourType : BehaviourType
     {
         private readonly string behaviourStrategyName = "GenericNoNewBehaviour";
-        private readonly float behaviourStrategyChanceToUse = 1f;
-
-        public override string GetBehaviourStrategyName() => behaviourStrategyName;
-        public override float GetBehaviourStrategyChance() => behaviourStrategyChanceToUse;
-    }
-
-    private class ChooseMeetingLocationBehaviourType : BehaviourType
-    {
-        private readonly string behaviourStrategyName = "ChooseMeetingLocationBehaviour";
         private readonly float behaviourStrategyChanceToUse = 1f;
 
         public override string GetBehaviourStrategyName() => behaviourStrategyName;
