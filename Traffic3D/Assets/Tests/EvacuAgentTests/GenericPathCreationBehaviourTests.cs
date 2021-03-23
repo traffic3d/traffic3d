@@ -11,7 +11,7 @@ public class GenericPathCreationBehaviour_PerformBehaviour_CorrectlyAddsElements
     private GameObject pedestrianGameObject;
     private Pedestrian pedestrian;
     private GenericPathCreationBehaviour genericPathCreationBehaviour;
-    private List<PedestrianPoint> actualPathOfpedestrianPoints;
+    private List<Vector3> actualPathOfpedestrianPoints;
     private NavMeshAgent navMeshAgent;
     private int expectedNumberOfElements;
 
@@ -39,14 +39,14 @@ public class GenericPathCreationBehaviour_PerformBehaviour_CorrectlyAddsElements
     public override void Act()
     {
         genericPathCreationBehaviour.PerformBehaviour();
-        actualPathOfpedestrianPoints = genericPathCreationBehaviour.PathOfPedestrianPoints;
+        actualPathOfpedestrianPoints = genericPathCreationBehaviour.Path;
     }
 
     public override void Assertion()
     {
         Assert.NotNull(actualPathOfpedestrianPoints);
         Assert.GreaterOrEqual(expectedNumberOfElements, actualPathOfpedestrianPoints.Count);
-        Assert.AreEqual(navMeshAgent.destination, actualPathOfpedestrianPoints[0].GetPointLocation());
+        Assert.AreEqual(navMeshAgent.destination, actualPathOfpedestrianPoints[0]);
     }
 }
 
@@ -73,7 +73,7 @@ public class GenericPathCreationBehaviour_ShouldTriggerbehaviour_ReturnsTrue_Whe
         pedestrian.gameObject.AddComponent<NavMeshAgent>();
 
         genericPathCreationBehaviour = pedestrianGameObject.AddComponent<GenericPathCreationBehaviour>();
-        genericPathCreationBehaviour.PathOfPedestrianPoints = null;
+        genericPathCreationBehaviour.Path = null;
     }
 
     public override void Act()
@@ -110,7 +110,7 @@ public class GenericPathCreationBehaviour_ShouldTriggerbehaviour_ReturnsTrue_Whe
         pedestrian.gameObject.AddComponent<NavMeshAgent>();
 
         genericPathCreationBehaviour = pedestrianGameObject.AddComponent<GenericPathCreationBehaviour>();
-        genericPathCreationBehaviour.PathOfPedestrianPoints = new List<PedestrianPoint>();
+        genericPathCreationBehaviour.Path = new List<Vector3>();
     }
 
     public override void Act()
@@ -130,6 +130,7 @@ public class GenericPathCreationBehaviour_ShouldTriggerbehaviour_ReturnsFalse_Wh
     private Pedestrian pedestrian;
     private GenericPathCreationBehaviour genericPathCreationBehaviour;
     private bool actualBool;
+    private PedestrianPoint pedestrianPoint;
 
     [UnityTest]
     public override IEnumerator PerformTest()
@@ -147,7 +148,8 @@ public class GenericPathCreationBehaviour_ShouldTriggerbehaviour_ReturnsFalse_Wh
         pedestrian.gameObject.AddComponent<NavMeshAgent>();
 
         genericPathCreationBehaviour = pedestrianGameObject.AddComponent<GenericPathCreationBehaviour>();
-        genericPathCreationBehaviour.PathOfPedestrianPoints = new List<PedestrianPoint>() { GameObject.FindObjectOfType<PedestrianPoint>() };
+        pedestrianPoint = GameObject.FindObjectOfType<PedestrianPoint>();
+        genericPathCreationBehaviour.Path = new List<Vector3>() { pedestrianPoint.GetPointLocation() };
     }
 
     public override void Act()

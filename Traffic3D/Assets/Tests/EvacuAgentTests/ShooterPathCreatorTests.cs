@@ -94,7 +94,7 @@ public class ShooterPathCreator_CalculateRankedShooterAgentPath_ReturnsCorrectPa
 {
     private List<PedestrianPoint> expectedPedestrianPoints;
     private ShooterPedestrianPointPathCreator shooterPathCreator;
-    private List<PedestrianPoint> actualPedestrianPoints;
+    private List<Vector3> actualPedestrianPoints;
     private PedestrianPoint building5;
     private PedestrianPoint building3;
     private PedestrianPoint building2;
@@ -130,9 +130,9 @@ public class ShooterPathCreator_CalculateRankedShooterAgentPath_ReturnsCorrectPa
     public override void Assertion()
     {
         Assert.AreEqual(actualPedestrianPoints.Count, sizeOfPath);
-        Assert.That(actualPedestrianPoints[0], Is.EqualTo(building3));
-        Assert.That(actualPedestrianPoints[1], Is.EqualTo(building5));
-        Assert.That(actualPedestrianPoints[2], Is.EqualTo(middleLeft));
+        Assert.That(GetPedestrianPointFromLocation(actualPedestrianPoints[0]), Is.EqualTo(building3));
+        Assert.That(GetPedestrianPointFromLocation(actualPedestrianPoints[1]), Is.EqualTo(building5));
+        Assert.That(GetPedestrianPointFromLocation(actualPedestrianPoints[2]), Is.EqualTo(middleLeft));
     }
 }
 
@@ -294,7 +294,7 @@ public class ShooterPathCreator_GetRankedPedestrianPoints_ReturnsCorrectOrderOfP
     private ShooterPedestrianPointPathCreator shooterPathCreator;
     private List<PathDecisionOption> pathDecisionOptions;
     private List<PedestrianPoint> pedestrianPoints;
-    private List<PedestrianPoint> orderedPedestrianPoints;
+    private List<Vector3> orderedPedestrianPoints;
     private int sizeOfPath;
     private float nodeOneExpectedWeightSum;
     private float nodeTwoExpectedWeightSum;
@@ -334,9 +334,9 @@ public class ShooterPathCreator_GetRankedPedestrianPoints_ReturnsCorrectOrderOfP
     public override void Assertion()
     {
         Assert.AreEqual(orderedPedestrianPoints.Count, sizeOfPath);
-        Assert.That(orderedPedestrianPoints[0], Is.EqualTo(pedestrianPoints[2]));
-        Assert.That(orderedPedestrianPoints[1], Is.EqualTo(pedestrianPoints[1]));
-        Assert.That(orderedPedestrianPoints[2], Is.EqualTo(pedestrianPoints[0]));
+        Assert.That(GetPedestrianPointFromLocation(orderedPedestrianPoints[0]), Is.EqualTo(pedestrianPoints[2]));
+        Assert.That(GetPedestrianPointFromLocation(orderedPedestrianPoints[1]), Is.EqualTo(pedestrianPoints[1]));
+        Assert.That(GetPedestrianPointFromLocation(orderedPedestrianPoints[2]), Is.EqualTo(pedestrianPoints[0]));
     }
 }
 

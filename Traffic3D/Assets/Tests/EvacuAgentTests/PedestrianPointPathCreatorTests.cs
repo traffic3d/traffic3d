@@ -8,7 +8,7 @@ using UnityEngine.TestTools;
 public class WorkerPedestrianPointPathCreator_ReturnsCorrectPath_WithHospitalityPoint : ArrangeActAssertStrategy
 {
     private WorkerPedestrianPointPathCreator pedestrianPointPathCreator;
-    private List<PedestrianPoint> actualPedestrianPoints;
+    private List<Vector3> actualPedestrianPoints;
     private float hopsitalityChanceOriginalValue;
     private int expectedNumberOfElements;
 
@@ -37,8 +37,8 @@ public class WorkerPedestrianPointPathCreator_ReturnsCorrectPath_WithHospitality
     public override void Assertion()
     {
         Assert.AreEqual(expectedNumberOfElements, actualPedestrianPoints.Count);
-        Assert.AreEqual(PedestrianPointType.Hospitality, actualPedestrianPoints[0].PedestrianPointType);
-        Assert.AreEqual(PedestrianPointType.Work, actualPedestrianPoints[1].PedestrianPointType);
+        Assert.AreEqual(PedestrianPointType.Hospitality, GetPedestrianPointFromLocation(actualPedestrianPoints[0]).PedestrianPointType);
+        Assert.AreEqual(PedestrianPointType.Work, GetPedestrianPointFromLocation(actualPedestrianPoints[1]).PedestrianPointType);
     }
 
     [TearDown]
@@ -52,7 +52,7 @@ public class WorkerPedestrianPointPathCreator_ReturnsCorrectPath_WithHospitality
 public class WorkerPedestrianPointPathCreator_ReturnsCorrectPath_WithoutHospitalityPoint : ArrangeActAssertStrategy
 {
     private WorkerPedestrianPointPathCreator pedestrianPointPathCreator;
-    private List<PedestrianPoint> actualPedestrianPoints;
+    private List<Vector3> actualPedestrianPoints;
     private float hopsitalityChanceOriginalValue;
     private int expectedNumberOfElements;
 
@@ -81,7 +81,7 @@ public class WorkerPedestrianPointPathCreator_ReturnsCorrectPath_WithoutHospital
     public override void Assertion()
     {
         Assert.AreEqual(expectedNumberOfElements, actualPedestrianPoints.Count);
-        Assert.AreEqual(PedestrianPointType.Work, actualPedestrianPoints[0].PedestrianPointType);
+        Assert.AreEqual(PedestrianPointType.Work, GetPedestrianPointFromLocation(actualPedestrianPoints[0]).PedestrianPointType);
     }
 
     [TearDown]

@@ -32,7 +32,7 @@ public class ShooterPedestrianPointPathCreator : PedestrianPointPathCreator
         CriteriaMinMaxValues = new Dictionary<int, float>();
     }
 
-    public override List<PedestrianPoint> CreatePath()
+    public override List<Vector3> CreatePath()
     {
         List<PedestrianPoint> pedestrianPoints = GetAllPedestrianPointsInRadius(transform, radius);
         List<PathDecisionOption> pathDecisionOptions = CreatePathDecisionMatrix(pedestrianPoints, transform, footfallWeighting, distanceWeighting);
@@ -134,14 +134,14 @@ public class ShooterPedestrianPointPathCreator : PedestrianPointPathCreator
         return valueToAdjustBy / valueToNormalise;
     }
 
-    public List<PedestrianPoint> GetRankedPedestrianPoints(List<PathDecisionOption> pathDecisionOptions, int sizeOfPath)
+    public List<Vector3> GetRankedPedestrianPoints(List<PathDecisionOption> pathDecisionOptions, int sizeOfPath)
     {
         pathDecisionOptions.Sort((x, y) => y.WeightedSumOfPathNodes.CompareTo(x.WeightedSumOfPathNodes));
-        List<PedestrianPoint> pedestrianPoints = new List<PedestrianPoint>();
+        List<Vector3> pedestrianPoints = new List<Vector3>();
 
         for(int index = 0; index < sizeOfPath; index++)
         {
-            pedestrianPoints.Add(pathDecisionOptions[index].PedestrianPoint);
+            pedestrianPoints.Add(pathDecisionOptions[index].PedestrianPoint.GetPointLocation());
         }
 
         return pedestrianPoints;
