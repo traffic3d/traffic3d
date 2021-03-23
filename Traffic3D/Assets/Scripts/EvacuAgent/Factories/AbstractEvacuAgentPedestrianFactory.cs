@@ -11,6 +11,18 @@ public abstract class AbstractEvacuAgentPedestrianFactory : MonoBehaviour
 
     public abstract EvacuAgentPedestrianBase CreateEvacuaAgentPedestrian(Pedestrian pedestrian);
 
+    protected EvacuAgentPedestrianBase CreatePedestrianType(Pedestrian pedestrian, bool isHighlightEnabled, GameObject pedestrianTypePrefab)
+    {
+        GameObject evacuAgentPedestrianObj = GameObject.Instantiate(pedestrianTypePrefab, pedestrian.transform);
+        EvacuAgentPedestrianBase evacuAgentPedestrian = evacuAgentPedestrianObj.GetComponent<EvacuAgentPedestrianBase>();
+
+        evacuAgentPedestrian.InitialisePedestrian(pedestrian);
+        AddPedestrianHighlighter(pedestrian, evacuAgentPedestrian.pedestrianHighlight, isHighlightEnabled);
+        AddBehaviourCollection(evacuAgentPedestrian.behaviourController, evacuAgentPedestrian.behaviourTypeOrder);
+
+        return evacuAgentPedestrian;
+    }
+
     protected void AddPedestrianHighlighter(Pedestrian pedestrian, GameObject prefab, bool isHighlightEnabled)
     {
         GameObject highlight = Instantiate(prefab, pedestrian.transform.position, Quaternion.identity);
