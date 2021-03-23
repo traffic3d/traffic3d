@@ -9,7 +9,7 @@ public abstract class AbstractEvacuAgentPedestrianFactory : MonoBehaviour
     [SerializeField]
     protected GameObject pedestrianTypePrefab;
 
-    public abstract EvacuAgentPedestrianBase CreateEvacuaAgentPedestrian(Pedestrian pedestrian);
+    public abstract EvacuAgentPedestrianBase CreateEvacuAgentPedestrian(Pedestrian pedestrian);
 
     protected EvacuAgentPedestrianBase CreatePedestrianType(Pedestrian pedestrian, bool isHighlightEnabled, GameObject pedestrianTypePrefab)
     {

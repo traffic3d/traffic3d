@@ -77,7 +77,7 @@ public class WorkerPedestrianFactory_AddEvacuAgentBehaviour_CorrectlyAddsWorkerB
 
     public override void Act()
     {
-        actualEvacuAgentPedestrian = pedestrianBehaviourFactory.CreateEvacuaAgentPedestrian(pedestrian);
+        actualEvacuAgentPedestrian = pedestrianBehaviourFactory.CreateEvacuAgentPedestrian(pedestrian);
         behaviourController = actualEvacuAgentPedestrian.behaviourController;
         behaviourController.isUpdateOn = false;
     }
@@ -123,7 +123,7 @@ public class ShooterPedestrianFactory_AddEvacuAgentBehaviour_CorrectlyAddsShoote
 
     public override void Act()
     {
-        shooterPedestrian = (ShooterPedestrian)shooterPedestrianFactory.CreateEvacuaAgentPedestrian(pedestrian);
+        shooterPedestrian = (ShooterPedestrian)shooterPedestrianFactory.CreateEvacuAgentPedestrian(pedestrian);
         shooterBehaviourController = shooterPedestrian.behaviourController;
         shooterBehaviourController.isUpdateOn = false;
     }

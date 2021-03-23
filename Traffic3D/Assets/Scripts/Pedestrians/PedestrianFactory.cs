@@ -123,7 +123,7 @@ public class PedestrianFactory : MonoBehaviour
             evacuAgentPedestrianFactory = workerPedestrianFactory;
         }
 
-        evacuAgentPedestrianFactory.CreateEvacuaAgentPedestrian(pedestrian);
+        evacuAgentPedestrianFactory.CreateEvacuAgentPedestrian(pedestrian);
     }
 
     [System.Serializable]
