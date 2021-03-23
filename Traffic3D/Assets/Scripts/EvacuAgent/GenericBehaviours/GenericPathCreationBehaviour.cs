@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.AI;
 
 public class GenericPathCreationBehaviour : BehaviourStrategy
 {
-    public List<PedestrianPoint> PathOfPedestrianPoints { get; set; }
+    public List<Vector3> Path { get; set; }
     public NonShooterPedestrianPointPathCreator PedestrianPointPathCreator { get; private set; }
     private NavMeshAgent navMeshAgent;
 
@@ -15,7 +16,7 @@ public class GenericPathCreationBehaviour : BehaviourStrategy
 
     public override bool ShouldTriggerBehaviour()
     {
-        if(PathOfPedestrianPoints == null || PathOfPedestrianPoints.Count == 0)
+        if(Path == null || Path.Count == 0)
             return true;
 
         return false;
@@ -23,7 +24,7 @@ public class GenericPathCreationBehaviour : BehaviourStrategy
 
     public override void PerformBehaviour()
     {
-        PathOfPedestrianPoints = PedestrianPointPathCreator.CreatePath();
-        navMeshAgent.SetDestination(PathOfPedestrianPoints[0].GetPointLocation());
+        Path = PedestrianPointPathCreator.CreatePath();
+        navMeshAgent.SetDestination(Path[0]);
     }
 }

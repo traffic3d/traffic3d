@@ -1,8 +1,9 @@
-﻿using UnityEngine.AI;
+﻿using UnityEngine;
+using UnityEngine.AI;
 
 public class GenericMoveToNextDestinationBehaviour : BehaviourStrategy
 {
-    public PedestrianPoint CurrentPedestrianPointDestination { get; private set; }
+    public Vector3 CurrentDestination { get; private set; }
     private GenericPathCreationBehaviour genericPathCreationBehaviour;
     private NavMeshAgent navMeshAgent;
     private int currentPathIndex;
@@ -27,10 +28,10 @@ public class GenericMoveToNextDestinationBehaviour : BehaviourStrategy
 
     public override void PerformBehaviour()
     {
-        if (currentPathIndex < genericPathCreationBehaviour.PathOfPedestrianPoints.Count)
+        if (currentPathIndex < genericPathCreationBehaviour.Path.Count)
         {
-            CurrentPedestrianPointDestination = genericPathCreationBehaviour.PathOfPedestrianPoints[currentPathIndex];
-            navMeshAgent.SetDestination(CurrentPedestrianPointDestination.GetPointLocation());
+            CurrentDestination = genericPathCreationBehaviour.Path[currentPathIndex];
+            navMeshAgent.SetDestination(CurrentDestination);
             currentPathIndex++;
         }
     }
