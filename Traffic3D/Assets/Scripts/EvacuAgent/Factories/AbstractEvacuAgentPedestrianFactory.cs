@@ -20,8 +20,9 @@ public abstract class AbstractEvacuAgentPedestrianFactory : MonoBehaviour
 
         evacuAgentPedestrian.InitialisePedestrian(pedestrian);
         AddPedestrianHighlighter(pedestrian, evacuAgentPedestrian.pedestrianHighlight, isHighlightEnabled);
+        evacuAgentPedestrian.behaviourController.transform.SetParent(evacuAgentPedestrian.transform);
         AddBehaviourCollection(evacuAgentPedestrian.behaviourController, evacuAgentPedestrian.behaviourTypeOrder);
-
+        evacuAgentPedestrian.behaviourController.isUpdateOn = true;
         return evacuAgentPedestrian;
     }
 
