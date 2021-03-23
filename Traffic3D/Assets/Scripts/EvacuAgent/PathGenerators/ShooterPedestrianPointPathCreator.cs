@@ -19,6 +19,8 @@ public class ShooterPedestrianPointPathCreator : PedestrianPointPathCreator
     private const bool invalidCriteriaValueBool = true;
     private float radius = 100f;
     private int sizeOfPath = 3;
+
+    // Note that these weighting values must sum to 1 as they represent probability of choosing a PedestrianPoint
     private float footfallWeighting = 0.7f;
     private float distanceWeighting = 0.3f;
 
