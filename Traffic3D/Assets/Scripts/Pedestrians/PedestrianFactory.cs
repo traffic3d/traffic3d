@@ -14,11 +14,7 @@ public class PedestrianFactory : MonoBehaviour
     private PedestrianPoint[] pedestrianPoints;
     private List<PedestrianPoint> evacuAgentSpawnPedestrianPoints;
     private bool isUsingEvacuationBehaviour = false;
-    private AbstractEvacuAgentPedestrianFactory pedestrianBehaviourFactory;
-    private int numberOfShooterAgentsSpawned = 0;
-    private int numberOfWorkerAgentsSpawned = 0;
-    private WorkerPedestrianFactory workerPedestrianFactory;
-    private ShooterPedestrianFactory shooterPedestrianFactory;
+    private List<AbstractEvacuAgentPedestrianFactory> evacuAgentPedestrianFactories;
 
     void Start()
     {
@@ -28,11 +24,9 @@ public class PedestrianFactory : MonoBehaviour
         }
         pedestrianPoints = FindObjectsOfType<PedestrianPoint>();
         evacuAgentSpawnPedestrianPoints = new List<PedestrianPoint>();
+        evacuAgentPedestrianFactories = SetUpEvacuAgentPedestrianFactories();
         IsUsingEvacuationBehaviour();
         GetSpawnPedestrianPoints();
-        pedestrianBehaviourFactory = gameObject.GetComponent<AbstractEvacuAgentPedestrianFactory>();
-        workerPedestrianFactory = gameObject.GetComponent<WorkerPedestrianFactory>();
-        shooterPedestrianFactory = gameObject.GetComponent<ShooterPedestrianFactory>();
         StartCoroutine(GeneratePedestrians());
     }
 
@@ -87,7 +81,9 @@ public class PedestrianFactory : MonoBehaviour
 
     private int GetNumberOfEvacuAgentPedestrians()
     {
-        return EvacuAgentSceneParamaters.NUMBER_OF_WORKER_AGENTS + EvacuAgentSceneParamaters.NUMBER_OF_SHOOTER_AGENTS;
+        int sumOfPedestriansToSpawn = 0;
+        evacuAgentPedestrianFactories.ForEach(x => sumOfPedestriansToSpawn += x.GetNumPedestriansToSpawn());
+        return sumOfPedestriansToSpawn;
     }
 
     private PedestrianPoint GetPedestrianPoint()
@@ -110,20 +106,25 @@ public class PedestrianFactory : MonoBehaviour
 
     private void AddEvacuAgentBehaviour(Pedestrian pedestrian)
     {
-        AbstractEvacuAgentPedestrianFactory evacuAgentPedestrianFactory = null;
-
-        if (numberOfShooterAgentsSpawned < EvacuAgentSceneParamaters.NUMBER_OF_SHOOTER_AGENTS)
+        if(evacuAgentPedestrianFactories.Any())
         {
-            numberOfShooterAgentsSpawned++;
-            evacuAgentPedestrianFactory = shooterPedestrianFactory;
-        }
-        else if (numberOfWorkerAgentsSpawned < EvacuAgentSceneParamaters.NUMBER_OF_WORKER_AGENTS)
-        {
-            numberOfWorkerAgentsSpawned++;
-            evacuAgentPedestrianFactory = workerPedestrianFactory;
-        }
+            AbstractEvacuAgentPedestrianFactory factory = evacuAgentPedestrianFactories[Random.Range(0, evacuAgentPedestrianFactories.Count)];
+            factory.CreateEvacuAgentPedestrian(pedestrian);
 
-        evacuAgentPedestrianFactory.CreateEvacuAgentPedestrian(pedestrian);
+            if (factory.HasSpawnedMaxPedestrians())
+            {
+                evacuAgentPedestrianFactories.Remove(factory);
+            }
+        }
+    }
+
+    private List<AbstractEvacuAgentPedestrianFactory> SetUpEvacuAgentPedestrianFactories()
+    {
+        return new List<AbstractEvacuAgentPedestrianFactory>()
+        {
+            gameObject.GetComponent<WorkerPedestrianFactory>(),
+            gameObject.GetComponent<ShooterPedestrianFactory>()
+        };
     }
 
     [System.Serializable]

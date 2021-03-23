@@ -9,6 +9,8 @@ public abstract class AbstractEvacuAgentPedestrianFactory : MonoBehaviour
     [SerializeField]
     protected GameObject pedestrianTypePrefab;
 
+    protected int numPedestriansToSpawn;
+
     public abstract EvacuAgentPedestrianBase CreateEvacuAgentPedestrian(Pedestrian pedestrian);
 
     protected EvacuAgentPedestrianBase CreatePedestrianType(Pedestrian pedestrian, bool isHighlightEnabled, GameObject pedestrianTypePrefab)
@@ -35,6 +37,19 @@ public abstract class AbstractEvacuAgentPedestrianFactory : MonoBehaviour
         BehaviourCollection behaviourCollection = GenerateBehaviourCollection(behaviourController, behaviourTypeOrder);
         behaviourController.currentBehaviourCollection = behaviourCollection;
         behaviourController.behaviourCollections.Add(behaviourCollection);
+    }
+
+    public bool HasSpawnedMaxPedestrians()
+    {
+        if (numPedestriansToSpawn == 0)
+            return true;
+
+        return false;
+    }
+
+    public int GetNumPedestriansToSpawn()
+    {
+        return numPedestriansToSpawn;
     }
 
     public BehaviourCollection GenerateBehaviourCollection(BehaviourController behaviourController, BehaviourTypeOrder behaviourTypeOrder)
