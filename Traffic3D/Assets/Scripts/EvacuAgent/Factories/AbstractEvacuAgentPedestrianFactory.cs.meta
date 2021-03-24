@@ -1,12 +1,12 @@
 fileFormatVersion: 2
-guid: 2f204fc0c9dfdee46aafb315083bb46a
+guid: 08b141240632c8743ba56c09aff6f2b0
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - behaviourCollectionFactory: {instanceID: 0}
-  - workerPedestrianPrefab: {fileID: 5399095586381281966, guid: b3f03a2743136834f91e8de6af7e5850,
+  - behaviourCollectionPrefab: {fileID: 2839513278162346427, guid: 661ab49e6250bcb4f89ce78ea4776860,
       type: 3}
+  - pedestrianTypePrefab: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -2,13 +2,19 @@
 {
     public static string SCENE_NAME = "Evacu-agent";
     public static string SHOOTER_TAG = "shooter";
+    public static string PEDESTRIAN_TAG = "pedestrian";
     public static string SHOOTER_HIGHLIGHT_TAG = "shooterHighlight";
     public static bool IS_FOV_VISUAL_ENABLED = true;
     public static bool IS_SHOOTER_HIGHTLIGHT_VISUAL_ENABLED = false;
+    public static bool IS_WORKER_HIGHTLIGHT_VISUAL_ENABLED = false;
+
+    // Prefabs
     public static string RESEOURCES_PREFABS_PREFIX = "EvacuAgent/Prefabs/";
+    public static string BEHAVIOUR_CONTROLLER_PREFAB = "EvacuAgent/Prefabs/BehaviourController";
+    public static string SHOOTER_HIGHLIGHT_PREFAB = "EvacuAgent/Prefabs/ShooterHighlight";
 
     // Number of agent type
-    public static int NUMBER_OF_SHOOTER_AGENTS = 0;
+    public static int NUMBER_OF_SHOOTER_AGENTS = 1;
     public static int NUMBER_OF_WORKER_AGENTS = 10;
 
     // Worker pedestrians
