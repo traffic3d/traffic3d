@@ -2,7 +2,7 @@
 
 public class WorkerBehaviourTypeOrder : BehaviourTypeOrder
 {
-    private void Start()
+    private void Awake()
     {
         behaviourTypes = new List<BehaviourType>()
         {
