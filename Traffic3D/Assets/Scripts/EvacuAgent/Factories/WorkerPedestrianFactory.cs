@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class WorkerPedestrianFactory : AbstractEvacuAgentPedestrianFactory
+﻿public class WorkerPedestrianFactory : AbstractEvacuAgentPedestrianFactory
 {
     private void Awake()
     {

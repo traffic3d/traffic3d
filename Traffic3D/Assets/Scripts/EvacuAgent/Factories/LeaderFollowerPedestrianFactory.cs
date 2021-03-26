@@ -1,30 +1,43 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class LeaderFollowerPedestrianFactory : AbstractEvacuAgentPedestrianFactory
+public abstract class LeaderFollowerPedestrianFactory : AbstractEvacuAgentPedestrianFactory
 {
     [SerializeField]
-    private GameObject followerPedestrianTypePrefab;
+    protected GameObject followerPedestrianTypePrefab;
 
-    private EvacuAgentPedestrianBase currentLeaderPedestrian;
-    private int numberOfFollowersSpawnedInCurrentGroup;
+    protected EvacuAgentPedestrianBase currentLeaderPedestrian;
+    protected FollowerCollection currentLeaderFollowerCollection;
+    protected int numberOfFollowersLeftToSpawn;
 
-    private void Awake()
+    public override bool HasSpawnedMaxPedestrians()
     {
-        numPedestriansToSpawn = EvacuAgentSceneParamaters.NUMBER_OF_FRIEND_GROUP_AGENTS;
-        numberOfFollowersSpawnedInCurrentGroup = 0;
+        if (numPedestriansToSpawn == 0 && numberOfFollowersLeftToSpawn == 0)
+            return true;
+
+        return false;
     }
 
-    public override EvacuAgentPedestrianBase CreateEvacuAgentPedestrian(Pedestrian pedestrian)
+    public int GetNumberOfFollowers()
+    {
+        return numberOfFollowersLeftToSpawn;
+    }
+
+    protected int GetNumberOfFollowersForCurrentGroup(int lowerBound, int upperBound)
+    {
+        return Random.Range(lowerBound, upperBound);
+    }
+
+    protected EvacuAgentPedestrianBase AddFollowerCollection()
     {
         numPedestriansToSpawn--;
-        numberOfFollowersSpawnedInCurrentGroup++;
-        return CreatePedestrianType(pedestrian, EvacuAgentSceneParamaters.IS_FRIEND_GROUP_HIGHTLIGHT_VISUAL_ENABLED, pedestrianTypePrefab);
+        currentLeaderFollowerCollection = currentLeaderPedestrian.GetComponent<FollowerCollection>();
+        return currentLeaderPedestrian;
     }
 
-    private int GetNumberOfFollowersForCurrentGroup()
+    protected EvacuAgentPedestrianBase AssignToFollowerCollection(EvacuAgentPedestrianBase follower)
     {
-        return Random.Range(EvacuAgentSceneParamaters.FRIEND_GROUP_FOLLOWER_COUNT_MINIMUM, EvacuAgentSceneParamaters.FRIEND_GROUP_FOLLOWER_COUNT_MAXIMUM);
+        numberOfFollowersLeftToSpawn--;
+        currentLeaderFollowerCollection.AddFollowerToCollection(follower);
+        return follower;
     }
 }
