@@ -6,8 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class PedestrianFactory : MonoBehaviour
 {
-    public float lowRangeRespawnTime = 5f;
-    public float highRangeRespawnTime = 10f;
+    public float lowRangeRespawnTime = 1f; //5f
+    public float highRangeRespawnTime = 2f; //10f
     public int maximumPedestrianCount = 20;
     public List<PedestrianProbability> pedestrianProbabilities;
 
@@ -82,7 +82,7 @@ public class PedestrianFactory : MonoBehaviour
     private int GetNumberOfEvacuAgentPedestrians()
     {
         int sumOfPedestriansToSpawn = 0;
-        evacuAgentPedestrianFactories.ForEach(x => sumOfPedestriansToSpawn += x.GetNumPedestriansToSpawn());
+        evacuAgentPedestrianFactories.ForEach(x => sumOfPedestriansToSpawn += x.GetNumPedestriansToSpawn()); // This is going to be a problem with random group sizes
         return sumOfPedestriansToSpawn;
     }
 
@@ -103,16 +103,26 @@ public class PedestrianFactory : MonoBehaviour
         }
     }
 
+    /* Due to LeaderFollowerFactories spawning a random number of followers the maximumPedestrianCount
+     * must be updated to ensure that followers do not subtract from maximumPedestrianCount
+     * here they are seen as extras, with the non follower types only counting towards the count
+     */
     private void AddEvacuAgentBehaviour(Pedestrian pedestrian)
     {
         if(evacuAgentPedestrianFactories.Any())
         {
             AbstractEvacuAgentPedestrianFactory factory = evacuAgentPedestrianFactories[Random.Range(0, evacuAgentPedestrianFactories.Count)];
-            factory.CreateEvacuAgentPedestrian(pedestrian);
+            EvacuAgentPedestrianBase evacuAgentPedestrianBase =  factory.CreateEvacuAgentPedestrian(pedestrian);
 
             if (factory.HasSpawnedMaxPedestrians())
             {
                 evacuAgentPedestrianFactories.Remove(factory);
+            }
+
+            if(factory.GetType().IsSubclassOf(typeof (LeaderFollowerPedestrianFactory)))
+            {
+                LeaderFollowerPedestrianFactory factoryCast = (LeaderFollowerPedestrianFactory)factory;
+                maximumPedestrianCount += factoryCast.GetNumberOfFollowers();
             }
         }
     }
@@ -121,9 +131,9 @@ public class PedestrianFactory : MonoBehaviour
     {
         return new List<AbstractEvacuAgentPedestrianFactory>()
         {
-            gameObject.GetComponent<WorkerPedestrianFactory>(),
-            gameObject.GetComponent<ShooterPedestrianFactory>(),
-            gameObject.GetComponent<LeaderFollowerPedestrianFactory>()
+            //gameObject.GetComponent<WorkerPedestrianFactory>(),
+            //gameObject.GetComponent<ShooterPedestrianFactory>(),
+            gameObject.GetComponent<FriendGroupLeaderFollowerPedestrianFactory>()
         };
     }
 

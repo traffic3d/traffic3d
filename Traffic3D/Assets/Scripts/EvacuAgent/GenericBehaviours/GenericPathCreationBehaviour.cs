@@ -11,12 +11,13 @@ public class GenericPathCreationBehaviour : BehaviourStrategy
     private void Start()
     {
         navMeshAgent = GetComponentInParent<NavMeshAgent>();
+        Path = new List<Vector3>();
         PedestrianPointPathCreator = GetComponentInParent<NonShooterPedestrianPointPathCreator>();
     }
 
     public override bool ShouldTriggerBehaviour()
     {
-        if(Path == null || Path.Count == 0)
+        if(Path.Count == 0)
             return true;
 
         return false;

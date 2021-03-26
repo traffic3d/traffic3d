@@ -20,7 +20,7 @@ public class CreateWeightedPathOfPedestrianPointsBehaviour : BehaviourStrategy
 
     public override bool ShouldTriggerBehaviour()
     {
-        if(CurrentPath[CurrentPathIndex] == null || CurrentPathIndex == SizeOfPath - 1)
+        if(CurrentPath.Count == 0|| CurrentPathIndex == SizeOfPath - 1)
         {
             return true;
         }

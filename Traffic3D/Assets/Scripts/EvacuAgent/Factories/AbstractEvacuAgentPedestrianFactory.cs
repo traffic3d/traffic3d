@@ -40,7 +40,7 @@ public abstract class AbstractEvacuAgentPedestrianFactory : MonoBehaviour
         behaviourController.behaviourCollections.Add(behaviourCollection);
     }
 
-    public bool HasSpawnedMaxPedestrians()
+    public virtual bool HasSpawnedMaxPedestrians()
     {
         if (numPedestriansToSpawn == 0)
             return true;

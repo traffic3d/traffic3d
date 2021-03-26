@@ -1,3 +1,3 @@
-﻿public class FriendGroupLeaderPedestrian : NonShooterPedestrian
+﻿public class FriendGroupLeaderPedestrian : GroupLeaderPedestrian
 {
 }

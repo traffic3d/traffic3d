@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3091836226254721898}
   - component: {fileID: 3091836226254721901}
   - component: {fileID: 3091836226254721900}
+  - component: {fileID: 7772058449929236668}
   m_Layer: 0
   m_Name: FriendGroupLeaderPedestrian
   m_TagString: Untagged
@@ -54,6 +55,7 @@ MonoBehaviour:
   PedestrianPointPathCreator: {fileID: 3091836226254721901}
   behaviourTypeOrder: {fileID: 3091836226254721900}
   pedestrian: {fileID: 0}
+  followerCollection: {fileID: 7772058449929236668}
 --- !u!114 &3091836226254721901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,5 +78,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98c4f7077ea1ae847af43e2524f77fe8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7772058449929236668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3091836226254721903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78613d4df9be23441ab608f9ec2dc812, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

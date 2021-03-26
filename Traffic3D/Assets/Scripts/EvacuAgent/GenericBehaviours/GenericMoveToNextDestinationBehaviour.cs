@@ -31,6 +31,7 @@ public class GenericMoveToNextDestinationBehaviour : BehaviourStrategy
         if (currentPathIndex < genericPathCreationBehaviour.Path.Count)
         {
             CurrentDestination = genericPathCreationBehaviour.Path[currentPathIndex];
+            genericPathCreationBehaviour.Path.Remove(CurrentDestination);
             navMeshAgent.SetDestination(CurrentDestination);
             currentPathIndex++;
         }
