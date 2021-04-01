@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -14,8 +15,33 @@ public class VehiclePath
 
     public float GetDistanceToNextStopNode(Transform currentNode, Transform vehicleTransform)
     {
+        return GetDistanceToNextNodeCondition(currentNode, vehicleTransform, (n) => TrafficLightManager.GetInstance().IsStopNode(n));
+    }
+
+    public float GetDistanceToNextStopLine(Transform currentNode, Transform vehicleTransform)
+    {
+        return GetDistanceToNextNodeCondition(currentNode, vehicleTransform, (n) => n.GetComponent<StopLine>() != null);
+    }
+
+    public Transform GetNextStopNode(Transform currentNode)
+    {
+        return GetNextNodeCondition(currentNode, (n) => TrafficLightManager.GetInstance().IsStopNode(n));
+    }
+
+    public StopLine GetNextStopLine(Transform currentNode)
+    {
+        Transform node = GetNextNodeCondition(currentNode, (n) => n.GetComponent<StopLine>() != null);
+        if (node != null)
+        {
+            return node.GetComponent<StopLine>();
+        }
+        return null;
+    }
+
+    private float GetDistanceToNextNodeCondition(Transform currentNode, Transform vehicleTransform, Predicate<Transform> nodeCondition)
+    {
         float totalDistance = Vector3.Distance(currentNode.position, vehicleTransform.position);
-        if (TrafficLightManager.GetInstance().IsStopNode(currentNode))
+        if (nodeCondition(currentNode))
         {
             return totalDistance;
         }
@@ -25,20 +51,20 @@ public class VehiclePath
             Transform node = nodes[i];
             float distanceBetweenNodes = Vector3.Distance(lastNode.position, node.position);
             totalDistance = totalDistance + distanceBetweenNodes;
-            if (TrafficLightManager.GetInstance().IsStopNode(node))
+            if (nodeCondition(node))
             {
                 return totalDistance;
             }
         }
-        // No next stop node found, return NaN.
+        // No next node found, return NaN.
         return float.NaN;
     }
 
-    public Transform GetNextStopNode(Transform currentNode)
+    private Transform GetNextNodeCondition(Transform currentNode, Predicate<Transform> nodeCondition)
     {
         for (int i = nodes.IndexOf(currentNode); i < nodes.Count; i++)
         {
-            if (TrafficLightManager.GetInstance().IsStopNode(nodes[i]))
+            if (nodeCondition(nodes[i]))
             {
                 return nodes[i];
             }
@@ -69,6 +95,10 @@ public class VehiclePath
             return float.NaN;
         }
         float totalDistance = Vector3.Distance(currentNode.position, vehicleTransform.position);
+        if (pathIntersectionPoint.IsNodeBeforeIntersection(currentNode))
+        {
+            return totalDistance + Vector3.Distance(currentNode.position, pathIntersectionPoint.intersection);
+        }
         for (int i = nodes.IndexOf(currentNode) + 1; i < nodes.Count; i++)
         {
             Transform lastNode = nodes[i - 1];

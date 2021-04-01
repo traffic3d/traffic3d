@@ -21,7 +21,8 @@ public class VehicleEngine : MonoBehaviour
     public float cornerThresholdDegrees = 90f;
     public float cornerSensitivityModifier = 50f;
     public float cornerMinSpeed = 10f;
-    public float trafficLightDistanceToSpeed = 0.4f;
+    public float stopDistanceToSpeed = 0.4f;
+    public float stopLineEvaluationDistance = 10f;
     public float trafficLightMaxSpeedOnGreen = 20f;
     public float mergeRadiusCheck = 100f;
     public Vector3 centerOfMass;
@@ -147,7 +148,6 @@ public class VehicleEngine : MonoBehaviour
         ApplySteer();
         currentSpeed = GetComponent<Rigidbody>().velocity.magnitude * metresPerSecondToKilometresPerHourConversion;
         SpeedCheck();
-        MergeCheck();
         SensorCheck();
         TrafficLight trafficLight = TrafficLightManager.GetInstance().GetTrafficLightFromStopNode(currentNode);
         if ((trafficLight != null && trafficLight.IsCurrentLightColour(TrafficLight.LightColour.RED)) || this.gameObject.tag == "hap")
@@ -222,7 +222,7 @@ public class VehicleEngine : MonoBehaviour
             float distance = path.GetDistanceToNextStopNode(currentNode, transform);
             if (!float.IsNaN(distance) && distance < maxDistanceToMonitor)
             {
-                float speed = distance * trafficLightDistanceToSpeed;
+                float speed = distance * stopDistanceToSpeed;
                 if (TrafficLightManager.GetInstance().GetTrafficLightFromStopNode(nextStopNode).IsCurrentLightColour(TrafficLight.LightColour.RED))
                 {
                     SetTargetSpeed(speed);
@@ -230,6 +230,24 @@ public class VehicleEngine : MonoBehaviour
                 else
                 {
                     SetTargetSpeed((speed < trafficLightMaxSpeedOnGreen ? trafficLightMaxSpeedOnGreen : speed));
+                }
+            }
+        }
+        // Stop Line Check
+        StopLine nextStopLine = path.GetNextStopLine(currentNode);
+        if (nextStopLine != null)
+        {
+            float distance = path.GetDistanceToNextStopLine(currentNode, transform);
+            if (!float.IsNaN(distance) && distance < maxDistanceToMonitor)
+            {
+                if (distance <= stopLineEvaluationDistance)
+                {
+                    MergeCheck(nextStopLine.type);
+                }
+                else
+                {
+                    float speed = distance * stopDistanceToSpeed;
+                    SetTargetSpeed(Math.Min(Math.Max(0, speed), targetSpeed));
                 }
             }
         }
@@ -275,7 +293,7 @@ public class VehicleEngine : MonoBehaviour
         SetTargetSpeed(speedToTarget);
     }
 
-    private void MergeCheck()
+    private void MergeCheck(StopLine.Type stopLineType)
     {
         foreach (VehicleEngine vehicleEngine in vehicleIntersectionPoints.Keys.Where(v => v == null).ToList())
         {
@@ -303,11 +321,15 @@ public class VehicleEngine : MonoBehaviour
         HashSet<PathIntersectionPoint> pathIntersectionPoints = new HashSet<PathIntersectionPoint>(vehiclesAtIntersectionPoint.Keys.Where(i => path.GetDistanceFromVehicleToIntersectionPoint(path, currentNodeNumber, transform, i) <= mergeRadiusCheck)); //.OrderByDescending(intersectionPoint => path.GetDistanceFromVehicleToIntersectionPoint(currentNode, transform, intersectionPoint)).ToList();
         foreach (PathIntersectionPoint pathIntersectionPoint in pathIntersectionPoints)
         {
-            PathIntersectionLine currentIntersectionLine = pathIntersectionPoint.GetLineFromPath(path);
-            if ((isLeftHandDrive && !pathIntersectionPoint.IsOtherPathComingFromTheRight(currentIntersectionLine)) ||
-                (!isLeftHandDrive && !pathIntersectionPoint.IsOtherPathComingFromTheLeft(currentIntersectionLine)))
+            if (stopLineType != StopLine.Type.MERGE)
             {
-                continue;
+                // Check right when driving on the left and the left when driving on the right
+                PathIntersectionLine currentIntersectionLine = pathIntersectionPoint.GetLineFromPath(path);
+                if ((isLeftHandDrive && !pathIntersectionPoint.IsOtherPathComingFromTheRight(currentIntersectionLine)) ||
+                    (!isLeftHandDrive && !pathIntersectionPoint.IsOtherPathComingFromTheLeft(currentIntersectionLine)))
+                {
+                    continue;
+                }
             }
             if (debug)
             {
