@@ -12,7 +12,7 @@ public class FriendGroupLeaderPathCreator : NonShooterPedestrianPointPathCreator
     {
         chooseLocationOnNavmesh = gameObject.AddComponent<ChooseLocationOnNavmesh>();
         sizeOfPath = 4;
-        radiusToConsiderForMeetingLocation = 200f;
+        radiusToConsiderForMeetingLocation = 250;
         pedestrianPointTypes = new List<PedestrianPointType>()
         {
             PedestrianPointType.Hospitality
@@ -22,6 +22,9 @@ public class FriendGroupLeaderPathCreator : NonShooterPedestrianPointPathCreator
     public override List<Vector3> CreatePath()
     {
         List<Vector3> path = new List<Vector3>();
+
+        // THIS IS FOR DEBUGGING
+        Vector3 debugging = transform.position;
 
         Vector3 meetingLocationCenterPoint = GetRandomPedestrianPointOfType(PedestrianPointType.Hospitality).GetPointLocation();
         Vector3 meetingLocation = chooseLocationOnNavmesh.GetRandomPointOnNavMesh(meetingLocationCenterPoint, radiusToConsiderForMeetingLocation);

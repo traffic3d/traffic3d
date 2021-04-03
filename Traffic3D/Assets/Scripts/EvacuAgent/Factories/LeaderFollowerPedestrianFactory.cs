@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 
 public abstract class LeaderFollowerPedestrianFactory : AbstractEvacuAgentPedestrianFactory
 {
@@ -6,7 +7,7 @@ public abstract class LeaderFollowerPedestrianFactory : AbstractEvacuAgentPedest
     protected GameObject followerPedestrianTypePrefab;
 
     protected EvacuAgentPedestrianBase currentLeaderPedestrian;
-    protected FollowerCollection currentLeaderFollowerCollection;
+    protected GroupCollection currentLeaderFollowerCollection;
     protected int numberOfFollowersLeftToSpawn;
 
     public override bool HasSpawnedMaxPedestrians()
@@ -27,17 +28,26 @@ public abstract class LeaderFollowerPedestrianFactory : AbstractEvacuAgentPedest
         return Random.Range(lowerBound, upperBound);
     }
 
-    protected EvacuAgentPedestrianBase AddFollowerCollection()
+    protected EvacuAgentPedestrianBase UpdateGroupCollection()
     {
         numPedestriansToSpawn--;
-        currentLeaderFollowerCollection = currentLeaderPedestrian.GetComponent<FollowerCollection>();
+        currentLeaderFollowerCollection = currentLeaderPedestrian.GetComponent<GroupCollection>();
+        currentLeaderFollowerCollection.TotalFollowerCount = numberOfFollowersLeftToSpawn;
+        currentLeaderFollowerCollection.GroupLeaderPedestrian = currentLeaderPedestrian;
+        currentLeaderFollowerCollection.AddFollowerToCollection((GroupPedestrian)currentLeaderPedestrian);
         return currentLeaderPedestrian;
+    }
+
+    protected void AddGroupCollectionToFollower(GroupPedestrian groupPedestrian)
+    {
+        groupPedestrian.AddGroupCollection(currentLeaderFollowerCollection);
     }
 
     protected EvacuAgentPedestrianBase AssignToFollowerCollection(EvacuAgentPedestrianBase follower)
     {
         numberOfFollowersLeftToSpawn--;
-        currentLeaderFollowerCollection.AddFollowerToCollection(follower);
+        currentLeaderFollowerCollection.AddFollowerToCollection((GroupFollowerPedestrian)follower);
+        follower.GetComponentInParent<NavMeshAgent>().stoppingDistance = 1f;
         return follower;
     }
 }

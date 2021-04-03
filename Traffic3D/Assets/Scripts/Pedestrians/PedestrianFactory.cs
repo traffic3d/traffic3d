@@ -112,7 +112,7 @@ public class PedestrianFactory : MonoBehaviour
         if(evacuAgentPedestrianFactories.Any())
         {
             AbstractEvacuAgentPedestrianFactory factory = evacuAgentPedestrianFactories[Random.Range(0, evacuAgentPedestrianFactories.Count)];
-            EvacuAgentPedestrianBase evacuAgentPedestrianBase =  factory.CreateEvacuAgentPedestrian(pedestrian);
+            factory.CreateEvacuAgentPedestrian(pedestrian);
 
             if (factory.HasSpawnedMaxPedestrians())
             {
