@@ -8,15 +8,16 @@
 
     public override EvacuAgentPedestrianBase CreateEvacuAgentPedestrian(Pedestrian pedestrian)
     {
-        EvacuAgentPedestrianBase groupLeaderFollowerPedestrian = CreatePedestrianType(pedestrian, EvacuAgentSceneParamaters.IS_FRIEND_GROUP_FOLLOWER_HIGHTLIGHT_VISUAL_ENABLED, pedestrianTypePrefab);
-
         if (numberOfFollowersLeftToSpawn == 0)
         {
+            EvacuAgentPedestrianBase groupLeaderPedestrian = CreatePedestrianType(pedestrian, EvacuAgentSceneParamaters.IS_FRIEND_GROUP_FOLLOWER_HIGHTLIGHT_VISUAL_ENABLED, pedestrianTypePrefab);
+            currentLeaderPedestrian = groupLeaderPedestrian;
             numberOfFollowersLeftToSpawn = GetNumberOfFollowersForCurrentGroup(EvacuAgentSceneParamaters.FRIEND_GROUP_FOLLOWER_COUNT_MINIMUM, EvacuAgentSceneParamaters.FRIEND_GROUP_FOLLOWER_COUNT_MAXIMUM);
-            currentLeaderPedestrian = groupLeaderFollowerPedestrian;
-            return AddFollowerCollection();
+            return UpdateGroupCollection();
         }
 
-        return AssignToFollowerCollection(groupLeaderFollowerPedestrian);
+        EvacuAgentPedestrianBase groupFollowerPedestrian = CreatePedestrianType(pedestrian, EvacuAgentSceneParamaters.IS_FRIEND_GROUP_FOLLOWER_HIGHTLIGHT_VISUAL_ENABLED, followerPedestrianTypePrefab);
+        AddGroupCollectionToFollower((GroupPedestrian)groupFollowerPedestrian);
+        return AssignToFollowerCollection(groupFollowerPedestrian);
     }
 }

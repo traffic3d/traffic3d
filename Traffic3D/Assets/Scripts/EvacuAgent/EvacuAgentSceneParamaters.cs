@@ -19,7 +19,7 @@
 
     // Number of agent type
     public static int NUMBER_OF_SHOOTER_AGENTS = 1;
-    public static int NUMBER_OF_WORKER_AGENTS = 1;
+    public static int NUMBER_OF_WORKER_AGENTS = 20;
     public static int NUMBER_OF_FRIEND_GROUPS = 1;
 
     // Worker pedestrians
@@ -35,6 +35,12 @@
 
     // Group min and max bounds
     public static int FRIEND_GROUP_FOLLOWER_COUNT_MINIMUM = 1;
-    public static int FRIEND_GROUP_FOLLOWER_COUNT_MAXIMUM = 4;
+    public static int FRIEND_GROUP_FOLLOWER_COUNT_MAXIMUM = 1;
+
+    // Friend group boid weights
+    public static float FRIEND_GROUP_BOID_COHESION_WEIGHT = 0.1f;
+    public static float FRIEND_GROUP_BOID_ALIGNMENT_WEIGHT = 0.2f;
+    public static float FRIEND_GROUP_BOID_SEPARATION_WEIGHT = 0.3f;
+    public static float FRIEND_GROUP_BOID_SEEKING_WEIGHT = 0.4f;
 
 }

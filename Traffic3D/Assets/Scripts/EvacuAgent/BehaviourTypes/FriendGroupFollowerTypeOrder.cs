@@ -9,7 +9,9 @@ public class FriendGroupFollowerTypeOrder : BehaviourTypeOrder
         behaviourTypes = new List<BehaviourType>()
         {
             new GenericEnterLeaveBuildingBehaviourType(),
-            new FollowerDestinationUpdateBehaviourType(),
+            //new FollowerDestinationUpdateBehaviourType(),
+            //new GroupFollowerBoidBehaviourType(),
+            new FriendGroupBoidBehaviourType(),
             new GenericNoNewBehaviourType()
         };
     }
@@ -37,6 +39,24 @@ public class FriendGroupFollowerTypeOrder : BehaviourTypeOrder
     private class GenericNoNewBehaviourType : BehaviourType
     {
         private readonly string behaviourStrategyName = "GenericNoNewBehaviour";
+        private readonly float behaviourStrategyChanceToUse = 1f;
+
+        public override string GetBehaviourStrategyName() => behaviourStrategyName;
+        public override float GetBehaviourStrategyChance() => behaviourStrategyChanceToUse;
+    }
+
+    private class GroupFollowerBoidBehaviourType : BehaviourType
+    {
+        private readonly string behaviourStrategyName = "GroupFollowerBoidBehaviour";
+        private readonly float behaviourStrategyChanceToUse = 1f;
+
+        public override string GetBehaviourStrategyName() => behaviourStrategyName;
+        public override float GetBehaviourStrategyChance() => behaviourStrategyChanceToUse;
+    }
+
+    private class FriendGroupBoidBehaviourType : BehaviourType
+    {
+        private readonly string behaviourStrategyName = "FriendGroupBoidBehaviour";
         private readonly float behaviourStrategyChanceToUse = 1f;
 
         public override string GetBehaviourStrategyName() => behaviourStrategyName;

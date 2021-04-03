@@ -13,12 +13,13 @@ public class GenericMoveToNextDestinationBehaviour : BehaviourStrategy
     {
         genericPathCreationBehaviour = GetComponent<GenericPathCreationBehaviour>();
         navMeshAgent = GetComponentInParent<NavMeshAgent>();
-        currentPathIndex = 1;
+        currentPathIndex = 0;
     }
 
     public override bool ShouldTriggerBehaviour()
     {
-        if (navMeshAgent.remainingDistance < proximityToDestination)
+        if (genericPathCreationBehaviour.Path.Count > 0 &&
+            currentPathIndex == 0 || Vector3.Distance(navMeshAgent.destination, transform.position) < proximityToDestination)
         {
             return true;
         }
@@ -28,7 +29,7 @@ public class GenericMoveToNextDestinationBehaviour : BehaviourStrategy
 
     public override void PerformBehaviour()
     {
-        if (currentPathIndex < genericPathCreationBehaviour.Path.Count)
+        if (currentPathIndex <= genericPathCreationBehaviour.Path.Count)
         {
             CurrentDestination = genericPathCreationBehaviour.Path[currentPathIndex];
             genericPathCreationBehaviour.Path.Remove(CurrentDestination);

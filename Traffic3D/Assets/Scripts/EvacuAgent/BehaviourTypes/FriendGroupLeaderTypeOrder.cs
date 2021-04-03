@@ -9,7 +9,10 @@ public class FriendGroupLeaderTypeOrder : BehaviourTypeOrder
         behaviourTypes = new List<BehaviourType>()
         {
             new GenericPathCreationBehaviourType(),
+            //new UpdateFollowerDestinationsBehaviourType(),
+            //new TriggerFollowerBoidBehaviourType(),
             new GenericEnterLeaveBuildingBehaviourType(),
+            new WaitForFollowersBehaviourType(),
             new GenericMoveToNextDestinationBehaviourType(),
             new GenericNoNewBehaviourType()
         };
@@ -47,6 +50,33 @@ public class FriendGroupLeaderTypeOrder : BehaviourTypeOrder
     private class GenericNoNewBehaviourType : BehaviourType
     {
         private readonly string behaviourStrategyName = "GenericNoNewBehaviour";
+        private readonly float behaviourStrategyChanceToUse = 1f;
+
+        public override string GetBehaviourStrategyName() => behaviourStrategyName;
+        public override float GetBehaviourStrategyChance() => behaviourStrategyChanceToUse;
+    }
+
+    private class WaitForFollowersBehaviourType : BehaviourType
+    {
+        private readonly string behaviourStrategyName = "WaitForFollowersBehaviour";
+        private readonly float behaviourStrategyChanceToUse = 1f;
+
+        public override string GetBehaviourStrategyName() => behaviourStrategyName;
+        public override float GetBehaviourStrategyChance() => behaviourStrategyChanceToUse;
+    }
+
+    private class UpdateFollowerDestinationsBehaviourType : BehaviourType
+    {
+        private readonly string behaviourStrategyName = "UpdateFollowerDestinationsBehaviour";
+        private readonly float behaviourStrategyChanceToUse = 1f;
+
+        public override string GetBehaviourStrategyName() => behaviourStrategyName;
+        public override float GetBehaviourStrategyChance() => behaviourStrategyChanceToUse;
+    }
+
+    private class TriggerFollowerBoidBehaviourType : BehaviourType
+    {
+        private readonly string behaviourStrategyName = "TriggerFollowerBoidBehaviour";
         private readonly float behaviourStrategyChanceToUse = 1f;
 
         public override string GetBehaviourStrategyName() => behaviourStrategyName;

@@ -1,24 +1,24 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 
 public class UpdateFollowerDestinationsBehaviour : BehaviourStrategy
 {
-    private FollowerCollection followerCollection;
+    private GroupCollection followerCollection;
     private GenericMoveToNextDestinationBehaviour genericMoveToNextDestinationBehaviour;
     private Vector3 currentDestination;
-    private bool shouldUpdateFollowerDestinations;
 
     private void Start()
     {
-        followerCollection = GetComponentInParent<FollowerCollection>();
+        followerCollection = GetComponentInParent<GroupCollection>();
         genericMoveToNextDestinationBehaviour = GetComponent<GenericMoveToNextDestinationBehaviour>();
         currentDestination = genericMoveToNextDestinationBehaviour.CurrentDestination;
-        shouldUpdateFollowerDestinations = false;
     }
 
     public override bool ShouldTriggerBehaviour()
     {
-        if (shouldUpdateFollowerDestinations ||
-            followerCollection.HasNewFollowerBeenAdded() ||
+        CreateNumberOfFollowerPointsAroundLeader();
+
+        if (followerCollection.HasNewFollowerBeenAdded() ||
             HasDestinationChanged())
             return true;
 
@@ -32,7 +32,7 @@ public class UpdateFollowerDestinationsBehaviour : BehaviourStrategy
             follower.GetComponentInChildren<FollowerDestinationUpdateBehaviour>().UpdateFollowerDestination(currentDestination);
         }
 
-        shouldUpdateFollowerDestinations = false;
+        followerCollection.ResetHasNewFollowerBeenAdded();
     }
 
     private bool HasDestinationChanged()
@@ -49,4 +49,17 @@ public class UpdateFollowerDestinationsBehaviour : BehaviourStrategy
     // As the collection of followers will be needed for this script and the one about waiting until all followers are there i thjink it is best to add a behaviour collection script to the
     // leader pedestrian, this could change a bool if followers are added which could be used to trigget this script?
     // How would this bool get reset?
+
+
+    private void CreateNumberOfFollowerPointsAroundLeader()
+    {
+        ChooseLocationOnNavmesh chooseLocationOnNavmesh = GetComponentInParent<ChooseLocationOnNavmesh>();
+
+        foreach (GroupFollowerPedestrian groupFollowerPedestrian in followerCollection.GetFollowers())
+        {
+            Vector3 position = chooseLocationOnNavmesh.GetRandomPointOnNavMesh(transform.position, 5f);
+            GameObject gameObject = Instantiate(new GameObject(), position, Quaternion.identity);
+            gameObject.transform.SetParent(transform);
+        }
+    }
 }

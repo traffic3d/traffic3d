@@ -26,6 +26,6 @@ public class GenericPathCreationBehaviour : BehaviourStrategy
     public override void PerformBehaviour()
     {
         Path = PedestrianPointPathCreator.CreatePath();
-        navMeshAgent.SetDestination(Path[0]);
+        //navMeshAgent.SetDestination(Path[0]);
     }
 }
