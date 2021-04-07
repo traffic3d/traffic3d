@@ -8,15 +8,10 @@ public class BoidSeparationComponent : BoidComponentBase
 
         foreach(BoidBehaviourStrategyBase neighbour in followerBoidBehaviour.Neighbours)
         {
-            var distance = Vector3.Distance(transform.root.position, neighbour.transform.root.position);
-            velocity += Vector3.Normalize(transform.root.position - neighbour.transform.root.position) / Mathf.Pow(distance, 2);
+            float distance = Vector3.Distance(transform.position, neighbour.transform.position);
+            velocity += (transform.position - neighbour.transform.position) / Mathf.Pow(distance, 2);
         }
 
-        if (DoesVectorContainNaN(velocity * followerBoidBehaviour.SeparationWeight))
-        {
-            Debug.Log("SEPARATION HAS NaN");
-        }
-
-        return velocity * followerBoidBehaviour.SeparationWeight;
+        return velocity.normalized * followerBoidBehaviour.SeparationWeight;
     }
 }

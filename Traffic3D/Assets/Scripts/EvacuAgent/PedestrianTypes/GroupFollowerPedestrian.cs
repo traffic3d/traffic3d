@@ -1,7 +1,3 @@
-﻿public class GroupFollowerPedestrian : GroupPedestrian
+﻿public class GroupFollowerPedestrian : NonShooterPedestrian
 {
-    public void ChangeSpeedToMatchLeader(float leaderSpeed)
-    {
-        navMeshAgent.speed = leaderSpeed;
-    }
 }

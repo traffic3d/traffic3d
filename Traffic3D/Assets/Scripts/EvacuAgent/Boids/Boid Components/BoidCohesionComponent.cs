@@ -17,6 +17,6 @@ public class BoidCohesionComponent : BoidComponentBase
             Debug.Log("COHESION HAS NaN");
         }
 
-        return velocity * followerBoidBehaviour.CohesionWeight;
+        return velocity.normalized * followerBoidBehaviour.CohesionWeight;
     }
 }

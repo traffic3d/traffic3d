@@ -15,16 +15,15 @@ public class FriendGroupLeaderPathCreator : NonShooterPedestrianPointPathCreator
         radiusToConsiderForMeetingLocation = 250;
         pedestrianPointTypes = new List<PedestrianPointType>()
         {
-            PedestrianPointType.Hospitality
+            PedestrianPointType.Hospitality,
+            PedestrianPointType.Recreation,
+            PedestrianPointType.Shopping
         };
     }
 
     public override List<Vector3> CreatePath()
     {
         List<Vector3> path = new List<Vector3>();
-
-        // THIS IS FOR DEBUGGING
-        Vector3 debugging = transform.position;
 
         Vector3 meetingLocationCenterPoint = GetRandomPedestrianPointOfType(PedestrianPointType.Hospitality).GetPointLocation();
         Vector3 meetingLocation = chooseLocationOnNavmesh.GetRandomPointOnNavMesh(meetingLocationCenterPoint, radiusToConsiderForMeetingLocation);

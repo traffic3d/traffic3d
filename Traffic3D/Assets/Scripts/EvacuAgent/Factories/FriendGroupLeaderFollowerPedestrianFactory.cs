@@ -1,4 +1,4 @@
-﻿public class FriendGroupLeaderFollowerPedestrianFactory : LeaderFollowerPedestrianFactory
+﻿public class FriendGroupLeaderFollowerPedestrianFactory : AbstractEvacuAgentPedestrianFactory
 {
     private void Awake()
     {
@@ -10,14 +10,14 @@
     {
         if (numberOfFollowersLeftToSpawn == 0)
         {
-            EvacuAgentPedestrianBase groupLeaderPedestrian = CreatePedestrianType(pedestrian, EvacuAgentSceneParamaters.IS_FRIEND_GROUP_FOLLOWER_HIGHTLIGHT_VISUAL_ENABLED, pedestrianTypePrefab);
+            EvacuAgentPedestrianBase groupLeaderPedestrian = CreatePedestrianType(pedestrian, EvacuAgentSceneParamaters.IS_FRIEND_GROUP_FOLLOWER_HIGHTLIGHT_VISUAL_ENABLED, leaderPedestrianTypePrefab);
             currentLeaderPedestrian = groupLeaderPedestrian;
             numberOfFollowersLeftToSpawn = GetNumberOfFollowersForCurrentGroup(EvacuAgentSceneParamaters.FRIEND_GROUP_FOLLOWER_COUNT_MINIMUM, EvacuAgentSceneParamaters.FRIEND_GROUP_FOLLOWER_COUNT_MAXIMUM);
             return UpdateGroupCollection();
         }
 
         EvacuAgentPedestrianBase groupFollowerPedestrian = CreatePedestrianType(pedestrian, EvacuAgentSceneParamaters.IS_FRIEND_GROUP_FOLLOWER_HIGHTLIGHT_VISUAL_ENABLED, followerPedestrianTypePrefab);
-        AddGroupCollectionToFollower((GroupPedestrian)groupFollowerPedestrian);
+        AddGroupCollectionToFollower(groupFollowerPedestrian);
         return AssignToFollowerCollection(groupFollowerPedestrian);
     }
 }

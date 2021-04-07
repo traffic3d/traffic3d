@@ -34,13 +34,14 @@
     public static int WORK_WAIT_TIME_UPPER_BOUND = 60;
 
     // Group min and max bounds
-    public static int FRIEND_GROUP_FOLLOWER_COUNT_MINIMUM = 1;
-    public static int FRIEND_GROUP_FOLLOWER_COUNT_MAXIMUM = 1;
+    public static int FRIEND_GROUP_FOLLOWER_COUNT_MINIMUM = 3;
+    public static int FRIEND_GROUP_FOLLOWER_COUNT_MAXIMUM = 3;
 
     // Friend group boid weights
-    public static float FRIEND_GROUP_BOID_COHESION_WEIGHT = 0.1f;
-    public static float FRIEND_GROUP_BOID_ALIGNMENT_WEIGHT = 0.2f;
-    public static float FRIEND_GROUP_BOID_SEPARATION_WEIGHT = 0.3f;
-    public static float FRIEND_GROUP_BOID_SEEKING_WEIGHT = 0.4f;
+    public static float FRIEND_GROUP_BOID_COHESION_WEIGHT = 0.05f;
+    public static float FRIEND_GROUP_BOID_ALIGNMENT_WEIGHT = 0.01f;
+    public static float FRIEND_GROUP_BOID_SEPARATION_WEIGHT = 0.07f;
+    public static float FRIEND_GROUP_BOID_SEEKING_WEIGHT = 0.05f;
+    public static float FRIEND_GROUP_BOID_AVOIDANCE_WEIGHT = 0.1f;
 
 }

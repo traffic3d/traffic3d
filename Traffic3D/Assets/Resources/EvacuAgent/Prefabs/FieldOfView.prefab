@@ -45,10 +45,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7453b8a0cc6f1f4595f3fd8400ee6ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  viewAngle: 220
+  viewAngle: 360
   findAgentsDelay: 1
   visiblePedestrians: []
-  viewRadius: 50
+  viewRadius: 25
   numberOfSegments: 21
   targetLayer:
     serializedVersion: 2

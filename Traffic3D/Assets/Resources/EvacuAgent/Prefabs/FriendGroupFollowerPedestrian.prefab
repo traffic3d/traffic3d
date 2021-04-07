@@ -16,6 +16,8 @@ GameObject:
   - component: {fileID: 1330391271528118072}
   - component: {fileID: 3865581553423240307}
   - component: {fileID: 3734790835150292521}
+  - component: {fileID: 686553391838317759}
+  - component: {fileID: 866406790937003498}
   m_Layer: 0
   m_Name: FriendGroupFollowerPedestrian
   m_TagString: Untagged
@@ -51,6 +53,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   behaviourControllerPrefab: {fileID: 7517269392168853345, guid: 74f292f393478b14494af0798a2be2e2,
     type: 3}
+  GroupCollection: {fileID: 0}
   pedestrianHighlight: {fileID: 4757276257460740152, guid: 0e7d6d5ec441c9945b6b8b88f962f78a,
     type: 3}
   behaviourController: {fileID: 0}
@@ -129,5 +132,29 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3812d5d85472eb44493ff979da8dce94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &686553391838317759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7062283350875176618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 413f9b68ddad73047b9826e1d9b18a90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &866406790937003498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7062283350875176618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b177ef5b0e9f7e44fa6bdd51576d707e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

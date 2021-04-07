@@ -9,8 +9,7 @@ public class FriendGroupFollowerTypeOrder : BehaviourTypeOrder
         behaviourTypes = new List<BehaviourType>()
         {
             new GenericEnterLeaveBuildingBehaviourType(),
-            //new FollowerDestinationUpdateBehaviourType(),
-            //new GroupFollowerBoidBehaviourType(),
+            new WaitAtDestinationBehaviourType(),
             new FriendGroupBoidBehaviourType(),
             new GenericNoNewBehaviourType()
         };
@@ -27,15 +26,6 @@ public class FriendGroupFollowerTypeOrder : BehaviourTypeOrder
         public override float GetBehaviourStrategyChance() => behaviourStrategyChanceToUse;
     }
 
-    private class FollowerDestinationUpdateBehaviourType : BehaviourType
-    {
-        private readonly string behaviourStrategyName = "FollowerDestinationUpdateBehaviour";
-        private readonly float behaviourStrategyChanceToUse = 1f;
-
-        public override string GetBehaviourStrategyName() => behaviourStrategyName;
-        public override float GetBehaviourStrategyChance() => behaviourStrategyChanceToUse;
-    }
-
     private class GenericNoNewBehaviourType : BehaviourType
     {
         private readonly string behaviourStrategyName = "GenericNoNewBehaviour";
@@ -45,18 +35,18 @@ public class FriendGroupFollowerTypeOrder : BehaviourTypeOrder
         public override float GetBehaviourStrategyChance() => behaviourStrategyChanceToUse;
     }
 
-    private class GroupFollowerBoidBehaviourType : BehaviourType
+    private class FriendGroupBoidBehaviourType : BehaviourType
     {
-        private readonly string behaviourStrategyName = "GroupFollowerBoidBehaviour";
+        private readonly string behaviourStrategyName = "FriendGroupBoidBehaviour";
         private readonly float behaviourStrategyChanceToUse = 1f;
 
         public override string GetBehaviourStrategyName() => behaviourStrategyName;
         public override float GetBehaviourStrategyChance() => behaviourStrategyChanceToUse;
     }
 
-    private class FriendGroupBoidBehaviourType : BehaviourType
+    private class WaitAtDestinationBehaviourType : BehaviourType
     {
-        private readonly string behaviourStrategyName = "FriendGroupBoidBehaviour";
+        private readonly string behaviourStrategyName = "WaitAtDestinationBehaviour";
         private readonly float behaviourStrategyChanceToUse = 1f;
 
         public override string GetBehaviourStrategyName() => behaviourStrategyName;

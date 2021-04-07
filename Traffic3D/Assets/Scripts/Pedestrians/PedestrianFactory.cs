@@ -113,16 +113,11 @@ public class PedestrianFactory : MonoBehaviour
         {
             AbstractEvacuAgentPedestrianFactory factory = evacuAgentPedestrianFactories[Random.Range(0, evacuAgentPedestrianFactories.Count)];
             factory.CreateEvacuAgentPedestrian(pedestrian);
+            maximumPedestrianCount += factory.GetNumberOfFollowers();
 
             if (factory.HasSpawnedMaxPedestrians())
             {
                 evacuAgentPedestrianFactories.Remove(factory);
-            }
-
-            if(factory.GetType().IsSubclassOf(typeof (LeaderFollowerPedestrianFactory)))
-            {
-                LeaderFollowerPedestrianFactory factoryCast = (LeaderFollowerPedestrianFactory)factory;
-                maximumPedestrianCount += factoryCast.GetNumberOfFollowers();
             }
         }
     }

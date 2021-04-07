@@ -6,6 +6,9 @@ public abstract class EvacuAgentPedestrianBase : MonoBehaviour
     [SerializeField]
     public GameObject behaviourControllerPrefab;
 
+    [SerializeField]
+    public GroupCollection GroupCollection;
+
     public GameObject pedestrianHighlight;
     public BehaviourController behaviourController;
     public FieldOfView fieldOfView;
@@ -27,5 +30,15 @@ public abstract class EvacuAgentPedestrianBase : MonoBehaviour
         fieldOfViewObj.GetComponent<MeshRenderer>().enabled = EvacuAgentSceneParamaters.IS_FOV_VISUAL_ENABLED;
         fieldOfView = fieldOfViewObj.GetComponent<FieldOfView>();
         navMeshAgent = GetComponentInParent<NavMeshAgent>();
+    }
+
+    public void AddGroupCollection(GroupCollection groupCollection)
+    {
+        GroupCollection = groupCollection;
+    }
+
+    public void ChangeSpeedToMatchLeader(float leaderSpeed)
+    {
+        navMeshAgent.speed = leaderSpeed;
     }
 }

@@ -3,36 +3,36 @@ using UnityEngine;
 
 public class GroupCollection : MonoBehaviour
 {
-    public int TotalFollowerCount { get; set; }
+    public int TotalGroupCount { get; set; }
     public EvacuAgentPedestrianBase GroupLeaderPedestrian { get; set; }
     public Vector3 GroupDestination { get; set; }
-    private List<GroupPedestrian> followers;
-    private bool hasNewFollowerBeenAdded;
+    private List<EvacuAgentPedestrianBase> group;
+    private bool hasNewMemberBeenAdded;
 
     private void Awake()
     {
-        followers = new List<GroupPedestrian>();
-        hasNewFollowerBeenAdded = false;
+        group = new List<EvacuAgentPedestrianBase>();
+        hasNewMemberBeenAdded = false;
     }
 
-    public void AddFollowerToCollection(GroupPedestrian evacuAgentPedestrianBase)
+    public void AddFollowerToCollection(EvacuAgentPedestrianBase evacuAgentPedestrianBase)
     {
-        hasNewFollowerBeenAdded = true;
-        followers.Add(evacuAgentPedestrianBase);
+        hasNewMemberBeenAdded = true;
+        group.Add(evacuAgentPedestrianBase);
     }
 
-    public List<GroupPedestrian> GetFollowers()
+    public List<EvacuAgentPedestrianBase> GetGroupMembers()
     {
-        return followers;
+        return group;
     }
 
     public bool HasNewFollowerBeenAdded()
     {
-        return hasNewFollowerBeenAdded;
+        return hasNewMemberBeenAdded;
     }
 
     public void ResetHasNewFollowerBeenAdded()
     {
-        hasNewFollowerBeenAdded = false;
+        hasNewMemberBeenAdded = false;
     }
 }

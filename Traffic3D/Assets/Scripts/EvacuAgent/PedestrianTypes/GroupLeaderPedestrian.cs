@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class GroupLeaderPedestrian : GroupPedestrian
+﻿public class GroupLeaderPedestrian : NonShooterPedestrian
 {
     protected int numberOfFollowers;
 

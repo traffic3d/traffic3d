@@ -14,7 +14,6 @@ public class GenericEnterLeaveBuildingBehaviour : BehaviourStrategy
     private bool isEnterBuildingCoolDownActive;
     private int enterBuildingCoolDownSeconds;
 
-
     private void Start()
     {
         navMeshAgent = GetComponentInParent<NavMeshAgent>();

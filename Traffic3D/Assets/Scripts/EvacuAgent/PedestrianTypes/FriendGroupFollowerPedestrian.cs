@@ -1,3 +1,3 @@
-﻿public class FriendGroupFollowerPedestrian : GroupFollowerPedestrian
+﻿public class FriendGroupFollowerPedestrian : NonShooterPedestrian
 {
 }
