@@ -26,6 +26,6 @@ public class BoidAlignmentComponent : BoidComponentBase
         }
 
         // Return the offset vector multiplied by weight
-        return (velocity - followerBoidBehaviour.Velocity) * followerBoidBehaviour.AlignmentWeight;
+        return velocity.normalized * followerBoidBehaviour.AlignmentWeight; //(velocity - followerBoidBehaviour.Velocity) * followerBoidBehaviour.AlignmentWeight;
     }
 }

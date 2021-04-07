@@ -13,6 +13,13 @@ GameObject:
   - component: {fileID: 3091836226254721901}
   - component: {fileID: 3091836226254721900}
   - component: {fileID: 5476423901126469425}
+  - component: {fileID: 8372074045990216778}
+  - component: {fileID: 5087548029234276604}
+  - component: {fileID: 9081476466076753920}
+  - component: {fileID: 5661437661807820887}
+  - component: {fileID: 1882239297956317802}
+  - component: {fileID: 8392996097653977232}
+  - component: {fileID: 8599767394599936488}
   m_Layer: 0
   m_Name: FriendGroupLeaderPedestrian
   m_TagString: Untagged
@@ -48,6 +55,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   behaviourControllerPrefab: {fileID: 7517269392168853345, guid: 74f292f393478b14494af0798a2be2e2,
     type: 3}
+  GroupCollection: {fileID: 0}
   pedestrianHighlight: {fileID: 4757276257460740152, guid: 0e7d6d5ec441c9945b6b8b88f962f78a,
     type: 3}
   behaviourController: {fileID: 0}
@@ -55,6 +63,7 @@ MonoBehaviour:
   PedestrianPointPathCreator: {fileID: 3091836226254721901}
   behaviourTypeOrder: {fileID: 3091836226254721900}
   pedestrian: {fileID: 0}
+  navMeshAgent: {fileID: 0}
 --- !u!114 &3091836226254721901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89,5 +98,89 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a25a07200901d5440a1f2869ba315ecd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8372074045990216778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3091836226254721903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67e9239f459e12549b36c349d1e59556, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5087548029234276604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3091836226254721903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00f56e3e9256d3a45bf95ccf2c3ba174, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &9081476466076753920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3091836226254721903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8696e2b5ed35f545970b8cfe3fbda87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5661437661807820887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3091836226254721903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3812d5d85472eb44493ff979da8dce94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1882239297956317802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3091836226254721903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc94a8797cf339347a7a3c3ff63f0035, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8392996097653977232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3091836226254721903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 413f9b68ddad73047b9826e1d9b18a90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8599767394599936488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3091836226254721903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b177ef5b0e9f7e44fa6bdd51576d707e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

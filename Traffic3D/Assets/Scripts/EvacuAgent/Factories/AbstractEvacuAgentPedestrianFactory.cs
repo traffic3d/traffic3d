@@ -7,11 +7,56 @@ public abstract class AbstractEvacuAgentPedestrianFactory : MonoBehaviour
     private GameObject behaviourCollectionPrefab;
 
     [SerializeField]
-    protected GameObject pedestrianTypePrefab;
+    protected GameObject leaderPedestrianTypePrefab;
 
-    protected int numPedestriansToSpawn;
+    [SerializeField]
+    protected GameObject followerPedestrianTypePrefab;
+
+    protected EvacuAgentPedestrianBase currentLeaderPedestrian;
+    protected GroupCollection currentLeaderFollowerCollection;
+    protected int numPedestriansToSpawn; // Max pedestrians to spawn
+    protected int numberOfFollowersLeftToSpawn = 0; // Pedestrians left in this group to spawn
 
     public abstract EvacuAgentPedestrianBase CreateEvacuAgentPedestrian(Pedestrian pedestrian);
+
+    public virtual bool HasSpawnedMaxPedestrians()
+    {
+        if (numPedestriansToSpawn == 0 + numberOfFollowersLeftToSpawn)
+            return true;
+
+        return false;
+    }
+
+    public BehaviourCollection GenerateBehaviourCollection(BehaviourController behaviourController, BehaviourTypeOrder behaviourTypeOrder)
+    {
+        GameObject behaviourCollectionInstance = Instantiate(behaviourCollectionPrefab, behaviourController.transform);
+        BehaviourCollection behaviourCollection = behaviourCollectionInstance.GetComponent<BehaviourCollection>();
+        behaviourCollectionInstance.transform.SetParent(behaviourController.transform);
+
+        foreach (BehaviourType behaviourType in behaviourTypeOrder.GetBehaviourTypes())
+        {
+            string behaviourTypeName = behaviourType.GetBehaviourStrategyName();
+            float behaviourTypeChance = behaviourType.GetBehaviourStrategyChance();
+
+            if (BehaviourChanceCheck(behaviourTypeChance))
+            {
+                BehaviourStrategy behaviourStrategy = (BehaviourStrategy)behaviourCollection.gameObject.AddComponent(Type.GetType(behaviourTypeName));
+                behaviourCollection.behaviours.Add(behaviourStrategy);
+            }
+        }
+
+        return behaviourCollection;
+    }
+
+    public int GetNumPedestriansToSpawn()
+    {
+        return numPedestriansToSpawn;
+    }
+
+    public int GetNumberOfFollowers()
+    {
+        return numberOfFollowersLeftToSpawn;
+    }
 
     protected EvacuAgentPedestrianBase CreatePedestrianType(Pedestrian pedestrian, bool isHighlightEnabled, GameObject pedestrianTypePrefab)
     {
@@ -40,38 +85,33 @@ public abstract class AbstractEvacuAgentPedestrianFactory : MonoBehaviour
         behaviourController.behaviourCollections.Add(behaviourCollection);
     }
 
-    public virtual bool HasSpawnedMaxPedestrians()
+    protected int GetNumberOfFollowersForCurrentGroup(int lowerBound, int upperBound)
     {
-        if (numPedestriansToSpawn == 0)
-            return true;
-
-        return false;
+        return UnityEngine.Random.Range(lowerBound, upperBound);
     }
 
-    public int GetNumPedestriansToSpawn()
+    protected EvacuAgentPedestrianBase UpdateGroupCollection()
     {
-        return numPedestriansToSpawn;
+        numPedestriansToSpawn--;
+        currentLeaderFollowerCollection = currentLeaderPedestrian.GetComponent<GroupCollection>();
+        currentLeaderFollowerCollection.TotalGroupCount = numberOfFollowersLeftToSpawn;
+        currentLeaderFollowerCollection.GroupLeaderPedestrian = currentLeaderPedestrian;
+        currentLeaderFollowerCollection.AddFollowerToCollection(currentLeaderPedestrian);
+        currentLeaderPedestrian.GroupCollection = currentLeaderFollowerCollection;
+        return currentLeaderPedestrian;
     }
 
-    public BehaviourCollection GenerateBehaviourCollection(BehaviourController behaviourController, BehaviourTypeOrder behaviourTypeOrder)
+    protected void AddGroupCollectionToFollower(EvacuAgentPedestrianBase groupPedestrian)
     {
-        GameObject behaviourCollectionInstance = Instantiate(behaviourCollectionPrefab, behaviourController.transform);
-        BehaviourCollection behaviourCollection = behaviourCollectionInstance.GetComponent<BehaviourCollection>();
-        behaviourCollectionInstance.transform.SetParent(behaviourController.transform);
+        groupPedestrian.AddGroupCollection(currentLeaderFollowerCollection);
+    }
 
-        foreach (BehaviourType behaviourType in behaviourTypeOrder.GetBehaviourTypes())
-        {
-            string behaviourTypeName = behaviourType.GetBehaviourStrategyName();
-            float behaviourTypeChance = behaviourType.GetBehaviourStrategyChance();
-
-            if (BehaviourChanceCheck(behaviourTypeChance))
-            {
-                BehaviourStrategy behaviourStrategy = (BehaviourStrategy)behaviourCollection.gameObject.AddComponent(Type.GetType(behaviourTypeName));
-                behaviourCollection.behaviours.Add(behaviourStrategy);
-            }
-        }
-
-        return behaviourCollection;
+    protected EvacuAgentPedestrianBase AssignToFollowerCollection(EvacuAgentPedestrianBase follower)
+    {
+        numberOfFollowersLeftToSpawn--;
+        currentLeaderFollowerCollection.AddFollowerToCollection(follower);
+        follower.navMeshAgent.stoppingDistance = 1f;
+        return follower;
     }
 
     private bool BehaviourChanceCheck(float behaviourChance)

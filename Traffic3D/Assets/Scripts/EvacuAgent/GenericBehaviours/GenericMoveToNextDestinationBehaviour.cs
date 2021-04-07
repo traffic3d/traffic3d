@@ -1,25 +1,23 @@
-﻿using UnityEngine;
-using UnityEngine.AI;
+﻿using System.Linq;
+using UnityEngine;
 
 public class GenericMoveToNextDestinationBehaviour : BehaviourStrategy
 {
     public Vector3 CurrentDestination { get; private set; }
     private GenericPathCreationBehaviour genericPathCreationBehaviour;
-    private NavMeshAgent navMeshAgent;
-    private int currentPathIndex;
-    private readonly float proximityToDestination = 1f;
+    private EvacuAgentPedestrianBase evacuAgentPedestrianBase;
+    private readonly float proximityToDestination = 2f;
 
     private void Start()
     {
         genericPathCreationBehaviour = GetComponent<GenericPathCreationBehaviour>();
-        navMeshAgent = GetComponentInParent<NavMeshAgent>();
-        currentPathIndex = 0;
+        evacuAgentPedestrianBase = GetComponentInParent<EvacuAgentPedestrianBase>();
     }
 
     public override bool ShouldTriggerBehaviour()
     {
-        if (genericPathCreationBehaviour.Path.Count > 0 &&
-            currentPathIndex == 0 || Vector3.Distance(navMeshAgent.destination, transform.position) < proximityToDestination)
+        float distanceToTarget = Vector3.Distance(evacuAgentPedestrianBase.GroupCollection.GroupDestination, transform.position);
+        if (distanceToTarget < proximityToDestination)
         {
             return true;
         }
@@ -29,12 +27,8 @@ public class GenericMoveToNextDestinationBehaviour : BehaviourStrategy
 
     public override void PerformBehaviour()
     {
-        if (currentPathIndex <= genericPathCreationBehaviour.Path.Count)
-        {
-            CurrentDestination = genericPathCreationBehaviour.Path[currentPathIndex];
-            genericPathCreationBehaviour.Path.Remove(CurrentDestination);
-            navMeshAgent.SetDestination(CurrentDestination);
-            currentPathIndex++;
-        }
+        CurrentDestination = genericPathCreationBehaviour.Path.First();
+        genericPathCreationBehaviour.Path.Remove(CurrentDestination);
+        evacuAgentPedestrianBase.GroupCollection.GroupDestination = CurrentDestination;
     }
 }

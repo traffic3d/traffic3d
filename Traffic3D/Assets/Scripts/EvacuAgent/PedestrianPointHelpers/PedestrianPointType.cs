@@ -2,5 +2,8 @@
 {
     Spawn,
     Work,
-    Hospitality
+    Hospitality,
+    Recreation,
+    Landmark,
+    Shopping
 }

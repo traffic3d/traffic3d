@@ -666,7 +666,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   footfall: 15
-  PedestrianPointType: 0
+  PedestrianPointType: 2
 --- !u!65 &202726165
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -887,7 +887,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   behaviourCollectionPrefab: {fileID: 2839513278162346427, guid: 661ab49e6250bcb4f89ce78ea4776860,
     type: 3}
-  pedestrianTypePrefab: {fileID: 3091836226254721903, guid: 6b943d729ec2bbe4f9b8b8f47811bfa0,
+  leaderPedestrianTypePrefab: {fileID: 3091836226254721903, guid: 6b943d729ec2bbe4f9b8b8f47811bfa0,
     type: 3}
   followerPedestrianTypePrefab: {fileID: 7062283350875176618, guid: 4563ad2057c50f344b537d8137a5b618,
     type: 3}
@@ -929,7 +929,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   behaviourCollectionPrefab: {fileID: 2839513278162346427, guid: 661ab49e6250bcb4f89ce78ea4776860,
     type: 3}
-  pedestrianTypePrefab: {fileID: 5030117961596037288, guid: 7c48a5a1d1fe6b74883b3f9fdd62161c,
+  leaderPedestrianTypePrefab: {fileID: 5030117961596037288, guid: 7c48a5a1d1fe6b74883b3f9fdd62161c,
+    type: 3}
+  followerPedestrianTypePrefab: {fileID: 5030117961596037288, guid: 7c48a5a1d1fe6b74883b3f9fdd62161c,
     type: 3}
 --- !u!114 &218403225
 MonoBehaviour:
@@ -945,7 +947,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   behaviourCollectionPrefab: {fileID: 2839513278162346427, guid: 661ab49e6250bcb4f89ce78ea4776860,
     type: 3}
-  pedestrianTypePrefab: {fileID: 5399095586381281966, guid: b3f03a2743136834f91e8de6af7e5850,
+  leaderPedestrianTypePrefab: {fileID: 5399095586381281966, guid: b3f03a2743136834f91e8de6af7e5850,
+    type: 3}
+  followerPedestrianTypePrefab: {fileID: 5399095586381281966, guid: b3f03a2743136834f91e8de6af7e5850,
     type: 3}
 --- !u!1 &242399874
 GameObject:
@@ -959,6 +963,7 @@ GameObject:
   - component: {fileID: 242399878}
   - component: {fileID: 242399877}
   - component: {fileID: 242399876}
+  - component: {fileID: 242399879}
   m_Layer: 10
   m_Name: Stall 2
   m_TagString: Untagged
@@ -1038,6 +1043,22 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 242399874}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &242399879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 242399874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 1
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
 --- !u!1 &250443823
 GameObject:
   m_ObjectHideFlags: 0
@@ -1406,7 +1427,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   footfall: 14
-  PedestrianPointType: 0
+  PedestrianPointType: 3
 --- !u!65 &340162503
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1674,6 +1695,7 @@ GameObject:
   - component: {fileID: 396357053}
   - component: {fileID: 396357052}
   - component: {fileID: 396357051}
+  - component: {fileID: 396357055}
   m_Layer: 10
   m_Name: Building 5
   m_TagString: Untagged
@@ -1753,6 +1775,22 @@ Transform:
   m_Father: {fileID: 702097307}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &396357055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 396357050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 1
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
 --- !u!1 &411722744
 GameObject:
   m_ObjectHideFlags: 0
@@ -2567,7 +2605,7 @@ GameObject:
   - component: {fileID: 702097306}
   - component: {fileID: 702097305}
   - component: {fileID: 702097304}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3924,6 +3962,7 @@ GameObject:
   - component: {fileID: 1209629252}
   - component: {fileID: 1209629251}
   - component: {fileID: 1209629250}
+  - component: {fileID: 1209629254}
   m_Layer: 10
   m_Name: Building 4
   m_TagString: Untagged
@@ -4003,6 +4042,22 @@ Transform:
   m_Father: {fileID: 702097307}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1209629254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1209629249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 1
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
 --- !u!1 &1234852138
 GameObject:
   m_ObjectHideFlags: 0
@@ -4688,7 +4743,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   footfall: 20
-  PedestrianPointType: 1
+  PedestrianPointType: 5
 --- !u!114 &1379116534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4946,6 +5001,7 @@ GameObject:
   - component: {fileID: 1400368492}
   - component: {fileID: 1400368491}
   - component: {fileID: 1400368490}
+  - component: {fileID: 1400368494}
   m_Layer: 10
   m_Name: Building 1
   m_TagString: Untagged
@@ -5025,6 +5081,22 @@ Transform:
   m_Father: {fileID: 702097307}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1400368494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1400368489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 1
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
 --- !u!1 &1400467672
 GameObject:
   m_ObjectHideFlags: 0
@@ -5964,6 +6036,7 @@ GameObject:
   - component: {fileID: 1840999363}
   - component: {fileID: 1840999362}
   - component: {fileID: 1840999361}
+  - component: {fileID: 1840999365}
   m_Layer: 10
   m_Name: Building 2
   m_TagString: Untagged
@@ -6043,6 +6116,22 @@ Transform:
   m_Father: {fileID: 702097307}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1840999365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1840999360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 1
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
 --- !u!1 &1865361567
 GameObject:
   m_ObjectHideFlags: 0
@@ -6671,6 +6760,7 @@ GameObject:
   - component: {fileID: 2041851582}
   - component: {fileID: 2041851581}
   - component: {fileID: 2041851580}
+  - component: {fileID: 2041851584}
   m_Layer: 10
   m_Name: Stall 1
   m_TagString: Untagged
@@ -6750,6 +6840,22 @@ Transform:
   m_Father: {fileID: 702097307}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2041851584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2041851579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 1
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
 --- !u!1 &2050188550
 GameObject:
   m_ObjectHideFlags: 0
@@ -6897,7 +7003,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   footfall: 10
-  PedestrianPointType: 0
+  PedestrianPointType: 4
 --- !u!65 &2074951459
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7117,6 +7223,7 @@ GameObject:
   - component: {fileID: 2090403728}
   - component: {fileID: 2090403727}
   - component: {fileID: 2090403726}
+  - component: {fileID: 2090403730}
   m_Layer: 10
   m_Name: Building 3
   m_TagString: Untagged
@@ -7196,6 +7303,22 @@ Transform:
   m_Father: {fileID: 702097307}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2090403730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2090403725}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 1
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
 --- !u!1 &2094557419
 GameObject:
   m_ObjectHideFlags: 0

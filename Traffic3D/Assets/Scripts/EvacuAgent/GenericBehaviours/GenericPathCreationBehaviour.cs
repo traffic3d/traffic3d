@@ -1,18 +1,17 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class GenericPathCreationBehaviour : BehaviourStrategy
 {
     public List<Vector3> Path { get; set; }
     public NonShooterPedestrianPointPathCreator PedestrianPointPathCreator { get; private set; }
-    private NavMeshAgent navMeshAgent;
+    private EvacuAgentPedestrianBase evacuAgentPedestrianBase;
 
     private void Start()
     {
-        navMeshAgent = GetComponentInParent<NavMeshAgent>();
         Path = new List<Vector3>();
         PedestrianPointPathCreator = GetComponentInParent<NonShooterPedestrianPointPathCreator>();
+        evacuAgentPedestrianBase = GetComponentInParent<EvacuAgentPedestrianBase>();
     }
 
     public override bool ShouldTriggerBehaviour()
@@ -26,6 +25,7 @@ public class GenericPathCreationBehaviour : BehaviourStrategy
     public override void PerformBehaviour()
     {
         Path = PedestrianPointPathCreator.CreatePath();
-        //navMeshAgent.SetDestination(Path[0]);
+        evacuAgentPedestrianBase.GroupCollection.GroupDestination = Path[0];
+        Path.RemoveAt(0);
     }
 }
