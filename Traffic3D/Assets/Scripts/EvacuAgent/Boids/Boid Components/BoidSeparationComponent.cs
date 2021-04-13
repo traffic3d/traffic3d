@@ -6,12 +6,18 @@ public class BoidSeparationComponent : BoidComponentBase
     {
         Vector3 velocity = Vector3.zero;
 
-        foreach(BoidBehaviourStrategyBase neighbour in followerBoidBehaviour.Neighbours)
+        if (followerBoidBehaviour.Neighbours.Count == 0)
+            return velocity;
+
+        foreach (BoidBehaviourStrategyBase neighbour in followerBoidBehaviour.Neighbours)
         {
             float distance = Vector3.Distance(transform.position, neighbour.transform.position);
-            velocity += (transform.position - neighbour.transform.position) / Mathf.Pow(distance, 2);
+            velocity += (neighbour.transform.position - transform.position).normalized / Mathf.Pow(distance, 2);
         }
 
-        return velocity.normalized * followerBoidBehaviour.SeparationWeight;
+        velocity /= followerBoidBehaviour.Neighbours.Count; // Do i need this?
+        velocity *= -1;
+
+        return velocity * followerBoidBehaviour.SeparationWeight;
     }
 }

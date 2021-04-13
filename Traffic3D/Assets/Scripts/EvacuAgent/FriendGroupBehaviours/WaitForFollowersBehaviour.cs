@@ -4,17 +4,23 @@ public class WaitForFollowersBehaviour : BehaviourStrategy
 {
     private GroupCollection groupCollection;
     private float acceptableProximity;
+    private float groupWalkingSpeedLowerBound;
+    private float groupWalkingSpeedUpperBound;
+    private float groupWalkingSpeed;
 
     private void Start()
     {
         groupCollection = GetComponentInParent<GroupCollection>();
-        acceptableProximity = 3f;
+        acceptableProximity = 5f;
+        groupWalkingSpeedLowerBound = 1.5f;
+        groupWalkingSpeedUpperBound = 3f;
+        GenerateGroupWalkingSpeed();
     }
 
     public override bool ShouldTriggerBehaviour()
     {
         if (IsLeaderAtDestination() &&
-            IsWaitingForAtLeastOneFollower())
+            AreAllFolowersAtDestination())
             return true;
 
         return false;
@@ -22,10 +28,15 @@ public class WaitForFollowersBehaviour : BehaviourStrategy
 
     public override void PerformBehaviour()
     {
-        foreach(EvacuAgentPedestrianBase evacuAgentPedestrianBase in groupCollection.GetGroupMembers())
+        groupCollection.UpdateGroupDestination();
+
+        foreach (EvacuAgentPedestrianBase evacuAgentPedestrianBase in groupCollection.GetGroupMembers())
         {
             BoidBehaviourStrategyBase boidBehaviourStrategyBase = evacuAgentPedestrianBase.GetComponentInChildren<BoidBehaviourStrategyBase>();
             boidBehaviourStrategyBase.ShouldBoidLogicBeActive(true);
+            boidBehaviourStrategyBase.EvacuAgentPedestrianBase.ChangeSpeedToMatchLeader(groupWalkingSpeed);
+            evacuAgentPedestrianBase.navMeshAgent.isStopped = false;
+            evacuAgentPedestrianBase.navMeshAgent.SetDestination(groupCollection.GroupDestination);
         }
     }
 
@@ -39,11 +50,11 @@ public class WaitForFollowersBehaviour : BehaviourStrategy
         return false;
     }
 
-    public bool IsWaitingForAtLeastOneFollower()
+    public bool AreAllFolowersAtDestination()
     {
         if(groupCollection.GetGroupMembers().Count < groupCollection.TotalGroupCount)
         {
-            return true;
+            return false;
         }
 
         foreach(EvacuAgentPedestrianBase groupMember in groupCollection.GetGroupMembers())
@@ -51,14 +62,14 @@ public class WaitForFollowersBehaviour : BehaviourStrategy
             if (groupMember == groupCollection.GroupLeaderPedestrian)
                 continue;
 
-            float distanceToMember = Vector3.Distance(groupMember.transform.position, transform.position);
-            if (distanceToMember > acceptableProximity)
+            float memberToDestinationDistance = Vector3.Distance(groupMember.transform.position, groupCollection.GroupDestination);
+            if (memberToDestinationDistance > acceptableProximity)
             {
-                return true;
+                return false;
             }
         }
 
-        return false;
+        return true;
     }
 
     public bool ShouldWaitForFollowersToSpawn()
@@ -67,5 +78,10 @@ public class WaitForFollowersBehaviour : BehaviourStrategy
             return true;
 
         return false;
+    }
+
+    public void GenerateGroupWalkingSpeed()
+    {
+        groupWalkingSpeed = Random.Range(groupWalkingSpeedLowerBound, groupWalkingSpeedUpperBound);
     }
 }

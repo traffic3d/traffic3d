@@ -2302,9 +2302,6 @@ MonoBehaviour:
   probabilityOfRunning: 0.1
   isUsingEvacuationBehaviour: 0
   isShooterAgent: 0
-  fieldOfView: {fileID: 2004611204436196325, guid: 5455178a2bed02144baada0f8ac40583,
-    type: 3}
-  currentPath: []
 --- !u!136 &3422900609756906932
 CapsuleCollider:
   m_ObjectHideFlags: 0

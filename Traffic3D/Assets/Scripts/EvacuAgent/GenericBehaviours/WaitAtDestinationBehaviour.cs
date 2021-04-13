@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 
 public class WaitAtDestinationBehaviour : BehaviourStrategy
 {
     private EvacuAgentPedestrianBase evacuAgentPedestrianBase;
     private GroupCollection groupCollection;
     private BoidBehaviourStrategyBase boidBehaviourStrategyBase;
+    private NavMeshAgent navMeshAgent;
     private float radiusToDestination;
     private float maxRadius;
     private float minRadius;
@@ -15,10 +17,11 @@ public class WaitAtDestinationBehaviour : BehaviourStrategy
         evacuAgentPedestrianBase = GetComponentInParent<EvacuAgentPedestrianBase>();
         groupCollection = evacuAgentPedestrianBase.GroupCollection;
         boidBehaviourStrategyBase = GetComponent<BoidBehaviourStrategyBase>();
-        maxRadius = 5f;
+        maxRadius = 4f;
         minRadius = 1f;
         radiusToDestination = Random.Range(minRadius, maxRadius);
         normalSpeed = GetComponentInParent<Pedestrian>().GetPedestrianNormalSpeed();
+        navMeshAgent = evacuAgentPedestrianBase.navMeshAgent;
     }
 
     public override bool ShouldTriggerBehaviour()
@@ -35,5 +38,6 @@ public class WaitAtDestinationBehaviour : BehaviourStrategy
     {
         evacuAgentPedestrianBase.ChangeSpeedToMatchLeader(normalSpeed);
         boidBehaviourStrategyBase.ShouldBoidLogicBeActive(false);
+        navMeshAgent.isStopped = true;
     }
 }

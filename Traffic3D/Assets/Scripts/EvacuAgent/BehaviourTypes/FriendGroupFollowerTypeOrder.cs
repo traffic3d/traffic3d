@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
 public class FriendGroupFollowerTypeOrder : BehaviourTypeOrder
 {
@@ -10,6 +8,7 @@ public class FriendGroupFollowerTypeOrder : BehaviourTypeOrder
         {
             new GenericEnterLeaveBuildingBehaviourType(),
             new WaitAtDestinationBehaviourType(),
+            new FollowerDestinationUpdateBehaviourType(),
             new FriendGroupBoidBehaviourType(),
             new GenericNoNewBehaviourType()
         };
@@ -47,6 +46,15 @@ public class FriendGroupFollowerTypeOrder : BehaviourTypeOrder
     private class WaitAtDestinationBehaviourType : BehaviourType
     {
         private readonly string behaviourStrategyName = "WaitAtDestinationBehaviour";
+        private readonly float behaviourStrategyChanceToUse = 1f;
+
+        public override string GetBehaviourStrategyName() => behaviourStrategyName;
+        public override float GetBehaviourStrategyChance() => behaviourStrategyChanceToUse;
+    }
+
+    private class FollowerDestinationUpdateBehaviourType : BehaviourType
+    {
+        private readonly string behaviourStrategyName = "FollowerDestinationUpdateBehaviour";
         private readonly float behaviourStrategyChanceToUse = 1f;
 
         public override string GetBehaviourStrategyName() => behaviourStrategyName;
