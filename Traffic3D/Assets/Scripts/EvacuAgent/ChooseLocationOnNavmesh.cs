@@ -4,7 +4,7 @@ using UnityEngine.AI;
 public class ChooseLocationOnNavmesh : MonoBehaviour
 {
 	private int walkableAreaMask;
-	private float maxDistanceFromChosenPoint = 1f;
+	private float maxDistanceFromChosenPoint = 10f;
 
     private void Awake()
     {

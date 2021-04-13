@@ -9,14 +9,9 @@ public class BoidCohesionComponent : BoidComponentBase
         if (followerBoidBehaviour.Neighbours.Count == 0)
             return velocity;
 
-        // Calculate center point of all visible neighbours
-        velocity /= followerBoidBehaviour.Neighbours.Count;
+        velocity += followerBoidBehaviour.NeighbourCenter;
+        velocity -= transform.position;
 
-        if (DoesVectorContainNaN(velocity * followerBoidBehaviour.CohesionWeight))
-        {
-            Debug.Log("COHESION HAS NaN");
-        }
-
-        return velocity.normalized * followerBoidBehaviour.CohesionWeight;
+        return velocity * followerBoidBehaviour.CohesionWeight;
     }
 }

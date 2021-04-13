@@ -4,6 +4,7 @@
     public static string SHOOTER_TAG = "shooter";
     public static string PEDESTRIAN_TAG = "pedestrian";
     public static string SHOOTER_HIGHLIGHT_TAG = "shooterHighlight";
+    public static string OBSTACLE_LAYER_NAME = "Obstacle";
     public static bool IS_FOV_VISUAL_ENABLED = true;
 
     // Highlights
@@ -38,10 +39,7 @@
     public static int FRIEND_GROUP_FOLLOWER_COUNT_MAXIMUM = 3;
 
     // Friend group boid weights
-    public static float FRIEND_GROUP_BOID_COHESION_WEIGHT = 0.05f;
-    public static float FRIEND_GROUP_BOID_ALIGNMENT_WEIGHT = 0.01f;
-    public static float FRIEND_GROUP_BOID_SEPARATION_WEIGHT = 0.07f;
-    public static float FRIEND_GROUP_BOID_SEEKING_WEIGHT = 0.05f;
-    public static float FRIEND_GROUP_BOID_AVOIDANCE_WEIGHT = 0.1f;
+    public static float FRIEND_GROUP_BOID_COHESION_WEIGHT = 0.002f; // was 0.004
+    public static float FRIEND_GROUP_BOID_SEPARATION_WEIGHT = 0.004f; // was 0.006 was good
 
 }

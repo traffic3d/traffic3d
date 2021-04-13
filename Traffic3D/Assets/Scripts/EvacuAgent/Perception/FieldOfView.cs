@@ -12,8 +12,6 @@ public class FieldOfView : MonoBehaviour
 
     public float findAgentsDelay = 1;
     public List<Pedestrian> visiblePedestrians = new List<Pedestrian>();
-    public GameObject nearestObstacleAhead { get; private set; }
-    public List<GameObject> peripheralGameObjects { get; private set; }
     public float viewRadius;
     public float numberOfSegments = 21;
 
@@ -29,11 +27,6 @@ public class FieldOfView : MonoBehaviour
     private const float opacityFieldOfView = 0.1f;
     private float convertedAngle;
     private int obstacleBitmask;
-    private List<float> anglesForPeripheralVision; // Used for more realistic object avoidance when moving near to objects that are not directly ahead
-    private float aheadObstacleAvoidDistance;
-    private float peripheralObstacleAvoidDistance;
-    private List<KeyValuePair<Vector3, Vector3>> lineStartEndPoints; // Used for Gizmo based debugging
-    private bool isGizmoDebuggingActive = true; // Turn on to use gizmo debugging
 
     void Start()
     {
@@ -41,23 +34,6 @@ public class FieldOfView : MonoBehaviour
         mesh = gameObject.GetComponent<MeshFilter>().mesh;
         BuildMesh();
         StartCoroutine(FindAgentsAndObstaclesWithDelay());
-        peripheralGameObjects = new List<GameObject>();
-        lineStartEndPoints = new List<KeyValuePair<Vector3, Vector3>>();
-
-        anglesForPeripheralVision = new List<float>
-        {
-            270f,
-            315f,
-            45f,
-            90f
-        };
-
-        // These values were the best after several rounds of paramater tuning
-        aheadObstacleAvoidDistance = viewRadius * 0.2f;
-        peripheralObstacleAvoidDistance = viewRadius * 0.13f;
-
-        // For debugging
-        StartCoroutine(ClearLineStartEndsAfterTime());
     }
 
     public IEnumerator FindAgentsAndObstaclesWithDelay()
@@ -66,8 +42,6 @@ public class FieldOfView : MonoBehaviour
         {
             yield return new WaitForSeconds(findAgentsDelay);
             GetAllAgentsInViewAngle();
-            FindNearestObstacleAhead();
-            FindPeripheralObstacles();
         }
     }
 
@@ -176,72 +150,5 @@ public class FieldOfView : MonoBehaviour
 
         mesh.normals = normals;
         mesh.triangles = triangles;
-    }
-
-    private void FindNearestObstacleAhead()
-    {
-        nearestObstacleAhead = null;
-
-        Vector3 endPoint = transform.position + (transform.forward * aheadObstacleAvoidDistance);
-        lineStartEndPoints.Add(new KeyValuePair<Vector3, Vector3>(transform.position, endPoint));
-
-        RaycastHit raycastHit;
-        if (Physics.Raycast(transform.position, transform.forward, out raycastHit, aheadObstacleAvoidDistance, obstacleBitmask))
-        {
-            nearestObstacleAhead = raycastHit.collider.gameObject;
-        }
-    }
-
-    private void FindPeripheralObstacles()
-    {
-        peripheralGameObjects.Clear();
-
-        foreach(float angle in anglesForPeripheralVision)
-        {
-            Vector3 rayDirection = Quaternion.Euler(0f, angle, 0f) * transform.forward;
-            Vector3 endPoint = transform.position + (rayDirection * peripheralObstacleAvoidDistance);
-            lineStartEndPoints.Add(new KeyValuePair<Vector3, Vector3>(transform.position, endPoint));
-
-            RaycastHit raycastHit;
-            if (Physics.Raycast(transform.position, rayDirection, out raycastHit, peripheralObstacleAvoidDistance, obstacleBitmask))
-            {
-                if (!IsObstacleObjectAlreadySeen(raycastHit.collider.gameObject))
-                    peripheralGameObjects.Add(raycastHit.collider.gameObject);
-            }
-        }
-    }
-
-    private bool IsObstacleObjectAlreadySeen(GameObject obstacleObject)
-    {
-        if (nearestObstacleAhead != null && nearestObstacleAhead.Equals(obstacleObject))
-            return true;
-
-        if (peripheralGameObjects.Contains(obstacleObject))
-            return true;
-
-        return false;
-    }
-
-    private IEnumerator ClearLineStartEndsAfterTime()
-    {
-        while (true)
-        {
-            // Time is arbitrary
-            yield return new WaitForSeconds(3);
-            lineStartEndPoints.Clear();
-        }
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (!isGizmoDebuggingActive)
-            return;
-
-        foreach (KeyValuePair<Vector3, Vector3> lineStartEnd in lineStartEndPoints)
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawLine(lineStartEnd.Key, lineStartEnd.Value);
-            Gizmos.color = Color.white;
-        }
     }
 }
