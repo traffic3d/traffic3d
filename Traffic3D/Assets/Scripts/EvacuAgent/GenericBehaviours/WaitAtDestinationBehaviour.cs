@@ -17,8 +17,8 @@ public class WaitAtDestinationBehaviour : BehaviourStrategy
         evacuAgentPedestrianBase = GetComponentInParent<EvacuAgentPedestrianBase>();
         groupCollection = evacuAgentPedestrianBase.GroupCollection;
         boidBehaviourStrategyBase = GetComponent<BoidBehaviourStrategyBase>();
-        maxRadius = 4f;
-        minRadius = 1f;
+        maxRadius = 3f;
+        minRadius = 0f;
         radiusToDestination = Random.Range(minRadius, maxRadius);
         normalSpeed = GetComponentInParent<Pedestrian>().GetPedestrianNormalSpeed();
         navMeshAgent = evacuAgentPedestrianBase.navMeshAgent;
@@ -37,7 +37,8 @@ public class WaitAtDestinationBehaviour : BehaviourStrategy
     public override void PerformBehaviour()
     {
         evacuAgentPedestrianBase.ChangeSpeedToMatchLeader(normalSpeed);
-        boidBehaviourStrategyBase.ShouldBoidLogicBeActive(false);
-        navMeshAgent.isStopped = true;
+        //boidBehaviourStrategyBase.ShouldBoidLogicBeActive(false);
+        evacuAgentPedestrianBase.IsPedestrianMovementStopped(false);
+        //navMeshAgent.isStopped = true;
     }
 }

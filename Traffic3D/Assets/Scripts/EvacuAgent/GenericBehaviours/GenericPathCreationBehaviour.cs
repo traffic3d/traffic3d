@@ -28,11 +28,8 @@ public class GenericPathCreationBehaviour : BehaviourStrategy
     public override void PerformBehaviour()
     {
         Path = PedestrianPointPathCreator.CreatePath();
-        //evacuAgentPedestrianBase.GroupCollection.GroupDestination = Path[0];
-        //Path.RemoveAt(0);
         groupCollection.UpdatePath(Path);
         evacuAgentPedestrianBase.navMeshAgent.SetDestination(groupCollection.GroupDestination);
-        //Path.RemoveAt(0);
 
     }
 

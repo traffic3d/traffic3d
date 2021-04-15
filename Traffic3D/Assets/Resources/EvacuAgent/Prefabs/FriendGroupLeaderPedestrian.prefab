@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 8372074045990216778}
   - component: {fileID: 5087548029234276604}
   - component: {fileID: 5661437661807820887}
+  - component: {fileID: 8149544618346237588}
   m_Layer: 0
   m_Name: FriendGroupLeaderPedestrian
   m_TagString: Untagged
@@ -130,5 +131,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3812d5d85472eb44493ff979da8dce94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8149544618346237588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3091836226254721903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05e8b6ee5b31e1b4e88a28d5695a079e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

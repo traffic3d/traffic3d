@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -8,7 +9,9 @@ public class GenericEnterLeaveBuildingBehaviour : BehaviourStrategy
     private Vector3 originalScale;
     private Collider pedestrianCollider;
     private Pedestrian pedestrian;
+    private EvacuAgentPedestrianBase evacuAgentPedestrianBase;
     private NavMeshAgent navMeshAgent;
+    private List<EvacuAgentPedestrianBase> visibleGroupMembers;
     private bool isAbleToEnterBuilding;
     private int secondsToWait;
     private bool isEnterBuildingCoolDownActive;
@@ -18,11 +21,13 @@ public class GenericEnterLeaveBuildingBehaviour : BehaviourStrategy
     {
         navMeshAgent = GetComponentInParent<NavMeshAgent>();
         pedestrian = GetComponentInParent<Pedestrian>();
+        evacuAgentPedestrianBase = GetComponentInParent<EvacuAgentPedestrianBase>();
         originalScale = pedestrian.transform.localScale;
         pedestrianCollider = GetComponentInParent<Collider>();
         isAbleToEnterBuilding = false;
         isEnterBuildingCoolDownActive = false;
-        enterBuildingCoolDownSeconds = 5;
+        enterBuildingCoolDownSeconds = 6;
+        visibleGroupMembers = new List<EvacuAgentPedestrianBase>();
     }
 
     public override bool ShouldTriggerBehaviour()
@@ -57,14 +62,35 @@ public class GenericEnterLeaveBuildingBehaviour : BehaviourStrategy
 
     IEnumerator StartAgentWaitAtBuilding()
     {
+        visibleGroupMembers = evacuAgentPedestrianBase.GetVisibleGroupMemebers();
         isAbleToEnterBuilding = false;
         pedestrian.transform.localScale = inBuildingScale;
-        navMeshAgent.isStopped = true;
+        //navMeshAgent.isStopped = true;
+        evacuAgentPedestrianBase.IsPedestrianMovementStopped(true);
         pedestrianCollider.enabled = false;
+        ScaleAllVisibleGroupMembers(visibleGroupMembers, inBuildingScale, true, false);
+
         yield return new WaitForSeconds(secondsToWait);
         navMeshAgent.isStopped = false;
         pedestrian.transform.localScale = originalScale;
         pedestrianCollider.enabled = true;
-        StartCoroutine(StartEnterBuildingCooldown());
+        evacuAgentPedestrianBase.IsPedestrianMovementStopped(false);
+        ScaleAllVisibleGroupMembers(visibleGroupMembers, originalScale, false, true);
+        visibleGroupMembers.Clear();
+        //evacuAgentPedestrianBase.GroupCollection.UpdateGroupDestination(); // This might be a problem as it can interfere with group leader wait for follower behaviour
+        StartCoroutine(StartEnterBuildingCooldown()); // May not ne necessary with visited node system
+    }
+
+    private void ScaleAllVisibleGroupMembers(List<EvacuAgentPedestrianBase> groupMemebers, Vector3 scale, bool isNavMeshAgentStopped, bool isPedestrianColliderEnabled)
+    {
+        foreach(EvacuAgentPedestrianBase visibleGroupMember in groupMemebers)
+        {
+            Transform visibleGroupMemberTransform = visibleGroupMember.transform.root;
+            visibleGroupMemberTransform.localScale = scale;
+            //visibleGroupMemberTransform.GetComponent<NavMeshAgent>().isStopped = isNavMeshAgentStopped;
+            visibleGroupMemberTransform.GetComponent<Collider>().enabled = isPedestrianColliderEnabled;
+            visibleGroupMember.GetComponentInChildren<GenericEnterLeaveBuildingBehaviour>().StartCoroutine(StartEnterBuildingCooldown());
+            visibleGroupMember.IsPedestrianMovementStopped(isNavMeshAgentStopped);
+        }
     }
 }

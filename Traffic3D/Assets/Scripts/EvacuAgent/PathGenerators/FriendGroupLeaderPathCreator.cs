@@ -12,7 +12,7 @@ public class FriendGroupLeaderPathCreator : NonShooterPedestrianPointPathCreator
     {
         chooseLocationOnNavmesh = gameObject.AddComponent<ChooseLocationOnNavmesh>();
         sizeOfPath = 4;
-        radiusToConsiderForMeetingLocation = 250;
+        radiusToConsiderForMeetingLocation = 50;
         pedestrianPointTypes = new List<PedestrianPointType>()
         {
             PedestrianPointType.Hospitality,
@@ -29,10 +29,21 @@ public class FriendGroupLeaderPathCreator : NonShooterPedestrianPointPathCreator
         Vector3 meetingLocation = chooseLocationOnNavmesh.GetRandomPointOnNavMesh(meetingLocationCenterPoint, radiusToConsiderForMeetingLocation);
         path.Add(meetingLocation);
 
-        for (int index = 0; index < sizeOfPath; index++)
+        Vector3 lastPathLocation = meetingLocation;
+        int index = 0;
+
+        while(index < sizeOfPath)
         {
             PedestrianPointType pedestrianPointType = pedestrianPointTypes[Random.Range(0, pedestrianPointTypes.Count)];
-            path.Add(GetRandomPedestrianPointOfType(pedestrianPointType).GetPointLocation());
+            Vector3 currentPedestrianPointDestination = GetRandomPedestrianPointOfType(pedestrianPointType).GetPointLocation();
+
+            // Ensures that the same destination is not in adjacent elements of path
+            if (!currentPedestrianPointDestination.Equals(lastPathLocation))
+            {
+                path.Add(GetRandomPedestrianPointOfType(pedestrianPointType).GetPointLocation());
+                lastPathLocation = currentPedestrianPointDestination;
+                index++;
+            }
         }
 
         return path;

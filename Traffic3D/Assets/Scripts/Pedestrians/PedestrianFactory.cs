@@ -35,6 +35,7 @@ public class PedestrianFactory : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(RandomNumberGenerator.GetInstance().Range(lowRangeRespawnTime, highRangeRespawnTime));
+            int debug = FindObjectsOfType<Pedestrian>().Length;
             if (FindObjectsOfType<Pedestrian>().Length < maximumPedestrianCount)
             {
                 SpawnPedestrian();
@@ -89,8 +90,7 @@ public class PedestrianFactory : MonoBehaviour
     private PedestrianPoint GetPedestrianPoint()
     {
         if (isUsingEvacuationBehaviour)
-
-            return evacuAgentSpawnPedestrianPoints[RandomNumberGenerator.GetInstance().Range(0, evacuAgentSpawnPedestrianPoints.Count)];
+            return evacuAgentSpawnPedestrianPoints[Random.Range(0, evacuAgentSpawnPedestrianPoints.Count)];
 
         return pedestrianPoints[RandomNumberGenerator.GetInstance().Range(0, pedestrianPoints.Length)];
     }
@@ -99,7 +99,7 @@ public class PedestrianFactory : MonoBehaviour
     {
         foreach(PedestrianPoint pedestrianPoint in pedestrianPoints)
         {
-            if (pedestrianPoint.PedestrianPointType.Equals(PedestrianPointType.Spawn))
+            if (pedestrianPoint.pedestrianPointType.Equals(PedestrianPointType.Spawn))
                 evacuAgentSpawnPedestrianPoints.Add(pedestrianPoint);
         }
     }
@@ -114,12 +114,12 @@ public class PedestrianFactory : MonoBehaviour
         {
             AbstractEvacuAgentPedestrianFactory factory = evacuAgentPedestrianFactories[Random.Range(0, evacuAgentPedestrianFactories.Count)];
             factory.CreateEvacuAgentPedestrian(pedestrian);
-            maximumPedestrianCount += factory.GetNumberOfFollowers();
+
+            if(factory.isCreatingLeaderType)
+                maximumPedestrianCount += factory.GetNumberOfFollowers();
 
             if (factory.HasSpawnedMaxPedestrians())
-            {
                 evacuAgentPedestrianFactories.Remove(factory);
-            }
         }
     }
 

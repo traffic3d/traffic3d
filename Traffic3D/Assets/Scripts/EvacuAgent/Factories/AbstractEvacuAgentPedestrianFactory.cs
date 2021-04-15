@@ -3,6 +3,8 @@ using UnityEngine;
 
 public abstract class AbstractEvacuAgentPedestrianFactory : MonoBehaviour
 {
+    public bool isCreatingLeaderType { get; protected set;
+    }
     [SerializeField]
     private GameObject behaviourCollectionPrefab;
 
@@ -21,7 +23,7 @@ public abstract class AbstractEvacuAgentPedestrianFactory : MonoBehaviour
 
     public virtual bool HasSpawnedMaxPedestrians()
     {
-        if (numPedestriansToSpawn == 0 + numberOfFollowersLeftToSpawn)
+        if (numPedestriansToSpawn + numberOfFollowersLeftToSpawn == 0)
             return true;
 
         return false;
@@ -92,6 +94,7 @@ public abstract class AbstractEvacuAgentPedestrianFactory : MonoBehaviour
 
     protected EvacuAgentPedestrianBase UpdateGroupCollection()
     {
+        IsCreatingLeaderType(true);
         numPedestriansToSpawn--;
         currentLeaderFollowerCollection = currentLeaderPedestrian.GetComponent<GroupCollection>();
         currentLeaderFollowerCollection.TotalGroupCount = numberOfFollowersLeftToSpawn;
@@ -103,6 +106,7 @@ public abstract class AbstractEvacuAgentPedestrianFactory : MonoBehaviour
 
     protected void AddGroupCollectionToFollower(EvacuAgentPedestrianBase groupPedestrian)
     {
+        IsCreatingLeaderType(false);
         groupPedestrian.AddGroupCollection(currentLeaderFollowerCollection);
     }
 
@@ -112,6 +116,11 @@ public abstract class AbstractEvacuAgentPedestrianFactory : MonoBehaviour
         currentLeaderFollowerCollection.AddFollowerToCollection(follower);
         follower.navMeshAgent.stoppingDistance = 1f;
         return follower;
+    }
+
+    private void IsCreatingLeaderType(bool isCreatingLeader)
+    {
+        isCreatingLeaderType = isCreatingLeader;
     }
 
     private bool BehaviourChanceCheck(float behaviourChance)

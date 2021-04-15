@@ -19,7 +19,7 @@ public class FollowerDestinationUpdateBehaviour : BehaviourStrategy
 
     public override bool ShouldTriggerBehaviour()
     {
-        if (!currentDestination.Equals(currentDestination))
+        if (!groupCollection.GroupDestination.Equals(currentDestination))
             return true;
 
         return false;
