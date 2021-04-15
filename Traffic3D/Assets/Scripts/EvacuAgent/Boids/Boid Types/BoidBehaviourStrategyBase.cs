@@ -17,7 +17,6 @@ public abstract class BoidBehaviourStrategyBase : BehaviourStrategy
     public abstract float SeparationWeight { get; }
     protected bool shouldUpdateBoid;
     private float maxSpeed = 2.4f;
-    private float maxRotationAngle = 25f;
 
     protected void Start()
     {
@@ -39,19 +38,12 @@ public abstract class BoidBehaviourStrategyBase : BehaviourStrategy
 
     protected void UpdateNeighbours()
     {
+        List<EvacuAgentPedestrianBase> visibleGroupMemebers =  EvacuAgentPedestrianBase.GetVisibleGroupMemebers();
         Neighbours.Clear();
 
-        foreach(Pedestrian pedestrian in FieldOfView.visiblePedestrians)
+        foreach(EvacuAgentPedestrianBase visibleGroupMember in visibleGroupMemebers)
         {
-            EvacuAgentPedestrianBase evacuAgentPedestrian = pedestrian.GetComponentInChildren<EvacuAgentPedestrianBase>();
-
-            if (pedestrian.transform.root == transform.root)
-                continue;
-
-            if (GroupCollection.GetGroupMembers().Contains(evacuAgentPedestrian))
-            {
-                Neighbours.Add(evacuAgentPedestrian.GetComponentInChildren<BoidBehaviourStrategyBase>());
-            }
+            Neighbours.Add(visibleGroupMember.GetComponentInChildren<BoidBehaviourStrategyBase>());
         }
     }
 

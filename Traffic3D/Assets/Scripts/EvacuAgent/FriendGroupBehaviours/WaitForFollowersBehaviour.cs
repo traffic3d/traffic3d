@@ -4,6 +4,7 @@ public class WaitForFollowersBehaviour : BehaviourStrategy
 {
     private GroupCollection groupCollection;
     private float acceptableProximity;
+    private float leaderAcceptableProximity;
     private float groupWalkingSpeedLowerBound;
     private float groupWalkingSpeedUpperBound;
     private float groupWalkingSpeed;
@@ -11,10 +12,14 @@ public class WaitForFollowersBehaviour : BehaviourStrategy
     private void Start()
     {
         groupCollection = GetComponentInParent<GroupCollection>();
-        acceptableProximity = 5f;
-        groupWalkingSpeedLowerBound = 1.5f;
-        groupWalkingSpeedUpperBound = 3f;
+        acceptableProximity = 3f;
+        leaderAcceptableProximity = 3f;
+        groupWalkingSpeedLowerBound = 1.2f;
+        groupWalkingSpeedUpperBound = 2.4f;
         GenerateGroupWalkingSpeed();
+
+        if (groupCollection.TotalGroupCount == 0)
+            leaderAcceptableProximity = 1f;
     }
 
     public override bool ShouldTriggerBehaviour()
@@ -33,16 +38,15 @@ public class WaitForFollowersBehaviour : BehaviourStrategy
         foreach (EvacuAgentPedestrianBase evacuAgentPedestrianBase in groupCollection.GetGroupMembers())
         {
             BoidBehaviourStrategyBase boidBehaviourStrategyBase = evacuAgentPedestrianBase.GetComponentInChildren<BoidBehaviourStrategyBase>();
-            boidBehaviourStrategyBase.ShouldBoidLogicBeActive(true);
             boidBehaviourStrategyBase.EvacuAgentPedestrianBase.ChangeSpeedToMatchLeader(groupWalkingSpeed);
-            evacuAgentPedestrianBase.navMeshAgent.isStopped = false;
+            evacuAgentPedestrianBase.IsPedestrianMovementStopped(false);
             evacuAgentPedestrianBase.navMeshAgent.SetDestination(groupCollection.GroupDestination);
         }
     }
 
     public bool IsLeaderAtDestination()
     {
-        if (Vector3.Distance(groupCollection.GroupDestination, transform.position) < 3f)
+        if (Vector3.Distance(groupCollection.GroupDestination, transform.position) < leaderAcceptableProximity)
         {
             return true;
         }

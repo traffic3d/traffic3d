@@ -37,8 +37,8 @@ public class WorkerPedestrianPointPathCreator_ReturnsCorrectPath_WithHospitality
     public override void Assertion()
     {
         Assert.AreEqual(expectedNumberOfElements, actualPedestrianPoints.Count);
-        Assert.AreEqual(PedestrianPointType.Hospitality, GetPedestrianPointFromLocation(actualPedestrianPoints[0]).PedestrianPointType);
-        Assert.AreEqual(PedestrianPointType.Work, GetPedestrianPointFromLocation(actualPedestrianPoints[1]).PedestrianPointType);
+        Assert.AreEqual(PedestrianPointType.Hospitality, GetPedestrianPointFromLocation(actualPedestrianPoints[0]).pedestrianPointType);
+        Assert.AreEqual(PedestrianPointType.Work, GetPedestrianPointFromLocation(actualPedestrianPoints[1]).pedestrianPointType);
     }
 
     [TearDown]
@@ -81,7 +81,7 @@ public class WorkerPedestrianPointPathCreator_ReturnsCorrectPath_WithoutHospital
     public override void Assertion()
     {
         Assert.AreEqual(expectedNumberOfElements, actualPedestrianPoints.Count);
-        Assert.AreEqual(PedestrianPointType.Work, GetPedestrianPointFromLocation(actualPedestrianPoints[0]).PedestrianPointType);
+        Assert.AreEqual(PedestrianPointType.Work, GetPedestrianPointFromLocation(actualPedestrianPoints[0]).pedestrianPointType);
     }
 
     [TearDown]

@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class GroupCollection : MonoBehaviour
 {
-    public int TotalGroupCount { get; set; }
     public EvacuAgentPedestrianBase GroupLeaderPedestrian { get; set; }
     public Vector3 GroupDestination { get; set; }
+    public int TotalGroupCount { get; set; }
     public bool ShouldUpdateGroupDestination { get; private set; }
-    private List<EvacuAgentPedestrianBase> group;
     private bool hasNewMemberBeenAdded;
+    private List<EvacuAgentPedestrianBase> group;
     private List<Vector3> path;
+
+    // Current destination and it's visited status. Gets set to true when the first group member hits the relevant collider
+    private KeyValuePair<Vector3, bool> visitedStateOfCurrentDestination;
 
     private void Awake()
     {
@@ -45,12 +48,29 @@ public class GroupCollection : MonoBehaviour
         path.AddRange(newPath);
         GroupDestination = path.First();
         path.Remove(GroupDestination);
+        visitedStateOfCurrentDestination = new KeyValuePair<Vector3, bool>(GroupDestination, false);
     }
 
     public void UpdateGroupDestination()
     {
         GroupDestination = path.First();
         path.Remove(GroupDestination);
+        visitedStateOfCurrentDestination = new KeyValuePair<Vector3, bool>(GroupDestination, false);
+    }
+
+    public void MarkCurrentDestinationAsVisited()
+    {
+        visitedStateOfCurrentDestination = new KeyValuePair<Vector3, bool>(GroupDestination, true);
+    }
+
+    public bool HasGroupVisitedCurrentPathNode()
+    {
+        if(visitedStateOfCurrentDestination.Value == true)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     public int GetNumberOfPathNodes() => path.Count;
