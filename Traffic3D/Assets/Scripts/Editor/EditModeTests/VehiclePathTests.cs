@@ -111,5 +111,30 @@ public class VehiclePathTests
         Assert.AreEqual(0, intersections.Count);
     }
 
+    [Test]
+    public void StopLineTest()
+    {
+        GameObject dummyVehicle = new GameObject("DummyVehicle");
+        dummyVehicle.transform.position = new Vector3(0, 1, 0);
+        RoadNode node1 = new GameObject("Node1").AddComponent<RoadNode>();
+        node1.transform.position = new Vector3(1, 1, 0);
+        node1.startNode = true;
+        RoadNode node2 = new GameObject("Node2").AddComponent<RoadNode>();
+        node2.gameObject.AddComponent<StopLine>();
+        node2.transform.position = new Vector3(2, 1, 0);
+        node1.transform.LookAt(node2.transform);
+        RoadNode node3 = new GameObject("Node3").AddComponent<RoadNode>();
+        node3.transform.position = new Vector3(3, 1, 0);
+        RoadWay roadWay = new GameObject("RoadWay1").AddComponent<RoadWay>();
+        roadWay.nodes.Add(node1);
+        roadWay.nodes.Add(node2);
+        roadWay.nodes.Add(node3);
+        VehiclePath vehiclePath = roadWay.ToDirectVehiclePath();
+        StopLine stopLine = vehiclePath.GetNextStopLine(node1.transform);
+        Assert.AreEqual(node2.gameObject, stopLine.gameObject);
+        float distance = vehiclePath.GetDistanceToNextStopLine(node1.transform, dummyVehicle.transform);
+        Assert.AreEqual(2, distance);
+    }
+
 }
 

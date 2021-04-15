@@ -318,7 +318,7 @@ public class VehicleEngine : MonoBehaviour
         {
             return;
         }
-        HashSet<PathIntersectionPoint> pathIntersectionPoints = new HashSet<PathIntersectionPoint>(vehiclesAtIntersectionPoint.Keys.Where(i => path.GetDistanceFromVehicleToIntersectionPoint(path, currentNodeNumber, transform, i) <= mergeRadiusCheck)); //.OrderByDescending(intersectionPoint => path.GetDistanceFromVehicleToIntersectionPoint(currentNode, transform, intersectionPoint)).ToList();
+        HashSet<PathIntersectionPoint> pathIntersectionPoints = new HashSet<PathIntersectionPoint>(vehiclesAtIntersectionPoint.Keys.Where(i => path.GetDistanceFromVehicleToIntersectionPoint(path, currentNodeNumber, transform, i) <= mergeRadiusCheck));
         foreach (PathIntersectionPoint pathIntersectionPoint in pathIntersectionPoints)
         {
             if (stopLineType != StopLine.Type.MERGE)
