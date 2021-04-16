@@ -26,4 +26,11 @@ public class PathIntersectionLine
     {
         return lastPoint == point;
     }
+
+    public override string ToString()
+    {
+        return "PathIntersectionLine: " +
+            "firstPoint: " + firstPoint.name + " - " +
+            "lastPoint: " + lastPoint.name + " - ";
+    }
 }

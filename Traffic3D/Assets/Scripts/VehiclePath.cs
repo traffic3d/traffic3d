@@ -75,7 +75,7 @@ public class VehiclePath
     public float GetDistanceFromVehicleToIntersectionPoint(VehiclePath vehiclePath, int currentNodeNumber, Transform vehicleTransform, PathIntersectionPoint pathIntersectionPoint)
     {
         Transform currentNode = vehiclePath.nodes[currentNodeNumber];
-        if (pathIntersectionPoint.IsNodeAfterIntersection(currentNode))
+        if (pathIntersectionPoint.IsNodeLastPointOfIntersection(currentNode))
         {
             // Returns a calculated distance to the intersection point.
             float distanceToIntersection = pathIntersectionPoint.CalculateVehicleDistanceToIntersectionWithinIntersection(vehicleTransform, vehiclePath.nodes[currentNodeNumber - 1], currentNode);
@@ -95,7 +95,7 @@ public class VehiclePath
             return float.NaN;
         }
         float totalDistance = Vector3.Distance(currentNode.position, vehicleTransform.position);
-        if (pathIntersectionPoint.IsNodeBeforeIntersection(currentNode))
+        if (pathIntersectionPoint.IsNodeFirstPointOfIntersection(currentNode))
         {
             return totalDistance + Vector3.Distance(currentNode.position, pathIntersectionPoint.intersection);
         }
@@ -105,7 +105,7 @@ public class VehiclePath
             Transform node = nodes[i];
             float distanceBetweenNodes = Vector3.Distance(lastNode.position, node.position);
             totalDistance = totalDistance + distanceBetweenNodes;
-            if (pathIntersectionPoint.IsNodeBeforeIntersection(node))
+            if (pathIntersectionPoint.IsNodeFirstPointOfIntersection(node))
             {
                 return totalDistance + Vector3.Distance(node.position, pathIntersectionPoint.intersection);
             }
@@ -153,7 +153,7 @@ public class VehiclePath
                     addedVectors.Add(nodes[nodeIndex + 1].position);
                     results.Add(new PathIntersectionPoint(nodes[nodeIndex], nodes[nodeIndex + 1], otherPath.nodes[otherNodeIndex], otherPath.nodes[otherNodeIndex + 1], nodes[nodeIndex + 1].position));
                 }
-                else if (Utils.GetLineIntersection(node1, node2, otherNode1, otherNode2, out Vector2 intersection))
+                else if (GetLineIntersection(node1, node2, otherNode1, otherNode2, out Vector2 intersection))
                 {
                     addedVectors.Add(new Vector3(intersection.x, nodes[nodeIndex].position.y, intersection.y));
                     results.Add(new PathIntersectionPoint(nodes[nodeIndex], nodes[nodeIndex + 1], otherPath.nodes[otherNodeIndex], otherPath.nodes[otherNodeIndex + 1], new Vector3(intersection.x, nodes[nodeIndex].position.y, intersection.y)));
@@ -236,5 +236,36 @@ public class VehiclePath
         float yDest = (float)((1 - ratio) * node1.y + ratio * node2.y);
         float zDest = (float)((1 - ratio) * node1.z + ratio * node2.z);
         return new Vector3(xDest, yDest, zDest);
+    }
+
+    /// <summary>
+    /// Licensed under MIT
+    /// Code Taken From: https://github.com/setchi/Unity-LineSegmentsIntersection/blob/master/Assets/LineSegmentIntersection/Scripts/Math2d.cs
+    /// 
+    /// Find intersection on a 2D plane with 4 vectors
+    /// </summary>
+    /// <param name="line1p1">Line 1 Point 1</param>
+    /// <param name="line1p2">Line 1 Point 2</param>
+    /// <param name="line2p1">Line 2 Point 1</param>
+    /// <param name="line2p2">Line 2 Point 2</param>
+    /// <param name="intersection">Out intersection</param>
+    /// <returns>True if an intersection is found</returns>
+    private bool GetLineIntersection(Vector2 line1p1, Vector2 line1p2, Vector2 line2p1, Vector2 line2p2, out Vector2 intersection)
+    {
+        intersection = Vector2.zero;
+        float d = (line1p2.x - line1p1.x) * (line2p2.y - line2p1.y) - (line1p2.y - line1p1.y) * (line2p2.x - line2p1.x);
+        if (d == 0.0f)
+        {
+            return false;
+        }
+        float u = ((line2p1.x - line1p1.x) * (line2p2.y - line2p1.y) - (line2p1.y - line1p1.y) * (line2p2.x - line2p1.x)) / d;
+        float v = ((line2p1.x - line1p1.x) * (line1p2.y - line1p1.y) - (line2p1.y - line1p1.y) * (line1p2.x - line1p1.x)) / d;
+        if (u <= 0.0f || u >= 1.0f || v <= 0.0f || v >= 1.0f)
+        {
+            return false;
+        }
+        intersection.x = line1p1.x + u * (line1p2.x - line1p1.x);
+        intersection.y = line1p1.y + u * (line1p2.y - line1p1.y);
+        return true;
     }
 }
