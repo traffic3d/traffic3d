@@ -129,9 +129,9 @@ public class ShooterPathCreator_CalculateRankedShooterAgentPath_ReturnsCorrectPa
     public override void Assertion()
     {
         Assert.AreEqual(actualPedestrianPoints.Count, sizeOfPath);
-        Assert.That(GetPedestrianPointFromLocation(actualPedestrianPoints[0]), Is.EqualTo(frontLeft));
-        Assert.That(GetPedestrianPointFromLocation(actualPedestrianPoints[1]), Is.EqualTo(building3));
-        Assert.That(GetPedestrianPointFromLocation(actualPedestrianPoints[2]), Is.EqualTo(building5));
+        Assert.That(GetPedestrianPointFromLocation(actualPedestrianPoints[0]), Is.EqualTo(building3));
+        Assert.That(GetPedestrianPointFromLocation(actualPedestrianPoints[1]), Is.EqualTo(building5));
+        Assert.That(GetPedestrianPointFromLocation(actualPedestrianPoints[2]), Is.EqualTo(frontLeft));
     }
 }
 

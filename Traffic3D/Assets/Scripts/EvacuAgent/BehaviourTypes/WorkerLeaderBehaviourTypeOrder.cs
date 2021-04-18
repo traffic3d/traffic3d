@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-public class WorkerBehaviourTypeOrder : BehaviourTypeOrder
+public class WorkerLeaderBehaviourTypeOrder : BehaviourTypeOrder
 {
     private void Awake()
     {
@@ -8,7 +8,9 @@ public class WorkerBehaviourTypeOrder : BehaviourTypeOrder
         {
             new GenericPathCreationBehaviourType(),
             new GenericEnterLeaveBuildingBehaviourType(),
-            new GenericMoveToNextDestinationBehaviourType(),
+            new WaitForFollowersBehaviourType(),
+            new WaitAtDestinationBehaviourType(),
+            new WorkerGroupBoidBehaviourType(),
             new GenericNoNewBehaviourType()
         };
     }
@@ -33,18 +35,36 @@ public class WorkerBehaviourTypeOrder : BehaviourTypeOrder
         public override float GetBehaviourStrategyChance() => behaviourStrategyChanceToUse;
     }
 
-    private class GenericMoveToNextDestinationBehaviourType : BehaviourType
+    private class GenericNoNewBehaviourType : BehaviourType
     {
-        private readonly string behaviourStrategyName = "GenericMoveToNextDestinationBehaviour";
+        private readonly string behaviourStrategyName = "GenericNoNewBehaviour";
         private readonly float behaviourStrategyChanceToUse = 1f;
 
         public override string GetBehaviourStrategyName() => behaviourStrategyName;
         public override float GetBehaviourStrategyChance() => behaviourStrategyChanceToUse;
     }
 
-    private class GenericNoNewBehaviourType : BehaviourType
+    private class WaitForFollowersBehaviourType : BehaviourType
     {
-        private readonly string behaviourStrategyName = "GenericNoNewBehaviour";
+        private readonly string behaviourStrategyName = "WaitForFollowersBehaviour";
+        private readonly float behaviourStrategyChanceToUse = 1f;
+
+        public override string GetBehaviourStrategyName() => behaviourStrategyName;
+        public override float GetBehaviourStrategyChance() => behaviourStrategyChanceToUse;
+    }
+
+    private class WorkerGroupBoidBehaviourType : BehaviourType
+    {
+        private readonly string behaviourStrategyName = "WorkerGroupBoidBehaviour";
+        private readonly float behaviourStrategyChanceToUse = 1f;
+
+        public override string GetBehaviourStrategyName() => behaviourStrategyName;
+        public override float GetBehaviourStrategyChance() => behaviourStrategyChanceToUse;
+    }
+
+    private class WaitAtDestinationBehaviourType : BehaviourType
+    {
+        private readonly string behaviourStrategyName = "WaitAtDestinationBehaviour";
         private readonly float behaviourStrategyChanceToUse = 1f;
 
         public override string GetBehaviourStrategyName() => behaviourStrategyName;

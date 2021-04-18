@@ -127,6 +127,8 @@ public class PedestrianFactory : MonoBehaviour
     {
         return new List<AbstractEvacuAgentPedestrianFactory>()
         {
+            //gameObject.GetComponent<WorkerLeaderFollowerPedestrianFactory>(),
+            //gameObject.GetComponent<ShooterPedestrianFactory>(),
             gameObject.GetComponent<FriendGroupLeaderFollowerPedestrianFactory>()
         };
     }

@@ -20,7 +20,7 @@ public class FollowClosestTargetBehaviour : BehaviourStrategy
 
     public override bool ShouldTriggerBehaviour()
     {
-        if(fieldOfView.visiblePedestrians.Count >= 1 && isAbleToTargetNewPedestrian)
+        if(fieldOfView.allVisiblePedestrians.Count >= 1 && isAbleToTargetNewPedestrian)
         {
             StartCoroutine(FollowNewPedestrianCoolDown());
             return true;
@@ -31,10 +31,10 @@ public class FollowClosestTargetBehaviour : BehaviourStrategy
 
     public override void PerformBehaviour()
     {
-        Transform cloststTransform = fieldOfView.visiblePedestrians.First().transform;
+        Transform cloststTransform = fieldOfView.allVisiblePedestrians.First().transform;
         float currentSmallestDistance = Vector3.Distance(transform.position, cloststTransform.position);
 
-        foreach (Pedestrian pedestrian in fieldOfView.visiblePedestrians)
+        foreach (Pedestrian pedestrian in fieldOfView.allVisiblePedestrians)
         {
             float distanceToAgent = Vector3.Distance(transform.position, pedestrian.transform.position);
 

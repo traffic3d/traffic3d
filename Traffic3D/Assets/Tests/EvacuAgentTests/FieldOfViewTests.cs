@@ -35,8 +35,8 @@ public class FieldOfView_CanDetectOtherPedestrian_WhenPedestrianIsWithinViewAngl
 
     public override void Assertion()
     {
-        Assert.AreEqual(1, viewingObjectFov.visiblePedestrians.Count);
-        Assert.AreSame(targetObject.GetComponent<Pedestrian>(), viewingObjectFov.visiblePedestrians.First());
+        Assert.AreEqual(1, viewingObjectFov.allVisiblePedestrians.Count);
+        Assert.AreSame(targetObject.GetComponent<Pedestrian>(), viewingObjectFov.allVisiblePedestrians.First());
     }
 }
 
@@ -71,7 +71,7 @@ public class FieldOfView_CannnotDetectOtherPedestrian_WhenPedestrianIsWithinView
 
     public override void Assertion()
     {
-        Assert.AreEqual(0, viewingObjectFov.visiblePedestrians.Count);
+        Assert.AreEqual(0, viewingObjectFov.allVisiblePedestrians.Count);
     }
 }
 
@@ -107,7 +107,7 @@ public class FieldOfView_CannnotDetectOtherPedestrian_WhenPedestrianIsOutsideOfV
 
     public override void Assertion()
     {
-        Assert.AreEqual(0, viewingObjectFov.visiblePedestrians.Count);
+        Assert.AreEqual(0, viewingObjectFov.allVisiblePedestrians.Count);
     }
 }
 
@@ -154,7 +154,7 @@ public class FieldOfView_CannnotDetectOtherPedestrian_WhenPedestrianIsWithinView
 
     public override void Assertion()
     {
-        Assert.AreEqual(0, viewingObjectFov.visiblePedestrians.Count);
+        Assert.AreEqual(0, viewingObjectFov.allVisiblePedestrians.Count);
     }
 }
 
@@ -197,8 +197,8 @@ public class FieldOfView_OnlyAddsPedestriansToVisiblePedestrainList : ArrangeAct
 
     public override void Assertion()
     {
-        Assert.AreEqual(1, viewingObjectFov.visiblePedestrians.Count);
-        Assert.IsInstanceOf(typeof(Pedestrian), viewingObjectFov.visiblePedestrians[0]);
+        Assert.AreEqual(1, viewingObjectFov.allVisiblePedestrians.Count);
+        Assert.IsInstanceOf(typeof(Pedestrian), viewingObjectFov.allVisiblePedestrians[0]);
     }
 }
 
@@ -220,7 +220,7 @@ public static class FieldOfViewTestsHelper
 
         viewingFov.viewAngle = defaultViewAngle;
         viewingFov.viewRadius = defaultViewRadius;
-        viewingFov.visiblePedestrians.Clear();
+        viewingFov.allVisiblePedestrians.Clear();
         viewingFovGameObject.layer = LayerMask.NameToLayer(pedestrianLayerMask);
 
         return viewingFov;
