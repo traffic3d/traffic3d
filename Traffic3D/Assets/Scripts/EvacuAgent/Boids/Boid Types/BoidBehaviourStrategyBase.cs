@@ -15,6 +15,7 @@ public abstract class BoidBehaviourStrategyBase : BehaviourStrategy
     public BoidManager BoidManager { get; protected set; }
     public abstract float CohesionWeight { get; }
     public abstract float SeparationWeight { get; }
+    public abstract float TargetSeekingWeight { get; }
     protected bool shouldUpdateBoid;
     private float maxSpeed = 2.4f;
 

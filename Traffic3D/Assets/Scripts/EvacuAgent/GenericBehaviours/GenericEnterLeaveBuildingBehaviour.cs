@@ -65,20 +65,19 @@ public class GenericEnterLeaveBuildingBehaviour : BehaviourStrategy
         visibleGroupMembers = evacuAgentPedestrianBase.GetVisibleGroupMemebers();
         isAbleToEnterBuilding = false;
         pedestrian.transform.localScale = inBuildingScale;
-        //navMeshAgent.isStopped = true;
         evacuAgentPedestrianBase.IsPedestrianMovementStopped(true);
         pedestrianCollider.enabled = false;
         ScaleAllVisibleGroupMembers(visibleGroupMembers, inBuildingScale, true, false);
 
         yield return new WaitForSeconds(secondsToWait);
+
         navMeshAgent.isStopped = false;
         pedestrian.transform.localScale = originalScale;
         pedestrianCollider.enabled = true;
         evacuAgentPedestrianBase.IsPedestrianMovementStopped(false);
         ScaleAllVisibleGroupMembers(visibleGroupMembers, originalScale, false, true);
         visibleGroupMembers.Clear();
-        //evacuAgentPedestrianBase.GroupCollection.UpdateGroupDestination(); // This might be a problem as it can interfere with group leader wait for follower behaviour
-        StartCoroutine(StartEnterBuildingCooldown()); // May not ne necessary with visited node system
+        StartCoroutine(StartEnterBuildingCooldown());
     }
 
     private void ScaleAllVisibleGroupMembers(List<EvacuAgentPedestrianBase> groupMemebers, Vector3 scale, bool isNavMeshAgentStopped, bool isPedestrianColliderEnabled)
@@ -87,7 +86,6 @@ public class GenericEnterLeaveBuildingBehaviour : BehaviourStrategy
         {
             Transform visibleGroupMemberTransform = visibleGroupMember.transform.root;
             visibleGroupMemberTransform.localScale = scale;
-            //visibleGroupMemberTransform.GetComponent<NavMeshAgent>().isStopped = isNavMeshAgentStopped;
             visibleGroupMemberTransform.GetComponent<Collider>().enabled = isPedestrianColliderEnabled;
             visibleGroupMember.GetComponentInChildren<GenericEnterLeaveBuildingBehaviour>().StartCoroutine(StartEnterBuildingCooldown());
             visibleGroupMember.IsPedestrianMovementStopped(isNavMeshAgentStopped);
