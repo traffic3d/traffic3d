@@ -18,7 +18,7 @@ public class GenericMoveToNextDestinationBehaviour : BehaviourStrategy
 
     public override bool ShouldTriggerBehaviour()
     {
-        float distanceToTarget = Vector3.Distance(evacuAgentPedestrianBase.GroupCollection.GroupDestination, transform.position);
+        float distanceToTarget = Vector3.Distance(groupCollection.GroupDestination, transform.position);
         if (distanceToTarget < proximityToDestination)
         {
             return true;
@@ -29,7 +29,6 @@ public class GenericMoveToNextDestinationBehaviour : BehaviourStrategy
 
     public override void PerformBehaviour()
     {
-        return;
         CurrentDestination = genericPathCreationBehaviour.Path.First();
         genericPathCreationBehaviour.Path.Remove(CurrentDestination);
         evacuAgentPedestrianBase.GroupCollection.GroupDestination = CurrentDestination;

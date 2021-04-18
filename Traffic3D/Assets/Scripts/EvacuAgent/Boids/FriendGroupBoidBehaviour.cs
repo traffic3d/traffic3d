@@ -4,12 +4,13 @@ using UnityEngine.AI;
 
 public class FriendGroupBoidBehaviour : BoidBehaviourStrategyBase
 {
-    public override float CohesionWeight { get => EvacuAgentSceneParamaters.FRIEND_GROUP_BOID_COHESION_WEIGHT; }
-    public override float SeparationWeight { get => EvacuAgentSceneParamaters.FRIEND_GROUP_BOID_SEPARATION_WEIGHT; }
+    public override float CohesionWeight => EvacuAgentSceneParamaters.FRIEND_GROUP_BOID_COHESION_WEIGHT;
+    public override float SeparationWeight => EvacuAgentSceneParamaters.FRIEND_GROUP_BOID_SEPARATION_WEIGHT;
+    public override float TargetSeekingWeight => EvacuAgentSceneParamaters.FRIEND_GROUP_BOID_TARGET_SEEKING_WEIGHT;
 
     //Debugging
+    private bool isDebuggingOn;
     private Vector3 newVelocityCache;
-    //Debugging
     private Vector3 navMeshVelocityCahce;
 
     void Start()
@@ -18,6 +19,7 @@ public class FriendGroupBoidBehaviour : BoidBehaviourStrategyBase
         Neighbours = new List<BoidBehaviourStrategyBase>();
         BoidManager = EvacuAgentPedestrianBase.boidManager;
         shouldUpdateBoid = true;
+        isDebuggingOn = false;
     }
 
     public override void PerformBehaviour()
@@ -26,8 +28,9 @@ public class FriendGroupBoidBehaviour : BoidBehaviourStrategyBase
         CalculateNeighbourPoint();
         Vector3 newVelocity = BoidManager.CalculateNewVelocity();
         newVelocity = LimitVelocity(NavMeshAgent.velocity += newVelocity.normalized);
-        newVelocityCache = newVelocity;
         NavMeshAgent.velocity = newVelocity;
+
+        newVelocityCache = newVelocity;
         navMeshVelocityCahce = NavMeshAgent.velocity;
     }
 
@@ -38,6 +41,9 @@ public class FriendGroupBoidBehaviour : BoidBehaviourStrategyBase
 
     private void OnDrawGizmos()
     {
+        if (!isDebuggingOn)
+            return;
+
         Gizmos.color = Color.red; // Red is to the group destination
         Gizmos.DrawLine(transform.position, GroupCollection.GroupDestination);
         Gizmos.color = Color.blue; // Blue is to the calculate new velocity

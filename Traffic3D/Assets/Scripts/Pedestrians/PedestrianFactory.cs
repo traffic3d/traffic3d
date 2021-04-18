@@ -83,7 +83,7 @@ public class PedestrianFactory : MonoBehaviour
     private int GetNumberOfEvacuAgentPedestrians()
     {
         int sumOfPedestriansToSpawn = 0;
-        evacuAgentPedestrianFactories.ForEach(x => sumOfPedestriansToSpawn += x.GetNumPedestriansToSpawn()); // This is going to be a problem with random group sizes
+        evacuAgentPedestrianFactories.ForEach(x => sumOfPedestriansToSpawn += x.GetNumPedestriansToSpawn());
         return sumOfPedestriansToSpawn;
     }
 
