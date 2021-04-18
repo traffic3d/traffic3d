@@ -7,7 +7,7 @@ using UnityEngine.TestTools;
 public class AbstractEvacuAgentPedestrianFactory_CorrectlyCreatesBehaviourCollection : ArrangeActAssertStrategy
 {
     private BehaviourTypeOrder mockBehaviourTypeOrder;
-    private WorkerLeaderPedestrianFactory workerPedestrianFactory;
+    private WorkerLeaderFollowerPedestrianFactory workerPedestrianFactory;
     private BehaviourCollection behaviourCollection;
     private BehaviourController behaviourController;
     private List<BehaviourStrategy> actualBehaviourStrategies;
@@ -69,7 +69,7 @@ public class WorkerPedestrianFactory_AddEvacuAgentBehaviour_CorrectlyAddsWorkerB
 
     public override void Arrange()
     {
-        pedestrianBehaviourFactory = GameObject.FindObjectOfType<WorkerLeaderPedestrianFactory>();
+        pedestrianBehaviourFactory = GameObject.FindObjectOfType<WorkerLeaderFollowerPedestrianFactory>();
         gameObject = SpawnGameObjectWithInactivePedestrianScript();
         pedestrian = gameObject.GetComponent<Pedestrian>();
         Assert.Null(pedestrian.GetComponentInChildren<FieldOfView>());
@@ -90,7 +90,7 @@ public class WorkerPedestrianFactory_AddEvacuAgentBehaviour_CorrectlyAddsWorkerB
         Assert.NotNull(pedestrian.GetComponentInChildren<FieldOfView>());
         Assert.NotNull(actualEvacuAgentPedestrian.behaviourController);
         Assert.NotNull(actualEvacuAgentPedestrian.behaviourController.behaviourCollections);
-        Assert.IsInstanceOf(typeof(WorkerBehaviourTypeOrder), actualEvacuAgentPedestrian.behaviourTypeOrder);
+        Assert.IsInstanceOf(typeof(WorkerLeaderBehaviourTypeOrder), actualEvacuAgentPedestrian.behaviourTypeOrder);
         Assert.IsInstanceOf(typeof(WorkerPedestrianPointPathCreator), actualEvacuAgentPedestrian.PedestrianPointPathCreator);
     }
 }
@@ -150,9 +150,9 @@ public static class BehaviourCollectionFactoryTestsHelper
         return shooterBehaviourTypeOrderGameObject.AddComponent<MockBehaviourTypeOrder>();
     }
 
-    public static WorkerLeaderPedestrianFactory GetBehaviourCollectionFactory()
+    public static WorkerLeaderFollowerPedestrianFactory GetBehaviourCollectionFactory()
     {
-        return GameObject.FindObjectOfType<WorkerLeaderPedestrianFactory>();
+        return GameObject.FindObjectOfType<WorkerLeaderFollowerPedestrianFactory>();
     }
 
     public static BehaviourController GetBehaviourController()

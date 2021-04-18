@@ -17,7 +17,7 @@ public class FieldOfViewEditor : Editor
 
         Handles.color = Color.red;
 
-        foreach (Pedestrian visibleTarget in fieldOfView.visiblePedestrians)
+        foreach (Pedestrian visibleTarget in fieldOfView.allVisiblePedestrians)
         {
             Handles.DrawLine(fieldOfView.transform.position, visibleTarget.transform.position);
         }

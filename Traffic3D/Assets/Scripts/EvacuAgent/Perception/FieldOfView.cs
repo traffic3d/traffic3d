@@ -10,8 +10,8 @@ public class FieldOfView : MonoBehaviour
     [SerializeField]
     public LayerMask targetLayer;
 
-    public float findAgentsDelay = 1;
-    public List<Pedestrian> visiblePedestrians = new List<Pedestrian>();
+    public float findAgentsDelay = 0.1f;
+    public List<Pedestrian> allVisiblePedestrians = new List<Pedestrian>();
     public float viewRadius;
     public float numberOfSegments = 21;
 
@@ -53,7 +53,7 @@ public class FieldOfView : MonoBehaviour
 
     public void GetAllAgentsInViewAngle()
     {
-        visiblePedestrians.Clear();
+        allVisiblePedestrians.Clear();
         Collider[] agentsInRadius = Physics.OverlapSphere(transform.position, viewRadius, targetLayer);
 
         for (int index = 0; index < agentsInRadius.Length; index++)
@@ -76,7 +76,7 @@ public class FieldOfView : MonoBehaviour
                 if (!Physics.Raycast(transform.position, angleToAgent, out raycastHit, distanceToAgent, obstacleBitmask))
                 {
                     Debug.DrawRay(transform.position, agentTransform.position);
-                    visiblePedestrians.Add(agentTransform.GetComponentInParent<Pedestrian>());
+                    allVisiblePedestrians.Add(agentTransform.GetComponentInParent<Pedestrian>());
                 }
             }
         }
