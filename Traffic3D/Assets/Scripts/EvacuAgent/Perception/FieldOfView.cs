@@ -14,6 +14,7 @@ public class FieldOfView : MonoBehaviour
     public List<Pedestrian> allVisiblePedestrians = new List<Pedestrian>();
     public float viewRadius;
     public float numberOfSegments = 21;
+    private float peripheralRayDistance = 5f;
 
     private const string obstacleLayer = "Obstacle";
     private Mesh mesh;
@@ -27,6 +28,8 @@ public class FieldOfView : MonoBehaviour
     private const float opacityFieldOfView = 0.1f;
     private float convertedAngle;
     private int obstacleBitmask;
+
+    private bool isDebugginOn = false;
 
     void Start()
     {
@@ -80,6 +83,24 @@ public class FieldOfView : MonoBehaviour
                 }
             }
         }
+    }
+
+    public List<RaycastHit> GetPeripheralObjects()
+    {
+        Vector3[] leftAndRight = new Vector3[] { transform.right * -1, transform.right };
+
+        List<RaycastHit> raycastHits = new List<RaycastHit>();
+
+        foreach(Vector3 direction in leftAndRight)
+        {
+            RaycastHit raycastHit;
+            if (Physics.Raycast(transform.position, direction, out raycastHit, peripheralRayDistance, obstacleBitmask))
+            {
+                raycastHits.Add(raycastHit);
+            }
+        }
+
+        return raycastHits;
     }
 
     private void BuildMesh()

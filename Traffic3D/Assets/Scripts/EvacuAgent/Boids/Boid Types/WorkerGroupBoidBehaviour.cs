@@ -7,11 +7,12 @@ public class WorkerGroupBoidBehaviour : BoidBehaviourStrategyBase
     public override float TargetSeekingWeight => EvacuAgentSceneParamaters.WORKER_GROUP_BOID_TARGET_SEEKING_WEIGHT;
     public override float InterGroupSeparationWeight => EvacuAgentSceneParamaters.WORKER_GROUP_BOID_INTER_GROUP_SEPARATION_WEIGHT;
 
+    protected override bool IsDebuggingOn => false;
+
     void Start()
     {
         base.Start();
         shouldUpdateBoid = true;
-        isDebuggingOn = true;
     }
 
     public override void PerformBehaviour()

@@ -89,7 +89,7 @@ public class WaitAtDestinationBehaviourTests_ShouldTriggerBehaviour_ReturnsFalse
     }
 }
 
-public class WaitAtDestinationBehaviourTests_PerformBehaviour_CorrectlyChangesSpeedToMatchLeader_AndSetsIsMovementStoppedToFalse : ArrangeActAssertStrategy
+public class WaitAtDestinationBehaviourTests_PerformBehaviour_CorrectlyChangesSpeedToMatchLeader_AndSetsIsMovementStoppedToTrue : ArrangeActAssertStrategy
 {
     private EvacuAgentPedestrianBase followerEvacuAgentPedestrianBase;
     private WaitAtDestinationBehaviour waitAtDestinationBehaviour;
@@ -121,7 +121,7 @@ public class WaitAtDestinationBehaviourTests_PerformBehaviour_CorrectlyChangesSp
     public override void Assertion()
     {
         Assert.AreEqual(expectedSpeed, followerEvacuAgentPedestrianBase.navMeshAgent.speed);
-        Assert.IsFalse(followerEvacuAgentPedestrianBase.navMeshAgent.isStopped);
-        Assert.IsFalse(followerBoidManager.isBoidMovementStopped);
+        Assert.IsTrue(followerEvacuAgentPedestrianBase.navMeshAgent.isStopped);
+        Assert.IsTrue(followerBoidManager.isBoidMovementStopped);
     }
 }

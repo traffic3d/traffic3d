@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -68,6 +68,7 @@ public class GenericEnterLeaveBuildingBehaviour : BehaviourStrategy
         evacuAgentPedestrianBase.IsPedestrianMovementStopped(true);
         pedestrianCollider.enabled = false;
         ScaleAllVisibleGroupMembers(visibleGroupMembers, inBuildingScale, true, false);
+        evacuAgentPedestrianBase.GroupCollection.SetGroupWaitingForSeconds(secondsToWait);
 
         yield return new WaitForSeconds(secondsToWait);
 

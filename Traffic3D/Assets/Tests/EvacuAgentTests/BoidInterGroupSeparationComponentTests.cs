@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -254,8 +254,9 @@ public class BoidInterGroupSeparationComponent_CalculateComponentVelocity_Calcul
         }
 
         friendGroupBoidBehaviour.NonGroupNeighbours = visibleNonGroupPedestrians;
+        friendGroupBoidBehaviour.GroupCollection = evacuAgentPedestrianBase.GroupCollection;
 
-        expectedVelocity = new Vector3(-0.083f, 0f, 0.4930f);
+        expectedVelocity = new Vector3(-0.052f, 0f, -0.056f);
     }
 
     public override void Act()

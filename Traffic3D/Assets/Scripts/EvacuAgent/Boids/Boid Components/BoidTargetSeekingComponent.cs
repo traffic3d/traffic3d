@@ -3,6 +3,7 @@
 public class BoidTargetSeekingComponent : BoidComponentBase
 {
     Vector3 currentPathTargetCache;
+    protected override bool IsDebuggingOn => false;
 
     public override Vector3 CalculateComponentVelocity(BoidBehaviourStrategyBase followerBoidBehaviour)
     {
@@ -18,6 +19,9 @@ public class BoidTargetSeekingComponent : BoidComponentBase
 
     private void OnDrawGizmos()
     {
+        if (!IsDebuggingOn)
+            return;
+
         Gizmos.color = Color.green;
         Gizmos.DrawLine(transform.position, currentPathTargetCache);
         Gizmos.color = Color.white;

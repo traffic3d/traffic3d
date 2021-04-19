@@ -7,6 +7,8 @@ public class FriendGroupBoidBehaviour : BoidBehaviourStrategyBase
     public override float TargetSeekingWeight => EvacuAgentSceneParamaters.FRIEND_GROUP_BOID_TARGET_SEEKING_WEIGHT;
     public override float InterGroupSeparationWeight => EvacuAgentSceneParamaters.FRIEND_GROUP_BOID_INTER_GROUP_SEPARATION_WEIGHT;
 
+    protected override bool IsDebuggingOn => false;
+
     void Start()
     {
         base.Start();

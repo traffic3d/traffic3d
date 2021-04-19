@@ -15,6 +15,10 @@ TagManager:
   - Undefined
   - shooterHighlight
   - pedestrian
+  - friendGroupHighlight
+  - workerHighlight
+  - worker
+  - friend
   layers:
   - Default
   - TransparentFX

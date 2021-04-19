@@ -19,4 +19,20 @@ public class SimulationPanelController : MonoBehaviour
             shooterHighlight.GetComponent<MeshRenderer>().enabled =  isHighlightToggledOn;
         }
     }
+
+    public void ToggleWorkerPedestriansColour(bool isHighlightToggledOn)
+    {
+        foreach (GameObject workerHighlight in GameObject.FindGameObjectsWithTag(EvacuAgentSceneParamaters.WORKER_HIGHLIGHT_TAG))
+        {
+            workerHighlight.GetComponent<MeshRenderer>().enabled = isHighlightToggledOn;
+        }
+    }
+
+    public void ToggleFriendGroupPedestriansColour(bool isHighlightToggledOn)
+    {
+        foreach (GameObject friendGroupHighlight in GameObject.FindGameObjectsWithTag(EvacuAgentSceneParamaters.FRIEND_GROUP_HIGHLIGHT_TAG))
+        {
+            friendGroupHighlight.GetComponent<MeshRenderer>().enabled = isHighlightToggledOn;
+        }
+    }
 }

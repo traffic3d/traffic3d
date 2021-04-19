@@ -86,7 +86,7 @@ public class WorkerPedestrianFactory_AddEvacuAgentBehaviour_CorrectlyAddsWorkerB
     public override void Assertion()
     {
         Assert.IsFalse(pedestrian.isShooterAgent);
-        StringAssert.Contains(actualEvacuAgentPedestrian.tag, EvacuAgentSceneParamaters.PEDESTRIAN_TAG);
+        StringAssert.Contains(EvacuAgentSceneParamaters.WORKER_TAG, actualEvacuAgentPedestrian.tag);
 
         Assert.NotNull(pedestrian.GetComponentInChildren<FieldOfView>());
         Assert.NotNull(actualEvacuAgentPedestrian.behaviourController);

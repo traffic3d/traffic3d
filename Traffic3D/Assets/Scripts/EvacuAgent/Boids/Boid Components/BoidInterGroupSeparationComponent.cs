@@ -1,35 +1,50 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BoidInterGroupSeparationComponent : BoidComponentBase
 {
     public Dictionary<GroupCollection, List<Vector3>> positionOfVisibleMembersInEachSubGroup { get; private set; }
 
+    protected override bool IsDebuggingOn => false;
+    private Vector3 velocityDebugCache;
+    private Vector3 groupDestinationDebugCache;
+    private List<Vector3> groupCentres;
+    private List<Vector3> directionsFromGroupCentresToTargetDebugCache;
+
     private void Awake()
     {
         positionOfVisibleMembersInEachSubGroup = new Dictionary<GroupCollection, List<Vector3>>();
+        groupCentres = new List<Vector3>();
+        directionsFromGroupCentresToTargetDebugCache = new List<Vector3>();
     }
 
     public override Vector3 CalculateComponentVelocity(BoidBehaviourStrategyBase followerBoidBehaviour)
     {
         Vector3 velocity = Vector3.zero;
+        velocityDebugCache = velocity;
+        groupDestinationDebugCache = followerBoidBehaviour.GroupCollection.GroupDestination;
 
+
+        positionOfVisibleMembersInEachSubGroup.Clear();
+        groupCentres.Clear();
+        directionsFromGroupCentresToTargetDebugCache.Clear();
         if (followerBoidBehaviour.NonGroupNeighbours.Count == 0)
             return velocity;
 
         GetPositionsOfNonGroupPedestriansInAssociatedSubGroups(followerBoidBehaviour.NonGroupNeighbours);
-        List<Vector3> groupCentres = FindCentresOfAllVisbleNonGroupPedestrianSubGroups();
+        groupCentres = FindCentresOfAllVisbleNonGroupPedestrianSubGroups();
 
         foreach (Vector3 groupCentre in groupCentres)
         {
             float distance = Vector3.Distance(followerBoidBehaviour.transform.position, groupCentre);
-            velocity += (groupCentre - followerBoidBehaviour.transform.position).normalized / Mathf.Pow(distance, 2);
+            Vector3 directionFromCentreToTarget = (followerBoidBehaviour.GroupCollection.GroupDestination - groupCentre).normalized;
+            velocity += directionFromCentreToTarget / Mathf.Pow(distance, 2);
+            directionsFromGroupCentresToTargetDebugCache.Add(directionFromCentreToTarget);
         }
 
-        velocity /= followerBoidBehaviour.NonGroupNeighbours.Count;
-        velocity *= -1;
+        velocityDebugCache = velocity;
 
-        return velocity.normalized * followerBoidBehaviour.InterGroupSeparationWeight;
+        return velocity * followerBoidBehaviour.InterGroupSeparationWeight;
     }
 
     public void GetPositionsOfNonGroupPedestriansInAssociatedSubGroups(List<BoidBehaviourStrategyBase> visibleNonGroupPedestrians)
@@ -72,5 +87,20 @@ public class BoidInterGroupSeparationComponent : BoidComponentBase
         centre /= subGroup.Count;
 
         return centre;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (!IsDebuggingOn)
+            return;
+
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawRay(transform.position, (velocityDebugCache - transform.position).normalized * 10f);
+        Gizmos.color = Color.red;
+        //groupCentres.ForEach(x => Gizmos.DrawLine(transform.position, x));
+        directionsFromGroupCentresToTargetDebugCache.ForEach(x => Gizmos.DrawRay(transform.position, x * 15f));
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(transform.position, groupDestinationDebugCache);
+        Gizmos.color = Color.white;
     }
 }

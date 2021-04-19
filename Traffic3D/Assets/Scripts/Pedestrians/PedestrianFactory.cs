@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -15,6 +15,7 @@ public class PedestrianFactory : MonoBehaviour
     private List<PedestrianPoint> evacuAgentSpawnPedestrianPoints;
     private bool isUsingEvacuationBehaviour = false;
     private List<AbstractEvacuAgentPedestrianFactory> evacuAgentPedestrianFactories;
+    private int[] evacuAgentBuildIndexes = new int[] { 2, 3, 4 };
 
     void Start()
     {
@@ -73,7 +74,7 @@ public class PedestrianFactory : MonoBehaviour
 
     private void IsUsingEvacuationBehaviour()
     {
-        if (SceneManager.GetActiveScene().name.Equals(EvacuAgentSceneParamaters.SCENE_NAME))
+        if (evacuAgentBuildIndexes.Contains(SceneManager.GetActiveScene().buildIndex))
         {
             isUsingEvacuationBehaviour = true;
             maximumPedestrianCount = GetNumberOfEvacuAgentPedestrians();
@@ -127,6 +128,7 @@ public class PedestrianFactory : MonoBehaviour
     {
         return new List<AbstractEvacuAgentPedestrianFactory>()
         {
+            gameObject.GetComponent<WorkerLeaderFollowerPedestrianFactory>(),
             gameObject.GetComponent<FriendGroupLeaderFollowerPedestrianFactory>()
         };
     }

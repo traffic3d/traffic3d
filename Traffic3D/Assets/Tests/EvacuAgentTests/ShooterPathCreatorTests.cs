@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using Tests;
@@ -24,11 +24,11 @@ public class ShooterPathCreator_GetAllPedestrianPointsInRadius_ReturnsCorrectCol
 
     public override void Arrange()
     {
-        DisableLoops();
-        expectedPedestrianPoints = ShooterPathCreatorTestsHelper.GetExpectedPedestrianPoints(5);
+        //DisableLoops();
+        expectedPedestrianPoints = ShooterPathCreatorTestsHelper.GetExpectedPedestrianPoints(3);
         shooterPathCreator = ShooterPathCreatorTestsHelper.SetUpshooterPathCreator();
-        radius = 45f;
-        expectedNumberOfPedestrianPoints = 5;
+        radius = 35;
+        expectedNumberOfPedestrianPoints = 3;
     }
 
     public override void Act()
@@ -38,7 +38,7 @@ public class ShooterPathCreator_GetAllPedestrianPointsInRadius_ReturnsCorrectCol
 
     public override void Assertion()
     {
-        Assert.AreEqual(actualPedestrianPoints.Count, expectedNumberOfPedestrianPoints);
+        Assert.AreEqual(expectedNumberOfPedestrianPoints, actualPedestrianPoints.Count);
         Assert.That(actualPedestrianPoints, Is.EquivalentTo(expectedPedestrianPoints));
     }
 }
@@ -74,7 +74,7 @@ public class ShooterPathCreator_CreatePathDecisionMatrix_ReturnsCorrectCollectio
         footfallWeighting = 0.7f;
         distanceWeighting = 0.3f;
         expectedCurrentMaximumFootfall = 22f;
-        expectedCurrentMinimumDistance = 21.933f;
+        expectedCurrentMinimumDistance = 28.619f;
     }
 
     public override void Act()
@@ -95,9 +95,10 @@ public class ShooterPathCreator_CalculateRankedShooterAgentPath_ReturnsCorrectPa
     private List<PedestrianPoint> expectedPedestrianPoints;
     private ShooterPedestrianPointPathCreator shooterPathCreator;
     private List<Vector3> actualPedestrianPoints;
-    private PedestrianPoint building3;
-    private PedestrianPoint frontLeft;
-    private PedestrianPoint building5;
+    private PedestrianPoint ShoppingBuilding2;
+    private PedestrianPoint ShoppingBuilding1;
+    private PedestrianPoint RecreationBuilding1;
+    private List<Vector3> expectedLocations;
     private int sizeOfPath;
 
     [UnityTest]
@@ -116,9 +117,16 @@ public class ShooterPathCreator_CalculateRankedShooterAgentPath_ReturnsCorrectPa
         shooterPathCreator = ShooterPathCreatorTestsHelper.SetUpshooterPathCreator();
         sizeOfPath = 3;
 
-        frontLeft = expectedPedestrianPoints[0];
-        building3 = expectedPedestrianPoints[1];
-        building5 = expectedPedestrianPoints[2];
+        ShoppingBuilding1 = expectedPedestrianPoints[0];
+        ShoppingBuilding2 = expectedPedestrianPoints[1];
+        RecreationBuilding1 = expectedPedestrianPoints[2];
+
+        expectedLocations = new List<Vector3>()
+        {
+            ShoppingBuilding1.GetPointLocation(),
+            RecreationBuilding1.GetPointLocation(),
+            ShoppingBuilding2.GetPointLocation()
+        };
     }
 
     public override void Act()
@@ -129,9 +137,9 @@ public class ShooterPathCreator_CalculateRankedShooterAgentPath_ReturnsCorrectPa
     public override void Assertion()
     {
         Assert.AreEqual(actualPedestrianPoints.Count, sizeOfPath);
-        Assert.That(GetPedestrianPointFromLocation(actualPedestrianPoints[0]), Is.EqualTo(building3));
-        Assert.That(GetPedestrianPointFromLocation(actualPedestrianPoints[1]), Is.EqualTo(building5));
-        Assert.That(GetPedestrianPointFromLocation(actualPedestrianPoints[2]), Is.EqualTo(frontLeft));
+        Assert.That(actualPedestrianPoints[0], Is.EqualTo(expectedLocations[0]));
+        Assert.That(actualPedestrianPoints[1], Is.EqualTo(expectedLocations[1]));
+        Assert.That(actualPedestrianPoints[2], Is.EqualTo(expectedLocations[2]));
     }
 }
 
@@ -367,13 +375,13 @@ public static class ShooterPathCreatorTestsHelper
     {
         List<PedestrianPoint> pedestrianPoints = new List<PedestrianPoint>()
         {
-            GetSinglePedestrianPoint("front left"),
-            GetSinglePedestrianPoint("building 3"),
-            GetSinglePedestrianPoint("building 5"),
-            GetSinglePedestrianPoint("building 2"),
-            GetSinglePedestrianPoint("front right"),
-            GetSinglePedestrianPoint("middle left 1")
-
+            GetSinglePedestrianPoint("ShoppingBuilding1"),
+            GetSinglePedestrianPoint("ShoppingBuilding2"),
+            GetSinglePedestrianPoint("HospitalityBuilding2"),
+            GetSinglePedestrianPoint("RecreationBuilding1"),
+            GetSinglePedestrianPoint("LandMark1"),
+            GetSinglePedestrianPoint("HospitalityBuilding1"),
+            GetSinglePedestrianPoint("WorkBuilding1")
         };
 
         pedestrianPoints.RemoveRange(numberOfPoints, pedestrianPoints.Count - numberOfPoints);
@@ -383,7 +391,7 @@ public static class ShooterPathCreatorTestsHelper
 
     public static PedestrianPoint GetSinglePedestrianPoint(string name)
     {
-        return GameObject.Find($"{pedestrianPointPrefix} {name}").GetComponent<PedestrianPoint>();
+        return GameObject.Find($"{name}").GetComponentInChildren<PedestrianPoint>();
     }
 
     public static List<PathDecisionOption> GetExpectedPathDecisionOptions()

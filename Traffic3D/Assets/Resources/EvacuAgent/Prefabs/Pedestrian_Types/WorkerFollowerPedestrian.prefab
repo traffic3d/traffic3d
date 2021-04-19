@@ -16,9 +16,10 @@ GameObject:
   - component: {fileID: 7725893537788694031}
   - component: {fileID: 7725893537788694030}
   - component: {fileID: 7733426133430952979}
+  - component: {fileID: 3941630519826397878}
   m_Layer: 0
   m_Name: WorkerFollowerPedestrian
-  m_TagString: Untagged
+  m_TagString: worker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -52,7 +53,7 @@ MonoBehaviour:
   behaviourControllerPrefab: {fileID: 7517269392168853345, guid: 74f292f393478b14494af0798a2be2e2,
     type: 3}
   GroupCollection: {fileID: 0}
-  pedestrianHighlight: {fileID: 4757276257460740152, guid: 0e7d6d5ec441c9945b6b8b88f962f78a,
+  pedestrianHighlight: {fileID: 3177185534777882742, guid: d8c5d7e86c65a744eb59beef0188b606,
     type: 3}
   behaviourController: {fileID: 0}
   fieldOfView: {fileID: 0}
@@ -61,6 +62,8 @@ MonoBehaviour:
   pedestrian: {fileID: 0}
   navMeshAgent: {fileID: 0}
   boidManager: {fileID: 0}
+  visibleGroupMembers: []
+  visibleNonGroupMembers: []
 --- !u!114 &7725893537788694026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,5 +134,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc1365e78d82ed748bd7f89ea2620ea2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3941630519826397878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7725893537788694028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01551f1d24d2129499a887879f246ede, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
