@@ -72,6 +72,14 @@ public class VehiclePath
         return null;
     }
 
+    /// <summary>
+    /// Gets the distance from the inputted current vehicle to the inputted intersection point (where two vehicle paths overlap)
+    /// </summary>
+    /// <param name="vehiclePath">The vehicle path of the current vehicle to check</param>
+    /// <param name="currentNodeNumber">The current node of the current vehicle to check</param>
+    /// <param name="vehicleTransform">The vehicle transform of the current vehicle to check</param>
+    /// <param name="pathIntersectionPoint">The intersection point from the current vehicle</param>
+    /// <returns>The distance from the current vehicle to the intersection point. Returns NaN if vehicle is past the intersection point or no intersection point is found (inputted incorrect path intersection point).</returns>
     public float GetDistanceFromVehicleToIntersectionPoint(VehiclePath vehiclePath, int currentNodeNumber, Transform vehicleTransform, PathIntersectionPoint pathIntersectionPoint)
     {
         Transform currentNode = vehiclePath.nodes[currentNodeNumber];

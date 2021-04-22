@@ -338,6 +338,8 @@ public class VehicleEngine : MonoBehaviour
                     vehicleBehind = otherVehicle;
                 }
             }
+            // Debug
+            // Add the vehicle ahead and behind to a variable, on the VehicleEngine, to display these vehicles in the simulation (GUI).
             if (distanceAhead - longestSide <= currentSpeed)
             {
                 waitingForVehicleAhead = vehicleAhead;
@@ -354,6 +356,7 @@ public class VehicleEngine : MonoBehaviour
             {
                 waitingForVehicleBehind = null;
             }
+            // Debug End
             ApplyMergeAlgorithm(distanceAhead, distanceBehind);
         }
     }
