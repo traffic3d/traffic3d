@@ -149,20 +149,24 @@ public class VehiclePath
                 }
                 else if (node1.Equals(otherNode1) && node2.Equals(otherNode2))
                 {
+                    // The current path section is exactly the same as the other path section so there are no intersections on this section.
                     continue;
                 }
                 else if (node1.Equals(otherNode1))
                 {
+                    // First current node and other node are the same so they have an intersection at that section.
                     addedVectors.Add(nodes[nodeIndex].position);
                     results.Add(new PathIntersectionPoint(nodes[nodeIndex], nodes[nodeIndex + 1], otherPath.nodes[otherNodeIndex], otherPath.nodes[otherNodeIndex + 1], nodes[nodeIndex].position));
                 }
                 else if (node2.Equals(otherNode2) && !addedVectors.Contains(nodes[nodeIndex + 1].position))
                 {
+                    // Second current node and other node are the same so they have an intersection at that section.
                     addedVectors.Add(nodes[nodeIndex + 1].position);
                     results.Add(new PathIntersectionPoint(nodes[nodeIndex], nodes[nodeIndex + 1], otherPath.nodes[otherNodeIndex], otherPath.nodes[otherNodeIndex + 1], nodes[nodeIndex + 1].position));
                 }
                 else if (GetLineIntersection(node1, node2, otherNode1, otherNode2, out Vector2 intersection))
                 {
+                    // An intersection has been found between the nodes.
                     addedVectors.Add(new Vector3(intersection.x, nodes[nodeIndex].position.y, intersection.y));
                     results.Add(new PathIntersectionPoint(nodes[nodeIndex], nodes[nodeIndex + 1], otherPath.nodes[otherNodeIndex], otherPath.nodes[otherNodeIndex + 1], new Vector3(intersection.x, nodes[nodeIndex].position.y, intersection.y)));
                 }

@@ -145,6 +145,10 @@ On new scenes, the density measure points need setting up to allow for correct d
 To set these points up, on the paths, select the node that needs to be used as the density measure point (normally just after exiting a junction) and add the `DensityMeasurePoint.cs` script to the node.
 Then add a `BoxCollider` to the node, check `Is Trigger` and resize where vehicles on that path will pass through the box.
 
+## Traffic3D Geometry
+
+Please note that Traffic3D uses a coordinate system that assumes the earth is flat.
+
 ## Creating a new release
 
 To create a new release of Traffic3D, follow these steps:

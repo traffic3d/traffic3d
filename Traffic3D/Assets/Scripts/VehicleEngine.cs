@@ -489,6 +489,29 @@ public class VehicleEngine : MonoBehaviour
     /// </summary>
     /// <param name="pathIntersectionPoint"></param>
     /// <returns>True if incoming path is not in looking direction</returns>
+    /// The diagram below shows which section is classed as the incoming path
+    /*
+                      |                                                         
+                      |                                                         
+                      -                                                         
+                     /|\                                                        
+                    / | \        Incoming Path                                  
+                      |     +--------------------+                              
+                      |     |                    |                              
+                      |     |                    |                              
+           /          |     |        /           |                              
+          /           |     |       /            |                              
+    ------------------------------------------------------                          
+          \           |     |       \            |     Other Path               
+           \          |     |        \           |                              
+                      -     |                    |                              
+                     /|\    |                    |                              
+                    / | \   +--------------------+                              
+                      |                                                         
+        Current Path  |                                                         
+                      |                                                         
+                      |                                                         
+    */
     private bool IsOtherPathIncomingFromLookingDirection(PathIntersectionPoint pathIntersectionPoint)
     {
         PathIntersectionLine currentIntersectionLine = pathIntersectionPoint.GetLineFromPath(path);
