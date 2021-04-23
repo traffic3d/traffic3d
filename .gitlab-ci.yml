@@ -25,7 +25,7 @@ workflow:
         - if: $CI_MERGE_REQUEST_ID
           when: never
         - if: $CI_COMMIT_TAG
-          when: never
+          when: always
         - when: always
 
 lint:mdl:
@@ -36,8 +36,6 @@ lint:mdl:
     script:
         - git ls-files -z '*.md' | xargs -0 mdl --style .mdl.rb
     rules:
-        - if: '$CI_COMMIT_BRANCH == "master"'
-          when: never
         - when: always
     tags:
         - shared
@@ -48,8 +46,6 @@ lint:metalint:
         - chmod +x ci/metalint.sh
         - ./ci/metalint.sh
     rules:
-        - if: '$CI_COMMIT_BRANCH == "master"'
-          when: never
         - when: always
     tags:
         - shared
@@ -72,9 +68,7 @@ lint:metalint:
             junit: $CI_PROJECT_DIR/$TEST_PLATFORM-junit-results.xml
         expire_in: 2 weeks
     rules:
-        - if: $CI_COMMIT_TAG
-          when: never
-        - when: always
+        - when: on_success
     tags:
         - shared
 
@@ -127,10 +121,8 @@ build:master:
             - ./$BUILD_NAME/Builds/
         expire_in: never
     rules:
-        - if: $CI_COMMIT_TAG
-          when: never
         - if: '$CI_COMMIT_BRANCH == "master"'
-          when: always
+          when: on_success
         - when: never
 
 prepare-benchmark:
