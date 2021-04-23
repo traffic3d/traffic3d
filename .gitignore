@@ -8,19 +8,16 @@ Traffic3D/[Oo]bj/
 Traffic3D/[Bb]uild/
 Traffic3D/[Bb]uilds/
 Traffic3D/[Ll]ogs/
-Traffic3D/[Mm]emoryCaptures/
 Traffic3D/[Aa]ssets/Screenshots/
 Traffic3D/[Aa]ssets/Screenshots.meta
 Traffic3D/[Aa]ssets/Results/
 Traffic3D/[Aa]ssets/Results.meta
 
-# Python ignores
-venv/
-backend/venv/
-__pycache__
-backend/__pycache__
+# MemoryCaptures can get excessive in size.
+# They also could contain extremely sensitive data
+Traffic3D/[Mm]emoryCaptures/
 
-# Never ignore Asset meta data
+# Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
 
 # Uncomment this line if you wish to ignore the asset store tools plugin
@@ -70,10 +67,18 @@ sysinfo.txt
 
 # Builds
 *.apk
+*.aab
 *.unitypackage
 
 # Crashlytics generated file
 crashlytics-build.properties
+
+# Packed Addressables
+Traffic3D/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
+
+# Temporary auto-generated Android Assets
+Traffic3D/[Aa]ssets/[Ss]treamingAssets/aa.meta
+Traffic3D/[Aa]ssets/[Ss]treamingAssets/aa/*
 
 # OS generated files
 .DS_Store
