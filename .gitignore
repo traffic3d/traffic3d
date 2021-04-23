@@ -10,6 +10,9 @@ Traffic3D/[Bb]uilds/
 Traffic3D/[Ll]ogs/
 Traffic3D/[Mm]emoryCaptures/
 Traffic3D/[Aa]ssets/Screenshots/
+Traffic3D/[Aa]ssets/Screenshots.meta
+Traffic3D/[Aa]ssets/Results/
+Traffic3D/[Aa]ssets/Results.meta
 
 # Python ignores
 venv/
