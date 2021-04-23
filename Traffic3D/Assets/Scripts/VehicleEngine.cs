@@ -298,7 +298,16 @@ public class VehicleEngine : MonoBehaviour
         {
             return;
         }
-        HashSet<PathIntersectionPoint> pathIntersectionPoints = new HashSet<PathIntersectionPoint>(vehiclesAtIntersectionPoint.Keys.Where(i => path.GetDistanceFromVehicleToIntersectionPoint(path, currentNodeNumber, transform, i) <= mergeRadiusCheck));
+        // Find intersections within a certain distance of the vehicle
+        HashSet<PathIntersectionPoint> pathIntersectionPoints = new HashSet<PathIntersectionPoint>(vehiclesAtIntersectionPoint.Keys.Where(i =>
+        {
+            if (path.GetDistanceFromVehicleToIntersectionPoint(path, currentNodeNumber, transform, i, out float distanceResult))
+            {
+                return distanceResult <= mergeRadiusCheck;
+            }
+            return false;
+        }
+        ));
         foreach (PathIntersectionPoint pathIntersectionPoint in pathIntersectionPoints)
         {
             if (stopLineType != StopLine.Type.MERGE)
@@ -313,15 +322,20 @@ public class VehicleEngine : MonoBehaviour
                 Debug.DrawLine(pathIntersectionPoint.intersection, pathIntersectionPoint.intersection + Vector3.up * 5, Color.red);
             }
             HashSet<VehicleEngine> vehiclesWithSameIntersection = vehiclesAtIntersectionPoint[pathIntersectionPoint];
-            float currentDistance = path.GetDistanceFromVehicleToIntersectionPoint(path, currentNodeNumber, transform, pathIntersectionPoint);
+            float currentDistance;
+            if(!path.GetDistanceFromVehicleToIntersectionPoint(path, currentNodeNumber, transform, pathIntersectionPoint, out currentDistance))
+            {
+                // Unable to get path distance to intersection
+                continue;
+            }
             float distanceAhead = float.MaxValue;
             float distanceBehind = float.MaxValue;
             VehicleEngine vehicleAhead = null;
             VehicleEngine vehicleBehind = null;
             foreach (VehicleEngine otherVehicle in vehiclesWithSameIntersection)
             {
-                float otherVehicleDistance = otherVehicle.path.GetDistanceFromVehicleToIntersectionPoint(otherVehicle.path, otherVehicle.currentNodeNumber, otherVehicle.transform, pathIntersectionPoint);
-                if (float.IsNaN(otherVehicleDistance))
+                float otherVehicleDistance;
+                if(!otherVehicle.path.GetDistanceFromVehicleToIntersectionPoint(otherVehicle.path, otherVehicle.currentNodeNumber, otherVehicle.transform, pathIntersectionPoint, out otherVehicleDistance))
                 {
                     // Vehicle is now past intersection point
                     continue;
@@ -602,3 +616,4 @@ public class VehicleEngine : MonoBehaviour
         }
     }
 }
+

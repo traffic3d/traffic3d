@@ -79,9 +79,11 @@ public class VehiclePath
     /// <param name="currentNodeNumber">The current node of the current vehicle to check</param>
     /// <param name="vehicleTransform">The vehicle transform of the current vehicle to check</param>
     /// <param name="pathIntersectionPoint">The intersection point from the current vehicle</param>
-    /// <returns>The distance from the current vehicle to the intersection point. Returns NaN if vehicle is past the intersection point or no intersection point is found (inputted incorrect path intersection point).</returns>
-    public float GetDistanceFromVehicleToIntersectionPoint(VehiclePath vehiclePath, int currentNodeNumber, Transform vehicleTransform, PathIntersectionPoint pathIntersectionPoint)
+    /// <param name="distanceResult">The distance from the current vehicle to the intersection point.</param>
+    /// <returns>True if there is a distance result or false if vehicle is past the intersection point or no intersection point is found (inputted incorrect path intersection point).</returns>
+    public bool GetDistanceFromVehicleToIntersectionPoint(VehiclePath vehiclePath, int currentNodeNumber, Transform vehicleTransform, PathIntersectionPoint pathIntersectionPoint, out float distanceResult)
     {
+        distanceResult = -1;
         Transform currentNode = vehiclePath.nodes[currentNodeNumber];
         if (pathIntersectionPoint.IsNodeLastPointOfIntersection(currentNode))
         {
@@ -89,23 +91,25 @@ public class VehiclePath
             float distanceToIntersection = pathIntersectionPoint.CalculateVehicleDistanceToIntersectionWithinIntersection(vehicleTransform, vehiclePath.nodes[currentNodeNumber - 1], currentNode);
             if (distanceToIntersection != 0)
             {
-                return distanceToIntersection;
+                distanceResult = distanceToIntersection;
+                return true;
             }
             else
             {
-                // Intersection point behind current node, return NaN.
-                return float.NaN;
+                // Intersection point behind current node
+                return false;
             }
         }
         else if (pathIntersectionPoint.IsNodeAheadOfIntersection(currentNode, this))
         {
-            // Intersection point behind current node, return NaN.
-            return float.NaN;
+            // Intersection point behind current node
+            return false;
         }
         float totalDistance = Vector3.Distance(currentNode.position, vehicleTransform.position);
         if (pathIntersectionPoint.IsNodeFirstPointOfIntersection(currentNode))
         {
-            return totalDistance + Vector3.Distance(currentNode.position, pathIntersectionPoint.intersection);
+            distanceResult = totalDistance + Vector3.Distance(currentNode.position, pathIntersectionPoint.intersection);
+            return true;
         }
         for (int i = nodes.IndexOf(currentNode) + 1; i < nodes.Count; i++)
         {
@@ -115,11 +119,12 @@ public class VehiclePath
             totalDistance = totalDistance + distanceBetweenNodes;
             if (pathIntersectionPoint.IsNodeFirstPointOfIntersection(node))
             {
-                return totalDistance + Vector3.Distance(node.position, pathIntersectionPoint.intersection);
+                distanceResult = totalDistance + Vector3.Distance(node.position, pathIntersectionPoint.intersection);
+                return true;
             }
         }
-        // No intersection point found, return NaN.
-        return float.NaN;
+        // No intersection point found
+        return false;
     }
 
     /// <summary>
