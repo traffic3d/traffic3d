@@ -78,6 +78,10 @@ Or download Unity 2018.3.11f1 from the following link: [https://unity3d.com/get-
 
 Use a preferred C# IDE or download Visual Studio using the following link: [https://visualstudio.microsoft.com/vs/](https://visualstudio.microsoft.com/vs/)
 
+This repository comes with a [`.editorconfig`](/.editorconfig) file, which encodes some standard expectations for IDEs.
+For example, indentation, newlines, etc.
+The [editorconfig site](https://editorconfig.org/) has a list of IDEs that can be used with `.editorconfig` files out of the box, and those that require plugins.
+
 ## Unity activation for the CI/CD environment
 
 Install [docker](https://www.docker.com/) on your development machine, for example on Ubuntu 20.04:
@@ -181,7 +185,9 @@ To create a new release of Traffic3D, follow these steps:
 
 ## Further documentation
 
+* [editorconfig](https://editorconfig.org/)
 * [How to Git with Unity](https://thoughtbot.com/blog/how-to-git-with-unity)
 * [Meld merge tool](https://meldmerge.org/)
 * [Traffic3D user documentation](https://traffic3d.org) including how to use the Unity editor, how to extend Traffic3D with new assets and scenes.
 * [Unity smart merge](https://docs.unity3d.com/Manual/SmartMerge.html)
+* [Visual Studio](https://visualstudio.microsoft.com/vs/)
