@@ -19,6 +19,12 @@ public class CommonSceneTest
         }
     }
 
+    [TearDown]
+    public virtual void TearDown()
+    {
+        EventManager.Destroy();
+    }
+
     public void DisableLoops()
     {
         TrafficLightManager trafficLightManager = (TrafficLightManager)GameObject.FindObjectOfType(typeof(TrafficLightManager));

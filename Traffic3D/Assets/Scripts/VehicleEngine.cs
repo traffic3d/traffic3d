@@ -21,8 +21,10 @@ public class VehicleEngine : MonoBehaviour
     public float cornerThresholdDegrees = 90f;
     public float cornerSensitivityModifier = 50f;
     public float cornerMinSpeed = 10f;
-    public float trafficLightDistanceToSpeed = 0.4f;
+    public float stopDistanceToSpeed = 0.4f;
+    public float stopLineEvaluationDistance = 10f;
     public float trafficLightMaxSpeedOnGreen = 20f;
+    public float mergeRadiusCheck = 100f;
     public Vector3 centerOfMass;
     public Transform currentNode;
     public int currentNodeNumber;
@@ -42,8 +44,12 @@ public class VehicleEngine : MonoBehaviour
     public EngineStatus engineStatus;
     public bool densityCountTriggered = false;
     public bool debug = false;
+    public VehicleEngine waitingForVehicleAhead = null;
+    public VehicleEngine waitingForVehicleBehind = null;
+    private bool isLeftHandDrive;
     private const float debugSphereSize = 0.25f;
     private const float metresPerSecondToKilometresPerHourConversion = 3.6f;
+    private Dictionary<VehicleEngine, HashSet<PathIntersectionPoint>> vehicleIntersectionPoints = new Dictionary<VehicleEngine, HashSet<PathIntersectionPoint>>();
 
     void Start()
     {
@@ -57,6 +63,14 @@ public class VehicleEngine : MonoBehaviour
         engineStatus = EngineStatus.STOP;
         targetSpeed = maxSpeed;
         currentMotorTorque = maxMotorTorque;
+        isLeftHandDrive = FindObjectOfType<VehicleFactory>().isLeftHandDrive;
+        EventManager.GetInstance().VehicleSpawnEvent += OnVehicleSpawnEvent;
+        EventManager.GetInstance().VehicleDestroyEvent += OnVehicleDestroyEvent;
+        // Find all vehicles and intersection paths
+        foreach (VehicleEngine vehicleEngine in FindObjectsOfType<VehicleEngine>())
+        {
+            AddVehicleIntersectionPoint(vehicleEngine);
+        }
     }
 
     /// <summary>
@@ -75,6 +89,23 @@ public class VehicleEngine : MonoBehaviour
         currentNode = path.nodes[currentNodeNumber];
     }
 
+    public void OnVehicleSpawnEvent(object sender, VehicleEventArgs args)
+    {
+        AddVehicleIntersectionPoint(args.vehicleEngine);
+    }
+
+    public void OnVehicleDestroyEvent(object sender, VehicleEventArgs args)
+    {
+        vehicleIntersectionPoints.Remove(args.vehicleEngine);
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.GetInstance().VehicleSpawnEvent -= OnVehicleSpawnEvent;
+        EventManager.GetInstance().VehicleDestroyEvent -= OnVehicleDestroyEvent;
+        EventManager.GetInstance().CallVehicleDestroyEvent(this, new VehicleEventArgs(this));
+    }
+
     public void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.tag == "car")
@@ -89,7 +120,12 @@ public class VehicleEngine : MonoBehaviour
     }
 
     /// <summary>
-    /// The update method to check and update values for the vehicle.
+    /// The main fixed loop of the vehicle object.
+    /// Used for methods that need fixed timings for accurate physics when speeding up the simulation.
+    /// The main loop updates multiple values of the vehicle such as:
+    /// * The target speed of the vehicle by checking different sensors and conditions.
+    /// * The direction of the vehicle by using the path the vehicle is following.
+    /// * The current speed by calculating it from the velocity of the Rigidbody.
     /// </summary>
     private void FixedUpdate()
     {
@@ -183,7 +219,7 @@ public class VehicleEngine : MonoBehaviour
             float distance = path.GetDistanceToNextStopNode(currentNode, transform);
             if (!float.IsNaN(distance) && distance < maxDistanceToMonitor)
             {
-                float speed = distance * trafficLightDistanceToSpeed;
+                float speed = distance * stopDistanceToSpeed;
                 if (TrafficLightManager.GetInstance().GetTrafficLightFromStopNode(nextStopNode).IsCurrentLightColour(TrafficLight.LightColour.RED))
                 {
                     SetTargetSpeed(speed);
@@ -191,6 +227,24 @@ public class VehicleEngine : MonoBehaviour
                 else
                 {
                     SetTargetSpeed((speed < trafficLightMaxSpeedOnGreen ? trafficLightMaxSpeedOnGreen : speed));
+                }
+            }
+        }
+        // Stop Line Check
+        StopLine nextStopLine = path.GetNextStopLine(currentNode);
+        if (nextStopLine != null)
+        {
+            float distance = path.GetDistanceToNextStopLine(currentNode, transform);
+            if (!float.IsNaN(distance) && distance < maxDistanceToMonitor)
+            {
+                if (distance <= stopLineEvaluationDistance)
+                {
+                    MergeCheck(nextStopLine.type);
+                }
+                else
+                {
+                    float speed = distance * stopDistanceToSpeed;
+                    SetTargetSpeed(Math.Min(Math.Max(0, speed), targetSpeed));
                 }
             }
         }
@@ -234,6 +288,91 @@ public class VehicleEngine : MonoBehaviour
             }
         }
         SetTargetSpeed(speedToTarget);
+    }
+
+    private void MergeCheck(StopLine.Type stopLineType)
+    {
+        UpdateVehicleIntersectionPointCache();
+        Dictionary<PathIntersectionPoint, HashSet<VehicleEngine>> vehiclesAtIntersectionPoint = GetVehiclesAtIntersectionPointsUsingCache();
+        if (vehiclesAtIntersectionPoint.Count == 0)
+        {
+            return;
+        }
+        // Find intersections within a certain distance of the vehicle
+        HashSet<PathIntersectionPoint> pathIntersectionPoints = new HashSet<PathIntersectionPoint>(vehiclesAtIntersectionPoint.Keys.Where(i =>
+        {
+            if (path.GetDistanceFromVehicleToIntersectionPoint(path, currentNodeNumber, transform, i, out float distanceResult))
+            {
+                return distanceResult <= mergeRadiusCheck;
+            }
+            return false;
+        }
+        ));
+        foreach (PathIntersectionPoint pathIntersectionPoint in pathIntersectionPoints)
+        {
+            if (stopLineType != StopLine.Type.MERGE)
+            {
+                if (IsOtherPathIncomingFromLookingDirection(pathIntersectionPoint))
+                {
+                    continue;
+                }
+            }
+            if (debug)
+            {
+                Debug.DrawLine(pathIntersectionPoint.intersection, pathIntersectionPoint.intersection + Vector3.up * 5, Color.red);
+            }
+            HashSet<VehicleEngine> vehiclesWithSameIntersection = vehiclesAtIntersectionPoint[pathIntersectionPoint];
+            float currentDistance;
+            if(!path.GetDistanceFromVehicleToIntersectionPoint(path, currentNodeNumber, transform, pathIntersectionPoint, out currentDistance))
+            {
+                // Unable to get path distance to intersection
+                continue;
+            }
+            float distanceAhead = float.MaxValue;
+            float distanceBehind = float.MaxValue;
+            VehicleEngine vehicleAhead = null;
+            VehicleEngine vehicleBehind = null;
+            foreach (VehicleEngine otherVehicle in vehiclesWithSameIntersection)
+            {
+                float otherVehicleDistance;
+                if(!otherVehicle.path.GetDistanceFromVehicleToIntersectionPoint(otherVehicle.path, otherVehicle.currentNodeNumber, otherVehicle.transform, pathIntersectionPoint, out otherVehicleDistance))
+                {
+                    // Vehicle is now past intersection point
+                    continue;
+                }
+                float relativeDistance = currentDistance - otherVehicleDistance;
+                if (relativeDistance >= 0 && distanceAhead > relativeDistance)
+                {
+                    distanceAhead = relativeDistance;
+                    vehicleAhead = otherVehicle;
+                }
+                else if (relativeDistance < 0 && distanceBehind > -relativeDistance)
+                {
+                    distanceBehind = -relativeDistance;
+                    vehicleBehind = otherVehicle;
+                }
+            }
+            // Debug
+            // Add the vehicle ahead and behind to a variable, on the VehicleEngine, to display these vehicles in the simulation (GUI).
+            if (distanceAhead - longestSide <= currentSpeed)
+            {
+                waitingForVehicleAhead = vehicleAhead;
+            }
+            else
+            {
+                waitingForVehicleAhead = null;
+            }
+            if (distanceBehind <= maxSpeed)
+            {
+                waitingForVehicleBehind = vehicleBehind;
+            }
+            else
+            {
+                waitingForVehicleBehind = null;
+            }
+            // Debug End
+            ApplyMergeAlgorithm(distanceAhead, distanceBehind);
+        }
     }
 
     private void SurfaceCheck()
@@ -347,6 +486,100 @@ public class VehicleEngine : MonoBehaviour
         HARD_STOP
     }
 
+    private void ApplyMergeAlgorithm(float distanceAhead, float distanceBehind)
+    {
+        if (distanceAhead - longestSide > currentSpeed && distanceBehind > maxSpeed)
+        {
+            SetTargetSpeed(Math.Min(targetSpeed, distanceAhead));
+        }
+        else
+        {
+            SetTargetSpeed(0);
+        }
+    }
+
+    /// <summary>
+    /// Checks incoming paths from the right when driving on the left and the left when driving on the right
+    /// </summary>
+    /// <param name="pathIntersectionPoint"></param>
+    /// <returns>True if incoming path is not in looking direction</returns>
+    /// The diagram below shows which section is classed as the incoming path
+    /*
+                      |                                                         
+                      |                                                         
+                      -                                                         
+                     /|\                                                        
+                    / | \        Incoming Path                                  
+                      |     +--------------------+                              
+                      |     |                    |                              
+                      |     |                    |                              
+           /          |     |        /           |                              
+          /           |     |       /            |                              
+    ------------------------------------------------------                          
+          \           |     |       \            |     Other Path               
+           \          |     |        \           |                              
+                      -     |                    |                              
+                     /|\    |                    |                              
+                    / | \   +--------------------+                              
+                      |                                                         
+        Current Path  |                                                         
+                      |                                                         
+                      |                                                         
+    */
+    private bool IsOtherPathIncomingFromLookingDirection(PathIntersectionPoint pathIntersectionPoint)
+    {
+        PathIntersectionLine currentIntersectionLine = pathIntersectionPoint.GetLineFromPath(path);
+        return (isLeftHandDrive && !pathIntersectionPoint.IsIncomingPathFromDirection(PathIntersectionPoint.Direction.RIGHT, currentIntersectionLine)) ||
+            (!isLeftHandDrive && !pathIntersectionPoint.IsIncomingPathFromDirection(PathIntersectionPoint.Direction.LEFT, currentIntersectionLine));
+    }
+
+    /// <summary>
+    /// Add all intersection points with this vehicle and another to a list for use in MergeCheck()
+    /// </summary>
+    /// <param name="otherVehicle">The other vehicle to check</param>
+    private void AddVehicleIntersectionPoint(VehicleEngine otherVehicle)
+    {
+        if (otherVehicle != null && !otherVehicle.Equals(this))
+        {
+            vehicleIntersectionPoints.Add(otherVehicle, path.GetIntersectionPoints(otherVehicle.path));
+        }
+    }
+
+    /// <summary>
+    /// Ensures that there isn't a vehicle that has already been destroyed and is still in the cache
+    /// </summary>
+    private void UpdateVehicleIntersectionPointCache()
+    {
+        foreach (VehicleEngine vehicleEngine in vehicleIntersectionPoints.Keys.Where(v => v == null).ToList())
+        {
+            vehicleIntersectionPoints.Remove(vehicleEngine);
+        }
+    }
+
+    /// <summary>
+    /// Gets a Dictionary of intersection points with the vehicles that will be passing through that intersection point
+    /// </summary>
+    /// <returns>A dictionary of interesection points with vehicles</returns>
+    private Dictionary<PathIntersectionPoint, HashSet<VehicleEngine>> GetVehiclesAtIntersectionPointsUsingCache()
+    {
+        Dictionary<PathIntersectionPoint, HashSet<VehicleEngine>> vehiclesAtIntersectionPoint = new Dictionary<PathIntersectionPoint, HashSet<VehicleEngine>>();
+        foreach (KeyValuePair<VehicleEngine, HashSet<PathIntersectionPoint>> entry in vehicleIntersectionPoints)
+        {
+            foreach (PathIntersectionPoint intersectionPoint in entry.Value)
+            {
+                if (vehiclesAtIntersectionPoint.ContainsKey(intersectionPoint))
+                {
+                    vehiclesAtIntersectionPoint[intersectionPoint].Add(entry.Key);
+                }
+                else
+                {
+                    vehiclesAtIntersectionPoint.Add(intersectionPoint, new HashSet<VehicleEngine>() { entry.Key });
+                }
+            }
+        }
+        return vehiclesAtIntersectionPoint;
+    }
+
     private WheelFrictionCurve CloneWheelFrictionCurve(WheelFrictionCurve wheelFrictionCurveToClone)
     {
         WheelFrictionCurve newWheelFrictionCurve = new WheelFrictionCurve();
@@ -383,3 +616,4 @@ public class VehicleEngine : MonoBehaviour
         }
     }
 }
+

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -14,8 +15,33 @@ public class VehiclePath
 
     public float GetDistanceToNextStopNode(Transform currentNode, Transform vehicleTransform)
     {
+        return GetDistanceToNextNodeCondition(currentNode, vehicleTransform, (n) => TrafficLightManager.GetInstance().IsStopNode(n));
+    }
+
+    public float GetDistanceToNextStopLine(Transform currentNode, Transform vehicleTransform)
+    {
+        return GetDistanceToNextNodeCondition(currentNode, vehicleTransform, (n) => n.GetComponent<StopLine>() != null);
+    }
+
+    public Transform GetNextStopNode(Transform currentNode)
+    {
+        return GetNextNodeCondition(currentNode, (n) => TrafficLightManager.GetInstance().IsStopNode(n));
+    }
+
+    public StopLine GetNextStopLine(Transform currentNode)
+    {
+        Transform node = GetNextNodeCondition(currentNode, (n) => n.GetComponent<StopLine>() != null);
+        if (node != null)
+        {
+            return node.GetComponent<StopLine>();
+        }
+        return null;
+    }
+
+    private float GetDistanceToNextNodeCondition(Transform currentNode, Transform vehicleTransform, Predicate<Transform> nodeCondition)
+    {
         float totalDistance = Vector3.Distance(currentNode.position, vehicleTransform.position);
-        if (TrafficLightManager.GetInstance().IsStopNode(currentNode))
+        if (nodeCondition(currentNode))
         {
             return totalDistance;
         }
@@ -25,25 +51,133 @@ public class VehiclePath
             Transform node = nodes[i];
             float distanceBetweenNodes = Vector3.Distance(lastNode.position, node.position);
             totalDistance = totalDistance + distanceBetweenNodes;
-            if (TrafficLightManager.GetInstance().IsStopNode(node))
+            if (nodeCondition(node))
             {
                 return totalDistance;
             }
         }
-        // No next stop node found, return NaN.
+        // No next node found, return NaN.
         return float.NaN;
     }
 
-    public Transform GetNextStopNode(Transform currentNode)
+    private Transform GetNextNodeCondition(Transform currentNode, Predicate<Transform> nodeCondition)
     {
         for (int i = nodes.IndexOf(currentNode); i < nodes.Count; i++)
         {
-            if (TrafficLightManager.GetInstance().IsStopNode(nodes[i]))
+            if (nodeCondition(nodes[i]))
             {
                 return nodes[i];
             }
         }
         return null;
+    }
+
+    /// <summary>
+    /// Gets the distance from the inputted current vehicle to the inputted intersection point (where two vehicle paths overlap)
+    /// </summary>
+    /// <param name="vehiclePath">The vehicle path of the current vehicle to check</param>
+    /// <param name="currentNodeNumber">The current node of the current vehicle to check</param>
+    /// <param name="vehicleTransform">The vehicle transform of the current vehicle to check</param>
+    /// <param name="pathIntersectionPoint">The intersection point from the current vehicle</param>
+    /// <param name="distanceResult">The distance from the current vehicle to the intersection point.</param>
+    /// <returns>True if there is a distance result or false if vehicle is past the intersection point or no intersection point is found (inputted incorrect path intersection point).</returns>
+    public bool GetDistanceFromVehicleToIntersectionPoint(VehiclePath vehiclePath, int currentNodeNumber, Transform vehicleTransform, PathIntersectionPoint pathIntersectionPoint, out float distanceResult)
+    {
+        distanceResult = -1;
+        Transform currentNode = vehiclePath.nodes[currentNodeNumber];
+        if (pathIntersectionPoint.IsNodeLastPointOfIntersection(currentNode))
+        {
+            // Returns a calculated distance to the intersection point.
+            float distanceToIntersection = pathIntersectionPoint.CalculateVehicleDistanceToIntersectionWithinIntersection(vehicleTransform, vehiclePath.nodes[currentNodeNumber - 1], currentNode);
+            if (distanceToIntersection != 0)
+            {
+                distanceResult = distanceToIntersection;
+                return true;
+            }
+            else
+            {
+                // Intersection point behind current node
+                return false;
+            }
+        }
+        else if (pathIntersectionPoint.IsNodeAheadOfIntersection(currentNode, this))
+        {
+            // Intersection point behind current node
+            return false;
+        }
+        float totalDistance = Vector3.Distance(currentNode.position, vehicleTransform.position);
+        if (pathIntersectionPoint.IsNodeFirstPointOfIntersection(currentNode))
+        {
+            distanceResult = totalDistance + Vector3.Distance(currentNode.position, pathIntersectionPoint.intersection);
+            return true;
+        }
+        for (int i = nodes.IndexOf(currentNode) + 1; i < nodes.Count; i++)
+        {
+            Transform lastNode = nodes[i - 1];
+            Transform node = nodes[i];
+            float distanceBetweenNodes = Vector3.Distance(lastNode.position, node.position);
+            totalDistance = totalDistance + distanceBetweenNodes;
+            if (pathIntersectionPoint.IsNodeFirstPointOfIntersection(node))
+            {
+                distanceResult = totalDistance + Vector3.Distance(node.position, pathIntersectionPoint.intersection);
+                return true;
+            }
+        }
+        // No intersection point found
+        return false;
+    }
+
+    /// <summary>
+    /// Get Intersection points along this path and another path.
+    /// Note that this only works on a flat plane.
+    /// </summary>
+    /// <param name="otherPath">The other path to compare</param>
+    /// <returns>A list of points where the paths intersect</returns>
+    public HashSet<PathIntersectionPoint> GetIntersectionPoints(VehiclePath otherPath)
+    {
+        HashSet<PathIntersectionPoint> results = new HashSet<PathIntersectionPoint>();
+        HashSet<Vector3> addedVectors = new HashSet<Vector3>();
+        List<Vector2> flattenedPath = nodes.Select(t => new Vector2(t.position.x, t.position.z)).ToList();
+        List<Vector2> flattenedOtherPath = otherPath.nodes.Select(t => new Vector2(t.position.x, t.position.z)).ToList();
+        for (int nodeIndex = 0; nodeIndex < nodes.Count - 1; nodeIndex++)
+        {
+            for (int otherNodeIndex = 0; otherNodeIndex < otherPath.nodes.Count - 1; otherNodeIndex++)
+            {
+                Vector2 node1 = flattenedPath[nodeIndex];
+                Vector2 node2 = flattenedPath[nodeIndex + 1];
+                Vector2 otherNode1 = flattenedOtherPath[otherNodeIndex];
+                Vector2 otherNode2 = flattenedOtherPath[otherNodeIndex + 1];
+                if (node1.Equals(node2) || otherNode1.Equals(otherNode2))
+                {
+                    // No length to one of the paths.
+                    continue;
+                }
+                else if (node1.Equals(otherNode1) && node2.Equals(otherNode2))
+                {
+                    // The current path section is exactly the same as the other path section so there are no intersections on this section.
+                    continue;
+                }
+                else if (node1.Equals(otherNode1))
+                {
+                    // First current node and other node are the same so they have an intersection at that section.
+                    addedVectors.Add(nodes[nodeIndex].position);
+                    results.Add(new PathIntersectionPoint(nodes[nodeIndex], nodes[nodeIndex + 1], otherPath.nodes[otherNodeIndex], otherPath.nodes[otherNodeIndex + 1], nodes[nodeIndex].position));
+                }
+                else if (node2.Equals(otherNode2) && !addedVectors.Contains(nodes[nodeIndex + 1].position))
+                {
+                    // Second current node and other node are the same so they have an intersection at that section.
+                    addedVectors.Add(nodes[nodeIndex + 1].position);
+                    results.Add(new PathIntersectionPoint(nodes[nodeIndex], nodes[nodeIndex + 1], otherPath.nodes[otherNodeIndex], otherPath.nodes[otherNodeIndex + 1], nodes[nodeIndex + 1].position));
+                }
+                else if (GetLineIntersection(node1, node2, otherNode1, otherNode2, out Vector2 intersection))
+                {
+                    // An intersection has been found between the nodes.
+                    addedVectors.Add(new Vector3(intersection.x, nodes[nodeIndex].position.y, intersection.y));
+                    results.Add(new PathIntersectionPoint(nodes[nodeIndex], nodes[nodeIndex + 1], otherPath.nodes[otherNodeIndex], otherPath.nodes[otherNodeIndex + 1], new Vector3(intersection.x, nodes[nodeIndex].position.y, intersection.y)));
+                }
+            }
+        }
+        return results;
     }
 
     /// <summary>
@@ -119,5 +253,36 @@ public class VehiclePath
         float yDest = (float)((1 - ratio) * node1.y + ratio * node2.y);
         float zDest = (float)((1 - ratio) * node1.z + ratio * node2.z);
         return new Vector3(xDest, yDest, zDest);
+    }
+
+    /// <summary>
+    /// Licensed under MIT
+    /// Code Taken From: https://github.com/setchi/Unity-LineSegmentsIntersection/blob/master/Assets/LineSegmentIntersection/Scripts/Math2d.cs
+    /// 
+    /// Find intersection on a 2D plane with 4 vectors
+    /// </summary>
+    /// <param name="line1p1">Line 1 Point 1</param>
+    /// <param name="line1p2">Line 1 Point 2</param>
+    /// <param name="line2p1">Line 2 Point 1</param>
+    /// <param name="line2p2">Line 2 Point 2</param>
+    /// <param name="intersection">Out intersection</param>
+    /// <returns>True if an intersection is found</returns>
+    private bool GetLineIntersection(Vector2 line1p1, Vector2 line1p2, Vector2 line2p1, Vector2 line2p2, out Vector2 intersection)
+    {
+        intersection = Vector2.zero;
+        float d = (line1p2.x - line1p1.x) * (line2p2.y - line2p1.y) - (line1p2.y - line1p1.y) * (line2p2.x - line2p1.x);
+        if (d == 0.0f)
+        {
+            return false;
+        }
+        float u = ((line2p1.x - line1p1.x) * (line2p2.y - line2p1.y) - (line2p1.y - line1p1.y) * (line2p2.x - line2p1.x)) / d;
+        float v = ((line2p1.x - line1p1.x) * (line1p2.y - line1p1.y) - (line2p1.y - line1p1.y) * (line1p2.x - line1p1.x)) / d;
+        if (u <= 0.0f || u >= 1.0f || v <= 0.0f || v >= 1.0f)
+        {
+            return false;
+        }
+        intersection.x = line1p1.x + u * (line1p2.x - line1p1.x);
+        intersection.y = line1p1.y + u * (line1p2.y - line1p1.y);
+        return true;
     }
 }
