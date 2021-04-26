@@ -11,6 +11,7 @@ variables:
 cache:
     key: "$CI_PROJECT_NAMESPACE-$CI_PROJECT_NAME-$CI_COMMIT_REF_SLUG-$BUILD_TARGET"
     paths:
+        - .apt/
         - $BUILD_NAME/Library/
 
 stages:
@@ -54,8 +55,15 @@ lint:metalint:
     image: gableroux/unity3d:2018.3.11f1
     stage: test
     before_script:
-        - apt-get update -qq
-        - apt-get install --no-install-recommends -y libsaxonb-java
+        # Configure apt cache.
+        - export APT_DIR=.apt
+        - export APT_STATE_LISTS=$APT_DIR/lists
+        - export APT_CACHE_ARCHIVES=$APT_DIR/archives
+        - mkdir -p $APT_CACHE_ARCHIVES/partial
+        # Update apt-get lists and install new packages.
+        - apt-get update -yqq
+        - apt-get install --no-install-recommends -y  -o dir::cache::archives="$APT_CACHE_ARCHIVES" libsaxonb-java
+        # Prepare CI for test jobs.
         - &unity-before-script chmod +x ./ci/before_script.sh && ./ci/before_script.sh
         - chmod +x ./ci/test.sh && ./ci/test.sh
     script:
