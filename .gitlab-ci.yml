@@ -75,8 +75,7 @@ lint:metalint:
         reports:
             junit: $CI_PROJECT_DIR/$TEST_PLATFORM-junit-results.xml
         expire_in: 2 weeks
-    rules:
-        - when: on_success
+    # No rules means on_success is applied on all branches by default.
     tags:
         - shared
 
