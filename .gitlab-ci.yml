@@ -5,58 +5,29 @@ variables:
     GIT_DEPTH: 10
     DOCKER_IMAGE_NAME: "$CI_REGISTRY_IMAGE"
     DOCKER_BUILD_ARGS: BUILDKIT_INLINE_CACHE=1
-    RELEASE_TAG: "latest"
     FEATURE_BRANCH_TAG: $CI_COMMIT_REF_SLUG
 
 
 cache:
     key: "$CI_PROJECT_NAMESPACE-$CI_PROJECT_NAME-$CI_COMMIT_REF_SLUG-$BUILD_TARGET"
     paths:
+        - .apt/
         - $BUILD_NAME/Library/
 
 stages:
-    - prepare
     - lint
     - test
     - build
+    - prepare-benchmark
     - benchmark
-    - release
 
 workflow:
     rules:
         - if: $CI_MERGE_REQUEST_ID
           when: never
         - if: $CI_COMMIT_TAG
-          when: never
-        - when: always
-
-meta-build-image:
-    stage: prepare
-    image: docker:stable
-    variables:
-        DOCKER_TLS_CERTDIR: ""
-    services:
-        - docker:dind
-    script:
-        - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-        - cd .meta
-        # Note that, unlike $BUILD_NAME, $PROJECT_NAME is lowercase, and so
-        # won't cause Docker to error with:
-        #     invalid reference format: repository name must be lowercase
-        - docker build -t $DOCKER_IMAGE_NAME:$FEATURE_BRANCH_TAG --build-arg $DOCKER_BUILD_ARGS .
-        - docker push $DOCKER_IMAGE_NAME:$FEATURE_BRANCH_TAG
-    rules:
-        - changes:
-              - .gitlab-ci.yml
-              - .meta/Dockerfile
           when: always
-        - when: never
-    tags:
-        - shared
-
-.unity_before_script: &unity_before_script
-    before_script:
-        - chmod +x ./ci/before_script.sh && ./ci/before_script.sh
+        - when: always
 
 lint:mdl:
     stage: lint
@@ -66,8 +37,6 @@ lint:mdl:
     script:
         - git ls-files -z '*.md' | xargs -0 mdl --style .mdl.rb
     rules:
-        - if: '$CI_COMMIT_BRANCH == "master"'
-          when: never
         - when: always
     tags:
         - shared
@@ -78,18 +47,26 @@ lint:metalint:
         - chmod +x ci/metalint.sh
         - ./ci/metalint.sh
     rules:
-        - if: '$CI_COMMIT_BRANCH == "master"'
-          when: never
         - when: always
     tags:
         - shared
 
 .test: &test
-    image: $DOCKER_IMAGE_NAME:$FEATURE_BRANCH_TAG
+    image: gableroux/unity3d:2018.3.11f1
     stage: test
-    <<: *unity_before_script
-    script:
+    before_script:
+        # Configure apt cache.
+        - export APT_DIR=.apt
+        - export APT_STATE_LISTS=$APT_DIR/lists
+        - export APT_CACHE_ARCHIVES=$APT_DIR/archives
+        - mkdir -p $APT_CACHE_ARCHIVES/partial
+        # Update apt-get lists and install new packages.
+        - apt-get update -yqq
+        - apt-get install --no-install-recommends -y  -o dir::cache::archives="$APT_CACHE_ARCHIVES" libsaxonb-java
+        # Prepare CI for test jobs.
+        - &unity-before-script chmod +x ./ci/before_script.sh && ./ci/before_script.sh
         - chmod +x ./ci/test.sh && ./ci/test.sh
+    script:
         - test -f $CI_PROJECT_DIR/$TEST_PLATFORM-results.xml
         - saxonb-xslt -s $CI_PROJECT_DIR/$TEST_PLATFORM-results.xml -xsl $CI_PROJECT_DIR/ci/nunit-transforms/nunit3-junit.xslt >$CI_PROJECT_DIR/$TEST_PLATFORM-junit-results.xml
         - test -f $CI_PROJECT_DIR/$TEST_PLATFORM-junit-results.xml
@@ -98,10 +75,7 @@ lint:metalint:
         reports:
             junit: $CI_PROJECT_DIR/$TEST_PLATFORM-junit-results.xml
         expire_in: 2 weeks
-    rules:
-        - if: $CI_COMMIT_TAG
-          when: never
-        - when: always
+    # No rules means on_success is applied on all branches by default.
     tags:
         - shared
 
@@ -117,9 +91,10 @@ test-editmode:
 
 
 .build: &build
-    image: $DOCKER_IMAGE_NAME:$FEATURE_BRANCH_TAG
+    image: gableroux/unity3d:2018.3.11f1
     stage: build
-    <<: *unity_before_script
+    before_script:
+        - *unity-before-script
     script:
         - chmod +x ./ci/build.sh && ./ci/build.sh
     parallel:
@@ -151,28 +126,12 @@ build:master:
             - ./$BUILD_NAME/Builds/
         expire_in: never
     rules:
-        - if: $CI_COMMIT_TAG
-          when: never
         - if: '$CI_COMMIT_BRANCH == "master"'
-          when: always
+          when: on_success
         - when: never
 
-benchmark:
-    stage: benchmark
-    image: $DOCKER_IMAGE_NAME:$FEATURE_BRANCH_TAG
-    <<: *unity_before_script
-    dependencies:
-        - build:feature-branch
-    script:
-        - chmod +x ./ci/benchmark.sh && ./ci/benchmark.sh
-    rules:
-        - when: manual
-    allow_failure: true
-    tags:
-        - shared
-
-release:dockerimage:
-    stage: release
+prepare-benchmark:
+    stage: prepare-benchmark
     image: docker:stable
     variables:
         DOCKER_TLS_CERTDIR: ""
@@ -181,12 +140,27 @@ release:dockerimage:
     script:
         - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
         - cd .meta
-        - docker pull $DOCKER_IMAGE_NAME:$FEATURE_BRANCH_TAG
-        - docker tag $DOCKER_IMAGE_NAME:$FEATURE_BRANCH_TAG $DOCKER_IMAGE_NAME:$RELEASE_TAG
-        - docker push $DOCKER_IMAGE_NAME:$RELEASE_TAG
+        # Note that, unlike $BUILD_NAME, $PROJECT_NAME is lowercase, and so
+        # won't cause Docker to error with:
+        #     invalid reference format: repository name must be lowercase
+        - docker build -t $DOCKER_IMAGE_NAME:$FEATURE_BRANCH_TAG --build-arg $DOCKER_BUILD_ARGS .
+        - docker push $DOCKER_IMAGE_NAME:$FEATURE_BRANCH_TAG
     rules:
-        - if: '$CI_COMMIT_BRANCH == "master"'
-          when: on_success
-        - if: '$CI_COMMIT_BRANCH == "develop"'
-          when: on_success
-        - when: never
+        - when: manual
+          allow_failure: true
+    tags:
+        - shared
+
+benchmark:
+    stage: benchmark
+    image: $DOCKER_IMAGE_NAME:$FEATURE_BRANCH_TAG
+    needs: [prepare-benchmark]
+    before_script:
+        - *unity-before-script
+    script:
+        - chmod +x ./ci/benchmark.sh && ./ci/benchmark.sh
+    rules:
+        - when: manual
+          allow_failure: true
+    tags:
+        - shared
