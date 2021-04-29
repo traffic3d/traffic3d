@@ -20,6 +20,16 @@ git clone git@gitlab.com:traffic3d/traffic3d.git
 cd traffic3d
 ```
 
+### Using Git with Unity
+
+Git is the industry-standard distributed version control system, but Unity projects are not well suited for use with Git.
+Unity produces large numbers of auto-generated files, which must be committed, but are not intended to be read by developers (and so should not be reviewed).
+This includes `.unity`, `.meta`, and `.prefab` files.
+This means that you may often find you need to resolve [merge conflicts](https://www.atlassian.com/git/tutorials/using-branches/merge-conflicts) for files which were never intended to be understood by developers.
+Unity also produces _large_ files, which can make operations like `clone` considerably slower than you might expect.
+
+Before you go much further, please read through [How to Git with Unity](https://thoughtbot.com/blog/how-to-git-with-unity) and consider using a [Unity-specific merge tool](https://docs.unity3d.com/Manual/SmartMerge.html)
+
 ## Documentation
 
 All documents should be in [Markdown format](https://about.gitlab.com/handbook/product/technical-writing/markdown-guide/) in a directory called `docs`.
@@ -67,6 +77,10 @@ Download the latest of Unity from the following link: [https://unity3d.com/get-u
 Or download Unity 2018.3.11f1 from the following link: [https://unity3d.com/get-unity/download/archive](https://unity3d.com/get-unity/download/archive)
 
 Use a preferred C# IDE or download Visual Studio using the following link: [https://visualstudio.microsoft.com/vs/](https://visualstudio.microsoft.com/vs/)
+
+This repository comes with a [`.editorconfig`](/.editorconfig) file, which encodes some standard expectations for IDEs.
+For example, indentation, newlines, etc.
+The [editorconfig site](https://editorconfig.org/) has a list of IDEs that can be used with `.editorconfig` files out of the box, and those that require plugins.
 
 ## Unity activation for the CI/CD environment
 
@@ -171,4 +185,9 @@ To create a new release of Traffic3D, follow these steps:
 
 ## Further documentation
 
-Detailed documentation, including how to use the Unity editor, how to extend Traffic3D with new assets and scenes, can be found in the [Traffic3D documentation](https://traffic3d.org).
+* [editorconfig](https://editorconfig.org/)
+* [How to Git with Unity](https://thoughtbot.com/blog/how-to-git-with-unity)
+* [Meld merge tool](https://meldmerge.org/)
+* [Traffic3D user documentation](https://traffic3d.org) including how to use the Unity editor, how to extend Traffic3D with new assets and scenes.
+* [Unity smart merge](https://docs.unity3d.com/Manual/SmartMerge.html)
+* [Visual Studio](https://visualstudio.microsoft.com/vs/)
