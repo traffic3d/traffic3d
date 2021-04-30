@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -50,14 +51,7 @@ public class VehicleFactory : MonoBehaviour
                 RoadNode roadNode = RoadNetworkManager.GetInstance().GetRandomStartNode();
                 if (roadNode != null)
                 {
-                    try
-                    {
-                        SpawnVehicle(GetRandomVehicle(), roadNode);
-                    }
-                    catch (System.Exception e)
-                    {
-                        Debug.LogError("Unable to spawn vehicle: " + e.Message);
-                    }
+                    SpawnVehicle(GetRandomVehicle(), roadNode);
                 }
             }
         }
@@ -68,9 +62,18 @@ public class VehicleFactory : MonoBehaviour
     /// </summary>
     public void CleanVehicles()
     {
+        // Remove null vehicles from current list
         foreach (GameObject key in currentVehicles.Where(vehicle => vehicle == null).ToList())
         {
             currentVehicles.Remove(key);
+        }
+        // Remove unknown vehicles from scene (Not currently in the list)
+        foreach (VehicleEngine vehicle in GameObject.FindObjectsOfType<VehicleEngine>())
+        {
+            if (!currentVehicles.Contains(vehicle.gameObject))
+            {
+                Destroy(vehicle.gameObject);
+            }
         }
     }
 
@@ -87,11 +90,19 @@ public class VehicleFactory : MonoBehaviour
             return null;
         }
         GameObject spawnedVehicle = Instantiate(vehicle, startRoadNode.transform.position, startRoadNode.transform.rotation);
-        TemporarilyHideVehicle(spawnedVehicle, timeOfStartInvisibility);
-        VehicleEngine vehicleEngine = spawnedVehicle.GetComponent<VehicleEngine>();
-        vehicleEngine.GenerateVehiclePath(startRoadNode);
-        currentVehicles.Add(spawnedVehicle);
-        EventManager.GetInstance().CallVehicleSpawnEvent(this, new VehicleEventArgs(vehicleEngine));
+        try
+        {
+            TemporarilyHideVehicle(spawnedVehicle, timeOfStartInvisibility);
+            VehicleEngine vehicleEngine = spawnedVehicle.GetComponent<VehicleEngine>();
+            vehicleEngine.GenerateVehiclePath(startRoadNode);
+            currentVehicles.Add(spawnedVehicle);
+            EventManager.GetInstance().CallVehicleSpawnEvent(this, new VehicleEventArgs(vehicleEngine));
+        }
+        catch (Exception e)
+        {
+            Destroy(spawnedVehicle);
+            Debug.LogError("Unable to spawn vehicle: " + e.Message);
+        }
         return spawnedVehicle;
     }
 
