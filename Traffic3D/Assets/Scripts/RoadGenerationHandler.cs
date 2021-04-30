@@ -15,10 +15,8 @@ public class RoadGenerationHandler
     /// <param name="nodePositions">List of Vector3s, creating the road. (Vector3s' should be the position of nodes along the road)</param>
     /// <param name="roadWidth">Total Width of the road</param>
     /// <returns> Returns new mesh for road. OR, if list doesn't contain atleast 2 nodes, returns empty mesh. </returns>
-    public Mesh CreateRoadMesh(List<Vector3> nodePositions, int numLanes, float laneWidth)
+    public Mesh CreateRoadMesh(List<Vector3> nodePositions, float laneWidth)
     {
-        float roadWidth = CalculateRoadWidth(numLanes, laneWidth);
-
         int numNodes = nodePositions.Count;
 
         if (numNodes <= 1)
@@ -56,8 +54,8 @@ public class RoadGenerationHandler
             //Calculate offseted positions for mesh
             Vector2 left = new Vector2(-forward.y, forward.x);
             Vector3 vleft = new Vector3(left.x, 0, left.y);
-            verts[vertIndex] = currentNodeLoc + vleft * roadWidth * .5f; //node to left of current
-            verts[vertIndex + 1] = currentNodeLoc - vleft * roadWidth * .5f; //node to right of current
+            verts[vertIndex] = currentNodeLoc + vleft * laneWidth * .5f; //node to left of current
+            verts[vertIndex + 1] = currentNodeLoc - vleft * laneWidth * .5f; //node to right of current
             float positionAcrossMesh = i / (float)(numNodes - 1); // % Across mesh
             float uvCoordinate = 1 - Mathf.Abs(2 * positionAcrossMesh - 1); // uv co-ordinate
             uvs[vertIndex] = new Vector2(0, uvCoordinate); // Set x to 0 and y to uvCoordinate
@@ -81,11 +79,6 @@ public class RoadGenerationHandler
         mesh.triangles = tris;
         mesh.uv = uvs;
         return mesh;
-    }
-
-    private float CalculateRoadWidth(int numLanes, float laneWidth)
-    {
-        return numLanes * laneWidth;
     }
 
     /// <summary>

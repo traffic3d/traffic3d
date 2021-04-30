@@ -17,11 +17,17 @@ public class MapXmlWay
     public bool isBuilding { get; private set; }
     public bool IsRoad { get; private set; }
     public string Name { get; private set; }
+    // Road Specific
     public int Lanes { get; private set; }
+    public int ForwardLanes { get; private set; }
+    public int BackwardLanes { get; private set; }
+    public bool IsOneWay { get; private set; }
+
+    public Dictionary<string, string> Tags { get; private set; }
 
 
     //Development purposes: Help track what types of "Highways" are in the scene
-    static Dictionary<String, int> Highways = new Dictionary<string, int>(); 
+    static Dictionary<String, int> Highways = new Dictionary<string, int>();
     public void PrintDictionary()
     {
         foreach (KeyValuePair<String, int> kvp in Highways)
@@ -38,10 +44,12 @@ public class MapXmlWay
 
         //List of all child node ref ID (<nd ref="" />) 
         NodeIDs = new List<ulong>();
-        
+
         //Default values
         buildingHeight = 7.0f;
-        Lanes = 1;      
+        Lanes = 1;
+        ForwardLanes = 1;
+        BackwardLanes = 0;
         Name = "";
 
         // Get the data from the attributes
@@ -71,48 +79,76 @@ public class MapXmlWay
 
         // Read the tags <way>...<tag k="building" v="apartments" />...</way>
         XmlNodeList ndNodeTags = node.SelectNodes("tag");
+        Tags = new Dictionary<string, string>();
 
         // Will Loop Through Each Tag (Attribute) and do something specific 
         foreach (XmlNode tag in ndNodeTags)
         {
+            // Add all tags to dictionary
             string node_attribute = GetAttribute<string>("k", tag.Attributes);
-            if (node_attribute == "highway")
+            Tags[node_attribute] = GetAttribute<string>("v", tag.Attributes);
+            if (node_attribute == OpenStreetMapTagName.highwayTag)
             {
                 String tagValue = GetAttribute<string>("v", tag.Attributes);
 
 
                 //A value of "ROAD" implies the road type was not known during the mapping process. Therefore, it's likely a tag we to ignore.
-                if ( tagValue != "footway" && tagValue != "steps" && tagValue != "cycleway" && tagValue != "pedestrian" && tagValue != "construction" && tagValue != "service" && tagValue != "motorway" && tagValue != "track")
+                if (tagValue != OpenStreetMapTagName.footwayTag && tagValue != OpenStreetMapTagName.stepsTag &&
+                    tagValue != OpenStreetMapTagName.cyclewayTag && tagValue != OpenStreetMapTagName.pedestrianTag &&
+                    tagValue != OpenStreetMapTagName.constructionTag && tagValue != OpenStreetMapTagName.serviceTag &&
+                    tagValue != OpenStreetMapTagName.motorwayTag && tagValue != OpenStreetMapTagName.trackTag)
                 {
                     IsRoad = true;
                 }
 
             }
-            else if (node_attribute == "building:levels" || node_attribute == "building:height")
+            else if (node_attribute == OpenStreetMapTagName.buildingLevelsTag || node_attribute == OpenStreetMapTagName.buildingHeightTag)
             {
                 //Building height is recorded in floors. 1 floor == ~4m
-                buildingHeight = GetAttribute<float>("v",tag.Attributes) * 6.2f; 
+                buildingHeight = GetAttribute<float>("v", tag.Attributes) * 6.2f;
             }
-            else if (node_attribute == "lanes")
+            else if (node_attribute == OpenStreetMapTagName.lanesTag)
             {
                 Lanes = GetAttribute<int>("v", tag.Attributes);
             }
-            else if (node_attribute == "name")
+            else if (node_attribute == OpenStreetMapTagName.nameTag)
             {
                 Name = GetAttribute<string>("v", tag.Attributes);
             }
-            else if (node_attribute == "building")
+            else if (node_attribute == OpenStreetMapTagName.buildingTag)
             {
-                isBuilding = false;
-                if (GetAttribute<string>("v", tag.Attributes) == "yes")
-                {
-                    isBuilding = true;
-                }
-
+                isBuilding = Utils.IsTruthy(GetAttribute<string>("v", tag.Attributes));
+            }
+            else if (node_attribute == OpenStreetMapTagName.onewayTag)
+            {
+                IsOneWay = Utils.IsTruthy(GetAttribute<string>("v", tag.Attributes));
             }
 
         }
-        
+
+        // Check road lanes
+        if (IsRoad)
+        {
+            if (IsOneWay)
+            {
+                ForwardLanes = Lanes;
+                BackwardLanes = 0;
+            }
+            else
+            {
+                ForwardLanes = Lanes;
+                BackwardLanes = Lanes;
+                if (Tags.ContainsKey(OpenStreetMapTagName.lanesForwardTag))
+                {
+                    ForwardLanes = int.Parse(Tags[OpenStreetMapTagName.lanesForwardTag]);
+                }
+                if (Tags.ContainsKey(OpenStreetMapTagName.lanesBackwardTag))
+                {
+                    BackwardLanes = int.Parse(Tags[OpenStreetMapTagName.lanesBackwardTag]);
+                }
+            }
+        }
+
     }
 
     protected T GetAttribute<T>(string attrName, XmlAttributeCollection attributes)

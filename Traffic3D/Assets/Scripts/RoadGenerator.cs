@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -15,7 +14,7 @@ public class RoadGenerator : BaseAssetGenerator
 
     // The average width of a road is 3.65m according to the following source:
     // https://mocktheorytest.com/resources/how-wide-are-roads/
-    public float defaultLaneWidth = defaultLaneWidthStartValue;
+    public static float defaultLaneWidth = defaultLaneWidthStartValue;
 
     /// <summary>
     /// Creates a floor gameobject on
@@ -23,10 +22,10 @@ public class RoadGenerator : BaseAssetGenerator
     /// <param name="mapReader"></param>
     /// <param name="roadMaterial"></param>
     /// <param name="floor_material"></param>
-    public RoadGenerator(OpenStreetMapReader mapReader, Material roadMaterial, float defaultLaneWidth = defaultLaneWidthStartValue) : base(mapReader)
+    public RoadGenerator(OpenStreetMapReader mapReader, Material roadMaterial, float defaultLaneWidthInput = defaultLaneWidthStartValue) : base(mapReader)
     {
         road_material = roadMaterial;
-        this.defaultLaneWidth = defaultLaneWidth;
+        defaultLaneWidth = defaultLaneWidthInput;
 
         //Initialize parent so all roads stored under same gameObject called 'Roads'
         InitializeRootParent("Roads");
@@ -45,9 +44,8 @@ public class RoadGenerator : BaseAssetGenerator
             if (way.IsRoad)
             {
                 // Create Road object and assign a Mesh
-                GameObject road = GenerateObject(way, road_material, way.Name);
-                road.AddComponent<MeshCollider>().sharedMesh = road.GetComponent<MeshFilter>().sharedMesh;
-                road.tag = "roadway";
+                GameObject road = new GameObject(way.Name);
+                road.AddComponent<Road>();
 
                 //add text label above road
                 AddRoadNames(way, road);
@@ -59,6 +57,31 @@ public class RoadGenerator : BaseAssetGenerator
                 AddToRootParent(GetParent(way));
             }
 
+        }
+    }
+
+    public void RenderRoads()
+    {
+        RoadNetworkManager.GetInstance().Reload();
+        foreach (RoadWay roadWay in RoadNetworkManager.GetInstance().GetWays())
+        {
+            MeshFilter mf = roadWay.gameObject.AddComponent<MeshFilter>();
+            MeshRenderer mr = roadWay.gameObject.AddComponent<MeshRenderer>();
+
+            mr.material = road_material;
+            mr.sharedMaterial = road_material;
+
+            Vector3 downVector = new Vector3(0, -1, 0);
+            List<Vector3> VectorNodesInRoad = new List<Vector3>(roadWay.nodes.Select(n => n.transform.position + downVector));
+
+            RoadGenerationHandler rgh = new RoadGenerationHandler();
+            mf.sharedMesh = rgh.CreateRoadMesh(VectorNodesInRoad, defaultLaneWidth);
+            // If road doesn't have any length then leave meshcollider null
+            if (!roadWay.nodes.First().transform.position.Equals(roadWay.nodes.Last().transform.position))
+            {
+                roadWay.gameObject.AddComponent<MeshCollider>().sharedMesh = roadWay.gameObject.GetComponent<MeshFilter>().sharedMesh;
+            }
+            roadWay.gameObject.tag = "roadway";
         }
     }
 
@@ -84,7 +107,7 @@ public class RoadGenerator : BaseAssetGenerator
         }
 
         RoadGenerationHandler rgh = new RoadGenerationHandler();
-        return rgh.CreateRoadMesh(VectorNodesInRoad, way.Lanes, defaultLaneWidth);
+        return rgh.CreateRoadMesh(VectorNodesInRoad, defaultLaneWidth);
     }
 
     /// <summary>

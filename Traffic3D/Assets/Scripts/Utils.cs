@@ -58,9 +58,15 @@ public class Utils
         }
     }
 
+    public static bool IsTruthy(string value)
+    {
+        return value == "yes" || value == "true" || value == "1";
+    }
+
     private static ReaderWriterLock GetReaderWriterLockForFile(string fileName)
     {
-        lock (lockObject) {
+        lock (lockObject)
+        {
             if (readerWriterLocks.ContainsKey(fileName))
             {
                 return readerWriterLocks[fileName];

@@ -13,9 +13,11 @@ public class LayerCheckTests
     ImportOsmUiWrapper osmWrapper;
 
     [OneTimeSetUp]
-    public void SetUp()
+    public void OneTimeSetUp()
     {
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+        osmWrapper = new ImportOsmUiWrapper(null, mapFile, null, null, null, RoadGenerator.defaultLaneWidthStartValue, true);
+        osmWrapper.Import();
     }
 
     [Test]
@@ -28,9 +30,6 @@ public class LayerCheckTests
     [Test]
     public void TrafficLightIgnoreRayCast()
     {
-        osmWrapper = new ImportOsmUiWrapper(null, mapFile, null, null, null, RoadGenerator.defaultLaneWidthStartValue);
-        osmWrapper.Import();
-            
         foreach (GameObject gameObj in GameObject.FindObjectsOfType<GameObject>())
         {
             //Check all currently existing trafficlight names
@@ -45,9 +44,6 @@ public class LayerCheckTests
     [Test]
     public void RoadWaysIgnoreRayCast()
     {
-        osmWrapper = new ImportOsmUiWrapper(null, mapFile, null, null, null, RoadGenerator.defaultLaneWidthStartValue);
-        osmWrapper.Import();
-
         //get all objects with Path script
         RoadWay[] roadWays = GameObject.FindObjectsOfType<RoadWay>();
 
@@ -62,9 +58,6 @@ public class LayerCheckTests
     [Test]
     public void JunctionsIgnoreRayCast()
     {
-        osmWrapper = new ImportOsmUiWrapper(null, mapFile, null, null, null, RoadGenerator.defaultLaneWidthStartValue);
-        osmWrapper.Import();
-
         //get all objects with Junction script
         Junction[] junctions = (Junction[])GameObject.FindObjectsOfType(typeof(Junction));
 

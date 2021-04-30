@@ -12,6 +12,7 @@ public class ImportOsmGui : EditorWindow
     private Material building_material;
     private Material floor_material;
     private float defaultLaneWidth = RoadGenerator.defaultLaneWidthStartValue;
+    private bool isLeftHandDrive = true;
 
     private bool isValidFile;
 
@@ -80,6 +81,9 @@ public class ImportOsmGui : EditorWindow
         // -- UI-Element: Ask For Default Lane Width
         defaultLaneWidth = EditorGUILayout.FloatField("Default Lane Width:", defaultLaneWidth);
 
+        // -- UI-Element: Ask For Left Hand Drive
+        isLeftHandDrive = EditorGUILayout.Toggle("Is Left Hand Drive:", isLeftHandDrive);
+
         // -- UI-Element: Import Button
         EditorGUI.BeginDisabledGroup(!isValidFile || isSceneActive);
 
@@ -87,7 +91,7 @@ public class ImportOsmGui : EditorWindow
         if (GUILayout.Button("Import Map File"))
         {
             //Import Map Data
-            var osmSceneGenerator = new ImportOsmUiWrapper(this, filePath, road_material, floor_material, building_material, defaultLaneWidth);
+            var osmSceneGenerator = new ImportOsmUiWrapper(this, filePath, road_material, floor_material, building_material, defaultLaneWidth, isLeftHandDrive);
             bool success = osmSceneGenerator.Import();
 
             if (!success)

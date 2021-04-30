@@ -13,13 +13,13 @@ public class JunctionGeneratorTests
     OpenStreetMapReader osmMapReader;
     Dictionary<MapXmlWay, GameObject> origionalWayDic; //Not modified after [OneTimeSetUp]
 
-    [OneTimeSetUp]
-    public void OneTimeSetUp()
+    [SetUp]
+    public void Setup()
     {
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         osmMapReader = new OpenStreetMapReader();
         origionalWayDic = new Dictionary<MapXmlWay, GameObject>();
-            
+
         osmMapReader.ImportFile(mapFile);
 
         foreach (var way in osmMapReader.ways)
@@ -27,17 +27,13 @@ public class JunctionGeneratorTests
             GameObject go = new GameObject(way.Name);
             origionalWayDic.Add(way, go);
         }
-    }
 
-    [SetUp]
-    public void CreatePaths()
-    {
         GameObject vehicleFactoryGameObject = new GameObject();
         VehicleFactory vehicleFactory = vehicleFactoryGameObject.AddComponent<VehicleFactory>();
         var wayDicClone = new Dictionary<MapXmlWay, GameObject>(origionalWayDic);
 
         //run path generator 
-        PathGenerator pathGenerator = new PathGenerator(osmMapReader);
+        PathGenerator pathGenerator = new PathGenerator(osmMapReader, true);
         pathGenerator.AddPathsToRoads(wayDicClone);
     }
         

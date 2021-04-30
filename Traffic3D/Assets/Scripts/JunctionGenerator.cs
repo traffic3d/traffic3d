@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static JunctionState;
@@ -39,36 +39,41 @@ public class JunctionGenerator : BaseNodeInformant
     {
         HashSet<Vector3> checkedNodes = new HashSet<Vector3>();
         midConnectedNodes = new Dictionary<Vector3, HashSet<GameObject>>();
+        RoadNetworkManager.GetInstance().Reload();
 
         //loop through all roads
-        foreach (GameObject road in createdRoads)
+        foreach (Road road in RoadNetworkManager.GetInstance().GetRoads())
         {
-            //loop through all nodes in Path
-            foreach (RoadNode node in road.GetComponent<RoadWay>().nodes)
+            //loop through all roadways
+            foreach (RoadWay roadWay in road.roadWays)
             {
-                Vector3 nodePos = node.transform.position;
-
-                //if not start/end node
-                if (!endNodes.ContainsKey(nodePos) && !startNodes.ContainsKey(nodePos))
+                //loop through all nodes in Path
+                foreach (RoadNode node in roadWay.nodes)
                 {
-                    //if already checked, implies another non-start/non-end road intersects this node => mid_connected_node (cross-junction)
-                    if (checkedNodes.Contains(nodePos))
+                    Vector3 nodePos = node.transform.position;
+
+                    //if not start/end node
+                    if (!endNodes.ContainsKey(nodePos) && !startNodes.ContainsKey(nodePos))
                     {
-                        if (!midConnectedNodes.ContainsKey(nodePos))
+                        //if already checked, implies another non-start/non-end road intersects this node => mid_connected_node (cross-junction)
+                        if (checkedNodes.Contains(nodePos))
                         {
-                            //flag as mid_connection node (Key: {node} Value: {All road passing through node})
-                            midConnectedNodes.Add(nodePos, roadsIndexdByNodes[nodePos]);
+                            if (!midConnectedNodes.ContainsKey(nodePos))
+                            {
+                                //flag as mid_connection node (Key: {node} Value: {All road passing through node})
+                                midConnectedNodes.Add(nodePos, roadsIndexdByNodes[nodePos]);
+                            }
+                            else
+                            {
+                                //update value
+                                midConnectedNodes[nodePos] = roadsIndexdByNodes[nodePos];
+                            }
                         }
                         else
                         {
-                            //update value
-                            midConnectedNodes[nodePos] = roadsIndexdByNodes[nodePos];
+                            //flag as checked
+                            checkedNodes.Add(nodePos);
                         }
-                    }
-                    else
-                    {
-                        //flag as checked
-                        checkedNodes.Add(nodePos);
                     }
                 }
             }
@@ -192,7 +197,7 @@ public class JunctionGenerator : BaseNodeInformant
             HashSet<GameObject> vehiclePaths = roadsIndexdByNodes[junctionNode];
             foreach (GameObject vehiclePath in vehiclePaths)
             {
-                int currNumLanes = vehiclePath.transform.parent.GetComponentInChildren<RoadMeshUpdater>().numLanes;
+                int currNumLanes = vehiclePath.transform.parent.GetComponentInChildren<Road>().numberOfLanes;
                 if (currNumLanes > numLanes)
                     numLanes = currNumLanes;
             }
@@ -340,8 +345,7 @@ public class JunctionGenerator : BaseNodeInformant
             // attempt to update number of road lanes
             try
             {
-                RoadMeshUpdater roadMeshUpdater = vehiclePath.transform.parent.GetComponentInChildren<RoadMeshUpdater>();
-                numLanes = roadMeshUpdater.numLanes;
+                numLanes = vehiclePath.transform.parent.GetComponentInChildren<Road>().numberOfLanes;
             }
             catch { }
 

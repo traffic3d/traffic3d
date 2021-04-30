@@ -9,12 +9,14 @@ public class StreetFurnitureGenerator : BaseAssetGenerator
     private const float streetLightDistanceApart = 50f;
     private const float streetLightAwayFromRoad = 5f;
     private const float streetLightMinDistanceFromOtherRoads = 10f;
+    private bool isLeftHandDrive;
     public List<MapXmlNode> amenityAndEmergencyNodes;
 
-    public StreetFurnitureGenerator(OpenStreetMapReader mapReader) : base(mapReader)
+    public StreetFurnitureGenerator(OpenStreetMapReader mapReader, bool isLeftHandDrive) : base(mapReader)
     {
         InitializeRootParent("StreetFurniture");
         this.mapReader = mapReader;
+        this.isLeftHandDrive = isLeftHandDrive;
         this.amenityAndEmergencyNodes = new List<MapXmlNode>();
     }
 
@@ -52,52 +54,76 @@ public class StreetFurnitureGenerator : BaseAssetGenerator
 
     public void GenerateStreetLights()
     {
-        foreach (RoadWay roadWay in RoadNetworkManager.GetInstance().GetWays())
+        float streetLightAngle;
+        if (isLeftHandDrive)
         {
-            float nextStreetLightDistance = streetLightDistanceApart;
-            for (int i = 0; i < roadWay.nodes.Count - 1; i++)
+            streetLightAngle = -90f;
+        }
+        else
+        {
+            streetLightAngle = 90f;
+        }
+        foreach (Road road in RoadNetworkManager.GetInstance().GetRoads())
+        {
+            List<RoadWay> roadWaysToUse = new List<RoadWay>();
+            if (road.numberOfLanes == 0)
             {
-                RoadNode node = roadWay.nodes[i];
-                RoadNode nextNode = roadWay.nodes[i + 1];
-                float x1 = node.transform.position.x;
-                float y1 = node.transform.position.y;
-                float z1 = node.transform.position.z;
-                float x2 = nextNode.transform.position.x;
-                float y2 = nextNode.transform.position.y;
-                float z2 = nextNode.transform.position.z;
-                float totalNodeToNextNodeDistance = Vector3.Distance(node.transform.position, nextNode.transform.position);
-                float distanceAlongNode = nextStreetLightDistance;
-                while (distanceAlongNode < totalNodeToNextNodeDistance)
+                continue;
+            }
+            roadWaysToUse.Add(road.roadWays.First());
+            // Add last roadway if more than 2 lanes
+            if (road.numberOfLanes > 1)
+            {
+                roadWaysToUse.Add(road.roadWays.Last());
+            }
+            // The first and last roadways are the side of the main roads and can have streetlights placed along them.
+            foreach (RoadWay roadWay in roadWaysToUse)
+            {
+                float nextStreetLightDistance = streetLightDistanceApart;
+                for (int i = 0; i < roadWay.nodes.Count - 1; i++)
                 {
-                    float angle = Mathf.Atan2(z2 - z1, x2 - x1) * 180 / Mathf.PI;
-                    double ratio = distanceAlongNode / totalNodeToNextNodeDistance;
-                    float xDest = (float)((1 - ratio) * x1 + ratio * x2);
-                    float yDest = (float)((1 - ratio) * y1 + ratio * y2) - 1; // -1 because road mesh is created -1 down from nodes
-                    float zDest = (float)((1 - ratio) * z1 + ratio * z2);
-                    Vector3 streetLightPosition = new Vector3(xDest, yDest, zDest);
-                    // Check distance to nodes and to other roads
-                    RoadNode closestNode;
-                    if (ratio > 0.5)
+                    RoadNode node = roadWay.nodes[i];
+                    RoadNode nextNode = roadWay.nodes[i + 1];
+                    float x1 = node.transform.position.x;
+                    float y1 = node.transform.position.y;
+                    float z1 = node.transform.position.z;
+                    float x2 = nextNode.transform.position.x;
+                    float y2 = nextNode.transform.position.y;
+                    float z2 = nextNode.transform.position.z;
+                    float totalNodeToNextNodeDistance = Vector3.Distance(node.transform.position, nextNode.transform.position);
+                    float distanceAlongNode = nextStreetLightDistance;
+                    while (distanceAlongNode < totalNodeToNextNodeDistance)
                     {
-                        closestNode = nextNode;
+                        float angle = Mathf.Atan2(z2 - z1, x2 - x1) * 180 / Mathf.PI;
+                        double ratio = distanceAlongNode / totalNodeToNextNodeDistance;
+                        float xDest = (float)((1 - ratio) * x1 + ratio * x2);
+                        float yDest = (float)((1 - ratio) * y1 + ratio * y2) - 1; // -1 because road mesh is created -1 down from nodes
+                        float zDest = (float)((1 - ratio) * z1 + ratio * z2);
+                        Vector3 streetLightPosition = new Vector3(xDest, yDest, zDest);
+                        // Check distance to nodes and to other roads
+                        RoadNode closestNode;
+                        if (ratio > 0.5)
+                        {
+                            closestNode = nextNode;
+                        }
+                        else
+                        {
+                            closestNode = node;
+                        }
+                        if (Vector3.Distance(closestNode.transform.position, streetLightPosition) >= streetLightMinDistanceFromOtherRoads || RoadNetworkManager.GetInstance().GetRoadWaysFromNode(closestNode).Count == 1)
+                        {
+                            GameObject streetLampPrefab = Resources.Load<GameObject>("Models/streetlight");
+                            GameObject streetLamp = GameObject.Instantiate(streetLampPrefab, streetLightPosition, Quaternion.Euler(new Vector3(0, 0, 0)));
+                            streetLamp.name = "StreetLight_" + streetLightCounter++ + "_" + roadWay.name;
+                            AddToRootParent(streetLamp);
+                            streetLamp.transform.RotateAround(streetLightPosition, Vector3.up, streetLightAngle);
+                            streetLamp.transform.Rotate(Vector3.up, -angle);
+                            streetLamp.transform.Translate(Vector3.right * streetLightAwayFromRoad, Space.Self); // Right moves the light backwards
+                        }
+                        distanceAlongNode = distanceAlongNode + streetLightDistanceApart;
                     }
-                    else
-                    {
-                        closestNode = node;
-                    }
-                    if (Vector3.Distance(closestNode.transform.position, streetLightPosition) >= streetLightMinDistanceFromOtherRoads || RoadNetworkManager.GetInstance().GetRoadWaysFromNode(closestNode).Count == 1)
-                    {
-                        GameObject streetLampPrefab = Resources.Load<GameObject>("Models/streetlight");
-                        GameObject streetLamp = GameObject.Instantiate(streetLampPrefab, streetLightPosition, Quaternion.Euler(new Vector3(0, 0, 0)));
-                        streetLamp.name = "StreetLight_" + streetLightCounter++;
-                        AddToRootParent(streetLamp);
-                        streetLamp.transform.RotateAround(streetLightPosition, Vector3.up, -90.0f);
-                        streetLamp.transform.Rotate(Vector3.up, -angle);
-                        streetLamp.transform.Translate(Vector3.right * streetLightAwayFromRoad, Space.Self); // Right moves the light backwards
-                    }
-                    distanceAlongNode = distanceAlongNode + streetLightDistanceApart;
+                    nextStreetLightDistance = distanceAlongNode - totalNodeToNextNodeDistance;
                 }
-                nextStreetLightDistance = distanceAlongNode - totalNodeToNextNodeDistance;
             }
         }
     }
