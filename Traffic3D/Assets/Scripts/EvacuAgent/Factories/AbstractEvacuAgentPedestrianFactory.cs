@@ -6,13 +6,13 @@ public abstract class AbstractEvacuAgentPedestrianFactory : MonoBehaviour
     public bool isCreatingLeaderType { get; protected set; }
 
     [SerializeField]
-    private GameObject behaviourCollectionPrefab;
+    public GameObject behaviourCollectionPrefab;
 
     [SerializeField]
-    protected GameObject leaderPedestrianTypePrefab;
+    public GameObject leaderPedestrianTypePrefab;
 
     [SerializeField]
-    protected GameObject followerPedestrianTypePrefab;
+    public GameObject followerPedestrianTypePrefab;
 
     protected EvacuAgentPedestrianBase currentLeaderPedestrian;
     protected GroupCollection currentLeaderFollowerCollection;

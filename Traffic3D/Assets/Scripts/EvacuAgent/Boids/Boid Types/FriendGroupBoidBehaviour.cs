@@ -10,7 +10,7 @@ public class FriendGroupBoidBehaviour : BoidBehaviourStrategyBase
     {
         base.Start();
         shouldUpdateBoid = true;
-        isDebuggingOn = true;
+        isDebuggingOn = false;
     }
 
     public override void PerformBehaviour()

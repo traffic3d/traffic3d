@@ -4,12 +4,12 @@ using UnityEngine.AI;
 
 public abstract class BoidBehaviourStrategyBase : BehaviourStrategy
 {
-    public Vector3 Velocity { get; protected set; }
+    public Vector3 Velocity { get; set; }
     public Vector3 Target { get; protected set; }
-    public Vector3 NeighbourCenter { get; private set; }
+    public Vector3 NeighbourCenter { get; set; }
     public FieldOfView FieldOfView { get; protected set; }
     public GroupCollection GroupCollection { get; protected set; }
-    public List<BoidBehaviourStrategyBase> Neighbours { get; protected set; }
+    public List<BoidBehaviourStrategyBase> Neighbours { get; set; }
     public List<BoidBehaviourStrategyBase> NonGroupNeighbours { get; protected set; }
     public EvacuAgentPedestrianBase EvacuAgentPedestrianBase { get; protected set; }
     public NavMeshAgent NavMeshAgent { get; protected set; }
@@ -46,7 +46,7 @@ public abstract class BoidBehaviourStrategyBase : BehaviourStrategy
         shouldUpdateBoid = shouldBoidLogicBeOn;
     }
 
-    protected void UpdateNeighbours()
+    public void UpdateNeighbours()
     {
         List<EvacuAgentPedestrianBase> visibleGroupMemebers = EvacuAgentPedestrianBase.GetVisibleGroupMembers();
         List<EvacuAgentPedestrianBase> visibleNonGroupMemebers = EvacuAgentPedestrianBase.GetVisibleNonGroupMembers();
@@ -71,7 +71,7 @@ public abstract class BoidBehaviourStrategyBase : BehaviourStrategy
         return NavMeshAgent.CalculatePath(proposedDestination, navMeshPath) && navMeshPath.status == NavMeshPathStatus.PathComplete;
     }
 
-    protected Vector3 LimitVelocity(Vector3 newVelocity)
+    public Vector3 LimitVelocity(Vector3 newVelocity)
     {
         if (newVelocity.magnitude > maxSpeedMetresSecond)
         {
@@ -80,7 +80,7 @@ public abstract class BoidBehaviourStrategyBase : BehaviourStrategy
         return newVelocity;
     }
 
-    protected void CalculateNeighbourPoint()
+    public void CalculateNeighbourPoint()
     {
         Vector3 groupCenter = Vector3.zero;
 
