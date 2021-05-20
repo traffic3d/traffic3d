@@ -10,9 +10,8 @@ public class BoidTargetSeekingComponent : BoidComponentBase
 
         Vector3 currentPathTarget = followerBoidBehaviour.NavMeshAgent.steeringTarget;
         currentPathTargetCache = currentPathTarget;
-        Vector3 directionToTarget = (currentPathTarget - transform.position).normalized;
-        float weight = 0.00002f;
-        velocity += directionToTarget * weight;
+        Vector3 directionToTarget = (currentPathTarget - followerBoidBehaviour.transform.position).normalized;
+        velocity += directionToTarget * followerBoidBehaviour.TargetSeekingWeight;
 
         return velocity;
     }

@@ -62,35 +62,15 @@ public static class BoidTestsSetupHelper
 
     public static void SetPosition<T>(T component, Vector3 position) where T : Component
     {
-        component.gameObject.transform.root.position = position;
-    }
-
-    public static void SetPositions(List<GameObject> objects, List<Vector3> positions)
-    {
-        for(int index = 0; index < objects.Count; index++)
-        {
-            objects[index].transform.root.position = positions[index];
-        }
+        component.transform.position = position;
     }
 
     public static void SetPositions<T>(List<T> components, List<Vector3> positions) where T : Component
     {
         for (int index = 0; index < components.Count; index++)
         {
-            components[index].gameObject.transform.root.position = positions[index];
+            components[index].gameObject.transform.position = positions[index];
         }
-    }
-
-    public static List<GameObject> GetListOfGameObjectsFromComponents<T>(List<T> types) where T : Component
-    {
-        List<GameObject> gameObjects = new List<GameObject>();
-
-        foreach(T type in types)
-        {
-            gameObjects.Add(type.gameObject);
-        }
-
-        return gameObjects;
     }
 
     public static void SetNeighbourCentre(BoidBehaviourStrategyBase boidBehaviourStrategyBase, Vector3 neighbourCentre)

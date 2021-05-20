@@ -10,7 +10,7 @@ public class BoidCohesionComponent : BoidComponentBase
             return velocity;
 
         velocity += followerBoidBehaviour.NeighbourCenter;
-        velocity -= transform.position;
+        velocity -= followerBoidBehaviour.transform.position;
 
         return velocity * followerBoidBehaviour.CohesionWeight;
     }
