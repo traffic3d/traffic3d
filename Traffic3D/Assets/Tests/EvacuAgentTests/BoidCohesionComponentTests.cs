@@ -63,6 +63,7 @@ public class BoidCohesionComponent_ReturnsCorrectVelocity_WhenNeighboursCountIsT
         Arrange();
         Act();
         Assertion();
+        TearDown();
     }
 
     public override void Arrange()
@@ -102,7 +103,6 @@ public class BoidCohesionComponent_ReturnsCorrectVelocity_WhenNeighboursCountIsT
         BoidTestsSetupHelper.AssertTwoVectorsAreEqualWithinTolerance(actualBoidCohesionComponentResult, expectedBoidCohestionComponentResult, floatingPointTolerance);
     }
 
-    [TearDown]
     public void TearDown()
     {
         EvacuAgentSceneParamaters.FRIEND_GROUP_BOID_COHESION_WEIGHT = originalBoidCohesionComponentWeight;

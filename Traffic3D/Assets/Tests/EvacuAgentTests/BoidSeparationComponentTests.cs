@@ -63,6 +63,7 @@ public class BoidSeparationComponent_ReturnsCorrectVelocity_WhenNeighboursCountI
         Arrange();
         Act();
         Assertion();
+        TearDown();
     }
 
     public override void Arrange()
@@ -106,7 +107,6 @@ public class BoidSeparationComponent_ReturnsCorrectVelocity_WhenNeighboursCountI
         BoidTestsSetupHelper.AssertTwoVectorsAreEqualWithinTolerance(actualBoidSeparationComponentResult, expectedBoidSeparationComponentResult, floatingPointTolerance);
     }
 
-    [TearDown]
     public void TearDown()
     {
         EvacuAgentSceneParamaters.FRIEND_GROUP_BOID_SEPARATION_WEIGHT = originalBoidSeparationComponentWeight;
