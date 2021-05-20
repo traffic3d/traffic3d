@@ -1,7 +1,5 @@
-﻿
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,13 +29,19 @@ public static class BoidTestsSetupHelper
         return pedestrians;
     }
 
+    public static BoidBehaviourStrategyBase GetBoidBehaviourStrategyBaseFromEvacuAgentPedestrianBase(EvacuAgentPedestrianBase evacuAgentPedestrianBase)
+    {
+        BoidBehaviourStrategyBase boidBehaviourStrategyBase = evacuAgentPedestrianBase.GetComponentInChildren<BoidBehaviourStrategyBase>();
+        return boidBehaviourStrategyBase;
+    }
+
     public static List<BoidBehaviourStrategyBase> GetBoidBehaviourStrategyBasesFromEvacuAgentPedestrianBases(List<EvacuAgentPedestrianBase> evacuAgentPedestrianBases)
     {
         List<BoidBehaviourStrategyBase> boidBehaviourStrategyBases = new List<BoidBehaviourStrategyBase>();
 
         foreach (EvacuAgentPedestrianBase evacuAgentPedestrianBase in evacuAgentPedestrianBases)
         {
-            boidBehaviourStrategyBases.Add(evacuAgentPedestrianBase.GetComponentInChildren<BoidBehaviourStrategyBase>());
+            boidBehaviourStrategyBases.Add(GetBoidBehaviourStrategyBaseFromEvacuAgentPedestrianBase(evacuAgentPedestrianBase));
         }
 
         return boidBehaviourStrategyBases;

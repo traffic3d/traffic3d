@@ -58,10 +58,12 @@
     public static float FRIEND_GROUP_BOID_COHESION_WEIGHT = 0.002f; // was 0.004
     public static float FRIEND_GROUP_BOID_SEPARATION_WEIGHT = 0.004f; // was 0.004 and worked well before intergroup separation
     public static float FRIEND_GROUP_BOID_TARGET_SEEKING_WEIGHT = 0.00002f; // was 0.006 was good
+    public static float FRIEND_GROUP_BOID_INTER_GROUP_SEPARATION_WEIGHT = 0.0008f;
 
     // Worker group boid weights
     public static float WORKER_GROUP_BOID_COHESION_WEIGHT = 0.0008f;
     public static float WORKER_GROUP_BOID_SEPARATION_WEIGHT = 0.006f;
     public static float WORKER_GROUP_BOID_TARGET_SEEKING_WEIGHT = 0.00002f; // was 0.006 was good
+    public static float WORKER_GROUP_BOID_INTER_GROUP_SEPARATION_WEIGHT = 0.0008f;
 
 }

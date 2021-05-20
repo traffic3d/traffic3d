@@ -8,15 +8,16 @@ public abstract class BoidBehaviourStrategyBase : BehaviourStrategy
     public Vector3 Target { get; protected set; }
     public Vector3 NeighbourCenter { get; set; }
     public FieldOfView FieldOfView { get; protected set; }
-    public GroupCollection GroupCollection { get; protected set; }
+    public GroupCollection GroupCollection { get; set; }
     public List<BoidBehaviourStrategyBase> Neighbours { get; set; }
-    public List<BoidBehaviourStrategyBase> NonGroupNeighbours { get; protected set; }
+    public List<BoidBehaviourStrategyBase> NonGroupNeighbours { get; set; }
     public EvacuAgentPedestrianBase EvacuAgentPedestrianBase { get; protected set; }
     public NavMeshAgent NavMeshAgent { get; protected set; }
     public BoidManager BoidManager { get; protected set; }
     public abstract float CohesionWeight { get; }
     public abstract float SeparationWeight { get; }
     public abstract float TargetSeekingWeight { get; }
+    public abstract float InterGroupSeparationWeight { get; }
     protected bool shouldUpdateBoid;
     private float maxSpeedMetresSecond = 2.4f;
 
