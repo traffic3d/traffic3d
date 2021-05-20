@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class BoidInterGroupSeparationComponent : BoidComponentBase
 {
-    private Dictionary<GroupCollection, List<Vector3>> positionOfVisibleMembersInEachSubGroup;
+    public Dictionary<GroupCollection, List<Vector3>> positionOfVisibleMembersInEachSubGroup { get; private set; }
 
-    private void Start()
+    private void Awake()
     {
         positionOfVisibleMembersInEachSubGroup = new Dictionary<GroupCollection, List<Vector3>>();
     }
@@ -14,28 +14,25 @@ public class BoidInterGroupSeparationComponent : BoidComponentBase
     {
         Vector3 velocity = Vector3.zero;
 
-        return velocity;
-
         if (followerBoidBehaviour.NonGroupNeighbours.Count == 0)
             return velocity;
 
         GetPositionsOfNonGroupPedestriansInAssociatedSubGroups(followerBoidBehaviour.NonGroupNeighbours);
-        List<Vector3> gorupCentres = FindCentresOfAllVisbleNonGroupPedestrianSubGroups();
+        List<Vector3> groupCentres = FindCentresOfAllVisbleNonGroupPedestrianSubGroups();
 
-        foreach (Vector3 groupCentre in gorupCentres)
+        foreach (Vector3 groupCentre in groupCentres)
         {
-            float distance = Vector3.Distance(transform.position, groupCentre);
-            velocity += (groupCentre - transform.position).normalized / Mathf.Pow(distance, 2);
+            float distance = Vector3.Distance(followerBoidBehaviour.transform.position, groupCentre);
+            velocity += (groupCentre - followerBoidBehaviour.transform.position).normalized / Mathf.Pow(distance, 2);
         }
 
         velocity /= followerBoidBehaviour.NonGroupNeighbours.Count;
         velocity *= -1;
 
-        float weight = 0.0008f;
-        return velocity.normalized * weight;
+        return velocity.normalized * followerBoidBehaviour.InterGroupSeparationWeight;
     }
 
-    private void GetPositionsOfNonGroupPedestriansInAssociatedSubGroups(List<BoidBehaviourStrategyBase> visibleNonGroupPedestrians)
+    public void GetPositionsOfNonGroupPedestriansInAssociatedSubGroups(List<BoidBehaviourStrategyBase> visibleNonGroupPedestrians)
     {
         foreach (BoidBehaviourStrategyBase neighbour in visibleNonGroupPedestrians)
         {
@@ -50,7 +47,7 @@ public class BoidInterGroupSeparationComponent : BoidComponentBase
         }
     }
 
-    private List<Vector3> FindCentresOfAllVisbleNonGroupPedestrianSubGroups()
+    public List<Vector3> FindCentresOfAllVisbleNonGroupPedestrianSubGroups()
     {
         List<Vector3> centres = new List<Vector3>();
 
@@ -63,7 +60,7 @@ public class BoidInterGroupSeparationComponent : BoidComponentBase
         return centres;
     }
 
-    private Vector3 FindCentreOfSingleSubGroup(List<Vector3> subGroup)
+    public Vector3 FindCentreOfSingleSubGroup(List<Vector3> subGroup)
     {
         Vector3 centre = Vector3.zero;
 
