@@ -367,9 +367,16 @@ public class JunctionGenerator : BaseNodeInformant
 
             GameObject.DestroyImmediate(tmp);
             if (newNode != null)
+            {
                 spawnTrafficLightPosition = newNode;
+            }
             else
-                NodeBeforeJunction = roadWay.nodes[indexOfJunctionNode - 2];
+            {
+                if (indexOfJunctionNode > 1)
+                {
+                    NodeBeforeJunction = roadWay.nodes[indexOfJunctionNode - 2];
+                }
+            }
 
             GameObject trafficLight = trafficLightGenerator.CreateTrafficLightModel(trafficLightParent, spawnTrafficLightPosition.transform.position, trafficLightId, NodeBeforeJunction.transform.position, trafficLightCount, numLanes);
             createdTrafficLights.Add(trafficLight);

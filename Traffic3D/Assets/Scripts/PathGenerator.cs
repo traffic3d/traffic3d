@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -9,10 +9,15 @@ public class PathGenerator : BaseNodeInformant
 {
     private OpenStreetMapReader osmMapReader;
 
-    private Dictionary<Vector3, int> sameNodeCount;
+    // A dictionary of node positions with a list of ways connected to this node position.
+    private Dictionary<Vector3, List<MapXmlWay>> nodeWays;
+    // A dictionary of ways with a list of connected node positions.
+    private Dictionary<MapXmlWay, List<Vector3>> wayNodes;
     private List<Vector3> connectionPositions;
     private const float maxConnectionDistance = 20f;
+    private const float nodeConnectionBackwardsOffset = 2f;
     private bool isLeftHandDrive;
+    private static int nodeNumber = 0;
 
     public PathGenerator(OpenStreetMapReader osmMapReader, bool isLeftHandDrive)
     {
@@ -21,7 +26,8 @@ public class PathGenerator : BaseNodeInformant
         this.osmMapReader = osmMapReader;
         this.isLeftHandDrive = isLeftHandDrive;
         connectionPositions = new List<Vector3>();
-        sameNodeCount = new Dictionary<Vector3, int>();
+        nodeWays = new Dictionary<Vector3, List<MapXmlWay>>();
+        wayNodes = new Dictionary<MapXmlWay, List<Vector3>>();
     }
 
     /// <summary>
@@ -34,18 +40,26 @@ public class PathGenerator : BaseNodeInformant
         {
             if (way.IsRoad)
             {
+                CalculateWayNodes(way);
+            }
+        }
+        connectionPositions = nodeWays.Where(e => e.Value.Count > 1).Select(e => e.Key).ToList();
+        foreach (KeyValuePair<MapXmlWay, List<Vector3>> entry in wayNodes)
+        {
+            if (entry.Key.IsRoad)
+            {
                 // Create new paths
-                List<RoadWay> roadWays = CreateRoadWays(way, way.Name);
+                List<RoadWay> roadWays = CreateRoadWays(entry.Key, entry.Value);
 
                 // Make vehicle path child of way objects' parent
                 foreach (RoadWay roadWay in roadWays)
                 {
                     RecordRoadWayData(roadWay.gameObject);
-                    SetParent(way, roadWay, wayObjects);
+                    SetParent(entry.Key, roadWay, wayObjects);
                     createdRoads.Add(roadWay.gameObject);
                 }
 
-                Road road = wayObjects[way].GetComponentInChildren<Road>();
+                Road road = wayObjects[entry.Key].GetComponentInChildren<Road>();
                 if (road != null)
                 {
                     road.roadWays.AddRange(roadWays);
@@ -54,11 +68,11 @@ public class PathGenerator : BaseNodeInformant
             }
         }
         AddConnectionsBetweenRoads();
+        RenderStopLines();
     }
 
     public void AddConnectionsBetweenRoads()
     {
-        connectionPositions = sameNodeCount.Where(e => e.Value > 1).Select(e => e.Key).ToList();
         RoadNetworkManager.GetInstance().Reload();
         foreach (Vector3 connectionPosition in connectionPositions)
         {
@@ -101,24 +115,26 @@ public class PathGenerator : BaseNodeInformant
         }
     }
 
+    public void RenderStopLines()
+    {
+        foreach (StopLineRenderer stopLineRenderer in GameObject.FindObjectsOfType<StopLineRenderer>())
+        {
+            stopLineRenderer.RenderStopLine();
+        }
+    }
+
     public List<GameObject> GetDeletedVehiclePaths()
     {
         return deletedVehiclePaths;
     }
 
     /// <summary>
-    /// Creates a Vehicle Path
-    /// - Creates a new gameObject with "Path" Component. 
-    /// - Populates Path component using nodes found in "Way" 
+    /// Calculates the unity positions for each node.
     /// </summary>
     /// <param name="way">Way holding all nodes in the road</param>
     /// <param name="pathName">Name of the new vehicle path</param>
-    List<RoadWay> CreateRoadWays(MapXmlWay way, string pathName)
+    void CalculateWayNodes(MapXmlWay way)
     {
-
-        int forwardLanes = way.ForwardLanes;
-        int backwardLanes = way.BackwardLanes;
-
         List<Vector3> nodePositions = new List<Vector3>();
         for (int i = 0; i < way.NodeIDs.Count; i++)
         {
@@ -127,21 +143,26 @@ public class PathGenerator : BaseNodeInformant
             vCurrentNodeLocation.y = vCurrentNodeLocation.y - 1; // move up along y-axis so node is above road
             vCurrentNodeLocation = vCurrentNodeLocation * (-1f);
             nodePositions.Add(vCurrentNodeLocation);
-            if (sameNodeCount.ContainsKey(vCurrentNodeLocation))
+            if (!nodeWays.ContainsKey(vCurrentNodeLocation))
             {
-                sameNodeCount[vCurrentNodeLocation]++;
+                nodeWays[vCurrentNodeLocation] = new List<MapXmlWay>();
             }
-            else
-            {
-                sameNodeCount.Add(vCurrentNodeLocation, 1);
-            }
+            nodeWays[vCurrentNodeLocation].Add(way);
         }
-        // Save details about nodes used in current path
-        return CreateRoadWays(way, nodePositions, forwardLanes, backwardLanes);
+        this.wayNodes.Add(way, nodePositions);
     }
 
-    private List<RoadWay> CreateRoadWays(MapXmlWay way, List<Vector3> nodePositions, int forwardLanes, int backwardLanes)
+    /// <summary>
+    /// Creates a Vehicle Path
+    /// - Creates a new gameObject with "Path" Component. 
+    /// - Populates Path component using nodes found in "Way" 
+    /// </summary>
+    /// <param name="way">Way holding all nodes in the road</param>
+    /// <param name="nodePositions">Unity positions of all nodes</param>
+    private List<RoadWay> CreateRoadWays(MapXmlWay way, List<Vector3> nodePositions)
     {
+        int forwardLanes = way.ForwardLanes;
+        int backwardLanes = way.BackwardLanes;
         int numNodes = nodePositions.Count;
         Vector3[] verts = new Vector3[numNodes * 2];
         int vertIndex = 0;
@@ -154,11 +175,55 @@ public class PathGenerator : BaseNodeInformant
             laneSpaces.Add(i);
         }
 
+        bool placeStopLine;
+
         for (int i = 0; i < numNodes; i++)
         {
+            // Reset Variables
+            placeStopLine = false;
+            // For first node & last node:
+            // - Check for extra roads connecting and move backwards if connecting to a road.
+            // - Place stop lines if needed.
+            if ((i == 0 || i == numNodes - 1) && numNodes > 1)
+            {
+                List<MapXmlWay> waysOnNode = nodeWays[nodePositions[i]];
+                if (waysOnNode.Count > 1)
+                {
+                    int maxLanes = 0;
+                    foreach (MapXmlWay wayOnNode in waysOnNode)
+                    {
+                        if (wayOnNode.Equals(way))
+                        {
+                            continue;
+                        }
+                        // Get max lanes for checking if road needs to move backwards
+                        if (wayOnNode.ForwardLanes > maxLanes)
+                        {
+                            maxLanes = wayOnNode.ForwardLanes;
+                        }
+                        if (wayOnNode.BackwardLanes > maxLanes)
+                        {
+                            maxLanes = wayOnNode.BackwardLanes;
+                        }
+                        // Check if able to place stop lines
+                        // Two way check (this current road and another with the connection in the middle of the road).
+                        if (waysOnNode.Count == 2)
+                        {
+                            int index = wayNodes[wayOnNode].IndexOf(nodePositions[i]);
+                            // If index is in the middle of the road path.
+                            if (index > 0 && index < wayNodes[wayOnNode].Count - 1)
+                            {
+                                placeStopLine = true;
+                            }
+                        }
+                    }
+                    float distanceToMoveBack = maxLanes * RoadGenerator.defaultLaneWidth + nodeConnectionBackwardsOffset;
+                    nodePositions[i] = MoveStartOrEndNodeTowardsMainPath(nodePositions, nodePositions[i], distanceToMoveBack);
+                }
+            }
             Vector3 currentNodeLoc = nodePositions[i]; // Next Nodes' Location
             Vector2 forward = Vector2.zero;
-            //For all but last node: Get forward between current & next Node
+            // For all but last node: Get forward between current & next Node
             if (i < numNodes - 1)
             {
                 Vector3 nextNodeLoc = nodePositions[i + 1];// Next Nodes' Location
@@ -166,7 +231,7 @@ public class PathGenerator : BaseNodeInformant
                 Vector2 next = new Vector2(nextNodeLoc.x, nextNodeLoc.z);
                 forward += next - cur;
             }
-            //For all but first node: Get forward between current & previous Node
+            // For all but first node: Get forward between current & previous Node
             if (i > 0)
             {
                 Vector3 prevNodeLoc = nodePositions[i - 1]; // Next Nodes' Location
@@ -181,7 +246,12 @@ public class PathGenerator : BaseNodeInformant
             foreach (float laneSpace in laneSpaces)
             {
                 Vector3 nodeLocation = currentNodeLoc + vleft * RoadGenerator.defaultLaneWidth * laneSpace;
-                RoadNode roadNode = CreateRoadNode(Random.value + "", nodeLocation); // TODO CHANGE RANDOM VALUE STRING
+                RoadNode roadNode = CreateRoadNode(GenerateRoadNodeName(nodeLocation), nodeLocation);
+                if (placeStopLine)
+                {
+                    roadNode.gameObject.AddComponent<StopLine>();
+                    roadNode.gameObject.AddComponent<StopLineRenderer>();
+                }
                 if (!roadNodesWithLaneSpaces.ContainsKey(laneSpace))
                 {
                     roadNodesWithLaneSpaces[laneSpace] = new List<RoadNode>();
@@ -192,7 +262,7 @@ public class PathGenerator : BaseNodeInformant
         for (int i = 0; i < laneSpaces.Count; i++)
         {
             // Depending on left hand drive skip all forward lanes but reverse backwards lanes
-            if((isLeftHandDrive && i >= forwardLanes) || (!isLeftHandDrive && i < forwardLanes))
+            if ((isLeftHandDrive && i >= forwardLanes) || (!isLeftHandDrive && i < forwardLanes))
             {
                 continue;
             }
@@ -206,18 +276,28 @@ public class PathGenerator : BaseNodeInformant
             RoadWay roadWay = CreateRoadWay(way.Name + "_" + entry.Key);
             for (int i = 0; i < entry.Value.Count; i++)
             {
-                if (i == 1 && firstNode != null)
+                // Rotate towards the next node.
+                if (i < entry.Value.Count - 1)
                 {
-                    // Direction from 1st to 2nd node
-                    Vector3 relativePos = entry.Value[i].transform.position - firstNode.transform.position;
-                    // the second argument, upwards, defaults to Vector3.up
-                    Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);
-                    firstNode.transform.rotation = rotation;
+                    entry.Value[i].transform.LookAt(entry.Value[i + 1].transform);
                 }
+                else if (i == entry.Value.Count - 1 && i != 0)
+                {
+                    // Look away from the previous node.
+                    entry.Value[i].transform.rotation = Quaternion.LookRotation(entry.Value[i].transform.position - entry.Value[i - 1].transform.position);
+                }
+                // Add specific settings for the first node.
                 if (i == 0)
                 {
                     entry.Value[i].startNode = true;
                     firstNode = entry.Value[i];
+                    // Check if first node has stop line and remove.
+                    StopLine stopLine = firstNode.gameObject.GetComponent<StopLine>();
+                    if (stopLine != null)
+                    {
+                        GameObject.DestroyImmediate(stopLine);
+                        GameObject.DestroyImmediate(firstNode.gameObject.GetComponent<StopLineRenderer>());
+                    }
                 }
                 roadWay.nodes.Add(entry.Value[i]);
             }
@@ -240,8 +320,7 @@ public class PathGenerator : BaseNodeInformant
     private RoadNode CreateRoadNode(string id, Vector3 position)
     {
         // Create GameObject for node
-        string name = "node" + id;
-        GameObject singleNode = new GameObject(name);
+        GameObject singleNode = new GameObject(id);
         // Add layer to ignore to raycasts to node
         singleNode.layer = LayerMask.NameToLayer("Ignore Raycast");
         // Set position of Node to the vector
@@ -381,4 +460,36 @@ public class PathGenerator : BaseNodeInformant
 
         return total / way.NodeIDs.Count;
     }
+
+    private Vector3 MoveStartOrEndNodeTowardsMainPath(List<Vector3> nodePath, Vector3 nodeToMove, float distanceToMove)
+    {
+        if (nodePath.Count <= 1)
+        {
+            Debug.Log("Unable to move node as path only has 1 node or less. Node: " + nodeToMove.ToString());
+            return nodeToMove;
+        }
+        Vector3 target;
+        if (nodePath[0].Equals(nodeToMove))
+        {
+            target = nodePath[1];
+        }
+        else if (nodePath.Last().Equals(nodeToMove))
+        {
+            target = nodePath[nodePath.Count - 2];
+        }
+        else
+        {
+            Debug.Log("Unable to move node, must be start or end of path. Node: " + nodeToMove.ToString());
+            return nodeToMove;
+        }
+        return Vector3.MoveTowards(nodeToMove, target, distanceToMove);
+    }
+
+    public static string GenerateRoadNodeName(Vector3 nodeLocation)
+    {
+        string nodeName = "node_" + nodeNumber + "_" + nodeLocation.x + "," + nodeLocation.y + "," + nodeLocation.z;
+        nodeNumber++;
+        return nodeName;
+    }
+
 }

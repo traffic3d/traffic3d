@@ -1,4 +1,4 @@
-﻿using DigitalRuby.RainMaker;
+using DigitalRuby.RainMaker;
 using UnityEngine;
 
 public class EnvironmentSettings : MonoBehaviour
@@ -23,6 +23,7 @@ public class EnvironmentSettings : MonoBehaviour
 
     void Start()
     {
+        // Set the normal material to all surfaces at start to be overridden if needed.
         SetSurfaceMaterial(normalSurfaceMaterial);
         RenderSettings.ambientIntensity = ambientIntensity;
         if (rain)
@@ -66,15 +67,26 @@ public class EnvironmentSettings : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Sets the PhysicMaterial for each surface road and pathway.
+    /// </summary>
+    /// <param name="surfaceMaterial">The physics material to apply</param>
     private void SetSurfaceMaterial(PhysicMaterial surfaceMaterial)
     {
+        // For each roadway and pathway check to see if it has a collider and apply the material.
         foreach (GameObject roadway in GameObject.FindGameObjectsWithTag("roadway"))
         {
-            roadway.GetComponent<Collider>().material = surfaceMaterial;
+            if (roadway.GetComponent<Collider>() != null)
+            {
+                roadway.GetComponent<Collider>().material = surfaceMaterial;
+            }
         }
         foreach (GameObject pathway in GameObject.FindGameObjectsWithTag("pathway"))
         {
-            pathway.GetComponent<Collider>().material = surfaceMaterial;
+            if (pathway.GetComponent<Collider>() != null)
+            {
+                pathway.GetComponent<Collider>().material = surfaceMaterial;
+            }
         }
     }
 
