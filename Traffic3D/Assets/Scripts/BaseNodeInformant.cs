@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -58,7 +58,6 @@ public abstract class BaseNodeInformant
         if (distance > maxDistanceAprat)
         {
             GameObject newNodeGameObject = new GameObject();
-            newNodeGameObject.name = "node" + (roadWay.nodes.Count + 1);
             newNodeGameObject.transform.SetParent(roadNodeRootParent.transform, true);
             RoadNode newNode = newNodeGameObject.AddComponent<RoadNode>();
             //Add node to roadway
@@ -72,6 +71,7 @@ public abstract class BaseNodeInformant
             newNode.transform.position = Vector3.MoveTowards(newNode.transform.position, previousNode.transform.position, newNodedistanceApart);
             //Add layer to ignore to raycasts
             newNodeGameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+            newNodeGameObject.name = PathGenerator.GenerateRoadNodeName(newNode.transform.position);
             return newNode;
         }
         return null;

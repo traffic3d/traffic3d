@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.SceneManagement;
@@ -112,7 +112,7 @@ public class VehiclePathTests
     }
 
     [Test]
-    public void StopLineTest()
+    public void VehiclePathHasStopLineTest()
     {
         GameObject dummyVehicle = new GameObject("DummyVehicle");
         dummyVehicle.transform.position = new Vector3(0, 1, 0);
