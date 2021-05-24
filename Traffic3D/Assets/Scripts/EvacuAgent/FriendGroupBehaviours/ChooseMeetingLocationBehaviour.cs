@@ -3,7 +3,7 @@ using UnityEngine.AI;
 
 public class ChooseMeetingLocationBehaviour : BehaviourStrategy
 {
-    private bool isMeetingLocationChosen;
+    public bool isMeetingLocationChosen { get; set; }
     private ChooseLocationOnNavmesh chooseLocationOnNavmesh;
     private float radiusOfPointToConsider;
     private NavMeshAgent navMeshAgent;
