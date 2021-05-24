@@ -88,12 +88,10 @@ public class InformationPanelController_GetNumberOfObjectsWithTag_GetsCorrectNum
 public static class InformationPanelControllerTestsHelper
 {
     public static string untaggedString = "Untagged";
-    private static string userInterfacePrefabPathWay = $"{EvacuAgentSceneParamaters.RESEOURCES_PREFABS_PREFIX}UserInterface";
 
     public static InformationPanelController GetInformationPanelController()
     {
-        GameObject userInterface = GameObject.Instantiate(Resources.Load<GameObject>(userInterfacePrefabPathWay));
-        return userInterface.GetComponent<InformationPanelController>();
+        return GameObject.FindObjectOfType<InformationPanelController>();
     }
 
     public static void ClearAllTextFields(InformationPanelController informationPanelController)
