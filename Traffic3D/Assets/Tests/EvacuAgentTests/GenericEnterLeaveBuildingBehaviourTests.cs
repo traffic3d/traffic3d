@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.AI;
@@ -133,9 +134,7 @@ public class GenericEnterLeaveBuildingBehaviour_ShouldTriggerBehaviour_EnterBuil
 
 public class GenericEnterLeaveBuildingBehaviour_PerformBehaviour_CorrectlyAltersPedestrianForGivenTime : ArrangeActAssertStrategy
 {
-    private GameObject pedestrianGameObject;
-    private Pedestrian pedestrian;
-    private GameObject genericEnterLeaveBuildingBehaviourGameObject;
+    private EvacuAgentPedestrianBase evacuAgentPedestrianBase;
     private GenericEnterLeaveBuildingBehaviour genericEnterLeaveBuildingBehaviour;
     private Vector3 pedestrianOriginalScale;
     private Collider pedestrianCollider;
@@ -155,19 +154,18 @@ public class GenericEnterLeaveBuildingBehaviour_PerformBehaviour_CorrectlyAlters
 
     public override void Arrange()
     {
-        pedestrianGameObject = SpawnGameObjectWithInactivePedestrianScript();
-        pedestrian = pedestrianGameObject.GetComponent<Pedestrian>();
-        pedestrianCollider = pedestrianGameObject.GetComponent<Collider>();
-        pedestrianOriginalScale = pedestrian.transform.localScale;
+        evacuAgentPedestrianBase = SpawnFriendGroupOfEvacuAgentPedestrians(1).First();
+        genericEnterLeaveBuildingBehaviour = evacuAgentPedestrianBase.GetComponentInChildren<GenericEnterLeaveBuildingBehaviour>();
+        genericEnterLeaveBuildingBehaviour.Start();
 
-        genericEnterLeaveBuildingBehaviourGameObject = GenericEnterLeaveBuildingBehaviourTestsHelper.SetUpGenericEnterLeaveBuildingBehaviourGameObject(pedestrianGameObject);
-        genericEnterLeaveBuildingBehaviour = genericEnterLeaveBuildingBehaviourGameObject.GetComponent<GenericEnterLeaveBuildingBehaviour>();
+        pedestrianCollider = evacuAgentPedestrianBase.GetComponentInParent<Collider>();
+        pedestrianOriginalScale = evacuAgentPedestrianBase.transform.root.localScale;
 
         secondsToWait = 0;
         isAbleToEnteBuilding = true;
 
         Assert.IsTrue(pedestrianCollider.enabled);
-        Assert.AreEqual(pedestrianOriginalScale, pedestrian.transform.localScale);
+        Assert.AreEqual(pedestrianOriginalScale, evacuAgentPedestrianBase.transform.root.localScale);
     }
 
     public override void Act()
@@ -179,13 +177,13 @@ public class GenericEnterLeaveBuildingBehaviour_PerformBehaviour_CorrectlyAlters
     private void AssetionBeforeYieldReturnInStartAgentWaitAtBuilding()
     {
         Assert.IsFalse(pedestrianCollider.enabled);
-        Assert.AreEqual(new Vector3(0.0001f, 0.0001f, 0.0001f), pedestrian.transform.localScale);
+        Assert.AreEqual(new Vector3(0.0001f, 0.0001f, 0.0001f), evacuAgentPedestrianBase.transform.root.localScale);
     }
 
     public override void Assertion()
     {
         Assert.IsTrue(pedestrianCollider.enabled);
-        Assert.AreEqual(pedestrianOriginalScale, pedestrian.transform.localScale);
+        Assert.AreEqual(pedestrianOriginalScale, evacuAgentPedestrianBase.transform.root.localScale);
     }
 }
 
@@ -193,8 +191,6 @@ public static class GenericEnterLeaveBuildingBehaviourTestsHelper
 {
     public static GameObject SetUpGenericEnterLeaveBuildingBehaviourGameObject(GameObject parentObject)
     {
-        parentObject.AddComponent<NavMeshAgent>();
-
         GameObject gameObject = GameObject.Instantiate(new GameObject());
         gameObject.AddComponent<GenericEnterLeaveBuildingBehaviour>();
         gameObject.transform.SetParent(parentObject.transform);
