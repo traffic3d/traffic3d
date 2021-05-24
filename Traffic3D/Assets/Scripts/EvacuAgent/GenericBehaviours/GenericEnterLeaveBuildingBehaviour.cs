@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class GenericEnterLeaveBuildingBehaviour : BehaviourStrategy
 {
-    private Vector3 inBuildingScale = new Vector3(0.0001f, 0.0001f, 0.0001f); // These values are aritrary, they are used to shrink Pedestrians to a size the user cannot see to simulate being inside a building
+    private Vector3 inBuildingScale = new Vector3(0.0001f, 0.0001f, 0.0001f); // These values are arbitrary, they are used to shrink Pedestrians to a size the user cannot see to simulate being inside a building
     private Vector3 originalScale;
     private Collider pedestrianCollider;
     private Pedestrian pedestrian;
@@ -17,7 +17,7 @@ public class GenericEnterLeaveBuildingBehaviour : BehaviourStrategy
     private bool isEnterBuildingCoolDownActive;
     private int enterBuildingCoolDownSeconds;
 
-    private void Start()
+    public void Start()
     {
         navMeshAgent = GetComponentInParent<NavMeshAgent>();
         pedestrian = GetComponentInParent<Pedestrian>();
