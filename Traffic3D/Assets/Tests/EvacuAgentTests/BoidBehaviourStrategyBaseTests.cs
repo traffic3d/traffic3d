@@ -133,7 +133,7 @@ public class BoidBehaviourStrategyBase_LimitVelocity_CorrectlyLimitsTheMagnitude
 
     public override void Assertion()
     {
-        BoidTestsSetupHelper.AssertTwoVectorsAreEqualWithinTolerance(actualVelocity, expectedVelocity, floatingPointTolerance);
+        AssertTwoVectorsAreEqualWithinTolerance(actualVelocity, expectedVelocity, floatingPointTolerance);
     }
 }
 
@@ -171,7 +171,7 @@ public class BoidBehaviourStrategyBase_LimitVelocity_DoesNotLimitTheMagnitudeOfT
     public override void Assertion()
     {
         Assert.Less(velocityBeforeLimit.magnitude, friendGroupBoidBehaviour.maxSpeed);
-        BoidTestsSetupHelper.AssertTwoVectorsAreEqualWithinTolerance(actualVelocity, expectedVelocity, floatingPointTolerance);
+        AssertTwoVectorsAreEqualWithinTolerance(actualVelocity, expectedVelocity, floatingPointTolerance);
     }
 }
 
@@ -232,6 +232,6 @@ public class BoidBehaviourStrategyBase_CalculateNeighbourPoint_CalculatesTheCorr
 
     public override void Assertion()
     {
-        BoidTestsSetupHelper.AssertTwoVectorsAreEqualWithinTolerance(actualNeighbourCentre, expectedNeighbourCentre, floatingPointTolerance);
+        AssertTwoVectorsAreEqualWithinTolerance(actualNeighbourCentre, expectedNeighbourCentre, floatingPointTolerance);
     }
 }

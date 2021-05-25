@@ -89,7 +89,7 @@ public class BoidSeparationComponent_ReturnsCorrectVelocity_WhenNeighboursCountI
             new Vector3(-6f, 0f, 5f),
         };
 
-        BoidTestsSetupHelper.SetPositions(neighbours, neighbourLocations);
+        SetPositions(neighbours, neighbourLocations);
 
         // Get the boid component being tested
         boidSeparationComponent = evacuAgentPedestrianBase.GetComponentInChildren<BoidSeparationComponent>();
@@ -104,7 +104,7 @@ public class BoidSeparationComponent_ReturnsCorrectVelocity_WhenNeighboursCountI
 
     public override void Assertion()
     {
-        BoidTestsSetupHelper.AssertTwoVectorsAreEqualWithinTolerance(actualBoidSeparationComponentResult, expectedBoidSeparationComponentResult, floatingPointTolerance);
+        AssertTwoVectorsAreEqualWithinTolerance(actualBoidSeparationComponentResult, expectedBoidSeparationComponentResult, floatingPointTolerance);
     }
 
     public void TearDown()

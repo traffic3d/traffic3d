@@ -129,5 +129,48 @@ namespace Tests
 
             return friendGroup;
         }
+
+        public static void SetPosition<T>(T component, Vector3 position) where T : Component
+        {
+            component.transform.position = position;
+        }
+
+        public static void SetPositions<T>(List<T> components, List<Vector3> positions) where T : Component
+        {
+            for (int index = 0; index < components.Count; index++)
+            {
+                components[index].gameObject.transform.position = positions[index];
+            }
+        }
+
+        public static void AssertTwoVectorsAreEqualWithinTolerance(Vector3 actualVector, Vector3 expectedVector, float tolerance)
+        {
+            try
+            {
+                Assert.That(actualVector.x, Is.EqualTo(expectedVector.x).Within(tolerance));
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"AssertTwoVectorsAreEqualWithinTolerance - Failure in X component. Message: {e}");
+            }
+
+            try
+            {
+                Assert.That(actualVector.y, Is.EqualTo(expectedVector.y).Within(tolerance));
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"AssertTwoVectorsAreEqualWithinTolerance - Failure in Y component. Message: {e}");
+            }
+
+            try
+            {
+                Assert.That(actualVector.z, Is.EqualTo(expectedVector.z).Within(tolerance));
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"AssertTwoVectorsAreEqualWithinTolerance - Failure in Z component. Message: {e}");
+            }
+        }
     }
 }

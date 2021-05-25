@@ -50,18 +50,20 @@ public class BoidInterGroupSeparationComponent_GetPositionsOfNonGroupPedestrians
         }
 
         // Set positions of all members of each group
-        BoidInterGroupSeparationComponentTestsHelper.SetupGroupMemberPositions(visibleEvacuAgentBaseGroups);
         groupPositions = BoidInterGroupSeparationComponentTestsHelper.GetPositionsForGroups();
-        groupOnePositions = groupPositions[0];
-        groupTwoPositions = groupPositions[1];
-        groupThreePositions = groupPositions[2];
+
+        for (int index = 0; index < visibleEvacuAgentBaseGroups.Count; index++)
+        {
+            SetPositions(visibleEvacuAgentBaseGroups[index], groupPositions[index]);
+        }
+
 
         // Created expected dicrionary of group collection and the associated members positions
         expectedDictionary = new Dictionary<GroupCollection, List<Vector3>>
         {
-            { visibleEvacuAgentBaseGroups[0][0].GroupCollection, groupOnePositions },
-            { visibleEvacuAgentBaseGroups[1][0].GroupCollection, groupTwoPositions },
-            { visibleEvacuAgentBaseGroups[2][0].GroupCollection, groupThreePositions }
+            { visibleEvacuAgentBaseGroups[0][0].GroupCollection, groupPositions[0] },
+            { visibleEvacuAgentBaseGroups[1][0].GroupCollection, groupPositions[1] },
+            { visibleEvacuAgentBaseGroups[2][0].GroupCollection, groupPositions[2] }
         };
     }
 
@@ -85,6 +87,7 @@ public class BoidInterGroupSeparationComponent_FindCentresOfAllVisbleNonGroupPed
     private List<BoidBehaviourStrategyBase> visibleNonGroupPedestrians;
     private List<Vector3> expectedCentres;
     private List<Vector3> actualCentres;
+    private List<List<Vector3>> groupPositions;
 
     [UnityTest]
     public override IEnumerator PerformTest()
@@ -117,7 +120,12 @@ public class BoidInterGroupSeparationComponent_FindCentresOfAllVisbleNonGroupPed
         }
 
         // Set positions of all members of each group
-        BoidInterGroupSeparationComponentTestsHelper.SetupGroupMemberPositions(visibleEvacuAgentBaseGroups);
+        groupPositions = BoidInterGroupSeparationComponentTestsHelper.GetPositionsForGroups();
+
+        for (int index = 0; index < visibleEvacuAgentBaseGroups.Count; index++)
+        {
+            SetPositions(visibleEvacuAgentBaseGroups[index], groupPositions[index]);
+        }
 
         expectedCentres = new List<Vector3>
         {
@@ -180,7 +188,7 @@ public class BoidInterGroupSeparationComponent_FindCentreOfSingleSubGroup_FindsC
 
     public override void Assertion()
     {
-        BoidTestsSetupHelper.AssertTwoVectorsAreEqualWithinTolerance(actualCentre, expectedCentre, floatingPointTolerance);
+        AssertTwoVectorsAreEqualWithinTolerance(actualCentre, expectedCentre, floatingPointTolerance);
     }
 }
 
@@ -193,6 +201,7 @@ public class BoidInterGroupSeparationComponent_CalculateComponentVelocity_Calcul
     private List<BoidBehaviourStrategyBase> visibleNonGroupPedestrians;
     private Vector3 expectedVelocity;
     private Vector3 actualVelocity;
+    private List<List<Vector3>> groupPositions;
     private float originalWeight;
     private float testWeight;
 
@@ -225,8 +234,14 @@ public class BoidInterGroupSeparationComponent_CalculateComponentVelocity_Calcul
         };
 
         // Set positions of all members of each group
-        BoidInterGroupSeparationComponentTestsHelper.SetupGroupMemberPositions(visibleEvacuAgentBaseGroups);
-        BoidTestsSetupHelper.SetPosition(friendGroupBoidBehaviour, new Vector3(1f, 0f, 5f));
+        groupPositions = BoidInterGroupSeparationComponentTestsHelper.GetPositionsForGroups();
+
+        for(int index = 0; index < visibleEvacuAgentBaseGroups.Count; index++)
+        {
+            SetPositions(visibleEvacuAgentBaseGroups[index], groupPositions[index]);
+        }
+
+        SetPosition(friendGroupBoidBehaviour, new Vector3(1f, 0f, 5f));
 
         // Add all members of all groups as a list of visible pedestrians
         visibleNonGroupPedestrians = new List<BoidBehaviourStrategyBase>();
@@ -250,7 +265,7 @@ public class BoidInterGroupSeparationComponent_CalculateComponentVelocity_Calcul
 
     public override void Assertion()
     {
-        BoidTestsSetupHelper.AssertTwoVectorsAreEqualWithinTolerance(actualVelocity, expectedVelocity, floatingPointTolerance);
+        AssertTwoVectorsAreEqualWithinTolerance(actualVelocity, expectedVelocity, floatingPointTolerance);
     }
 
     public void TearDown()
@@ -261,19 +276,6 @@ public class BoidInterGroupSeparationComponent_CalculateComponentVelocity_Calcul
 
 public static class BoidInterGroupSeparationComponentTestsHelper
 {
-    public static void SetupGroupMemberPositions(List<List<EvacuAgentPedestrianBase>> visibleEvacuAgentBaseGroups)
-    {
-        // Set positions of all members of each group
-        List<List<Vector3>> groupPositions = GetPositionsForGroups();
-        List<Vector3> groupOnePositions = groupPositions[0];
-        List<Vector3> groupTwoPositions = groupPositions[1];
-        List<Vector3> groupThreePositions = groupPositions[2];
-
-        BoidTestsSetupHelper.SetPositions(visibleEvacuAgentBaseGroups[0], groupOnePositions);
-        BoidTestsSetupHelper.SetPositions(visibleEvacuAgentBaseGroups[1], groupTwoPositions);
-        BoidTestsSetupHelper.SetPositions(visibleEvacuAgentBaseGroups[2], groupThreePositions);
-    }
-
     public static List<List<Vector3>> GetPositionsForGroups()
     {
         return new List<List<Vector3>>

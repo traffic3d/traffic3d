@@ -39,7 +39,7 @@ public class BoidTargetSeekingComponet_ReturnsCorrectVelocity_BasedOnCurrentStee
         boidTargetSeekingComponent = evacuAgentPedestrianBase.GetComponentInChildren<BoidTargetSeekingComponent>();
         navMeshAgent = evacuAgentPedestrianBase.navMeshAgent;
 
-        BoidTestsSetupHelper.SetPosition(friendGroupBoidBehaviour, new Vector3(2f, 10f, -3.25f));
+        SetPosition(friendGroupBoidBehaviour, new Vector3(2f, 10f, -3.25f));
 
         // Add steering target to NavMeshAgent
         navMeshAgent.SetDestination(new Vector3(20f, 2f, 5f));
@@ -54,7 +54,7 @@ public class BoidTargetSeekingComponet_ReturnsCorrectVelocity_BasedOnCurrentStee
 
     public override void Assertion()
     {
-        BoidTestsSetupHelper.AssertTwoVectorsAreEqualWithinTolerance(actualVelocity, expectedVelocity, floatingPointTolerance);
+        AssertTwoVectorsAreEqualWithinTolerance(actualVelocity, expectedVelocity, floatingPointTolerance);
     }
 
     public void TearDown()
