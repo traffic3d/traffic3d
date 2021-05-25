@@ -120,7 +120,7 @@ public class FollowerDestinationUpdateBehaviour_PerformBehaviour_CorrectlySetsNe
 
     public override void Act()
     {
-        BoidTestsSetupHelper.AssertTwoVectorsAreEqualWithinTolerance(navMeshAgent.destination, locationOne, floatingPointTolerance);
+        AssertTwoVectorsAreEqualWithinTolerance(navMeshAgent.destination, locationOne, floatingPointTolerance);
 
         // Set locationTwo as the new GroupDestination so that is is different fromt he currentDestination in FollowerDestinationUpdateBehaviour
         evacuAgentPedestrianBase.GroupCollection.GroupDestination = locationTwo;
@@ -129,6 +129,6 @@ public class FollowerDestinationUpdateBehaviour_PerformBehaviour_CorrectlySetsNe
 
     public override void Assertion()
     {
-        BoidTestsSetupHelper.AssertTwoVectorsAreEqualWithinTolerance(navMeshAgent.destination, locationTwo, floatingPointTolerance);
+        AssertTwoVectorsAreEqualWithinTolerance(navMeshAgent.destination, locationTwo, floatingPointTolerance);
     }
 }

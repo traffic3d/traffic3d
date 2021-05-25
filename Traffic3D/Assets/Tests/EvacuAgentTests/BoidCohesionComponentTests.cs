@@ -83,7 +83,7 @@ public class BoidCohesionComponent_ReturnsCorrectVelocity_WhenNeighboursCountIsT
 
         // Set up neighbour centre used for velocity calculation
         BoidTestsSetupHelper.SetNeighbourCentre(friendGroupBoidBehaviour, new Vector3(5f, 0f, 2f));
-        BoidTestsSetupHelper.SetPosition(friendGroupBoidBehaviour, new Vector3(10f, 0f, 12f));
+        SetPosition(friendGroupBoidBehaviour, new Vector3(10f, 0f, 12f));
 
         // Get the boid component being tested
         boidCohesionComponent = evacuAgentPedestrianBase.GetComponentInChildren<BoidCohesionComponent>();
@@ -100,7 +100,7 @@ public class BoidCohesionComponent_ReturnsCorrectVelocity_WhenNeighboursCountIsT
     public override void Assertion()
     {
         Assert.True(expectedNeighbourCount == friendGroupBoidBehaviour.Neighbours.Count);
-        BoidTestsSetupHelper.AssertTwoVectorsAreEqualWithinTolerance(actualBoidCohesionComponentResult, expectedBoidCohestionComponentResult, floatingPointTolerance);
+        AssertTwoVectorsAreEqualWithinTolerance(actualBoidCohesionComponentResult, expectedBoidCohestionComponentResult, floatingPointTolerance);
     }
 
     public void TearDown()
