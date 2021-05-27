@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -29,7 +29,7 @@ public class VehicleEngine : MonoBehaviour
     public Transform currentNode;
     public int currentNodeNumber;
     private float targetSteerAngle = 0;
-    private Renderer renderer;
+    private Mesh mainMesh;
     public float numberOfSensorRays = 5;
     public float steerReduceRayConstant = 5;
     public float maxDistanceToMonitor = 100;
@@ -54,9 +54,9 @@ public class VehicleEngine : MonoBehaviour
     void Start()
     {
         GetComponent<Rigidbody>().centerOfMass = centerOfMass;
-        renderer = GetComponentsInChildren<Renderer>().Aggregate((r1, r2) => (r1.bounds.extents.x * r1.bounds.extents.y * r1.bounds.extents.z) > (r2.bounds.extents.x * r2.bounds.extents.y * r2.bounds.extents.z) ? r1 : r2);
-        longestSide = Math.Max(renderer.bounds.size.z, renderer.bounds.size.x);
-        shortestSide = Math.Min(renderer.bounds.size.z, renderer.bounds.size.x);
+        mainMesh = GetComponentsInChildren<MeshFilter>().Aggregate((m1, m2) => (m1.mesh.bounds.extents.x * m1.mesh.bounds.extents.y * m1.mesh.bounds.extents.z) > (m2.mesh.bounds.extents.x * m2.mesh.bounds.extents.y * m2.mesh.bounds.extents.z) ? m1 : m2).mesh;
+        longestSide = Math.Max(mainMesh.bounds.size.z * transform.lossyScale.z, mainMesh.bounds.size.x * transform.lossyScale.x);
+        shortestSide = Math.Min(mainMesh.bounds.size.z * transform.lossyScale.z, mainMesh.bounds.size.x * transform.lossyScale.x);
         distanceBetweenRays = (shortestSide / (numberOfSensorRays - 1));
         startTime = Time.time;
         startPos = transform.position;
