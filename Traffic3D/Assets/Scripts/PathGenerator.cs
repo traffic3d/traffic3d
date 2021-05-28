@@ -16,6 +16,7 @@ public class PathGenerator : BaseNodeInformant
     private List<Vector3> connectionPositions;
     private const float maxConnectionDistance = 20f;
     private const float nodeConnectionBackwardsOffset = 2f;
+    private const float minDistanceBetweenNodesForMovement = 0.1f;
     private bool isLeftHandDrive;
     private static int nodeNumber = 0;
 
@@ -491,6 +492,11 @@ public class PathGenerator : BaseNodeInformant
         {
             Debug.Log("Unable to move node, must be start or end of path. Node: " + nodeToMove.ToString());
             return nodeToMove;
+        }
+        float distanceToTargetNode = Vector3.Distance(nodeToMove, target);
+        if (distanceToMove >= distanceToTargetNode - minDistanceBetweenNodesForMovement)
+        {
+            distanceToMove = distanceToTargetNode - minDistanceBetweenNodesForMovement;
         }
         return Vector3.MoveTowards(nodeToMove, target, distanceToMove);
     }
