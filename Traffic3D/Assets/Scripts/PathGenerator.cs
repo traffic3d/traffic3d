@@ -79,7 +79,7 @@ public class PathGenerator : BaseNodeInformant
             Dictionary<RoadNode, float> closeRoadNodesAndDistance = RoadNetworkManager.GetInstance().GetNodes()
                 .ToDictionary(r => r, r => Vector3.Distance(connectionPosition, r.transform.position)).OrderBy(e => e.Value)
                 .Where(e => e.Value < maxConnectionDistance).ToDictionary(e => e.Key, e => e.Value);
-            List<List<RoadWay>> roadWaysConnected = new List<List<RoadWay>>();
+            List<List<RoadWay>> roadWaysEvaluated = new List<List<RoadWay>>();
             foreach (KeyValuePair<RoadNode, float> roadNodeDistanceCurrent in closeRoadNodesAndDistance)
             {
                 foreach (KeyValuePair<RoadNode, float> roadNodeDistanceCompare in closeRoadNodesAndDistance)
@@ -88,18 +88,29 @@ public class PathGenerator : BaseNodeInformant
                     {
                         continue;
                     }
-                    List<RoadWay> currentRoadWays = RoadNetworkManager.GetInstance().GetRoadWaysFromNode(roadNodeDistanceCurrent.Key);
-                    List<RoadWay> compareRoadWays = RoadNetworkManager.GetInstance().GetRoadWaysFromNode(roadNodeDistanceCompare.Key);
+                    RoadNode currentRoadNode = roadNodeDistanceCurrent.Key;
+                    RoadNode compareRoadNode = roadNodeDistanceCompare.Key;
+                    List<RoadWay> currentRoadWays = RoadNetworkManager.GetInstance().GetRoadWaysFromNode(currentRoadNode);
+                    List<RoadWay> compareRoadWays = RoadNetworkManager.GetInstance().GetRoadWaysFromNode(compareRoadNode);
                     foreach (RoadWay currentRoadWay in currentRoadWays)
                     {
                         foreach (RoadWay compareRoadWay in compareRoadWays)
                         {
-                            if (roadWaysConnected.Any(l => l.First().Equals(currentRoadWay) && l.Last().Equals(compareRoadWay)))
+                            if (roadWaysEvaluated.Any(l => l.First().Equals(currentRoadWay) && l.Last().Equals(compareRoadWay)))
                             {
                                 continue;
                             }
+                            roadWaysEvaluated.Add(new List<RoadWay>() { currentRoadWay, compareRoadWay });
                             // If same road (under same parent) then continue.
                             if (currentRoadWay.transform.parent.Equals(compareRoadWay.transform.parent))
+                            {
+                                continue;
+                            }
+                            if (currentRoadNode.Equals(currentRoadWay.nodes.First()))
+                            {
+                                continue;
+                            }
+                            if (compareRoadNode.Equals(compareRoadWay.nodes.Last()))
                             {
                                 continue;
                             }
@@ -107,7 +118,6 @@ public class PathGenerator : BaseNodeInformant
                             newRoadWay.nodes.Add(roadNodeDistanceCurrent.Key);
                             newRoadWay.nodes.Add(roadNodeDistanceCompare.Key);
                             newRoadWay.transform.parent = currentRoadWay.transform.parent;
-                            roadWaysConnected.Add(new List<RoadWay>() { currentRoadWay, compareRoadWay });
                         }
                     }
                 }
