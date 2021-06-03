@@ -1,5 +1,4 @@
-﻿using NUnit.Framework;
-using System;
+using NUnit.Framework;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -19,6 +18,7 @@ public class VehicleEngineTests : CommonSceneTest
     {
         DisableLoops();
         VehicleFactory vehicleFactory = (VehicleFactory)GameObject.FindObjectOfType(typeof(VehicleFactory));
+        TrafficLightManager.GetInstance().SetTrafficLightsToGreen(TrafficLightManager.GetInstance().trafficLights.Select(t => t.trafficLightId).ToList());
         GameObject vehicle = vehicleFactory.SpawnVehicle(vehicleFactory.GetRandomVehicle(), RoadNetworkManager.GetInstance().GetRandomStartNode());
         VehicleEngine vehicleEngine = vehicle.GetComponent<VehicleEngine>();
         yield return null;
