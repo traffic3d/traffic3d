@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
@@ -34,19 +34,19 @@ public class Pedestrian : MonoBehaviour
         pedestrianCrossingAreaMask = 1 << NavMesh.GetAreaFromName(PedestrianManager.PEDESTRIAN_CROSSING_AREA);
         animator = GetComponent<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
-        if (UnityEngine.Random.value > probabilityOfRunning)
+        if (RandomNumberGenerator.GetInstance().NextFloat() > probabilityOfRunning)
         {
-            navMeshAgent.speed = UnityEngine.Random.Range(minSpeed, runSpeed);
+            navMeshAgent.speed = RandomNumberGenerator.GetInstance().Range(minSpeed, runSpeed);
         }
         else
         {
-            navMeshAgent.speed = UnityEngine.Random.Range(runSpeed, maxSpeed);
+            navMeshAgent.speed = RandomNumberGenerator.GetInstance().Range(runSpeed, maxSpeed);
         }
         normalSpeed = navMeshAgent.speed;
         normalStoppingDistance = navMeshAgent.stoppingDistance;
-        navMeshAgent.avoidancePriority = UnityEngine.Random.Range(0, 99);
+        navMeshAgent.avoidancePriority = RandomNumberGenerator.GetInstance().Range(0, 99);
         // Chance of walking in road
-        if (UnityEngine.Random.value > walkingInRoadPercentage)
+        if (RandomNumberGenerator.GetInstance().NextFloat() > walkingInRoadPercentage)
         {
             // Walkable
             navMeshAgent.areaMask = walkableAreaMask | pedestrianCrossingAreaMask;

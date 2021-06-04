@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,7 +70,6 @@ namespace SplineMesh {
         public void Sow() {
             UOUtility.DestroyChildren(generated);
 
-            UnityEngine.Random.InitState(randomSeed);
             if (spacing + spacingRange <= 0 ||
                 prefab == null)
                 return;
@@ -88,22 +87,22 @@ namespace SplineMesh {
                 // move along spline, according to spacing + random
                 go.transform.localPosition = sample.location;
                 // apply scale + random
-                float rangedScale = scale + UnityEngine.Random.Range(0, scaleRange);
+                float rangedScale = scale + RandomNumberGenerator.GetInstance().Range(0, scaleRange);
                 go.transform.localScale = new Vector3(rangedScale, rangedScale, rangedScale);
                 // rotate with random yaw
                 if (isRandomYaw) {
-                    go.transform.Rotate(0, 0, UnityEngine.Random.Range(-180, 180));
+                    go.transform.Rotate(0, 0, RandomNumberGenerator.GetInstance().Range(-180, 180));
                 } else {
                     go.transform.rotation = sample.Rotation;
                 }
                 // move orthogonaly to the spline, according to offset + random
                 var binormal = (Quaternion.LookRotation(sample.tangent, sample.up) * Vector3.right).normalized;
-                var localOffset = offset + UnityEngine.Random.Range(0, offsetRange * Math.Sign(offset));
+                var localOffset = offset + RandomNumberGenerator.GetInstance().Range(0, offsetRange * Math.Sign(offset));
                 localOffset *=  sample.scale.x;
                 binormal *= localOffset;
                 go.transform.position += binormal;
 
-                distance += spacing + UnityEngine.Random.Range(0, spacingRange);
+                distance += spacing + RandomNumberGenerator.GetInstance().Range(0, spacingRange);
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
@@ -35,7 +35,7 @@ public class MockSocket : ISocket
             List<PythonManager.PythonAction> pythonActionsList = new List<PythonManager.PythonAction>();
             foreach (Junction junction in TrafficLightManager.GetInstance().GetJunctions())
             {
-                pythonActionsList.Add(new PythonManager.PythonAction(junction.junctionId, Random.Range(0, junction.GetJunctionStates().Length)));
+                pythonActionsList.Add(new PythonManager.PythonAction(junction.junctionId, RandomNumberGenerator.GetInstance().Range(0, junction.GetJunctionStates().Length)));
             }
             PythonManager.PythonActions pythonActions = new PythonManager.PythonActions();
             pythonActions.actions = pythonActionsList.ToArray();

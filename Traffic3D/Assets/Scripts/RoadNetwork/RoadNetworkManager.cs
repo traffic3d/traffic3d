@@ -1,4 +1,3 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -72,12 +71,12 @@ public class RoadNetworkManager
         {
             throw new System.Exception("There are no start nodes to spawn vehicles.");
         }
-        return startNodes[UnityEngine.Random.Range(0, startNodes.Count)];
+        return startNodes[RandomNumberGenerator.GetInstance().Range(0, startNodes.Count)];
     }
 
     public RoadNode GetRandomEndNode()
     {
-        RoadWay roadWay = ways[UnityEngine.Random.Range(0, ways.Count)];
+        RoadWay roadWay = ways[RandomNumberGenerator.GetInstance().Range(0, ways.Count)];
         return roadWay.nodes[roadWay.nodes.Count - 1];
     }
 

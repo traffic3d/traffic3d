@@ -1,4 +1,4 @@
-﻿using CodingConnected.TraCI.NET;
+using CodingConnected.TraCI.NET;
 using CodingConnected.TraCI.NET.Types;
 using System;
 using System.Collections;
@@ -153,8 +153,8 @@ public class SumoManager : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(UnityEngine.Random.Range(vehicleFactory.lowRangeRespawnTime, vehicleFactory.highRangeRespawnTime));
-            if (renderedVehicles.Count < UnityEngine.Random.Range(vehicleFactory.slowDownVehicleRateAt, vehicleFactory.maximumVehicleCount))
+            yield return new WaitForSeconds(RandomNumberGenerator.GetInstance().Range(vehicleFactory.lowRangeRespawnTime, vehicleFactory.highRangeRespawnTime));
+            if (renderedVehicles.Count < RandomNumberGenerator.GetInstance().Range(vehicleFactory.slowDownVehicleRateAt, vehicleFactory.maximumVehicleCount))
             {
                 AddVehicle();
             }
@@ -249,7 +249,7 @@ public class SumoManager : MonoBehaviour
 
     public string GetRandomSumoRoute()
     {
-        return ImportAndGenerate.routes.Keys.ToArray()[UnityEngine.Random.Range(0, ImportAndGenerate.routes.Count)];
+        return ImportAndGenerate.routes.Keys.ToArray()[RandomNumberGenerator.GetInstance().Range(0, ImportAndGenerate.routes.Count)];
     }
 
     public bool IsControlledBySumo(SumoLinkControlPoint sumoLinkControlPoint)

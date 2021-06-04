@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -26,7 +26,7 @@ public class PedestrianFactory : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(Random.Range(lowRangeRespawnTime, highRangeRespawnTime));
+            yield return new WaitForSeconds(RandomNumberGenerator.GetInstance().Range(lowRangeRespawnTime, highRangeRespawnTime));
             if (FindObjectsOfType<Pedestrian>().Length < maximumPedestrianCount)
             {
                 SpawnPedestrian();
@@ -36,13 +36,13 @@ public class PedestrianFactory : MonoBehaviour
 
     public void SpawnPedestrian()
     {
-        PedestrianPoint pedestrianPoint = pedestrianPoints[Random.Range(0, pedestrianPoints.Length)];
+        PedestrianPoint pedestrianPoint = pedestrianPoints[RandomNumberGenerator.GetInstance().Range(0, pedestrianPoints.Length)];
         Instantiate(GetRandomPedestrian(), pedestrianPoint.GetPointLocation(), pedestrianPoint.transform.rotation);
     }
 
     public Pedestrian GetRandomPedestrian()
     {
-        float finalProbability = Random.value;
+        float finalProbability = RandomNumberGenerator.GetInstance().NextFloat();
         float cumulativeProbability = 0.0F;
         foreach (PedestrianProbability pedestrianProbability in pedestrianProbabilities)
         {

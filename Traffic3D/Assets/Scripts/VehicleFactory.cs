@@ -1,9 +1,8 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class VehicleFactory : MonoBehaviour
 {
@@ -21,7 +20,6 @@ public class VehicleFactory : MonoBehaviour
         // This seed is needed for running benchmarks so if its removed
         // add an if statement to add the seed back with the following condition:
         // Settings.IsBenchmark()
-        Random.InitState(123);
         if (vehicleProbabilities.Count == 0)
         {
             throw new System.Exception("No vehicles to spawn.");
@@ -44,9 +42,9 @@ public class VehicleFactory : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(Random.Range(lowRangeRespawnTime, highRangeRespawnTime));
+            yield return new WaitForSeconds(RandomNumberGenerator.GetInstance().Range(lowRangeRespawnTime, highRangeRespawnTime));
             CleanVehicles();
-            if (currentVehicles.Count < Random.Range(slowDownVehicleRateAt, maximumVehicleCount))
+            if (currentVehicles.Count < RandomNumberGenerator.GetInstance().Range(slowDownVehicleRateAt, maximumVehicleCount))
             {
                 RoadNode roadNode = RoadNetworkManager.GetInstance().GetRandomStartNode();
                 if (roadNode != null)
@@ -112,7 +110,7 @@ public class VehicleFactory : MonoBehaviour
     /// <returns>The vehicle template.</returns>
     public GameObject GetRandomVehicle()
     {
-        float finalProbability = Random.value;
+        float finalProbability = RandomNumberGenerator.GetInstance().NextFloat();
         float cumulativeProbability = 0.0F;
         foreach (VehicleProbability vehicleProbability in vehicleProbabilities)
         {

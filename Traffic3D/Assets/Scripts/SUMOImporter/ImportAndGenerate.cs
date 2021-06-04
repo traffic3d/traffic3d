@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.SUMOImporter.NetFileComponents;
+using Assets.Scripts.SUMOImporter.NetFileComponents;
 using SplineMesh;
 using System;
 using System.Collections.Generic;
@@ -308,7 +308,7 @@ public class ImportAndGenerate
 
                         for (int buildingNum = 0; buildingNum < amountOfBuildings; buildingNum++)
                         {
-                            GameObject building = buildingsToPlace[UnityEngine.Random.Range(0, buildingsToPlace.Length)];
+                            GameObject building = buildingsToPlace[RandomNumberGenerator.GetInstance().Range(0, buildingsToPlace.Length)];
 
                             // Find the ratio along the road e.g. the building is halfway down the road and then work out the x and y coords for that point on the road.
                             double ratio = (lengthBetweenBuildings * (buildingNum + 1)) / length;
