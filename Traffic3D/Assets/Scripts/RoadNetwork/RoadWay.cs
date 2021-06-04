@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class RoadWay : MonoBehaviour
 {
+    public int speedLimit = 50;
     public List<RoadNode> nodes = new List<RoadNode>();
     private const float debugSphereSize = 0.25f;
 

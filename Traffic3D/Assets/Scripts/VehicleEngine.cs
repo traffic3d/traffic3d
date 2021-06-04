@@ -71,6 +71,7 @@ public class VehicleEngine : MonoBehaviour
         {
             AddVehicleIntersectionPoint(vehicleEngine);
         }
+        SpeedLimitCheck();
     }
 
     /// <summary>
@@ -136,6 +137,7 @@ public class VehicleEngine : MonoBehaviour
         if (Vector3.Distance(transform.TransformPoint(0, 0, nodeReadingOffset), currentNode.position) < 3f)
         {
             NextNode();
+            SpeedLimitCheck();
         }
         if (currentNodeNumber == path.nodes.Count - 1)
         {
@@ -183,8 +185,8 @@ public class VehicleEngine : MonoBehaviour
     private void SpeedCheck()
     {
         // Reset Speed
-        // Corner Speed Check
         SetTargetSpeed(maxSpeed);
+        // Corner Speed Check
         // Store the distances with their angles
         Dictionary<float, float> distanceAndAngles = new Dictionary<float, float>();
         foreach (float distanceToCheck in distanceForSpeedCheck)
@@ -323,7 +325,7 @@ public class VehicleEngine : MonoBehaviour
             }
             HashSet<VehicleEngine> vehiclesWithSameIntersection = vehiclesAtIntersectionPoint[pathIntersectionPoint];
             float currentDistance;
-            if(!path.GetDistanceFromVehicleToIntersectionPoint(path, currentNodeNumber, transform, pathIntersectionPoint, out currentDistance))
+            if (!path.GetDistanceFromVehicleToIntersectionPoint(path, currentNodeNumber, transform, pathIntersectionPoint, out currentDistance))
             {
                 // Unable to get path distance to intersection
                 continue;
@@ -335,7 +337,7 @@ public class VehicleEngine : MonoBehaviour
             foreach (VehicleEngine otherVehicle in vehiclesWithSameIntersection)
             {
                 float otherVehicleDistance;
-                if(!otherVehicle.path.GetDistanceFromVehicleToIntersectionPoint(otherVehicle.path, otherVehicle.currentNodeNumber, otherVehicle.transform, pathIntersectionPoint, out otherVehicleDistance))
+                if (!otherVehicle.path.GetDistanceFromVehicleToIntersectionPoint(otherVehicle.path, otherVehicle.currentNodeNumber, otherVehicle.transform, pathIntersectionPoint, out otherVehicleDistance))
                 {
                     // Vehicle is now past intersection point
                     continue;
@@ -395,6 +397,28 @@ public class VehicleEngine : MonoBehaviour
             }
             currentMotorTorque = Math.Min(maxMotorTorque, maxMotorTorque * dyanmicFriction);
         }
+    }
+
+    private void SpeedLimitCheck()
+    {
+        RoadNode roadNode = path.nodes[currentNodeNumber].GetComponent<RoadNode>();
+        List<RoadWay> roadWays = new List<RoadWay>();
+        if (currentNodeNumber + 1 < path.nodes.Count)
+        {
+            RoadNode nextRoadNode = path.nodes[currentNodeNumber + 1].GetComponent<RoadNode>();
+            roadWays = RoadNetworkManager.GetInstance().GetRoadWaysFromNodes(roadNode, nextRoadNode);
+        }
+        else if (currentNodeNumber > 0)
+        {
+            RoadNode previousRoadNode = path.nodes[currentNodeNumber - 1].GetComponent<RoadNode>();
+            roadWays = RoadNetworkManager.GetInstance().GetRoadWaysFromNodes(previousRoadNode, roadNode);
+        }
+        if (roadWays.Count == 0)
+        {
+            return;
+        }
+        // Unlikely to get multiple road ways so just pick the first one.
+        maxSpeed = roadWays.First().speedLimit;
     }
 
     /// <summary>

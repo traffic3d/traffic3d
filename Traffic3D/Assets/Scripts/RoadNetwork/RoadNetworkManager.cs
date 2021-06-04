@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -83,6 +84,30 @@ public class RoadNetworkManager
     public List<RoadWay> GetRoadWaysFromNode(RoadNode roadNode)
     {
         return nodeRelatedRoadWays[roadNode];
+    }
+
+    /// <summary>
+    /// Get a list of ways (most likely with only one way) using two road nodes which are using the Road Way.
+    /// </summary>
+    /// <param name="roadNode">A road node attached to a way</param>
+    /// <param name="nextRoadNode">The next road node along in a way</param>
+    /// <returns>A list of ways but most likely will only be one way.</returns>
+    public List<RoadWay> GetRoadWaysFromNodes(RoadNode roadNode, RoadNode nextRoadNodeAlong)
+    {
+        List<RoadWay> results = new List<RoadWay>();
+        foreach (RoadWay roadWay in GetRoadWaysFromNode(roadNode))
+        {
+            int index = roadWay.nodes.IndexOf(roadNode);
+            if (roadWay.nodes.Count <= index + 1)
+            {
+                continue;
+            }
+            if (roadWay.nodes[index + 1].Equals(nextRoadNodeAlong))
+            {
+                results.Add(roadWay);
+            }
+        }
+        return results;
     }
 
     public List<RoadWay> GetRoadWaysFromStartOrEndNode(RoadNode roadNode)
