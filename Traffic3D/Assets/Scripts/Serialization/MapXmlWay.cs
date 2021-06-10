@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Xml;
@@ -18,6 +18,7 @@ public class MapXmlWay
     public bool IsRoad { get; private set; }
     public string Name { get; private set; }
     // Road Specific
+    public string RoadType { get; private set; }
     public int Lanes { get; private set; }
     public int ForwardLanes { get; private set; }
     public int BackwardLanes { get; private set; }
@@ -89,14 +90,16 @@ public class MapXmlWay
             Tags[node_attribute] = GetAttribute<string>("v", tag.Attributes);
             if (node_attribute == OpenStreetMapTagName.highwayTag)
             {
-                String tagValue = GetAttribute<string>("v", tag.Attributes);
+                string tagValue = GetAttribute<string>("v", tag.Attributes);
 
+                RoadType = tagValue;
 
                 //A value of "ROAD" implies the road type was not known during the mapping process. Therefore, it's likely a tag we to ignore.
                 if (tagValue != OpenStreetMapTagName.footwayTag && tagValue != OpenStreetMapTagName.stepsTag &&
                     tagValue != OpenStreetMapTagName.cyclewayTag && tagValue != OpenStreetMapTagName.pedestrianTag &&
                     tagValue != OpenStreetMapTagName.constructionTag && tagValue != OpenStreetMapTagName.serviceTag &&
-                    tagValue != OpenStreetMapTagName.motorwayTag && tagValue != OpenStreetMapTagName.trackTag)
+                    tagValue != OpenStreetMapTagName.motorwayTag && tagValue != OpenStreetMapTagName.trackTag &&
+                    tagValue != OpenStreetMapTagName.pathTag)
                 {
                     IsRoad = true;
                 }

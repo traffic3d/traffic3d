@@ -115,7 +115,7 @@ public class PathGenerator : BaseNodeInformant
                             {
                                 continue;
                             }
-                            RoadWay newRoadWay = CreateRoadWay(currentRoadWay.name + "_and_" + compareRoadWay.name);
+                            RoadWay newRoadWay = CreateRoadWay(currentRoadWay.name + "_and_" + compareRoadWay.name, currentRoadWay.speedLimit);
                             newRoadWay.nodes.Add(roadNodeDistanceCurrent.Key);
                             newRoadWay.nodes.Add(roadNodeDistanceCompare.Key);
                             newRoadWay.transform.parent = currentRoadWay.transform.parent;
@@ -284,7 +284,7 @@ public class PathGenerator : BaseNodeInformant
         foreach (KeyValuePair<float, List<RoadNode>> entry in roadNodesWithLaneSpaces)
         {
             RoadNode firstNode = null;
-            RoadWay roadWay = CreateRoadWay(way.Name + "_" + entry.Key);
+            RoadWay roadWay = CreateRoadWay(way.Name + "_" + entry.Key, RoadSpeedLimit.GetSpeedLimitFromOSM(way.RoadType));
             for (int i = 0; i < entry.Value.Count; i++)
             {
                 // Rotate towards the next node.
@@ -319,9 +319,10 @@ public class PathGenerator : BaseNodeInformant
 
     }
 
-    private RoadWay CreateRoadWay(string name)
+    private RoadWay CreateRoadWay(string name, int speedLimit)
     {
         RoadWay roadWay = new GameObject().AddComponent<RoadWay>();
+        roadWay.speedLimit = speedLimit;
         roadWay.name = string.IsNullOrEmpty(name) ? "Road_Path" : (name + "_Path");
         // Add layer to 'ignore raycasts' to path object
         roadWay.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");

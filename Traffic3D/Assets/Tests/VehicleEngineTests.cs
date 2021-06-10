@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -12,6 +13,8 @@ public class VehicleEngineTests : CommonSceneTest
     public const int TIME_OUT_STOP_TIME = 60;
     public const int CHECK_DISTANCE_AHEAD_SPEED_TEST = 5;
     public const int CHECK_ANGLE_DIFFERENCE_SPEED_TEST = 2;
+    public const int SPEED_LIMIT_TEST_VALUE = 20;
+    public const int SPEED_LIMIT_TEST_ALLOWABLE_EXTRA = 1;
 
     [UnityTest]
     public IEnumerator VehicleEngineGoTest()
@@ -113,6 +116,42 @@ public class VehicleEngineTests : CommonSceneTest
 
         }
         Assert.True(carIsDestroyed);
+    }
+
+    [UnityTest]
+    [Timeout(TIME_OUT_DESTROY_TIME * 1000 * 5)]
+    public IEnumerator VehicleEngineSpeedLimitTest()
+    {
+        yield return null;
+        DisableLoops();
+        VehicleFactory vehicleFactory = (VehicleFactory)GameObject.FindObjectOfType(typeof(VehicleFactory));
+        foreach (TrafficLight trafficLight in TrafficLightManager.GetInstance().trafficLights)
+        {
+            trafficLight.SetColour(TrafficLight.LightColour.GREEN);
+        }
+        RoadWay longestRoadWay = RoadNetworkManager.GetInstance().GetWays().Aggregate((w1, w2) => w1.GetDistance() > w2.GetDistance() ? w1 : w2);
+        int originalSpeedLimit = longestRoadWay.speedLimit;
+        longestRoadWay.speedLimit = SPEED_LIMIT_TEST_VALUE;
+        GameObject vehicle = vehicleFactory.SpawnVehicle(vehicleFactory.GetRandomVehicle(), longestRoadWay.nodes[0]);
+        VehicleEngine vehicleEngine = vehicle.GetComponent<VehicleEngine>();
+        VehiclePath vehiclePath = longestRoadWay.ToDirectVehiclePath();
+        vehicleEngine.SetVehiclePath(vehiclePath);
+        bool carIsDestroyed = false;
+        for (int i = 0; i <= TIME_OUT_DESTROY_TIME; i++)
+        {
+            yield return new WaitForSeconds(1);
+
+            if (vehicle == null)
+            {
+                carIsDestroyed = true;
+                break;
+            }
+            Assert.AreEqual(SPEED_LIMIT_TEST_VALUE, vehicleEngine.maxSpeed, "Vehicle max speed is not the same as speed limit.");
+            Assert.GreaterOrEqual(SPEED_LIMIT_TEST_VALUE + SPEED_LIMIT_TEST_ALLOWABLE_EXTRA, vehicleEngine.currentSpeed, "Vehicle current speed is over the speed limit.");
+
+        }
+        Assert.True(carIsDestroyed);
+        longestRoadWay.speedLimit = originalSpeedLimit;
     }
 
     [UnityTest]
