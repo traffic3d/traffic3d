@@ -1,4 +1,4 @@
-﻿public class OpenStreetMapTagName
+public class OpenStreetMapTagName
 {
     // XML Tag Categories
     public const string emergencyTag = "emergency";
@@ -13,6 +13,7 @@
     public const string serviceTag = "service";
     public const string motorwayTag = "motorway";
     public const string trackTag = "track";
+    public const string pathTag = "path";
 
     // XML Tag Buildings
     public const string buildingLevelsTag = "building:levels";
