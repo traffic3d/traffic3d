@@ -137,13 +137,13 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
   m_ForceAppPointDistance: 0
-  m_Mass: 20
+  m_Mass: 50
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 0.4
+    m_ExtremumSlip: 0.1
     m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
+    m_AsymptoteSlip: 0.1
+    m_AsymptoteValue: 1
     m_Stiffness: 1
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
@@ -229,13 +229,13 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
   m_ForceAppPointDistance: 0
-  m_Mass: 20
+  m_Mass: 50
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 0.4
+    m_ExtremumSlip: 0.1
     m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
+    m_AsymptoteSlip: 0.1
+    m_AsymptoteValue: 1
     m_Stiffness: 1
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
@@ -290,13 +290,13 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
   m_ForceAppPointDistance: 0
-  m_Mass: 20
+  m_Mass: 50
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 0.4
+    m_ExtremumSlip: 0.1
     m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
+    m_AsymptoteSlip: 0.1
+    m_AsymptoteValue: 1
     m_Stiffness: 1
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
@@ -615,7 +615,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1496974738235772}
   serializedVersion: 2
-  m_Mass: 1200
+  m_Mass: 11000
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -635,28 +635,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a84fd945f96726a4ea85aa1c60896077, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  path: {fileID: 0}
   maxSteerAngle: 75
   turnSpeed: 5
   wheelColliderFrontLeft: {fileID: 146820637187476694}
   wheelColliderFrontRight: {fileID: 146720879009584224}
-  maxMotorTorque: 400
-  normalBrakeTorque: 600
-  maxBrakeTorque: 600
+  maxMotorTorque: 1800
+  currentMotorTorque: 0
+  normalBrakeTorque: 3600
+  maxBrakeTorque: 3600
   currentSpeed: 0
-  maxSpeed: 100
-  maxSpeedTurning: 20
-  maxSpeedAproachingLightsLastNode: 7
-  maxSpeedAproachingLightsSecondLastNode: 30
+  stoppingDistance: 7
+  maxSpeed: 50
+  distanceForSpeedCheck:
+  - 10
+  - 30
+  - 60
+  - 150
+  cornerThresholdDegrees: 90
+  cornerSensitivityModifier: 50
+  cornerMinSpeed: 10
+  stopDistanceToSpeed: 0.4
+  stopLineEvaluationDistance: 10
+  trafficLightMaxSpeedOnGreen: 20
+  mergeRadiusCheck: 100
   centerOfMass: {x: 0, y: 0, z: 0}
   currentNode: {fileID: 0}
   currentNodeNumber: 0
+  numberOfSensorRays: 5
+  steerReduceRayConstant: 5
+  maxDistanceToMonitor: 100
   targetSpeed: 0
   startTime: 0
+  startDelayTime: -1
   startPos: {x: 0, y: 0, z: 0}
   nodeReadingOffset: 2
   engineStatus: 0
   densityCountTriggered: 0
+  debug: 0
+  waitingForVehicleAhead: {fileID: 0}
+  waitingForVehicleBehind: {fileID: 0}
 --- !u!1 &1592329904448136
 GameObject:
   m_ObjectHideFlags: 0
@@ -916,13 +933,13 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
   m_ForceAppPointDistance: 0
-  m_Mass: 20
+  m_Mass: 50
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 0.4
+    m_ExtremumSlip: 0.1
     m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
+    m_AsymptoteSlip: 0.1
+    m_AsymptoteValue: 1
     m_Stiffness: 1
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
