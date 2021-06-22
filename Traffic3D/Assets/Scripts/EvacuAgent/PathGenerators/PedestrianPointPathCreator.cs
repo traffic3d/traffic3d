@@ -3,5 +3,5 @@ using UnityEngine;
 
 public abstract class PedestrianPointPathCreator : MonoBehaviour
 {
-    public abstract List<PedestrianPoint> CreatePath();
+    public abstract List<Vector3> CreatePath();
 }

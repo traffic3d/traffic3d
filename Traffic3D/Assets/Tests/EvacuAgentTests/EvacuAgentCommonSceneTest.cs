@@ -61,5 +61,18 @@ namespace Tests
             gameObject.tag = tag;
             return gameObject;
         }
+
+        public static PedestrianPoint GetPedestrianPointFromLocation(Vector3 location)
+        {
+            foreach (PedestrianPoint pedestrianPoint in GameObject.FindObjectsOfType<PedestrianPoint>())
+            {
+                if (pedestrianPoint.GetPointLocation().Equals(location))
+                {
+                    return pedestrianPoint;
+                }
+            }
+
+            return null;
+        }
     }
 }

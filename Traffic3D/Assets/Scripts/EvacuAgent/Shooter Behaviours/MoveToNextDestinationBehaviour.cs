@@ -26,8 +26,8 @@ public class MoveToNextDestinationBehaviour : BehaviourStrategy
     public override void PerformBehaviour()
     {
         createWeightedPathOfPedestrianPointsBehaviour.CurrentPathIndex += 1;
-        PedestrianPoint currentPathNode = createWeightedPathOfPedestrianPointsBehaviour.CurrentPath[createWeightedPathOfPedestrianPointsBehaviour.CurrentPathIndex];
-        navMeshAgent.SetDestination(currentPathNode.transform.position);
+        Vector3 currentPathNode = createWeightedPathOfPedestrianPointsBehaviour.CurrentPath[createWeightedPathOfPedestrianPointsBehaviour.CurrentPathIndex];
+        navMeshAgent.SetDestination(currentPathNode);
         return;
     }
 }

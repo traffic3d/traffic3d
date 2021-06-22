@@ -101,7 +101,7 @@ public class GenericMoveToNextDestinationBehaviour_CorrectlySetsCurrentDestinati
     private GenericPathCreationBehaviour genericPathCreationBehaviour;
     private PedestrianPoint expectedPedestrianPoint;
     private PedestrianPoint[] pedestrianPoints;
-    private PedestrianPoint actualPedestrianPoint;
+    private Vector3 actualPedestrianPoint;
 
     [UnityTest]
     public override IEnumerator PerformTest()
@@ -122,19 +122,22 @@ public class GenericMoveToNextDestinationBehaviour_CorrectlySetsCurrentDestinati
         pedestrianPoints = GameObject.FindObjectsOfType<PedestrianPoint>();
         Assert.GreaterOrEqual(pedestrianPoints.Length, 2);
 
-        genericPathCreationBehaviour.PathOfPedestrianPoints = pedestrianPoints.ToList();
+        List<Vector3> path = new List<Vector3>();
+        pedestrianPoints.ToList().ForEach(x => path.Add(x.GetPointLocation()));
+
+        genericPathCreationBehaviour.Path = path;
         expectedPedestrianPoint = pedestrianPoints[1];
     }
 
     public override void Act()
     {
         genericMoveToNextDestinationBehaviour.PerformBehaviour();
-        actualPedestrianPoint = genericMoveToNextDestinationBehaviour.CurrentPedestrianPointDestination;
+        actualPedestrianPoint = genericMoveToNextDestinationBehaviour.CurrentDestination;
     }
 
     public override void Assertion()
     {
-        Assert.AreSame(expectedPedestrianPoint, actualPedestrianPoint);
+        Assert.AreSame(expectedPedestrianPoint, GetPedestrianPointFromLocation(actualPedestrianPoint));
     }
 }
 
@@ -144,6 +147,7 @@ public class GenericMoveToNextDestinationBehaviour_DoesNotSetNewDestination_When
     private GameObject genericMoveToNextDestinationBehaviourGameObject;
     private GenericMoveToNextDestinationBehaviour genericMoveToNextDestinationBehaviour;
     private GenericPathCreationBehaviour genericPathCreationBehaviour;
+    private Vector3 expectedCurrentDestination;
 
     [UnityTest]
     public override IEnumerator PerformTest()
@@ -160,7 +164,8 @@ public class GenericMoveToNextDestinationBehaviour_DoesNotSetNewDestination_When
         genericMoveToNextDestinationBehaviourGameObject = GenericMoveToNextDestinationBehaviourTestsHelper.SetUpGenericMoveToNextDestinationBehaviourGameObject(pedestrianGameObject);
         genericMoveToNextDestinationBehaviour = genericMoveToNextDestinationBehaviourGameObject.GetComponent<GenericMoveToNextDestinationBehaviour>();
         genericPathCreationBehaviour = genericMoveToNextDestinationBehaviourGameObject.GetComponent<GenericPathCreationBehaviour>();
-        genericPathCreationBehaviour.PathOfPedestrianPoints = new List<PedestrianPoint>();
+        genericPathCreationBehaviour.Path = new List<Vector3>();
+        expectedCurrentDestination = new Vector3(0, 0, 0);
     }
 
     public override void Act()
@@ -170,7 +175,7 @@ public class GenericMoveToNextDestinationBehaviour_DoesNotSetNewDestination_When
 
     public override void Assertion()
     {
-        Assert.IsNull(genericMoveToNextDestinationBehaviour.CurrentPedestrianPointDestination);
+        Assert.AreEqual(expectedCurrentDestination, genericMoveToNextDestinationBehaviour.CurrentDestination);
     }
 }
 
