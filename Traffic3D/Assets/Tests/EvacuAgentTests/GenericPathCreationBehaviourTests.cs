@@ -26,14 +26,10 @@ public class GenericPathCreationBehaviour_PerformBehaviour_CorrectlyAddsElements
 
     public override void Arrange()
     {
-        pedestrianGameObject = SpawnGameObjectWithInactivePedestrianScript();
-
-        pedestrian = pedestrianGameObject.GetComponent<Pedestrian>();
-        pedestrian.gameObject.AddComponent<WorkerPedestrianPointPathCreator>();
-        navMeshAgent = pedestrian.gameObject.AddComponent<NavMeshAgent>();
-
-        genericPathCreationBehaviour = pedestrianGameObject.AddComponent<GenericPathCreationBehaviour>();
-        expectedNumberOfElements = 1;
+        evacuAgentPedestrianBase = SpawnFriendGroupOfEvacuAgentPedestrians(1).First();
+        genericPathCreationBehaviour = evacuAgentPedestrianBase.GetComponentInChildren<GenericPathCreationBehaviour>();
+        navMeshAgent = evacuAgentPedestrianBase.navMeshAgent;
+        expectedNumberOfElements = 5;
     }
 
     public override void Act()
@@ -52,8 +48,7 @@ public class GenericPathCreationBehaviour_PerformBehaviour_CorrectlyAddsElements
 
 public class GenericPathCreationBehaviour_ShouldTriggerbehaviour_ReturnsTrue_WhenPathOfPedestrianPointsIsNull : ArrangeActAssertStrategy
 {
-    private GameObject pedestrianGameObject;
-    private Pedestrian pedestrian;
+    private EvacuAgentPedestrianBase evacuAgentPedestrianBase;
     private GenericPathCreationBehaviour genericPathCreationBehaviour;
     private bool actualBool;
 
@@ -68,11 +63,8 @@ public class GenericPathCreationBehaviour_ShouldTriggerbehaviour_ReturnsTrue_Whe
 
     public override void Arrange()
     {
-        pedestrianGameObject = SpawnGameObjectWithInactivePedestrianScript();
-        pedestrian = pedestrianGameObject.GetComponent<Pedestrian>();
-        pedestrian.gameObject.AddComponent<NavMeshAgent>();
-
-        genericPathCreationBehaviour = pedestrianGameObject.AddComponent<GenericPathCreationBehaviour>();
+        evacuAgentPedestrianBase = SpawnFriendGroupOfEvacuAgentPedestrians(1).First();
+        genericPathCreationBehaviour = evacuAgentPedestrianBase.GetComponentInChildren<GenericPathCreationBehaviour>();
         genericPathCreationBehaviour.Path = null;
     }
 
@@ -89,8 +81,7 @@ public class GenericPathCreationBehaviour_ShouldTriggerbehaviour_ReturnsTrue_Whe
 
 public class GenericPathCreationBehaviour_ShouldTriggerbehaviour_ReturnsTrue_WhenPathOfPedestrianPointsHasZeroElements : ArrangeActAssertStrategy
 {
-    private GameObject pedestrianGameObject;
-    private Pedestrian pedestrian;
+    private EvacuAgentPedestrianBase evacuAgentPedestrianBase;
     private GenericPathCreationBehaviour genericPathCreationBehaviour;
     private bool actualBool;
 
@@ -105,11 +96,8 @@ public class GenericPathCreationBehaviour_ShouldTriggerbehaviour_ReturnsTrue_Whe
 
     public override void Arrange()
     {
-        pedestrianGameObject = SpawnGameObjectWithInactivePedestrianScript();
-        pedestrian = pedestrianGameObject.GetComponent<Pedestrian>();
-        pedestrian.gameObject.AddComponent<NavMeshAgent>();
-
-        genericPathCreationBehaviour = pedestrianGameObject.AddComponent<GenericPathCreationBehaviour>();
+        evacuAgentPedestrianBase = SpawnFriendGroupOfEvacuAgentPedestrians(1).First();
+        genericPathCreationBehaviour = evacuAgentPedestrianBase.GetComponentInChildren<GenericPathCreationBehaviour>();
         genericPathCreationBehaviour.Path = new List<Vector3>();
     }
 
