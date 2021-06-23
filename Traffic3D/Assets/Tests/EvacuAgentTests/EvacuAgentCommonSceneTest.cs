@@ -1,6 +1,8 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
 namespace Tests
@@ -8,6 +10,10 @@ namespace Tests
     public class EvacuAgentCommonSceneTest : CommonSceneTest
     {
         public readonly float floatingPointTolerance = 0.005f;
+        private static string friendGroupLeaderPrefabLocation = $"{EvacuAgentSceneParamaters.RESEOURCES_PREFABS_PREFIX}Pedestrian_Types/FriendGroupLeaderPedestrian";
+        private static string friendGroupFollowerPrefabLocation = $"{EvacuAgentSceneParamaters.RESEOURCES_PREFABS_PREFIX}Pedestrian_Types/FriendGroupFollowerPedestrian";
+
+        private static FriendGroupLeaderFollowerPedestrianFactory friendGroupLeaderFollowerPedestrianFactory;
 
         [SetUp]
         public override void SetUpTest()
@@ -58,6 +64,7 @@ namespace Tests
         {
             GameObject gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             gameObject.AddComponent<Pedestrian>().enabled = false;
+            gameObject.AddComponent<NavMeshAgent>().isStopped = true;
             gameObject.tag = tag;
             return gameObject;
         }
@@ -73,6 +80,54 @@ namespace Tests
             }
 
             return null;
+        }
+
+        public static GameObject CreateFriendGroupLeaderPedestrianFromResources()
+        {
+            GameObject pedestrianObj = SpawnGameObjectWithInactivePedestrianScript();
+            GameObject friendGroupLeaderObj = GameObject.Instantiate(Resources.Load<GameObject>(friendGroupLeaderPrefabLocation));
+            EvacuAgentPedestrianBase evacuAgentPedestrianBase = friendGroupLeaderObj.GetComponentInChildren<EvacuAgentPedestrianBase>();
+            evacuAgentPedestrianBase.InitialisePedestrian(pedestrianObj.GetComponent<Pedestrian>());
+            return friendGroupLeaderObj;
+        }
+
+        public static List<EvacuAgentPedestrianBase> SpawnFriendGroupOfEvacuAgentPedestrians(int numberInGroup)
+        {
+            List<EvacuAgentPedestrianBase> friendGroup = new List<EvacuAgentPedestrianBase>();
+
+            // Minus 1 as the groups are spawned as one leader + a number of group members so we need to take away one for the leader
+            int followerNumber = numberInGroup - 1;
+
+            // Adjust the factory follower counts. Values need to be saved for resetting after logic is performed
+            int initialMinumum = EvacuAgentSceneParamaters.FRIEND_GROUP_FOLLOWER_COUNT_MINIMUM;
+            int initialMaximum = EvacuAgentSceneParamaters.FRIEND_GROUP_FOLLOWER_COUNT_MAXIMUM;
+
+            EvacuAgentSceneParamaters.FRIEND_GROUP_FOLLOWER_COUNT_MINIMUM = followerNumber;
+            EvacuAgentSceneParamaters.FRIEND_GROUP_FOLLOWER_COUNT_MAXIMUM = followerNumber;
+
+            // Get the factory if the reference is null
+            if(friendGroupLeaderFollowerPedestrianFactory == null)
+                friendGroupLeaderFollowerPedestrianFactory = (FriendGroupLeaderFollowerPedestrianFactory)GameObject.FindObjectOfType(typeof(FriendGroupLeaderFollowerPedestrianFactory));
+
+            for(int index = 0; index < numberInGroup; index++)
+            {
+                // Create a GameObject with a Pedestrian script to be passed into the factory
+                Pedestrian pedestrian = SpawnGameObjectWithInactivePedestrianScript().GetComponent<Pedestrian>();
+                EvacuAgentPedestrianBase evacuAgentPedestrianBase = friendGroupLeaderFollowerPedestrianFactory.CreateEvacuAgentPedestrian(pedestrian);
+
+                // Turn off EvacuAgent pedestrian behaviours and field of view
+                evacuAgentPedestrianBase.fieldOfView.StopAllCoroutines();
+                evacuAgentPedestrianBase.behaviourController.isUpdateOn = false;
+                evacuAgentPedestrianBase.GetComponentInChildren<BehaviourCollection>().enabled = false;
+
+                friendGroup.Add(evacuAgentPedestrianBase);
+            }
+
+            // Reset folower values
+            EvacuAgentSceneParamaters.FRIEND_GROUP_FOLLOWER_COUNT_MAXIMUM = initialMaximum;
+            EvacuAgentSceneParamaters.FRIEND_GROUP_FOLLOWER_COUNT_MINIMUM = initialMinumum;
+
+            return friendGroup;
         }
     }
 }
