@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class WorkerPedestrianFactory : AbstractEvacuAgentPedestrianFactory
+﻿public class WorkerLeaderPedestrianFactory : AbstractEvacuAgentPedestrianFactory
 {
     private void Awake()
     {
@@ -10,6 +8,6 @@ public class WorkerPedestrianFactory : AbstractEvacuAgentPedestrianFactory
     public override EvacuAgentPedestrianBase CreateEvacuAgentPedestrian(Pedestrian pedestrian)
     {
         numPedestriansToSpawn--;
-        return CreatePedestrianType(pedestrian, EvacuAgentSceneParamaters.IS_WORKER_HIGHTLIGHT_VISUAL_ENABLED, pedestrianTypePrefab);
+        return CreatePedestrianType(pedestrian, EvacuAgentSceneParamaters.IS_WORKER_HIGHTLIGHT_VISUAL_ENABLED, leaderPedestrianTypePrefab);
     }
 }

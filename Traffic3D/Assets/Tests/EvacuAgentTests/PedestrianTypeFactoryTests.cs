@@ -7,7 +7,7 @@ using UnityEngine.TestTools;
 public class AbstractEvacuAgentPedestrianFactory_CorrectlyCreatesBehaviourCollection : ArrangeActAssertStrategy
 {
     private BehaviourTypeOrder mockBehaviourTypeOrder;
-    private WorkerPedestrianFactory workerPedestrianFactory;
+    private WorkerLeaderPedestrianFactory workerPedestrianFactory;
     private BehaviourCollection behaviourCollection;
     private BehaviourController behaviourController;
     private List<BehaviourStrategy> actualBehaviourStrategies;
@@ -69,7 +69,7 @@ public class WorkerPedestrianFactory_AddEvacuAgentBehaviour_CorrectlyAddsWorkerB
 
     public override void Arrange()
     {
-        pedestrianBehaviourFactory = GameObject.FindObjectOfType<WorkerPedestrianFactory>();
+        pedestrianBehaviourFactory = GameObject.FindObjectOfType<WorkerLeaderPedestrianFactory>();
         gameObject = SpawnGameObjectWithInactivePedestrianScript();
         pedestrian = gameObject.GetComponent<Pedestrian>();
         Assert.Null(pedestrian.GetComponentInChildren<FieldOfView>());
@@ -150,9 +150,9 @@ public static class BehaviourCollectionFactoryTestsHelper
         return shooterBehaviourTypeOrderGameObject.AddComponent<MockBehaviourTypeOrder>();
     }
 
-    public static WorkerPedestrianFactory GetBehaviourCollectionFactory()
+    public static WorkerLeaderPedestrianFactory GetBehaviourCollectionFactory()
     {
-        return GameObject.FindObjectOfType<WorkerPedestrianFactory>();
+        return GameObject.FindObjectOfType<WorkerLeaderPedestrianFactory>();
     }
 
     public static BehaviourController GetBehaviourController()

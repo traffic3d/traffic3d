@@ -7,13 +7,13 @@ public class FieldOfView : MonoBehaviour
     [Range(0, 360)]
     public float viewAngle = 90;
 
+    [SerializeField]
+    public LayerMask targetLayer;
+
     public float findAgentsDelay = 1;
     public List<Pedestrian> visiblePedestrians = new List<Pedestrian>();
     public float viewRadius;
     public float numberOfSegments = 21;
-
-    [SerializeField]
-    public LayerMask targetLayer;
 
     private const string obstacleLayer = "Obstacle";
     private Mesh mesh;
@@ -33,10 +33,10 @@ public class FieldOfView : MonoBehaviour
         obstacleBitmask = 1 << LayerMask.NameToLayer(obstacleLayer);
         mesh = gameObject.GetComponent<MeshFilter>().mesh;
         BuildMesh();
-        StartCoroutine(FindAgentsWithDelay());
+        StartCoroutine(FindAgentsAndObstaclesWithDelay());
     }
 
-    public IEnumerator FindAgentsWithDelay()
+    public IEnumerator FindAgentsAndObstaclesWithDelay()
     {
         while (true)
         {

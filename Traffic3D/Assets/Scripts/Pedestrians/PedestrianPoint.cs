@@ -5,7 +5,7 @@ public class PedestrianPoint : MonoBehaviour
 {
     public float footfall;
     private Vector3 location = Vector3.negativeInfinity;
-    public PedestrianPointType PedestrianPointType;
+    public PedestrianPointType pedestrianPointType { get; protected set; }
 
     public Vector3 GetPointLocation()
     {

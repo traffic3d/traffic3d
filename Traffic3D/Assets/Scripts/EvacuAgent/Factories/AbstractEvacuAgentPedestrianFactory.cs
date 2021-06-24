@@ -3,53 +3,27 @@ using UnityEngine;
 
 public abstract class AbstractEvacuAgentPedestrianFactory : MonoBehaviour
 {
+    public bool isCreatingLeaderType { get; protected set;
+    }
     [SerializeField]
     private GameObject behaviourCollectionPrefab;
 
     [SerializeField]
-    protected GameObject pedestrianTypePrefab;
+    protected GameObject leaderPedestrianTypePrefab;
 
-    protected int numPedestriansToSpawn;
+    [SerializeField]
+    protected GameObject followerPedestrianTypePrefab;
+
+    protected EvacuAgentPedestrianBase currentLeaderPedestrian;
+    protected GroupCollection currentLeaderFollowerCollection;
+    protected int numPedestriansToSpawn; // Max pedestrians to spawn
+    protected int numberOfFollowersLeftToSpawn = 0; // Pedestrians left in this group to spawn
 
     public abstract EvacuAgentPedestrianBase CreateEvacuAgentPedestrian(Pedestrian pedestrian);
 
-    protected EvacuAgentPedestrianBase CreatePedestrianType(Pedestrian pedestrian, bool isHighlightEnabled, GameObject pedestrianTypePrefab)
+    public virtual bool HasSpawnedMaxPedestrians()
     {
-        GameObject evacuAgentPedestrianObj = GameObject.Instantiate(pedestrianTypePrefab, pedestrian.transform);
-        EvacuAgentPedestrianBase evacuAgentPedestrian = evacuAgentPedestrianObj.GetComponent<EvacuAgentPedestrianBase>();
-
-        evacuAgentPedestrian.InitialisePedestrian(pedestrian);
-        AddPedestrianHighlighter(pedestrian, evacuAgentPedestrian.pedestrianHighlight, isHighlightEnabled);
-        AddBehaviourCollection(evacuAgentPedestrian.behaviourController, evacuAgentPedestrian.behaviourTypeOrder);
-
-        return evacuAgentPedestrian;
-    }
-
-    protected void AddPedestrianHighlighter(Pedestrian pedestrian, GameObject prefab, bool isHighlightEnabled)
-    {
-        GameObject highlight = Instantiate(prefab, pedestrian.transform.position, Quaternion.identity);
-        highlight.transform.SetParent(pedestrian.transform);
-        highlight.GetComponent<MeshRenderer>().enabled = isHighlightEnabled;
-    }
-
-    protected void AddBehaviourCollection(BehaviourController behaviourController, BehaviourTypeOrder behaviourTypeOrder)
-    {
-        BehaviourCollection behaviourCollection = GenerateBehaviourCollection(behaviourController, behaviourTypeOrder);
-        behaviourController.currentBehaviourCollection = behaviourCollection;
-        behaviourController.behaviourCollections.Add(behaviourCollection);
-    }
-
-    public bool HasSpawnedMaxPedestrians()
-    {
-        if (numPedestriansToSpawn == 0)
-            return true;
-
-        return false;
-    }
-
-    public int GetNumPedestriansToSpawn()
-    {
-        return numPedestriansToSpawn;
+        return numPedestriansToSpawn + numberOfFollowersLeftToSpawn == 0;
     }
 
     public BehaviourCollection GenerateBehaviourCollection(BehaviourController behaviourController, BehaviourTypeOrder behaviourTypeOrder)
@@ -71,6 +45,79 @@ public abstract class AbstractEvacuAgentPedestrianFactory : MonoBehaviour
         }
 
         return behaviourCollection;
+    }
+
+    public int GetNumPedestriansToSpawn()
+    {
+        return numPedestriansToSpawn;
+    }
+
+    public int GetNumberOfFollowers()
+    {
+        return numberOfFollowersLeftToSpawn;
+    }
+
+    protected EvacuAgentPedestrianBase CreatePedestrianType(Pedestrian pedestrian, bool isHighlightEnabled, GameObject pedestrianTypePrefab)
+    {
+        GameObject evacuAgentPedestrianObj = GameObject.Instantiate(pedestrianTypePrefab, pedestrian.transform);
+        EvacuAgentPedestrianBase evacuAgentPedestrian = evacuAgentPedestrianObj.GetComponent<EvacuAgentPedestrianBase>();
+
+        evacuAgentPedestrian.InitialisePedestrian(pedestrian);
+        AddPedestrianHighlighter(pedestrian, evacuAgentPedestrian.pedestrianHighlight, isHighlightEnabled);
+        evacuAgentPedestrian.behaviourController.transform.SetParent(evacuAgentPedestrian.transform);
+        AddBehaviourCollection(evacuAgentPedestrian.behaviourController, evacuAgentPedestrian.behaviourTypeOrder);
+        evacuAgentPedestrian.behaviourController.isUpdateOn = true;
+        return evacuAgentPedestrian;
+    }
+
+    protected void AddPedestrianHighlighter(Pedestrian pedestrian, GameObject prefab, bool isHighlightEnabled)
+    {
+        GameObject highlight = Instantiate(prefab, pedestrian.transform.position, Quaternion.identity);
+        highlight.transform.SetParent(pedestrian.transform);
+        highlight.GetComponent<MeshRenderer>().enabled = isHighlightEnabled;
+    }
+
+    protected void AddBehaviourCollection(BehaviourController behaviourController, BehaviourTypeOrder behaviourTypeOrder)
+    {
+        BehaviourCollection behaviourCollection = GenerateBehaviourCollection(behaviourController, behaviourTypeOrder);
+        behaviourController.currentBehaviourCollection = behaviourCollection;
+        behaviourController.behaviourCollections.Add(behaviourCollection);
+    }
+
+    protected int GetNumberOfFollowersForCurrentGroup(int lowerBound, int upperBound)
+    {
+        return UnityEngine.Random.Range(lowerBound, upperBound);
+    }
+
+    protected EvacuAgentPedestrianBase UpdateGroupCollection()
+    {
+        IsCreatingLeaderType(true);
+        numPedestriansToSpawn--;
+        currentLeaderFollowerCollection = currentLeaderPedestrian.GetComponent<GroupCollection>();
+        currentLeaderFollowerCollection.TotalGroupCount = numberOfFollowersLeftToSpawn;
+        currentLeaderFollowerCollection.GroupLeaderPedestrian = currentLeaderPedestrian;
+        currentLeaderFollowerCollection.AddFollowerToCollection(currentLeaderPedestrian);
+        currentLeaderPedestrian.GroupCollection = currentLeaderFollowerCollection;
+        return currentLeaderPedestrian;
+    }
+
+    protected void AddGroupCollectionToFollower(EvacuAgentPedestrianBase groupPedestrian)
+    {
+        IsCreatingLeaderType(false);
+        groupPedestrian.AddGroupCollection(currentLeaderFollowerCollection);
+    }
+
+    protected EvacuAgentPedestrianBase AssignToFollowerCollection(EvacuAgentPedestrianBase follower)
+    {
+        numberOfFollowersLeftToSpawn--;
+        currentLeaderFollowerCollection.AddFollowerToCollection(follower);
+        follower.navMeshAgent.stoppingDistance = 1f;
+        return follower;
+    }
+
+    private void IsCreatingLeaderType(bool isCreatingLeader)
+    {
+        isCreatingLeaderType = isCreatingLeader;
     }
 
     private bool BehaviourChanceCheck(float behaviourChance)

@@ -19,7 +19,7 @@ public abstract class NonShooterPedestrianPointPathCreator : PedestrianPointPath
 
         foreach (PedestrianPoint pedestrianPoint in allPedestrianPoints)
         {
-            if (pedestrianPoint.PedestrianPointType.Equals(pedestrianPointType))
+            if (pedestrianPoint.pedestrianPointType.Equals(pedestrianPointType))
                 pedestrianPointsOfType.Add(pedestrianPoint);
         }
 

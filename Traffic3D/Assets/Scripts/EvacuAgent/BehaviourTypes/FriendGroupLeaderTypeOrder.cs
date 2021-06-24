@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
 public class FriendGroupLeaderTypeOrder : BehaviourTypeOrder
 {
@@ -8,10 +6,11 @@ public class FriendGroupLeaderTypeOrder : BehaviourTypeOrder
     {
         behaviourTypes = new List<BehaviourType>()
         {
-            new ChooseMeetingLocationBehaviourType(),
             new GenericPathCreationBehaviourType(),
             new GenericEnterLeaveBuildingBehaviourType(),
-            new GenericMoveToNextDestinationBehaviourType(),
+            new WaitForFollowersBehaviourType(),
+            new WaitAtDestinationBehaviourType(),
+            new FriendGroupBoidBehaviourType(),
             new GenericNoNewBehaviourType()
         };
     }
@@ -36,15 +35,6 @@ public class FriendGroupLeaderTypeOrder : BehaviourTypeOrder
         public override float GetBehaviourStrategyChance() => behaviourStrategyChanceToUse;
     }
 
-    private class GenericMoveToNextDestinationBehaviourType : BehaviourType
-    {
-        private readonly string behaviourStrategyName = "GenericMoveToNextDestinationBehaviour";
-        private readonly float behaviourStrategyChanceToUse = 1f;
-
-        public override string GetBehaviourStrategyName() => behaviourStrategyName;
-        public override float GetBehaviourStrategyChance() => behaviourStrategyChanceToUse;
-    }
-
     private class GenericNoNewBehaviourType : BehaviourType
     {
         private readonly string behaviourStrategyName = "GenericNoNewBehaviour";
@@ -54,9 +44,27 @@ public class FriendGroupLeaderTypeOrder : BehaviourTypeOrder
         public override float GetBehaviourStrategyChance() => behaviourStrategyChanceToUse;
     }
 
-    private class ChooseMeetingLocationBehaviourType : BehaviourType
+    private class WaitForFollowersBehaviourType : BehaviourType
     {
-        private readonly string behaviourStrategyName = "ChooseMeetingLocationBehaviour";
+        private readonly string behaviourStrategyName = "WaitForFollowersBehaviour";
+        private readonly float behaviourStrategyChanceToUse = 1f;
+
+        public override string GetBehaviourStrategyName() => behaviourStrategyName;
+        public override float GetBehaviourStrategyChance() => behaviourStrategyChanceToUse;
+    }
+
+    private class FriendGroupBoidBehaviourType : BehaviourType
+    {
+        private readonly string behaviourStrategyName = "FriendGroupBoidBehaviour";
+        private readonly float behaviourStrategyChanceToUse = 1f;
+
+        public override string GetBehaviourStrategyName() => behaviourStrategyName;
+        public override float GetBehaviourStrategyChance() => behaviourStrategyChanceToUse;
+    }
+
+    private class WaitAtDestinationBehaviourType : BehaviourType
+    {
+        private readonly string behaviourStrategyName = "WaitAtDestinationBehaviour";
         private readonly float behaviourStrategyChanceToUse = 1f;
 
         public override string GetBehaviourStrategyName() => behaviourStrategyName;

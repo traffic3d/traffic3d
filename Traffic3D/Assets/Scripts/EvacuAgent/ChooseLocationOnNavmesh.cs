@@ -4,7 +4,7 @@ using UnityEngine.AI;
 public class ChooseLocationOnNavmesh : MonoBehaviour
 {
 	private int walkableAreaMask;
-	private float maxDistanceFromChosenPoint = 1f;
+	private float maxDistanceFromChosenPoint = 30f;
 
     private void Awake()
     {
@@ -14,7 +14,7 @@ public class ChooseLocationOnNavmesh : MonoBehaviour
 	public Vector3 GetRandomPointOnNavMesh(Vector3 centerPointOfConsideration, float radiusToConsider)
 	{
 		bool validPositionFound = false;
-		Vector3 result = centerPointOfConsideration; // Don't like this initialisation
+		Vector3 result = centerPointOfConsideration;
 
 		while(!validPositionFound)
 		{

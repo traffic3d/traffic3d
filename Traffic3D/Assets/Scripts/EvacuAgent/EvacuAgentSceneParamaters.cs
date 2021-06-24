@@ -4,12 +4,14 @@
     public static string SHOOTER_TAG = "shooter";
     public static string PEDESTRIAN_TAG = "pedestrian";
     public static string SHOOTER_HIGHLIGHT_TAG = "shooterHighlight";
+    public static string OBSTACLE_LAYER_NAME = "Obstacle";
     public static bool IS_FOV_VISUAL_ENABLED = true;
 
     // Highlights
     public static bool IS_SHOOTER_HIGHTLIGHT_VISUAL_ENABLED = false;
     public static bool IS_WORKER_HIGHTLIGHT_VISUAL_ENABLED = false;
-    public static bool IS_FRIEND_GROUP_HIGHTLIGHT_VISUAL_ENABLED = false;
+    public static bool IS_FRIEND_GROUP_LEADER_HIGHTLIGHT_VISUAL_ENABLED = false;
+    public static bool IS_FRIEND_GROUP_FOLLOWER_HIGHTLIGHT_VISUAL_ENABLED = false;
 
     // Prefabs
     public static string RESEOURCES_PREFABS_PREFIX = "EvacuAgent/Prefabs/";
@@ -18,8 +20,8 @@
 
     // Number of agent type
     public static int NUMBER_OF_SHOOTER_AGENTS = 1;
-    public static int NUMBER_OF_WORKER_AGENTS = 10;
-    public static int NUMBER_OF_FRIEND_GROUP_AGENTS = 25;
+    public static int NUMBER_OF_WORKER_AGENTS = 20;
+    public static int NUMBER_OF_FRIEND_GROUPS = 3;
 
     // Worker pedestrians
     public static float WORKER_CHANCE_TO_VISIT_HOSPITALITY_POINT_IN_ROUTE = 0.5f;
@@ -32,8 +34,25 @@
     public static int WORK_WAIT_TIME_LOWER_BOUND = 60;
     public static int WORK_WAIT_TIME_UPPER_BOUND = 60;
 
+    // Wait time for recreation
+    public static int RECREATION_WAIT_TIME_LOWER_BOUND = 1;
+    public static int RECREATION_WAIT_TIME_UPPER_BOUND = 5;
+
+    // Wait time for landmark
+    public static int LANDMARK_WAIT_TIME_LOWER_BOUND = 1;
+    public static int LANDMARK_WAIT_TIME_UPPER_BOUND = 5;
+
+    // Wait time for shopping
+    public static int SHOPPING_WAIT_TIME_LOWER_BOUND = 1;
+    public static int SHOPPING_WAIT_TIME_UPPER_BOUND = 5;
+
     // Group min and max bounds
-    public static int FRIEND_GROUP_FOLLOWER_COUNT_MINIMUM = 1;
-    public static int FRIEND_GROUP_FOLLOWER_COUNT_MAXIMUM = 4;
+    public static int FRIEND_GROUP_FOLLOWER_COUNT_MINIMUM = 3;
+    public static int FRIEND_GROUP_FOLLOWER_COUNT_MAXIMUM = 5;
+
+    // Friend group boid weights
+    public static float FRIEND_GROUP_BOID_COHESION_WEIGHT = 0.002f;
+    public static float FRIEND_GROUP_BOID_SEPARATION_WEIGHT = 0.004f;
+    public static float FRIEND_GROUP_BOID_TARGET_SEEKING_WEIGHT = 0.00002f;
 
 }

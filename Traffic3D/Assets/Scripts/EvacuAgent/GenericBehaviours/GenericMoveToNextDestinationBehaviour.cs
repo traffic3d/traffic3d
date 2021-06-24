@@ -1,24 +1,25 @@
-﻿using UnityEngine;
-using UnityEngine.AI;
+﻿using System.Linq;
+using UnityEngine;
 
 public class GenericMoveToNextDestinationBehaviour : BehaviourStrategy
 {
     public Vector3 CurrentDestination { get; private set; }
     private GenericPathCreationBehaviour genericPathCreationBehaviour;
-    private NavMeshAgent navMeshAgent;
-    private int currentPathIndex;
-    private readonly float proximityToDestination = 1f;
+    private EvacuAgentPedestrianBase evacuAgentPedestrianBase;
+    private readonly float proximityToDestination = 3f;
+    private GroupCollection groupCollection;
 
     private void Start()
     {
         genericPathCreationBehaviour = GetComponent<GenericPathCreationBehaviour>();
-        navMeshAgent = GetComponentInParent<NavMeshAgent>();
-        currentPathIndex = 1;
+        evacuAgentPedestrianBase = GetComponentInParent<EvacuAgentPedestrianBase>();
+        groupCollection = evacuAgentPedestrianBase.GroupCollection;
     }
 
     public override bool ShouldTriggerBehaviour()
     {
-        if (navMeshAgent.remainingDistance < proximityToDestination)
+        float distanceToTarget = Vector3.Distance(groupCollection.GroupDestination, transform.position);
+        if (distanceToTarget < proximityToDestination)
         {
             return true;
         }
@@ -28,11 +29,8 @@ public class GenericMoveToNextDestinationBehaviour : BehaviourStrategy
 
     public override void PerformBehaviour()
     {
-        if (currentPathIndex < genericPathCreationBehaviour.Path.Count)
-        {
-            CurrentDestination = genericPathCreationBehaviour.Path[currentPathIndex];
-            navMeshAgent.SetDestination(CurrentDestination);
-            currentPathIndex++;
-        }
+        CurrentDestination = genericPathCreationBehaviour.Path.First();
+        genericPathCreationBehaviour.Path.Remove(CurrentDestination);
+        evacuAgentPedestrianBase.GroupCollection.GroupDestination = CurrentDestination;
     }
 }

@@ -210,4 +210,8 @@ public class Pedestrian : MonoBehaviour
     {
         return generalPathCorners.Aggregate((nearestPoint, next) => Vector3.Distance(transform.position, next) < Vector3.Distance(transform.position, nearestPoint) ? next : nearestPoint);
     }
+
+    public float GetPedestrianNormalSpeed() => minSpeed * 2;
+
+    public int GetWalkableAreaMaske() => walkableAreaMask;
 }

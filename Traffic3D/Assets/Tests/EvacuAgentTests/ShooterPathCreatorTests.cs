@@ -95,10 +95,9 @@ public class ShooterPathCreator_CalculateRankedShooterAgentPath_ReturnsCorrectPa
     private List<PedestrianPoint> expectedPedestrianPoints;
     private ShooterPedestrianPointPathCreator shooterPathCreator;
     private List<Vector3> actualPedestrianPoints;
-    private PedestrianPoint building5;
     private PedestrianPoint building3;
-    private PedestrianPoint building2;
-    private PedestrianPoint middleLeft;
+    private PedestrianPoint frontLeft;
+    private PedestrianPoint building5;
     private int sizeOfPath;
 
     [UnityTest]
@@ -117,9 +116,9 @@ public class ShooterPathCreator_CalculateRankedShooterAgentPath_ReturnsCorrectPa
         shooterPathCreator = ShooterPathCreatorTestsHelper.SetUpshooterPathCreator();
         sizeOfPath = 3;
 
+        frontLeft = expectedPedestrianPoints[0];
         building3 = expectedPedestrianPoints[1];
         building5 = expectedPedestrianPoints[2];
-        middleLeft = expectedPedestrianPoints[5];
     }
 
     public override void Act()
@@ -130,13 +129,13 @@ public class ShooterPathCreator_CalculateRankedShooterAgentPath_ReturnsCorrectPa
     public override void Assertion()
     {
         Assert.AreEqual(actualPedestrianPoints.Count, sizeOfPath);
-        Assert.That(GetPedestrianPointFromLocation(actualPedestrianPoints[0]), Is.EqualTo(building3));
-        Assert.That(GetPedestrianPointFromLocation(actualPedestrianPoints[1]), Is.EqualTo(building5));
-        Assert.That(GetPedestrianPointFromLocation(actualPedestrianPoints[2]), Is.EqualTo(middleLeft));
+        Assert.That(GetPedestrianPointFromLocation(actualPedestrianPoints[0]), Is.EqualTo(frontLeft));
+        Assert.That(GetPedestrianPointFromLocation(actualPedestrianPoints[1]), Is.EqualTo(building3));
+        Assert.That(GetPedestrianPointFromLocation(actualPedestrianPoints[2]), Is.EqualTo(building5));
     }
 }
 
-public class shooterPathCreator_NormaliseValue_ReturnsCorrectValue_WhenIsBeneficialIsTrue : ArrangeActAssertStrategy
+public class ShooterPathCreator_NormaliseValue_ReturnsCorrectValue_WhenIsBeneficialIsTrue : ArrangeActAssertStrategy
 {
     private ShooterPedestrianPointPathCreator shooterPathCreator;
     private bool isBeneficial;
@@ -175,7 +174,7 @@ public class shooterPathCreator_NormaliseValue_ReturnsCorrectValue_WhenIsBenefic
     }
 }
 
-public class shooterPathCreator_NormaliseValue_ReturnsCorrectValue_WhenIsBeneficialIsFalse : ArrangeActAssertStrategy
+public class ShooterPathCreator_NormaliseValue_ReturnsCorrectValue_WhenIsBeneficialIsFalse : ArrangeActAssertStrategy
 {
     private ShooterPedestrianPointPathCreator shooterPathCreator;
     private bool isBeneficial;
@@ -214,7 +213,7 @@ public class shooterPathCreator_NormaliseValue_ReturnsCorrectValue_WhenIsBenefic
     }
 }
 
-public class shooterPathCreator_GetWeightedValueOfNode_ReturnsCorrectValue : ArrangeActAssertStrategy
+public class ShooterPathCreator_GetWeightedValueOfNode_ReturnsCorrectValue : ArrangeActAssertStrategy
 {
     private ShooterPedestrianPointPathCreator shooterPathCreator;
     private PathDecisionOption pathDecisionOption;
