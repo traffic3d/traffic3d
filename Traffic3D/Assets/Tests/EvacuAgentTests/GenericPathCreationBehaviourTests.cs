@@ -118,6 +118,7 @@ public class GenericPathCreationBehaviour_ShouldTriggerbehaviour_ReturnsFalse_Wh
     private GenericPathCreationBehaviour genericPathCreationBehaviour;
     private bool actualBool;
     private PedestrianPoint pedestrianPoint;
+    private PedestrianPoint pedestrianPointTwo;
 
     [UnityTest]
     public override IEnumerator PerformTest()
@@ -133,7 +134,8 @@ public class GenericPathCreationBehaviour_ShouldTriggerbehaviour_ReturnsFalse_Wh
         evacuAgentPedestrianBase = SpawnFriendGroupOfEvacuAgentPedestrians(1).First();
         genericPathCreationBehaviour = evacuAgentPedestrianBase.GetComponentInChildren<GenericPathCreationBehaviour>();
         pedestrianPoint = GameObject.FindObjectOfType<PedestrianPoint>();
-        evacuAgentPedestrianBase.GroupCollection.UpdatePath(new List<Vector3>() { pedestrianPoint.GetPointLocation() });
+        pedestrianPointTwo = GameObject.FindObjectOfType<PedestrianPoint>();
+        evacuAgentPedestrianBase.GroupCollection.UpdatePath(new List<Vector3>() { pedestrianPoint.GetPointLocation(), pedestrianPointTwo.GetPointLocation() });
     }
 
     public override void Act()
