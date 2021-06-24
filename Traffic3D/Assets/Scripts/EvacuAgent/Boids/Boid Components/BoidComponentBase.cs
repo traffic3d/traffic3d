@@ -6,20 +6,11 @@ public abstract class BoidComponentBase : MonoBehaviour
 
     public bool DoesVectorContainNaN(Vector3 vector)
     {
-        for(int index = 0; index < 3; index++)
-        {
-            if (IsValueNaN(vector[index]))
-                return true;
-        }
-
-        return false;
+        return IsValueNaN(vector[0]) && IsValueNaN(vector[1]) && IsValueNaN(vector[2]);
     }
 
     private bool IsValueNaN(float value)
     {
-        if (float.IsNaN(value))
-            return true;
-
-        return false;
+        return float.IsNaN(value);
     }
 }

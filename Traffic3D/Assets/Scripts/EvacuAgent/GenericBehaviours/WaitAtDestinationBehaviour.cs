@@ -27,18 +27,12 @@ public class WaitAtDestinationBehaviour : BehaviourStrategy
     public override bool ShouldTriggerBehaviour()
     {
         float distanceToDestination = Vector3.Distance(transform.position, groupCollection.GroupDestination);
-
-        if (distanceToDestination <= radiusToDestination)
-            return true;
-
-        return false;
+        return distanceToDestination <= radiusToDestination;
     }
 
     public override void PerformBehaviour()
     {
         evacuAgentPedestrianBase.ChangeSpeedToMatchLeader(normalSpeed);
-        //boidBehaviourStrategyBase.ShouldBoidLogicBeActive(false);
         evacuAgentPedestrianBase.IsPedestrianMovementStopped(false);
-        //navMeshAgent.isStopped = true;
     }
 }

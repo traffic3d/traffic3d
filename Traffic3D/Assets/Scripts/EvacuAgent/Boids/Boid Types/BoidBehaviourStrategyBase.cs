@@ -17,7 +17,7 @@ public abstract class BoidBehaviourStrategyBase : BehaviourStrategy
     public abstract float SeparationWeight { get; }
     public abstract float TargetSeekingWeight { get; }
     protected bool shouldUpdateBoid;
-    private float maxSpeed = 2.4f;
+    private float maxSpeedMetresSecond = 2.4f;
 
     protected void Start()
     {
@@ -51,19 +51,14 @@ public abstract class BoidBehaviourStrategyBase : BehaviourStrategy
     protected bool IsDestinationValid(Vector3 proposedDestination)
     {
         NavMeshPath navMeshPath = new NavMeshPath();
-        if (NavMeshAgent.CalculatePath(proposedDestination, navMeshPath) && navMeshPath.status == NavMeshPathStatus.PathComplete)
-        {
-            return true;
-        }
-
-        return false;
+        return NavMeshAgent.CalculatePath(proposedDestination, navMeshPath) && navMeshPath.status == NavMeshPathStatus.PathComplete;
     }
 
     protected Vector3 LimitVelocity(Vector3 newVelocity)
     {
-        if (newVelocity.magnitude > maxSpeed)
+        if (newVelocity.magnitude > maxSpeedMetresSecond)
         {
-            newVelocity = newVelocity / newVelocity.magnitude * maxSpeed;
+            newVelocity = newVelocity / newVelocity.magnitude * maxSpeedMetresSecond;
         }
         return newVelocity;
     }

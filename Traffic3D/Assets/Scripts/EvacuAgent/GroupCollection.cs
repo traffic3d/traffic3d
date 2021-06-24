@@ -65,12 +65,7 @@ public class GroupCollection : MonoBehaviour
 
     public bool HasGroupVisitedCurrentPathNode()
     {
-        if(visitedStateOfCurrentDestination.Value == true)
-        {
-            return true;
-        }
-
-        return false;
+        return visitedStateOfCurrentDestination.Value == true;
     }
 
     public int GetNumberOfPathNodes() => path.Count;
