@@ -8,7 +8,6 @@ public class FriendGroupBoidBehaviour : BoidBehaviourStrategyBase
     public override float SeparationWeight => EvacuAgentSceneParamaters.FRIEND_GROUP_BOID_SEPARATION_WEIGHT;
     public override float TargetSeekingWeight => EvacuAgentSceneParamaters.FRIEND_GROUP_BOID_TARGET_SEEKING_WEIGHT;
 
-    //Debugging
     private bool isDebuggingOn;
     private Vector3 newVelocityCache;
     private Vector3 navMeshVelocityCahce;

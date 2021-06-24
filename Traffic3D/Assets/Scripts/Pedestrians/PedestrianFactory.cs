@@ -6,8 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class PedestrianFactory : MonoBehaviour
 {
-    public float lowRangeRespawnTime = 1f; //5f
-    public float highRangeRespawnTime = 2f; //10f
+    public float lowRangeRespawnTime = 1f;
+    public float highRangeRespawnTime = 2f;
     public int maximumPedestrianCount = 20;
     public List<PedestrianProbability> pedestrianProbabilities;
 
@@ -127,8 +127,6 @@ public class PedestrianFactory : MonoBehaviour
     {
         return new List<AbstractEvacuAgentPedestrianFactory>()
         {
-            //gameObject.GetComponent<WorkerPedestrianFactory>(),
-            //gameObject.GetComponent<ShooterPedestrianFactory>(),
             gameObject.GetComponent<FriendGroupLeaderFollowerPedestrianFactory>()
         };
     }

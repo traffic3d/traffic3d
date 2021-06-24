@@ -1,4 +1,4 @@
-﻿public class WorkerPedestrianFactory : AbstractEvacuAgentPedestrianFactory
+﻿public class WorkerLeaderPedestrianFactory : AbstractEvacuAgentPedestrianFactory
 {
     private void Awake()
     {

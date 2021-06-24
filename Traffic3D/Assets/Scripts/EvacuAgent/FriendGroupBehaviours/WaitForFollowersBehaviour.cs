@@ -24,11 +24,7 @@ public class WaitForFollowersBehaviour : BehaviourStrategy
 
     public override bool ShouldTriggerBehaviour()
     {
-        if (IsLeaderAtDestination() &&
-            AreAllFolowersAtDestination())
-            return true;
-
-        return false;
+        return IsLeaderAtDestination() && AreAllFolowersAtDestination();
     }
 
     public override void PerformBehaviour()
@@ -46,12 +42,7 @@ public class WaitForFollowersBehaviour : BehaviourStrategy
 
     public bool IsLeaderAtDestination()
     {
-        if (Vector3.Distance(groupCollection.GroupDestination, transform.position) < leaderAcceptableProximity)
-        {
-            return true;
-        }
-
-        return false;
+        return Vector3.Distance(groupCollection.GroupDestination, transform.position) < leaderAcceptableProximity;
     }
 
     public bool AreAllFolowersAtDestination()
@@ -78,10 +69,7 @@ public class WaitForFollowersBehaviour : BehaviourStrategy
 
     public bool ShouldWaitForFollowersToSpawn()
     {
-        if (groupCollection.GetGroupMembers().Count == 0)
-            return true;
-
-        return false;
+        return groupCollection.GetGroupMembers().Count == 0;
     }
 
     public void GenerateGroupWalkingSpeed()

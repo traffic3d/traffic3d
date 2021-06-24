@@ -23,10 +23,7 @@ public abstract class AbstractEvacuAgentPedestrianFactory : MonoBehaviour
 
     public virtual bool HasSpawnedMaxPedestrians()
     {
-        if (numPedestriansToSpawn + numberOfFollowersLeftToSpawn == 0)
-            return true;
-
-        return false;
+        return numPedestriansToSpawn + numberOfFollowersLeftToSpawn == 0;
     }
 
     public BehaviourCollection GenerateBehaviourCollection(BehaviourController behaviourController, BehaviourTypeOrder behaviourTypeOrder)
