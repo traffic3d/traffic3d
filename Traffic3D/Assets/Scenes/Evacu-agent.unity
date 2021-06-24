@@ -2152,6 +2152,7 @@ GameObject:
   - component: {fileID: 500897554}
   - component: {fileID: 500897556}
   - component: {fileID: 500897558}
+  - component: {fileID: 500897555}
   m_Layer: 11
   m_Name: PedestrianPoint front left
   m_TagString: Untagged
@@ -2173,6 +2174,19 @@ Transform:
   m_Father: {fileID: 218403219}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &500897555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 500897553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e04511c2719bad4785cb568becfbd8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  footfall: 22
 --- !u!65 &500897556
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7056,6 +7070,7 @@ GameObject:
   - component: {fileID: 2074951457}
   - component: {fileID: 2074951459}
   - component: {fileID: 2074951461}
+  - component: {fileID: 2074951458}
   m_Layer: 11
   m_Name: PedestrianPoint back left
   m_TagString: Untagged
@@ -7077,6 +7092,19 @@ Transform:
   m_Father: {fileID: 218403219}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2074951458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2074951456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e77f542000cee8d49b8006cb4079ac23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  footfall: 0
 --- !u!65 &2074951459
 BoxCollider:
   m_ObjectHideFlags: 0
