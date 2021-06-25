@@ -170,7 +170,7 @@ public class BoidBehaviourStrategyBase_LimitVelocity_DoesNotLimitTheMagnitudeOfT
 
     public override void Assertion()
     {
-        Assert.Less(velocityBeforeLimit.magnitude, friendGroupBoidBehaviour.maxSpeed);
+        Assert.Less(velocityBeforeLimit.magnitude, friendGroupBoidBehaviour.maxSpeedMetresSecond);
         AssertTwoVectorsAreEqualWithinTolerance(actualVelocity, expectedVelocity, floatingPointTolerance);
     }
 }
