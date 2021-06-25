@@ -11,11 +11,11 @@ public class BoidSeparationComponent : BoidComponentBase
 
         foreach (BoidBehaviourStrategyBase neighbour in followerBoidBehaviour.Neighbours)
         {
-            float distance = Vector3.Distance(transform.position, neighbour.transform.position);
-            velocity += (neighbour.transform.position - transform.position).normalized / Mathf.Pow(distance, 2);
+            float distance = Vector3.Distance(followerBoidBehaviour.transform.position, neighbour.transform.position);
+            velocity += (neighbour.transform.position - followerBoidBehaviour.transform.position).normalized / Mathf.Pow(distance, 2);
         }
 
-        velocity /= followerBoidBehaviour.Neighbours.Count; // Do i need this?
+        velocity /= followerBoidBehaviour.Neighbours.Count;
         velocity *= -1;
 
         return velocity * followerBoidBehaviour.SeparationWeight;
