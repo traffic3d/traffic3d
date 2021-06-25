@@ -3,8 +3,8 @@ using UnityEngine;
 
 public abstract class AbstractEvacuAgentPedestrianFactory : MonoBehaviour
 {
-    public bool isCreatingLeaderType { get; protected set;
-    }
+    public bool isCreatingLeaderType { get; protected set; }
+
     [SerializeField]
     private GameObject behaviourCollectionPrefab;
 

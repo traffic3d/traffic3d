@@ -15,13 +15,13 @@
 
     // Prefabs
     public static string RESEOURCES_PREFABS_PREFIX = "EvacuAgent/Prefabs/";
-    public static string BEHAVIOUR_CONTROLLER_PREFAB = "EvacuAgent/Prefabs/BehaviourController";
-    public static string SHOOTER_HIGHLIGHT_PREFAB = "EvacuAgent/Prefabs/ShooterHighlight";
+    public static string BEHAVIOUR_CONTROLLER_PREFAB = "EvacuAgent/Prefabs/Behaviour_Structure/BehaviourController";
+    public static string SHOOTER_HIGHLIGHT_PREFAB = "EvacuAgent/Prefabs/Pedestrian_Highlights/ShooterHighlight";
 
     // Number of agent type
     public static int NUMBER_OF_SHOOTER_AGENTS = 1;
-    public static int NUMBER_OF_WORKER_AGENTS = 20;
-    public static int NUMBER_OF_FRIEND_GROUPS = 3;
+    public static int NUMBER_OF_WORKER_AGENTS = 10;
+    public static int NUMBER_OF_FRIEND_GROUPS = 1;
 
     // Worker pedestrians
     public static float WORKER_CHANCE_TO_VISIT_HOSPITALITY_POINT_IN_ROUTE = 0.5f;
@@ -31,8 +31,8 @@
     public static int HOSPITALITY_WAIT_TIME_UPPER_BOUND = 5;
 
     // Wait time for work
-    public static int WORK_WAIT_TIME_LOWER_BOUND = 60;
-    public static int WORK_WAIT_TIME_UPPER_BOUND = 60;
+    public static int WORK_WAIT_TIME_LOWER_BOUND = 20;
+    public static int WORK_WAIT_TIME_UPPER_BOUND = 30;
 
     // Wait time for recreation
     public static int RECREATION_WAIT_TIME_LOWER_BOUND = 1;
@@ -46,13 +46,22 @@
     public static int SHOPPING_WAIT_TIME_LOWER_BOUND = 1;
     public static int SHOPPING_WAIT_TIME_UPPER_BOUND = 5;
 
-    // Group min and max bounds
-    public static int FRIEND_GROUP_FOLLOWER_COUNT_MINIMUM = 3;
+    // Friend group min and max bounds
+    public static int FRIEND_GROUP_FOLLOWER_COUNT_MINIMUM = 2;
     public static int FRIEND_GROUP_FOLLOWER_COUNT_MAXIMUM = 5;
 
+    // Worker group min and max bounds
+    public static int WORKER_GROUP_FOLLOWER_COUNT_MINIMUM = 0;
+    public static int WORKER_GROUP_FOLLOWER_COUNT_MAXIMUM = 0;
+
     // Friend group boid weights
-    public static float FRIEND_GROUP_BOID_COHESION_WEIGHT = 0.002f;
-    public static float FRIEND_GROUP_BOID_SEPARATION_WEIGHT = 0.004f;
-    public static float FRIEND_GROUP_BOID_TARGET_SEEKING_WEIGHT = 0.00002f;
+    public static float FRIEND_GROUP_BOID_COHESION_WEIGHT = 0.002f; // was 0.004
+    public static float FRIEND_GROUP_BOID_SEPARATION_WEIGHT = 0.004f; // was 0.004 and worked well before intergroup separation
+    public static float FRIEND_GROUP_BOID_TARGET_SEEKING_WEIGHT = 0.00002f; // was 0.006 was good
+
+    // Worker group boid weights
+    public static float WORKER_GROUP_BOID_COHESION_WEIGHT = 0.0008f;
+    public static float WORKER_GROUP_BOID_SEPARATION_WEIGHT = 0.006f;
+    public static float WORKER_GROUP_BOID_TARGET_SEEKING_WEIGHT = 0.00002f; // was 0.006 was good
 
 }

@@ -7,7 +7,7 @@ public class GenericPathCreationBehaviour : BehaviourStrategy
     public NonShooterPedestrianPointPathCreator PedestrianPointPathCreator { get; private set; }
     private EvacuAgentPedestrianBase evacuAgentPedestrianBase;
     private GroupCollection groupCollection;
-    private bool isDebugginOn = false; // turn on for gizmo debugging
+    private bool isDebuggingOn = false; // turn on for gizmo debugging
 
     private void Start()
     {
@@ -19,10 +19,7 @@ public class GenericPathCreationBehaviour : BehaviourStrategy
 
     public override bool ShouldTriggerBehaviour()
     {
-        if(groupCollection.GetNumberOfPathNodes() == 0)
-            return true;
-
-        return false;
+        return groupCollection.shouldUpdatePath;
     }
 
     public override void PerformBehaviour()
@@ -35,7 +32,7 @@ public class GenericPathCreationBehaviour : BehaviourStrategy
 
     private void OnDrawGizmos()
     {
-        if (!isDebugginOn)
+        if (!isDebuggingOn)
             return;
 
         Gizmos.color = Color.red;

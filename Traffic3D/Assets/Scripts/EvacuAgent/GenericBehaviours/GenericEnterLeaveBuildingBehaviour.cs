@@ -62,7 +62,7 @@ public class GenericEnterLeaveBuildingBehaviour : BehaviourStrategy
 
     IEnumerator StartAgentWaitAtBuilding()
     {
-        visibleGroupMembers = evacuAgentPedestrianBase.GetVisibleGroupMemebers();
+        visibleGroupMembers.AddRange(evacuAgentPedestrianBase.GetVisibleGroupMembers());
         isAbleToEnterBuilding = false;
         pedestrian.transform.localScale = inBuildingScale;
         evacuAgentPedestrianBase.IsPedestrianMovementStopped(true);

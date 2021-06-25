@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5030117961596037288}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.8874493, y: 11.780106, z: 8.482285}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -47,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   behaviourControllerPrefab: {fileID: 7517269392168853345, guid: 74f292f393478b14494af0798a2be2e2,
     type: 3}
+  GroupCollection: {fileID: 0}
   pedestrianHighlight: {fileID: 4757276257460740152, guid: 0e7d6d5ec441c9945b6b8b88f962f78a,
     type: 3}
   behaviourController: {fileID: 0}
@@ -54,6 +55,8 @@ MonoBehaviour:
   PedestrianPointPathCreator: {fileID: 7131258597805761683}
   behaviourTypeOrder: {fileID: 613896290181200792}
   pedestrian: {fileID: 0}
+  navMeshAgent: {fileID: 0}
+  boidManager: {fileID: 0}
 --- !u!114 &613896290181200792
 MonoBehaviour:
   m_ObjectHideFlags: 0

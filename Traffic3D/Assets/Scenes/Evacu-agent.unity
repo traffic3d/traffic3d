@@ -173,7 +173,7 @@ GameObject:
   m_Layer: 11
   m_Name: PedestrianPoint building 2
   m_TagString: Untagged
-  m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -291,7 +291,7 @@ GameObject:
   m_Layer: 11
   m_Name: PedestrianPoint back right
   m_TagString: Untagged
-  m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -635,7 +635,7 @@ GameObject:
   m_Layer: 11
   m_Name: PedestrianPoint middle right 2
   m_TagString: Untagged
-  m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -795,7 +795,6 @@ GameObject:
   - component: {fileID: 218403219}
   - component: {fileID: 218403218}
   - component: {fileID: 218403222}
-  - component: {fileID: 218403223}
   - component: {fileID: 218403224}
   - component: {fileID: 218403220}
   - component: {fileID: 218403221}
@@ -907,7 +906,7 @@ MonoBehaviour:
     type: 3}
   leaderPedestrianTypePrefab: {fileID: 5399095586381281966, guid: b3f03a2743136834f91e8de6af7e5850,
     type: 3}
-  followerPedestrianTypePrefab: {fileID: 5399095586381281966, guid: b3f03a2743136834f91e8de6af7e5850,
+  followerPedestrianTypePrefab: {fileID: 7725893537788694028, guid: c58e268e03e77a640b8eb9c09b961b30,
     type: 3}
 --- !u!114 &218403222
 MonoBehaviour:
@@ -919,18 +918,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0193b2b1cc36ed1478e6dc49f0edcac0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &218403223
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 218403217}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0078f608bfa160542b3b2fdd4e77c73a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &218403224
@@ -1413,7 +1400,7 @@ GameObject:
   m_Layer: 11
   m_Name: PedestrianPoint front right
   m_TagString: Untagged
-  m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2156,7 +2143,7 @@ GameObject:
   m_Layer: 11
   m_Name: PedestrianPoint front left
   m_TagString: Untagged
-  m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2183,10 +2170,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 500897553}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e04511c2719bad4785cb568becfbd8a, type: 3}
+  m_Script: {fileID: 11500000, guid: c12e0b8451d261949b5f374ddb2b5b7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  footfall: 22
+  footfall: 0
 --- !u!65 &500897556
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3927,7 +3914,7 @@ GameObject:
   m_Layer: 11
   m_Name: PedestrianPoint building 1
   m_TagString: Untagged
-  m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -4675,6 +4662,11 @@ PrefabInstance:
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: TogglePedestrianFieldOfViewVisuals
       objectReference: {fileID: 0}
+    - target: {fileID: 9121431957583318816, guid: 0f660394136effb40aad2fbd9f1cddf4,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -19.289917
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f660394136effb40aad2fbd9f1cddf4, type: 3}
 --- !u!114 &1334056664 stripped
@@ -4750,7 +4742,7 @@ GameObject:
   m_Layer: 11
   m_Name: PedestrianPoint building 3
   m_TagString: Untagged
-  m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -4793,7 +4785,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55dbef26dcf5b8046aafc6addbb05bda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  footfall: 0
+  footfall: 22
 --- !u!135 &1379116535
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4983,7 +4975,7 @@ GameObject:
   m_Layer: 11
   m_Name: PedestrianPoint middle right
   m_TagString: Untagged
-  m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -5733,7 +5725,7 @@ GameObject:
   m_Layer: 11
   m_Name: PedestrianPoint building 4
   m_TagString: Untagged
-  m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -6035,7 +6027,7 @@ GameObject:
   m_Layer: 11
   m_Name: PedestrianPoint middle left 2
   m_TagString: Untagged
-  m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -6566,7 +6558,7 @@ GameObject:
   m_Layer: 11
   m_Name: PedestrianPoint middle left 1
   m_TagString: Untagged
-  m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -6638,7 +6630,7 @@ GameObject:
   m_Layer: 11
   m_Name: PedestrianPoint building 5
   m_TagString: Untagged
-  m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -7074,7 +7066,7 @@ GameObject:
   m_Layer: 11
   m_Name: PedestrianPoint back left
   m_TagString: Untagged
-  m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -7101,7 +7093,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2074951456}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e77f542000cee8d49b8006cb4079ac23, type: 3}
+  m_Script: {fileID: 11500000, guid: c12e0b8451d261949b5f374ddb2b5b7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   footfall: 0

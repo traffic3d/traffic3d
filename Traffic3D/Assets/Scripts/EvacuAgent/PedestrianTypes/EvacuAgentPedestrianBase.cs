@@ -19,6 +19,8 @@ public abstract class EvacuAgentPedestrianBase : MonoBehaviour
     public NavMeshAgent navMeshAgent;
     public BoidManager boidManager;
     public string Tag { get; protected set; }
+    public List<EvacuAgentPedestrianBase> visibleGroupMembers;
+    public List<EvacuAgentPedestrianBase> visibleNonGroupMembers;
 
     public virtual void InitialisePedestrian(Pedestrian pedestrian)
     {
@@ -33,6 +35,8 @@ public abstract class EvacuAgentPedestrianBase : MonoBehaviour
         fieldOfView = fieldOfViewObj.GetComponent<FieldOfView>();
         navMeshAgent = GetComponentInParent<NavMeshAgent>();
         boidManager = GetComponent<BoidManager>();
+        visibleGroupMembers = new List<EvacuAgentPedestrianBase>();
+        visibleNonGroupMembers = new List<EvacuAgentPedestrianBase>();
     }
 
     public void AddGroupCollection(GroupCollection groupCollection)
@@ -45,11 +49,32 @@ public abstract class EvacuAgentPedestrianBase : MonoBehaviour
         navMeshAgent.speed = leaderSpeed;
     }
 
-    public List<EvacuAgentPedestrianBase> GetVisibleGroupMemebers()
+    public void IsPedestrianMovementStopped(bool isMovementActive)
     {
-        List<EvacuAgentPedestrianBase> visibleGroupMembers = new List<EvacuAgentPedestrianBase>();
+        navMeshAgent.isStopped = isMovementActive;
+        boidManager.isBoidMovementStopped = isMovementActive;
+    }
 
-        foreach (Pedestrian pedestrian in fieldOfView.visiblePedestrians)
+    public List<EvacuAgentPedestrianBase> GetVisibleGroupMembers()
+    {
+        UpdateVisibleGroupAndNonGroupPedestrians();
+
+        return visibleGroupMembers;
+    }
+
+    public List<EvacuAgentPedestrianBase> GetVisibleNonGroupMembers()
+    {
+        UpdateVisibleGroupAndNonGroupPedestrians();
+
+        return visibleNonGroupMembers;
+    }
+
+    private void UpdateVisibleGroupAndNonGroupPedestrians()
+    {
+        visibleGroupMembers.Clear();
+        visibleNonGroupMembers.Clear();
+
+        foreach (Pedestrian pedestrian in fieldOfView.allVisiblePedestrians)
         {
             EvacuAgentPedestrianBase evacuAgentPedestrian = pedestrian.GetComponentInChildren<EvacuAgentPedestrianBase>();
 
@@ -60,14 +85,10 @@ public abstract class EvacuAgentPedestrianBase : MonoBehaviour
             {
                 visibleGroupMembers.Add(evacuAgentPedestrian);
             }
+            else
+            {
+                visibleNonGroupMembers.Add(evacuAgentPedestrian);
+            }
         }
-
-        return visibleGroupMembers;
-    }
-
-    public void IsPedestrianMovementStopped(bool isMovementActive)
-    {
-        navMeshAgent.isStopped = isMovementActive;
-        boidManager.isBoidMovementStopped = isMovementActive;
     }
 }
