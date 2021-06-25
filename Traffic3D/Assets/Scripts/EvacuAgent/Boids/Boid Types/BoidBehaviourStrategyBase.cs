@@ -19,7 +19,7 @@ public abstract class BoidBehaviourStrategyBase : BehaviourStrategy
     public abstract float TargetSeekingWeight { get; }
     public abstract float InterGroupSeparationWeight { get; }
     protected bool shouldUpdateBoid;
-    private float maxSpeedMetresSecond = 2.4f;
+    public float maxSpeedMetresSecond = 2.4f;
 
     //Debugging
     protected bool isDebuggingOn;

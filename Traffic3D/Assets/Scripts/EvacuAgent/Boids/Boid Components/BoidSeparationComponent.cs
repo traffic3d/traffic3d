@@ -15,7 +15,7 @@ public class BoidSeparationComponent : BoidComponentBase
             velocity += (neighbour.transform.position - followerBoidBehaviour.transform.position).normalized / Mathf.Pow(distance, 2);
         }
 
-        velocity /= followerBoidBehaviour.Neighbours.Count; // Do i need this?
+        velocity /= followerBoidBehaviour.Neighbours.Count;
         velocity *= -1;
 
         return velocity * followerBoidBehaviour.SeparationWeight;
