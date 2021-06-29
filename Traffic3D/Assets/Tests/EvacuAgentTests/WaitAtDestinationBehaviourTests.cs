@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Linq;
 using NUnit.Framework;
 using UnityEngine;
@@ -37,6 +37,7 @@ public class WaitAtDestinationBehaviourTests_ShouldTriggerBehaviour_ReturnsTrue_
 
     public override void Act()
     {
+        waitAtDestinationBehaviour.RadiusToDestination = 3f;
         actualBool = waitAtDestinationBehaviour.ShouldTriggerBehaviour();
     }
 
