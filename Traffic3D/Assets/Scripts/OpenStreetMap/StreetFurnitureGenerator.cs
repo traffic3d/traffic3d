@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -101,16 +101,7 @@ public class StreetFurnitureGenerator : BaseAssetGenerator
                         float zDest = (float)((1 - ratio) * z1 + ratio * z2);
                         Vector3 streetLightPosition = new Vector3(xDest, yDest, zDest);
                         // Check distance to nodes and to other roads
-                        RoadNode closestNode;
-                        if (ratio > 0.5)
-                        {
-                            closestNode = nextNode;
-                        }
-                        else
-                        {
-                            closestNode = node;
-                        }
-                        if (Vector3.Distance(closestNode.transform.position, streetLightPosition) >= streetLightMinDistanceFromOtherRoads || RoadNetworkManager.GetInstance().GetRoadWaysFromNode(closestNode).Count == 1)
+                        if (!roadWay.nodes.Exists(n => Vector3.Distance(n.transform.position, streetLightPosition) < streetLightMinDistanceFromOtherRoads && RoadNetworkManager.GetInstance().GetRoadWaysFromNode(n).Count > 1))
                         {
                             GameObject streetLampPrefab = Resources.Load<GameObject>("Models/streetlight");
                             GameObject streetLamp = GameObject.Instantiate(streetLampPrefab, streetLightPosition, Quaternion.Euler(new Vector3(0, 0, 0)));

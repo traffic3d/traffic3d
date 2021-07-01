@@ -86,6 +86,11 @@ public class RoadNetworkManager
         return nodeRelatedRoadWays[roadNode];
     }
 
+    public List<Road> GetRoadsFromNode(RoadNode roadNode)
+    {
+        return nodeRelatedRoadWays[roadNode].Select(w => GetRoadFromRoadWay(w)).Where(r => r != null).Distinct().ToList();
+    }
+
     /// <summary>
     /// Get a list of ways (most likely with only one way) using two road nodes which are using the Road Way.
     /// </summary>

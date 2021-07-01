@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEditor.SceneManagement;
@@ -46,7 +46,7 @@ public class JunctionGeneratorTests
         JunctionGenerator junctionGenerator = new JunctionGenerator();
         junctionGenerator.GenerateJunctions(new TrafficLightGenerator(osmMapReader));
 
-        Assert.True(junctionGenerator.GetNumCreatedJunctions() == (junctionGenerator.GetNumMidConnectedRoads()/2));
+        Assert.AreEqual(junctionGenerator.GetNumCreatedJunctions(), (junctionGenerator.GetNumMidConnectedRoads()/2));
     }
 
     /// <summary>
@@ -59,14 +59,14 @@ public class JunctionGeneratorTests
         JunctionGenerator junctionGenerator = new JunctionGenerator();
 
         //Before Junctions Created
-        Assert.True(junctionGenerator.GetNumOfTotalEndNodes() == junctionGenerator.GetNumCreatedRoads());
-        Assert.True(junctionGenerator.GetNumOfTotalStartNodes() == junctionGenerator.GetNumCreatedRoads());
+        Assert.AreEqual(junctionGenerator.GetNumOfTotalEndNodes(), junctionGenerator.GetNumCreatedRoads());
+        Assert.AreEqual(junctionGenerator.GetNumOfTotalStartNodes(), junctionGenerator.GetNumCreatedRoads());
 
         junctionGenerator.GenerateJunctions(new TrafficLightGenerator(osmMapReader));
 
         //After Junctions Created
-        Assert.True(junctionGenerator.GetNumOfTotalEndNodes() == junctionGenerator.GetNumCreatedRoads());
-        Assert.True(junctionGenerator.GetNumOfTotalStartNodes() == junctionGenerator.GetNumCreatedRoads());
+        Assert.AreEqual(junctionGenerator.GetNumOfTotalEndNodes(), junctionGenerator.GetNumCreatedRoads());
+        Assert.AreEqual(junctionGenerator.GetNumOfTotalStartNodes(), junctionGenerator.GetNumCreatedRoads());
     }
 
 

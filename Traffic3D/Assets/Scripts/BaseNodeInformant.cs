@@ -64,7 +64,7 @@ public abstract class BaseNodeInformant
             if (addBeforeCurrentNode)
                 roadWay.nodes.Insert(currentNodeIndex, newNode); //add just before junction
             else
-                newNode.transform.SetSiblingIndex(currentNodeIndex + 1); //add just after junction
+                roadWay.nodes.Insert(currentNodeIndex + 1, newNode); //add just after junction
 
             newNode.transform.position = currentNode.transform.position;
             //Move towards previous node
