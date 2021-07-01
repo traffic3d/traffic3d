@@ -14,7 +14,7 @@ public class PathGenerator : BaseNodeInformant
     // A dictionary of ways with a list of connected node positions.
     private Dictionary<MapXmlWay, List<Vector3>> wayNodes;
     private List<Vector3> connectionPositions;
-    private const float maxConnectionDistance = 20f;
+    private const float maxConnectionDistance = 10f;
     private const float nodeConnectionBackwardsOffset = 2f;
     private const float minDistanceBetweenNodesForMovement = 0.1f;
     private bool isLeftHandDrive;
@@ -55,9 +55,7 @@ public class PathGenerator : BaseNodeInformant
                 // Make vehicle path child of way objects' parent
                 foreach (RoadWay roadWay in roadWays)
                 {
-                    RecordRoadWayData(roadWay.gameObject);
                     SetParent(entry.Key, roadWay, wayObjects);
-                    createdRoads.Add(roadWay.gameObject);
                 }
 
                 Road road = wayObjects[entry.Key].GetComponentInChildren<Road>();
@@ -70,6 +68,12 @@ public class PathGenerator : BaseNodeInformant
         }
         AddConnectionsBetweenRoads();
         RenderStopLines();
+        RoadNetworkManager.GetInstance().Reload();
+        foreach (RoadWay roadWay in RoadNetworkManager.GetInstance().GetWays())
+        {
+            RecordRoadWayData(roadWay.gameObject);
+            createdRoads.Add(roadWay.gameObject);
+        }
     }
 
     public void AddConnectionsBetweenRoads()
@@ -79,7 +83,8 @@ public class PathGenerator : BaseNodeInformant
         {
             Dictionary<RoadNode, float> closeRoadNodesAndDistance = RoadNetworkManager.GetInstance().GetNodes()
                 .ToDictionary(r => r, r => Vector3.Distance(connectionPosition, r.transform.position)).OrderBy(e => e.Value)
-                .Where(e => e.Value < maxConnectionDistance).ToDictionary(e => e.Key, e => e.Value);
+                .Where(e => e.Value < maxConnectionDistance + (RoadGenerator.defaultLaneWidth * RoadNetworkManager.GetInstance().GetRoadsFromNode(e.Key).Select(r => r.numberOfLanes).DefaultIfEmpty(1).Max()))
+                .ToDictionary(e => e.Key, e => e.Value);
             List<List<RoadWay>> roadWaysEvaluated = new List<List<RoadWay>>();
             foreach (KeyValuePair<RoadNode, float> roadNodeDistanceCurrent in closeRoadNodesAndDistance)
             {
@@ -115,9 +120,62 @@ public class PathGenerator : BaseNodeInformant
                             {
                                 continue;
                             }
+                            RoadNode connectionCurrentRoadNode = null;
+                            RoadNode connectionCompareRoadNode = null;
+                            Road currentRoad = RoadNetworkManager.GetInstance().GetRoadFromRoadWay(currentRoadWay);
+                            Road compareRoad = RoadNetworkManager.GetInstance().GetRoadFromRoadWay(compareRoadWay);
+                            int numberOfLanesCurrentRoad = 1;
+                            int numberOfLanesCompareRoad = 1;
+                            if (currentRoad != null)
+                            {
+                                numberOfLanesCurrentRoad = currentRoad.numberOfLanes;
+                            }
+                            if (compareRoad != null)
+                            {
+                                numberOfLanesCompareRoad = compareRoad.numberOfLanes;
+                            }
+                            int indexOfCurrentRoadNode = currentRoadWay.nodes.IndexOf(currentRoadNode);
+                            int indexOfCompareRoadNode = compareRoadWay.nodes.IndexOf(compareRoadNode);
+                            float distanceFromMainNode = Mathf.Min(numberOfLanesCurrentRoad, numberOfLanesCompareRoad) * RoadGenerator.defaultLaneWidth;
+                            // For the current road node, if its not a start node or an end node then create a new node for the connection (middle of a road)
+                            if (indexOfCurrentRoadNode != 0 && indexOfCurrentRoadNode != currentRoadWay.nodes.Count - 1)
+                            {
+                                RoadNode previousNode = currentRoadWay.nodes[indexOfCurrentRoadNode - 1];
+                                // If previous node is already at distance required then use that else create a new node.
+                                if (Mathf.Abs(Vector3.Distance(currentRoadNode.transform.position, previousNode.transform.position) - distanceFromMainNode) < 1)
+                                {
+                                    connectionCurrentRoadNode = previousNode;
+                                }
+                                else
+                                {
+                                    connectionCurrentRoadNode = InsertPathNodeBetweenDistantNodes(1, distanceFromMainNode, currentRoadWay, currentRoadNode.transform, previousNode, indexOfCurrentRoadNode, true);
+                                }
+                            }
+                            // For the compare road node, if its not a start node or an end node then create a new node for the connection (middle of a road)
+                            if (indexOfCompareRoadNode != 0 && indexOfCompareRoadNode != compareRoadWay.nodes.Count - 1)
+                            {
+                                RoadNode nextNode = compareRoadWay.nodes[indexOfCompareRoadNode + 1];
+                                // If previous node is already at distance required then use that else create a new node.
+                                if (Mathf.Abs(Vector3.Distance(compareRoadNode.transform.position, nextNode.transform.position) - distanceFromMainNode) < 1)
+                                {
+                                    connectionCompareRoadNode = nextNode;
+                                }
+                                else
+                                {
+                                    connectionCompareRoadNode = InsertPathNodeBetweenDistantNodes(1, distanceFromMainNode, compareRoadWay, compareRoadNode.transform, nextNode, indexOfCompareRoadNode, false);
+                                }
+                            }
+                            if (connectionCurrentRoadNode == null)
+                            {
+                                connectionCurrentRoadNode = currentRoadNode;
+                            }
+                            if (connectionCompareRoadNode == null)
+                            {
+                                connectionCompareRoadNode = compareRoadNode;
+                            }
                             RoadWay newRoadWay = CreateRoadWay(currentRoadWay.name + "_and_" + compareRoadWay.name, currentRoadWay.speedLimit);
-                            newRoadWay.nodes.Add(roadNodeDistanceCurrent.Key);
-                            newRoadWay.nodes.Add(roadNodeDistanceCompare.Key);
+                            newRoadWay.nodes.Add(connectionCurrentRoadNode);
+                            newRoadWay.nodes.Add(connectionCompareRoadNode);
                             newRoadWay.transform.parent = currentRoadWay.transform.parent;
                         }
                     }
