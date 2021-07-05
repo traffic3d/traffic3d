@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
@@ -10,6 +10,8 @@ public class Pedestrian : MonoBehaviour
     public float maxSpeed = 5f;
     public float minSpeed = 1f;
     public float probabilityOfRunning = 0.1f;
+    public bool isUsingEvacuationBehaviour;
+    public bool isShooterAgent = false;
 
     // If changed, the animation controller needs the running value changed too.
     private float runSpeed = 2.5f;
@@ -57,23 +59,28 @@ public class Pedestrian : MonoBehaviour
             navMeshAgent.areaMask = walkableAreaMask | roadAreaMask | pedestrianCrossingAreaMask;
             navMeshAgent.SetAreaCost(roadAreaMask, walkingInRoadAreaCost);
         }
+
         GoToRandomPossibleLocation();
     }
 
     void Update()
     {
         animator.SetFloat("speed", navMeshAgent.velocity.magnitude);
-        DestroyCheck();
-        CrossingCheck();
-        SpeedUpdate();
-        LocationUpdate();
+
+        if (!isUsingEvacuationBehaviour)
+        {
+            DestroyCheck();
+            CrossingCheck();
+            SpeedUpdate();
+            LocationUpdate();
+        }
     }
 
     public void DestroyCheck()
     {
         if (Vector3.Distance(transform.position, location) < 1f)
         {
-            Destroy(gameObject);
+             Destroy(gameObject);
         }
     }
 
@@ -204,5 +211,8 @@ public class Pedestrian : MonoBehaviour
         return generalPathCorners.Aggregate((nearestPoint, next) => Vector3.Distance(transform.position, next) < Vector3.Distance(transform.position, nearestPoint) ? next : nearestPoint);
     }
 
+    public float GetPedestrianNormalSpeed() => minSpeed * 2;
+
+    public int GetWalkableAreaMaske() => walkableAreaMask;
 }
 

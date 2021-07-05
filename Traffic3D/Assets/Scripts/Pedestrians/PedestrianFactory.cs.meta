@@ -3,7 +3,10 @@ guid: 2f204fc0c9dfdee46aafb315083bb46a
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - behaviourCollectionFactory: {instanceID: 0}
+  - workerPedestrianPrefab: {fileID: 5399095586381281966, guid: b3f03a2743136834f91e8de6af7e5850,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

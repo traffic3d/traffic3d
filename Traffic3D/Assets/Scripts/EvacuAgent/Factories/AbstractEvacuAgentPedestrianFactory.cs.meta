@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 08b141240632c8743ba56c09aff6f2b0
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - behaviourCollectionPrefab: {fileID: 2839513278162346427, guid: 661ab49e6250bcb4f89ce78ea4776860,
+      type: 3}
+  - pedestrianTypePrefab: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

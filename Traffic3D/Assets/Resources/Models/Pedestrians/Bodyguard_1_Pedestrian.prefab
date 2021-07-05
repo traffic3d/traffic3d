@@ -2275,7 +2275,8 @@ GameObject:
   - component: {fileID: 3049720742483535364}
   - component: {fileID: 2386782020214903678}
   - component: {fileID: 4294981946903308578}
-  m_Layer: 0
+  - component: {fileID: 3209023960224536916}
+  m_Layer: 9
   m_Name: Bodyguard_1_Pedestrian
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2360,6 +2361,8 @@ MonoBehaviour:
   maxSpeed: 5
   minSpeed: 1
   probabilityOfRunning: 0.1
+  isUsingEvacuationBehaviour: 0
+  isShooterAgent: 0
 --- !u!136 &2386782020214903678
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2390,6 +2393,43 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 3
+--- !u!23 &3209023960224536916
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1234235851235798812}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
 --- !u!1 &1234235851235798814
 GameObject:
   m_ObjectHideFlags: 0

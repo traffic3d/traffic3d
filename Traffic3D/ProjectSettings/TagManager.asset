@@ -10,6 +10,11 @@ TagManager:
   - unhap
   - roadway
   - pathway
+  - criteriaValueError
+  - shooter
+  - Undefined
+  - shooterHighlight
+  - pedestrian
   layers:
   - Default
   - TransparentFX
@@ -20,9 +25,9 @@ TagManager:
   - 
   - 
   - PostProcessing
-  - 
-  - 
-  - 
+  - Pedestrian
+  - Obstacle
+  - PedestrianPoint
   - 
   - 
   - 
