@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -175,28 +176,25 @@ public static class BehaviourCollectionFactoryTestsHelper
 
         private class MockFollowClosestTargetBehaviourType : BehaviourType
         {
-            private readonly string behaviourStrategyName = "FollowClosestTargetBehaviour";
             private readonly float behaviourStrategyChanceToUse = 1f;
 
-            public override string GetBehaviourStrategyName() => behaviourStrategyName;
+            public override Type GetBehaviourStrategyClass<BehaviourStrategy>() => typeof(FollowClosestTargetBehaviour);
             public override float GetBehaviourStrategyChance() => behaviourStrategyChanceToUse;
         }
 
         private class MockCreateWeightedPathOfPedestrianPointsBehaviourType : BehaviourType
         {
-            private readonly string behaviourStrategyName = "CreateWeightedPathOfPedestrianPointsBehaviour";
             private readonly float behaviourStrategyChanceToUse = 0f;
 
-            public override string GetBehaviourStrategyName() => behaviourStrategyName;
+            public override Type GetBehaviourStrategyClass<BehaviourStrategy>() => typeof(CreateWeightedPathOfPedestrianPointsBehaviour);
             public override float GetBehaviourStrategyChance() => behaviourStrategyChanceToUse;
         }
 
         private class MockMoveToNextDestinationBehaviourtBehaviourType : BehaviourType
         {
-            private readonly string behaviourStrategyName = "MoveToNextDestinationBehaviour";
             private readonly float behaviourStrategyChanceToUse = 1f;
 
-            public override string GetBehaviourStrategyName() => behaviourStrategyName;
+            public override Type GetBehaviourStrategyClass<BehaviourStrategy>() => typeof(MoveToNextDestinationBehaviour);
             public override float GetBehaviourStrategyChance() => behaviourStrategyChanceToUse;
         }
     }

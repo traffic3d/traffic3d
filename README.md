@@ -81,11 +81,11 @@ Garg, D., Chli, M. and Vogiatzis, G., 2019, May. Traffic3D: A New Traffic Simula
 Current developers:
 
 * Callum Bugajski - @callumbugajski via [Beautiful Canoe](https://beautifulcanoe.com/)
-* Josh Leeder - @leeder.josh via [Beautiful Canoe](https://beautifulcanoe.com/)
 
 Previous developers:
 
 * Hishaam Iqbal - @iqbalh7
+* Josh Leeder - @leeder.josh via [Beautiful Canoe](https://beautifulcanoe.com/)
 
 Based on original code by Deepeka Garg - @gargd03.
 
@@ -127,4 +127,3 @@ Zooming:
 
 * Zoom out: `z`.
 * Zoom in: `c`.
-

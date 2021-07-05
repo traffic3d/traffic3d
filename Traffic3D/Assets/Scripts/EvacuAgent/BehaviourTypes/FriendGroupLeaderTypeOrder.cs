@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 
 public class FriendGroupLeaderTypeOrder : BehaviourTypeOrder
 {
@@ -19,55 +20,49 @@ public class FriendGroupLeaderTypeOrder : BehaviourTypeOrder
 
     private class GenericEnterLeaveBuildingBehaviourType : BehaviourType
     {
-        private readonly string behaviourStrategyName = "GenericEnterLeaveBuildingBehaviour";
         private readonly float behaviourStrategyChanceToUse = 1f;
 
-        public override string GetBehaviourStrategyName() => behaviourStrategyName;
+        public override Type GetBehaviourStrategyClass<BehaviourStrategy>() => typeof(GenericEnterLeaveBuildingBehaviour);
         public override float GetBehaviourStrategyChance() => behaviourStrategyChanceToUse;
     }
 
     private class GenericPathCreationBehaviourType : BehaviourType
     {
-        private readonly string behaviourStrategyName = "GenericPathCreationBehaviour";
         private readonly float behaviourStrategyChanceToUse = 1f;
 
-        public override string GetBehaviourStrategyName() => behaviourStrategyName;
+        public override Type GetBehaviourStrategyClass<BehaviourStrategy>() => typeof(GenericPathCreationBehaviour);
         public override float GetBehaviourStrategyChance() => behaviourStrategyChanceToUse;
     }
 
     private class GenericNoNewBehaviourType : BehaviourType
     {
-        private readonly string behaviourStrategyName = "GenericNoNewBehaviour";
         private readonly float behaviourStrategyChanceToUse = 1f;
 
-        public override string GetBehaviourStrategyName() => behaviourStrategyName;
+        public override Type GetBehaviourStrategyClass<BehaviourStrategy>() => typeof(GenericNoNewBehaviour);
         public override float GetBehaviourStrategyChance() => behaviourStrategyChanceToUse;
     }
 
     private class WaitForFollowersBehaviourType : BehaviourType
     {
-        private readonly string behaviourStrategyName = "WaitForFollowersBehaviour";
         private readonly float behaviourStrategyChanceToUse = 1f;
 
-        public override string GetBehaviourStrategyName() => behaviourStrategyName;
+        public override Type GetBehaviourStrategyClass<BehaviourStrategy>() => typeof(WaitForFollowersBehaviour);
         public override float GetBehaviourStrategyChance() => behaviourStrategyChanceToUse;
     }
 
     private class FriendGroupBoidBehaviourType : BehaviourType
     {
-        private readonly string behaviourStrategyName = "FriendGroupBoidBehaviour";
         private readonly float behaviourStrategyChanceToUse = 1f;
 
-        public override string GetBehaviourStrategyName() => behaviourStrategyName;
+        public override Type GetBehaviourStrategyClass<BehaviourStrategy>() => typeof(FriendGroupBoidBehaviour);
         public override float GetBehaviourStrategyChance() => behaviourStrategyChanceToUse;
     }
 
     private class WaitAtDestinationBehaviourType : BehaviourType
     {
-        private readonly string behaviourStrategyName = "WaitAtDestinationBehaviour";
         private readonly float behaviourStrategyChanceToUse = 1f;
 
-        public override string GetBehaviourStrategyName() => behaviourStrategyName;
+        public override Type GetBehaviourStrategyClass<BehaviourStrategy>() => typeof(WaitAtDestinationBehaviour);
         public override float GetBehaviourStrategyChance() => behaviourStrategyChanceToUse;
     }
 }

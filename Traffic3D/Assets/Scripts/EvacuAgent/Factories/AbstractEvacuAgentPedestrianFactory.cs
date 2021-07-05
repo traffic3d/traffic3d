@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 
 public abstract class AbstractEvacuAgentPedestrianFactory : MonoBehaviour
@@ -34,7 +34,7 @@ public abstract class AbstractEvacuAgentPedestrianFactory : MonoBehaviour
 
         foreach (BehaviourType behaviourType in behaviourTypeOrder.GetBehaviourTypes())
         {
-            string behaviourTypeName = behaviourType.GetBehaviourStrategyName();
+            string behaviourTypeName = behaviourType.GetBehaviourStrategyClass<BehaviourStrategy>().ToString();
             float behaviourTypeChance = behaviourType.GetBehaviourStrategyChance();
 
             if (BehaviourChanceCheck(behaviourTypeChance))
