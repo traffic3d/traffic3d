@@ -31,6 +31,7 @@ public class VehicleEngine : MonoBehaviour
     private float targetSteerAngle = 0;
     private Mesh mainMesh;
     public float numberOfSensorRays = 5;
+    public bool isWaitingOnSensorRays = false;
     public float steerReduceRayConstant = 5;
     public float maxDistanceToMonitor = 100;
     private float distanceBetweenRays;
@@ -46,6 +47,10 @@ public class VehicleEngine : MonoBehaviour
     public bool debug = false;
     public VehicleEngine waitingForVehicleAhead = null;
     public VehicleEngine waitingForVehicleBehind = null;
+    public int deadlockUpdateNumber = 0;
+    public int deadlockReleaseNumber;
+    public float deadlockReleaseProceedSpeed = 10f;
+    private int deadlockSearchMaxAttempts = 100;
     private bool isLeftHandDrive;
     private const float debugSphereSize = 0.25f;
     private const float metresPerSecondToKilometresPerHourConversion = 3.6f;
@@ -63,6 +68,7 @@ public class VehicleEngine : MonoBehaviour
         engineStatus = EngineStatus.STOP;
         targetSpeed = maxSpeed;
         currentMotorTorque = maxMotorTorque;
+        deadlockReleaseNumber = RandomNumberGenerator.GetInstance().NextInt(1000);
         isLeftHandDrive = FindObjectOfType<VehicleFactory>().isLeftHandDrive;
         EventManager.GetInstance().VehicleSpawnEvent += OnVehicleSpawnEvent;
         EventManager.GetInstance().VehicleDestroyEvent += OnVehicleDestroyEvent;
@@ -289,11 +295,15 @@ public class VehicleEngine : MonoBehaviour
                 }
             }
         }
+        isWaitingOnSensorRays = speedToTarget < 1;
         SetTargetSpeed(speedToTarget);
     }
 
     private void MergeCheck(StopLine.Type stopLineType)
     {
+        float previousTargetSpeed = targetSpeed;
+        waitingForVehicleAhead = null;
+        waitingForVehicleBehind = null;
         UpdateVehicleIntersectionPointCache();
         Dictionary<PathIntersectionPoint, HashSet<VehicleEngine>> vehiclesAtIntersectionPoint = GetVehiclesAtIntersectionPointsUsingCache();
         if (vehiclesAtIntersectionPoint.Count == 0)
@@ -354,26 +364,25 @@ public class VehicleEngine : MonoBehaviour
                     vehicleBehind = otherVehicle;
                 }
             }
-            // Debug
-            // Add the vehicle ahead and behind to a variable, on the VehicleEngine, to display these vehicles in the simulation (GUI).
             if (distanceAhead - longestSide <= currentSpeed)
             {
                 waitingForVehicleAhead = vehicleAhead;
-            }
-            else
-            {
-                waitingForVehicleAhead = null;
             }
             if (distanceBehind <= maxSpeed)
             {
                 waitingForVehicleBehind = vehicleBehind;
             }
-            else
-            {
-                waitingForVehicleBehind = null;
-            }
-            // Debug End
             ApplyMergeAlgorithm(distanceAhead, distanceBehind);
+        }
+        // Deadlock check
+        bool isInDeadlock = IsInDeadlock();
+        UpdateDeadlockValue(isInDeadlock);
+        if (ShouldReleaseDeadlock())
+        {
+            Debug.Log("BYPASSED MERGE SPEED");
+            // Bypass merge speed and proceed with caution
+            SetTargetSpeed(deadlockReleaseProceedSpeed);
+            return;
         }
     }
 
@@ -578,6 +587,83 @@ public class VehicleEngine : MonoBehaviour
         {
             vehicleIntersectionPoints.Remove(vehicleEngine);
         }
+    }
+
+    /// <summary>
+    /// Checks if vehicle is currently in a merging deadlock
+    /// Find out by checking through the vehicles that are being waited on to see if there is a loop back to the current vehicle.
+    /// </summary>
+    /// <returns>True if in a merging deadlock</returns>
+    private bool IsInDeadlock()
+    {
+        if (waitingForVehicleBehind == null && waitingForVehicleAhead == null)
+        {
+            return false;
+        }
+        List<VehicleEngine> vehiclesToSearch = new List<VehicleEngine>();
+        if (waitingForVehicleAhead != null)
+        {
+            vehiclesToSearch.Add(waitingForVehicleAhead);
+        }
+        if (waitingForVehicleBehind != null)
+        {
+            vehiclesToSearch.Add(waitingForVehicleBehind);
+        }
+        bool isInDeadlock = false;
+        for (int i = 0; i > deadlockSearchMaxAttempts; i++)
+        {
+            if (vehiclesToSearch.Count == 0)
+            {
+                break;
+            }
+            VehicleEngine vehicleToSearch = vehiclesToSearch.First();
+            // Vehicle has been found in a loop of waiting vehicles.
+            if (vehicleToSearch.waitingForVehicleAhead.Equals(this) || vehicleToSearch.waitingForVehicleBehind.Equals(this))
+            {
+                isInDeadlock = true;
+                break;
+            }
+            if (vehicleToSearch.waitingForVehicleAhead != null)
+            {
+                vehiclesToSearch.Add(vehicleToSearch.waitingForVehicleAhead);
+            }
+            if (vehicleToSearch.waitingForVehicleBehind != null)
+            {
+                vehiclesToSearch.Add(vehicleToSearch.waitingForVehicleBehind);
+            }
+            vehiclesToSearch.Remove(vehicleToSearch);
+        }
+        // Bespoke condition where vehicle behind is waiting due to raycast and not merging
+        if (!isInDeadlock && waitingForVehicleBehind != null)
+        {
+            if (waitingForVehicleBehind.isWaitingOnSensorRays)
+            {
+                isInDeadlock = true;
+            }
+        }
+        return isInDeadlock;
+    }
+
+    /// <summary>
+    /// Updates the deadlock value which is used to find out when to release the current deadlock.
+    /// </summary>
+    /// <param name="isInDeadlock">True if the vehicle is in deadlock</param>
+    private void UpdateDeadlockValue(bool isInDeadlock)
+    {
+        deadlockUpdateNumber = deadlockUpdateNumber + (isInDeadlock ? 1 : -1);
+        if (deadlockUpdateNumber < 0)
+        {
+            deadlockUpdateNumber = 0;
+        }
+    }
+
+    /// <summary>
+    /// Checks if the vehicle should release the deadlock
+    /// </summary>
+    /// <returns>True if the deadlock should be released</returns>
+    private bool ShouldReleaseDeadlock()
+    {
+        return deadlockUpdateNumber > deadlockReleaseNumber;
     }
 
     /// <summary>
