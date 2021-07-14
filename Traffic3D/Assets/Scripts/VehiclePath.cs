@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -156,12 +156,6 @@ public class VehiclePath
                 {
                     // The current path section is exactly the same as the other path section so there are no intersections on this section.
                     continue;
-                }
-                else if (node1.Equals(otherNode1))
-                {
-                    // First current node and other node are the same so they have an intersection at that section.
-                    addedVectors.Add(nodes[nodeIndex].position);
-                    results.Add(new PathIntersectionPoint(nodes[nodeIndex], nodes[nodeIndex + 1], otherPath.nodes[otherNodeIndex], otherPath.nodes[otherNodeIndex + 1], nodes[nodeIndex].position));
                 }
                 else if (node2.Equals(otherNode2) && !addedVectors.Contains(nodes[nodeIndex + 1].position))
                 {
