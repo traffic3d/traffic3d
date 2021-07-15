@@ -46,7 +46,9 @@ public class TrafficLightManagerTests : CommonSceneTest
         TrafficLightManager trafficLightManager = (TrafficLightManager)GameObject.FindObjectOfType(typeof(TrafficLightManager));
         GameObject pathObject = new GameObject("TestWay", typeof(RoadWay));
         GameObject node1 = new GameObject("1");
+        node1.AddComponent<RoadNode>();
         GameObject node2 = new GameObject("2");
+        node2.AddComponent<RoadNode>();
         GameObject trafficLight = new GameObject("TrafficLight", typeof(TrafficLight));
         pathObject = GameObject.Instantiate(pathObject);
         node1 = GameObject.Instantiate(node1, pathObject.transform);
@@ -55,7 +57,7 @@ public class TrafficLightManagerTests : CommonSceneTest
 
         trafficLightManager.trafficLights = new TrafficLight[1];
         trafficLightManager.trafficLights[0] = trafficLight.GetComponent<TrafficLight>();
-        trafficLightManager.trafficLights[0].stopNodes.Add(node2.transform);
+        trafficLightManager.trafficLights[0].stopNodes.Add(node2.GetComponent<RoadNode>());
 
         Assert.False(trafficLightManager.IsStopNode(node1.transform));
         Assert.True(trafficLightManager.IsStopNode(node2.transform));

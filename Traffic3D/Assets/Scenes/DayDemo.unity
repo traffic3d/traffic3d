@@ -1180,6 +1180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73c787cebaf3081488fe19135cef1efb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speedLimit: 50
   nodes:
   - {fileID: 315490766}
   - {fileID: 354088880}
@@ -2575,6 +2576,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73c787cebaf3081488fe19135cef1efb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speedLimit: 50
   nodes:
   - {fileID: 1713972628}
   - {fileID: 1600579156}
@@ -2702,6 +2704,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73c787cebaf3081488fe19135cef1efb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speedLimit: 50
   nodes:
   - {fileID: 1862633320}
   - {fileID: 1814651303}
@@ -3789,12 +3792,12 @@ PrefabInstance:
         type: 3}
       propertyPath: stopNodes.Array.data[0]
       value: 
-      objectReference: {fileID: 1180129097}
+      objectReference: {fileID: 1180129096}
     - target: {fileID: 2424833495961824150, guid: d75b5ede3ea82df4aa0d388eaa24dc33,
         type: 3}
       propertyPath: stopNodes.Array.data[1]
       value: 
-      objectReference: {fileID: 792499240}
+      objectReference: {fileID: 792499239}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d75b5ede3ea82df4aa0d388eaa24dc33, type: 3}
 --- !u!1 &420721481
@@ -3978,6 +3981,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73c787cebaf3081488fe19135cef1efb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speedLimit: 50
   nodes:
   - {fileID: 792499239}
   - {fileID: 213789002}
@@ -5197,6 +5201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 729cdce3c307f93459efb3c98a558d4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  footfall: 0
 --- !u!1 &559174365
 GameObject:
   m_ObjectHideFlags: 0
@@ -7461,6 +7466,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 729cdce3c307f93459efb3c98a558d4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  footfall: 0
 --- !u!1 &900232970
 GameObject:
   m_ObjectHideFlags: 0
@@ -7550,6 +7556,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73c787cebaf3081488fe19135cef1efb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speedLimit: 50
   nodes:
   - {fileID: 372793304}
   - {fileID: 494516520}
@@ -7600,6 +7607,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73c787cebaf3081488fe19135cef1efb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speedLimit: 50
   nodes:
   - {fileID: 379927082}
   - {fileID: 1781172928}
@@ -8751,6 +8759,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73c787cebaf3081488fe19135cef1efb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speedLimit: 50
   nodes:
   - {fileID: 1457619210}
   - {fileID: 1975585652}
@@ -8849,12 +8858,12 @@ PrefabInstance:
         type: 3}
       propertyPath: stopNodes.Array.data[0]
       value: 
-      objectReference: {fileID: 449846844}
+      objectReference: {fileID: 449846843}
     - target: {fileID: 6896008075597062098, guid: b7397aab7dc552145a55b866e27848d9,
         type: 3}
       propertyPath: stopNodes.Array.data[1]
       value: 
-      objectReference: {fileID: 490728551}
+      objectReference: {fileID: 490728550}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b7397aab7dc552145a55b866e27848d9, type: 3}
 --- !u!1 &1058311777
@@ -9038,6 +9047,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73c787cebaf3081488fe19135cef1efb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speedLimit: 50
   nodes:
   - {fileID: 900232971}
   - {fileID: 70272854}
@@ -10039,6 +10049,7 @@ MonoBehaviour:
   maximumVehicleCount: 8
   slowDownVehicleRateAt: 6
   timeOfStartInvisibility: 1
+  isLeftHandDrive: 1
   vehicleProbabilities:
   - vehicle: {fileID: 1717347129989908, guid: 389154cd7472f41a7b5ad5e90e564a2b, type: 3}
     probability: 0.15
@@ -11078,12 +11089,12 @@ PrefabInstance:
         type: 3}
       propertyPath: stopNodes.Array.data[0]
       value: 
-      objectReference: {fileID: 74349405}
+      objectReference: {fileID: 74349404}
     - target: {fileID: 641175951598386521, guid: cc1a5b5ec2927254a9f42f7219bc5e15,
         type: 3}
       propertyPath: stopNodes.Array.data[1]
       value: 
-      objectReference: {fileID: 477032616}
+      objectReference: {fileID: 477032615}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc1a5b5ec2927254a9f42f7219bc5e15, type: 3}
 --- !u!1 &1385703496
@@ -11212,6 +11223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 729cdce3c307f93459efb3c98a558d4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  footfall: 0
 --- !u!1001 &1409495012
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11916,6 +11928,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 729cdce3c307f93459efb3c98a558d4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  footfall: 0
 --- !u!4 &1498635108
 Transform:
   m_ObjectHideFlags: 0
@@ -12196,12 +12209,12 @@ PrefabInstance:
         type: 3}
       propertyPath: stopNodes.Array.data[0]
       value: 
-      objectReference: {fileID: 502719151}
+      objectReference: {fileID: 502719150}
     - target: {fileID: 715341200970906273, guid: 9c7392d3017b12047b6179a5515f29f3,
         type: 3}
       propertyPath: stopNodes.Array.data[1]
       value: 
-      objectReference: {fileID: 484548653}
+      objectReference: {fileID: 484548652}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c7392d3017b12047b6179a5515f29f3, type: 3}
 --- !u!1 &1547597695
@@ -13426,6 +13439,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73c787cebaf3081488fe19135cef1efb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speedLimit: 50
   nodes:
   - {fileID: 166710259}
   - {fileID: 1988407342}
@@ -14392,6 +14406,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 729cdce3c307f93459efb3c98a558d4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  footfall: 0
 --- !u!4 &1848417501
 Transform:
   m_ObjectHideFlags: 0
@@ -14986,6 +15001,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 729cdce3c307f93459efb3c98a558d4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  footfall: 0
 --- !u!1 &1944913080
 GameObject:
   m_ObjectHideFlags: 0
@@ -15184,6 +15200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 729cdce3c307f93459efb3c98a558d4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  footfall: 0
 --- !u!4 &1979352243
 Transform:
   m_ObjectHideFlags: 0
@@ -15273,6 +15290,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 729cdce3c307f93459efb3c98a558d4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  footfall: 0
 --- !u!4 &1996510536
 Transform:
   m_ObjectHideFlags: 0

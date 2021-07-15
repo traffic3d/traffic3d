@@ -382,7 +382,7 @@ public class JunctionGenerator : BaseNodeInformant
             createdTrafficLights.Add(trafficLight);
 
             // Add Stop Node To TrafficLight
-            trafficLight.GetComponent<TrafficLight>().stopNodes.Add(spawnTrafficLightPosition.transform);
+            trafficLight.GetComponent<TrafficLight>().stopNodes.Add(spawnTrafficLightPosition);
 
             trafficLightId++;
 

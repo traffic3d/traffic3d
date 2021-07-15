@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class TrafficLight : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class TrafficLight : MonoBehaviour
     public GameObject redLightObject;
     public GameObject amberLightObject;
     public GameObject greenLightObject;
-    public List<Transform> stopNodes;
+    public List<RoadNode> stopNodes;
     public LightColour currentLightColour = LightColour.RED;
     private Dictionary<LightColour, GameObject> lightObjects;
     private Dictionary<LightColour, Material> lightMaterials;
@@ -83,14 +84,14 @@ public class TrafficLight : MonoBehaviour
     /// <returns>True if the traffic light has this node.</returns>
     public bool HasStopNode(Transform node)
     {
-        return stopNodes.Contains(node);
+        return stopNodes.Any(s => s.transform.Equals(node));
     }
 
     /// <summary>
     /// Gets all stop nodes also known as path nodes that are related to this traffic light.
     /// </summary>
     /// <returns>List of nodes (Transforms).</returns>
-    public List<Transform> GetStopNodes()
+    public List<RoadNode> GetStopNodes()
     {
         return stopNodes;
     }
