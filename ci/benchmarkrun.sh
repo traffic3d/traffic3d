@@ -7,6 +7,7 @@ ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x2
     -executeMethod CustomCommandLineArguments.Run \
     -OpenScene "Scenes/DayDemo.unity" \
     -RunBenchmark true \
+    -RandomSeed 12345 \
     -logFile \
     -batchmode \
     -quit

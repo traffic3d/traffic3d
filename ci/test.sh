@@ -13,6 +13,7 @@ ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x2
     -testCategory "Tests" \
     -testPlatform $TEST_PLATFORM \
     -testResults $(pwd)/$TEST_PLATFORM-results.xml \
+    -RandomSeed 12345 \
     -logFile \
     -batchmode
 
