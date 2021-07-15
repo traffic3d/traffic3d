@@ -20,6 +20,21 @@ git clone git@gitlab.com:traffic3d/traffic3d.git
 cd traffic3d
 ```
 
+You will also need to install `git-lfs`.
+On Ubuntu, you can run:
+
+```shell
+sudo apt-get install git-lfs
+```
+
+for other platforms, please see the [official documentation](https://git-lfs.github.com/)
+
+Next, from the root of the repository, please run:
+
+```shell
+git install lfs
+```
+
 ### Using Git with Unity
 
 Git is the industry-standard distributed version control system, but Unity projects are not well suited for use with Git.
@@ -186,6 +201,7 @@ To create a new release of Traffic3D, follow these steps:
 ## Further documentation
 
 * [editorconfig](https://editorconfig.org/)
+* [Git LFS](https://git-lfs.github.com/)
 * [How to Git with Unity](https://thoughtbot.com/blog/how-to-git-with-unity)
 * [Meld merge tool](https://meldmerge.org/)
 * [Traffic3D user documentation](https://traffic3d.org) including how to use the Unity editor, how to extend Traffic3D with new assets and scenes.
