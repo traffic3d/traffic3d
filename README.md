@@ -24,6 +24,7 @@ The custom options are:
 * `-JSONConfigFile "filename.json"` - Import settings from a JSON file (see below for config details)
 * `-OpenScene "Scenes/sceneName.unity"` - Open a scene
 * `-RunBenchmark true|false` - Run Benchmark
+* `-RandomSeed INT` - Set an integer seed for the Unity random number generator
 
 ### Examples
 
@@ -36,6 +37,7 @@ ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x2
   -executeMethod CustomCommandLineArguments.Run \
   -JSONConfigFile "config.json" \
   -OpenScene "Scenes/NightDemo.unity" \
+  -RandomSeed 12345 \
   -RunBenchmark true \
   -logFile \
   -batchmode
