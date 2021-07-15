@@ -21,7 +21,7 @@ public class DeadlockTests : MonoBehaviour
         try
         {
             SocketManager.GetInstance().SetSocket(new MockSocket());
-            SceneManager.LoadScene(2);
+            SceneManager.LoadScene(3);
             deadlockableRoadWayStrings = new List<string>();
             deadlockableRoadWayStrings.Add("WayTrafficLight1-2");
             deadlockableRoadWayStrings.Add("WayTrafficLight2-2");
