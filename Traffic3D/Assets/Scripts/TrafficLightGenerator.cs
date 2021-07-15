@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TrafficLightGenerator
@@ -201,7 +201,7 @@ public class TrafficLightGenerator
                     //Get TrafficLight for current Node
                     GameObject trafficLight = trafficLights[osmMapReader.nodes[node.Key].ID];
                     //add stop node to TrafficLight
-                    trafficLight.GetComponent<TrafficLight>().stopNodes.Add(node.Value.transform);
+                    trafficLight.GetComponent<TrafficLight>().stopNodes.Add(node.Value.GetComponent<RoadNode>());
                 }
             }
         }

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3001,6 +3001,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73c787cebaf3081488fe19135cef1efb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speedLimit: 50
   nodes:
   - {fileID: 613404451}
   - {fileID: 1344088437}
@@ -3841,6 +3842,7 @@ MonoBehaviour:
   maximumVehicleCount: 8
   slowDownVehicleRateAt: 6
   timeOfStartInvisibility: 1
+  isLeftHandDrive: 1
   vehicleProbabilities:
   - vehicle: {fileID: 1717347129989908, guid: 389154cd7472f41a7b5ad5e90e564a2b, type: 3}
     probability: 0.2
@@ -6993,6 +6995,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73c787cebaf3081488fe19135cef1efb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speedLimit: 50
   nodes:
   - {fileID: 250443825}
   - {fileID: 645574910}
@@ -7199,7 +7202,7 @@ PrefabInstance:
         type: 3}
       propertyPath: stopNodes.Array.data[0]
       value: 
-      objectReference: {fileID: 608186934}
+      objectReference: {fileID: 608186935}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d75b5ede3ea82df4aa0d388eaa24dc33, type: 3}
 --- !u!114 &2079099114 stripped
@@ -7290,7 +7293,7 @@ PrefabInstance:
         type: 3}
       propertyPath: stopNodes.Array.data[0]
       value: 
-      objectReference: {fileID: 188233890}
+      objectReference: {fileID: 188233891}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c7392d3017b12047b6179a5515f29f3, type: 3}
 --- !u!114 &2083456519 stripped
