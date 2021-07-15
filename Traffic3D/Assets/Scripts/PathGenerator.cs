@@ -328,16 +328,19 @@ public class PathGenerator : BaseNodeInformant
                 roadNodesWithLaneSpaces[laneSpace].Add(roadNode);
             }
         }
-        for (int i = 0; i < laneSpaces.Count; i++)
+        // Only reverse road ways if its not one way
+        if (!way.IsOneWay)
         {
-            // Depending on left hand drive skip all forward lanes but reverse backwards lanes
-            if ((isLeftHandDrive && i >= forwardLanes) || (!isLeftHandDrive && i < forwardLanes))
+            for (int i = 0; i < laneSpaces.Count; i++)
             {
-                continue;
+                // Depending on left hand drive skip all forward lanes but reverse backwards lanes
+                if ((isLeftHandDrive && i >= forwardLanes) || (!isLeftHandDrive && i < forwardLanes))
+                {
+                    continue;
+                }
+                roadNodesWithLaneSpaces[laneSpaces[i]].Reverse();
             }
-            roadNodesWithLaneSpaces[laneSpaces[i]].Reverse();
         }
-
         List<RoadWay> roadWays = new List<RoadWay>();
         foreach (KeyValuePair<float, List<RoadNode>> entry in roadNodesWithLaneSpaces)
         {
