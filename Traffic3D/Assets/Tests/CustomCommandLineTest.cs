@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,12 +8,13 @@ using UnityEngine.TestTools;
 public class CustomCommandLineTest : CommonSceneTest
 {
     private JSONConfigParser.JSONConfig originalConfig;
+    private const int randomNumberSeedTestValue = 10;
 
     [UnitySetUp]
     public IEnumerator UnitySetUp()
     {
         originalConfig = JSONConfigParser.GetConfig();
-        string[] arguments = new string[] { "-JSONConfigFile", "Assets/Tests/TestFiles/test_config.json" };
+        string[] arguments = new string[] { "-JSONConfigFile", "Assets/Tests/TestFiles/test_config.json", "-RandomSeed", randomNumberSeedTestValue + "" };
         CustomCommandLineArguments.SetMockArgument(arguments);
         CustomCommandLineArguments.Run();
         yield return new EnterPlayMode();
@@ -59,4 +60,10 @@ public class CustomCommandLineTest : CommonSceneTest
         Assert.AreEqual(true, sumoLinkControlPointObject.controlledBySumo);
     }
 
+    [UnityTest]
+    public IEnumerator RandomNumberSeedTest()
+    {
+        yield return null;
+        Assert.AreEqual(randomNumberSeedTestValue, RandomNumberGenerator.seed);
+    }
 }
