@@ -31,6 +31,8 @@ public class VehicleEngine : MonoBehaviour
     private float targetSteerAngle = 0;
     private Mesh mainMesh;
     public float numberOfSensorRays = 5;
+    public float isWaitingOnSensorRaysDistance = 5;
+    public bool isWaitingOnSensorRays = false;
     public float steerReduceRayConstant = 5;
     public float maxDistanceToMonitor = 100;
     private float distanceBetweenRays;
@@ -46,6 +48,14 @@ public class VehicleEngine : MonoBehaviour
     public bool debug = false;
     public VehicleEngine waitingForVehicleAhead = null;
     public VehicleEngine waitingForVehicleBehind = null;
+    public float deadlockReleaseProceedSpeed = 10f;
+    public float releaseDeadlockAfterSeconds = 3;
+    public float currentDeadlockSeconds = 0;
+    public float deadlockPriorityModifier;
+    public bool deadlock;
+    public float deadlockReleaseAtTime = 0;
+    private int deadlockSearchMaxAttempts = 100;
+    private float attemptAnotherDeadlockReleaseAfter = 5f;
     private bool isLeftHandDrive;
     private const float debugSphereSize = 0.25f;
     private const float metresPerSecondToKilometresPerHourConversion = 3.6f;
@@ -63,6 +73,7 @@ public class VehicleEngine : MonoBehaviour
         engineStatus = EngineStatus.STOP;
         targetSpeed = maxSpeed;
         currentMotorTorque = maxMotorTorque;
+        deadlockPriorityModifier = RandomNumberGenerator.GetInstance().NextFloat();
         isLeftHandDrive = FindObjectOfType<VehicleFactory>().isLeftHandDrive;
         EventManager.GetInstance().VehicleSpawnEvent += OnVehicleSpawnEvent;
         EventManager.GetInstance().VehicleDestroyEvent += OnVehicleDestroyEvent;
@@ -267,6 +278,7 @@ public class VehicleEngine : MonoBehaviour
         }
         float speedToTarget = targetSpeed;
         float distanceToMonitor = Math.Min(Math.Max(maxDistanceToMonitor - (Math.Abs(angle) * steerReduceRayConstant * maxDistanceToMonitor), stoppingDistance), maxDistanceToMonitor);
+        isWaitingOnSensorRays = false;
         foreach (Ray ray in rays)
         {
             if (Physics.Raycast(ray, out hit, distanceToMonitor, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
@@ -280,6 +292,10 @@ public class VehicleEngine : MonoBehaviour
                     Debug.DrawRay(ray.origin, ray.direction * hit.distance, new Color(1, (hit.distance / distanceToMonitor), 0), 0.01f);
                 }
                 speedToTarget = Math.Min(speedToTarget, (hit.distance - stoppingDistance) / 2);
+                if ((hit.distance - stoppingDistance) / 2 < isWaitingOnSensorRaysDistance)
+                {
+                    isWaitingOnSensorRays = true;
+                }
             }
             else
             {
@@ -294,6 +310,9 @@ public class VehicleEngine : MonoBehaviour
 
     private void MergeCheck(StopLine.Type stopLineType)
     {
+        float previousTargetSpeed = targetSpeed;
+        waitingForVehicleAhead = null;
+        waitingForVehicleBehind = null;
         UpdateVehicleIntersectionPointCache();
         Dictionary<PathIntersectionPoint, HashSet<VehicleEngine>> vehiclesAtIntersectionPoint = GetVehiclesAtIntersectionPointsUsingCache();
         if (vehiclesAtIntersectionPoint.Count == 0)
@@ -354,26 +373,33 @@ public class VehicleEngine : MonoBehaviour
                     vehicleBehind = otherVehicle;
                 }
             }
-            // Debug
-            // Add the vehicle ahead and behind to a variable, on the VehicleEngine, to display these vehicles in the simulation (GUI).
             if (distanceAhead - longestSide <= currentSpeed)
             {
                 waitingForVehicleAhead = vehicleAhead;
-            }
-            else
-            {
-                waitingForVehicleAhead = null;
             }
             if (distanceBehind <= maxSpeed)
             {
                 waitingForVehicleBehind = vehicleBehind;
             }
-            else
-            {
-                waitingForVehicleBehind = null;
-            }
-            // Debug End
             ApplyMergeAlgorithm(distanceAhead, distanceBehind);
+        }
+        // Deadlock check
+        deadlock = IsInDeadlock();
+        UpdateDeadlockTime(deadlock);
+        bool isReleasingDeadlock = IsReleasingDeadlock();
+        if (deadlock && !isReleasingDeadlock && ShouldReleaseDeadlock())
+        {
+            currentDeadlockSeconds = 0;
+            deadlockReleaseAtTime = Time.time;
+            isReleasingDeadlock = true;
+        }
+        if (isReleasingDeadlock)
+        {
+            waitingForVehicleAhead = null;
+            waitingForVehicleBehind = null;
+            // Bypass merge speed and proceed with caution
+            SetTargetSpeed(deadlockReleaseProceedSpeed);
+            return;
         }
     }
 
@@ -578,6 +604,131 @@ public class VehicleEngine : MonoBehaviour
         {
             vehicleIntersectionPoints.Remove(vehicleEngine);
         }
+    }
+
+    /// <summary>
+    /// Get the deadlock priority of the current vehicle
+    /// </summary>
+    /// <returns>Returns priority of vehicle for deadlock releases</returns>
+    public float GetDeadlockPriority()
+    {
+        return deadlockPriorityModifier;
+    }
+
+    /// <summary>
+    /// Checks if vehicle is currently in a merging deadlock
+    /// Find out by checking through the vehicles that are being waited on to see if there is a loop back to the current vehicle.
+    /// </summary>
+    /// <returns>True if in a merging deadlock</returns>
+    public bool IsInDeadlock()
+    {
+        if (waitingForVehicleBehind == null && waitingForVehicleAhead == null)
+        {
+            return false;
+        }
+        List<VehicleEngine> vehiclesToSearch = new List<VehicleEngine>();
+        if (waitingForVehicleAhead != null)
+        {
+            vehiclesToSearch.Add(waitingForVehicleAhead);
+        }
+        if (waitingForVehicleBehind != null)
+        {
+            vehiclesToSearch.Add(waitingForVehicleBehind);
+        }
+        bool isInDeadlock = false;
+        for (int i = 0; i < deadlockSearchMaxAttempts; i++)
+        {
+            if (vehiclesToSearch.Count == 0)
+            {
+                break;
+            }
+            VehicleEngine vehicleToSearch = vehiclesToSearch.First();
+            // Vehicle has been found in a loop of waiting vehicles.
+            if (this.Equals(vehicleToSearch.waitingForVehicleAhead) || this.Equals(vehicleToSearch.waitingForVehicleBehind))
+            {
+                isInDeadlock = true;
+                break;
+            }
+            if (vehicleToSearch.waitingForVehicleAhead != null)
+            {
+                if (vehicleToSearch.waitingForVehicleAhead.deadlock)
+                {
+                    isInDeadlock = true;
+                    break;
+                }
+                vehiclesToSearch.Add(vehicleToSearch.waitingForVehicleAhead);
+            }
+            if (vehicleToSearch.waitingForVehicleBehind != null)
+            {
+                if (vehicleToSearch.waitingForVehicleBehind.deadlock)
+                {
+                    isInDeadlock = true;
+                    break;
+                }
+                vehiclesToSearch.Add(vehicleToSearch.waitingForVehicleBehind);
+            }
+            if (vehiclesToSearch.Count == 1 && vehicleToSearch.waitingForVehicleAhead == null && vehicleToSearch.waitingForVehicleBehind == null && vehicleToSearch.isWaitingOnSensorRays)
+            {
+                isInDeadlock = true;
+                break;
+            }
+            vehiclesToSearch.Remove(vehicleToSearch);
+        }
+        return isInDeadlock;
+    }
+
+    /// <summary>
+    /// Updates the deadlock value which is used to find out when to release the current deadlock.
+    /// </summary>
+    /// <param name="isInDeadlock">True if the vehicle is in deadlock</param>
+    private void UpdateDeadlockTime(bool isInDeadlock)
+    {
+        if (isInDeadlock)
+        {
+            currentDeadlockSeconds = currentDeadlockSeconds + Time.fixedDeltaTime;
+        }
+        else
+        {
+            currentDeadlockSeconds = currentDeadlockSeconds - Time.fixedDeltaTime;
+        }
+        if (currentDeadlockSeconds < 0)
+        {
+            currentDeadlockSeconds = 0;
+        }
+    }
+
+    /// <summary>
+    /// Checks if the vehicle should release the deadlock
+    /// </summary>
+    /// <returns>True if the deadlock should be released</returns>
+    private bool ShouldReleaseDeadlock()
+    {
+        if (currentDeadlockSeconds < releaseDeadlockAfterSeconds)
+        {
+            return false;
+        }
+        List<VehicleEngine> vehiclesInArea = FindObjectsOfType<VehicleEngine>().Where(v => Vector3.Distance(v.transform.position, transform.position) <= mergeRadiusCheck).OrderByDescending(v => v.GetDeadlockPriority()).ToList();
+        List<VehicleEngine> vehiclesInAreaOriginal = new List<VehicleEngine>(vehiclesInArea);
+        while (vehiclesInArea.Count > 0)
+        {
+            VehicleEngine vehicleToCheck = vehiclesInArea.First();
+            if (this.Equals(vehicleToCheck))
+            {
+                return true;
+            }
+            if (vehicleToCheck.IsReleasingDeadlock() || !vehicleToCheck.isWaitingOnSensorRays)
+            {
+                return false;
+            }
+            vehiclesInArea.Remove(vehicleToCheck);
+        }
+        // This is the last vehicle so should release
+        return true;
+    }
+
+    public bool IsReleasingDeadlock()
+    {
+        return deadlockReleaseAtTime + attemptAnotherDeadlockReleaseAfter > Time.time;
     }
 
     /// <summary>

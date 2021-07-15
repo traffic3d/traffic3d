@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Evacu-agent.unity
     guid: c66d45eed5f184d498bf46614bb7080c
+  - enabled: 1
+    path: Assets/Scenes/DayDemoWithoutTrafficLights.unity
+    guid: 96f2c4e36278b1b4e92e3ec3bf341948
   m_configObjects: {}
