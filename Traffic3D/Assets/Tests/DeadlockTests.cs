@@ -8,7 +8,7 @@ using UnityEngine.TestTools;
 using System.Linq;
 
 [Category("Tests")]
-public class DeadlockTests : MonoBehaviour
+public class DeadlockTests
 {
     private const int TIME_OUT = 60;
     private const int MAX_STOP_LINE_CHECKS = 10000;
@@ -21,7 +21,7 @@ public class DeadlockTests : MonoBehaviour
         try
         {
             SocketManager.GetInstance().SetSocket(new MockSocket());
-            SceneManager.LoadScene(3);
+            SceneManager.LoadScene("DayDemoWithoutTrafficLights");
             deadlockableRoadWayStrings = new List<string>();
             deadlockableRoadWayStrings.Add("WayTrafficLight1-2");
             deadlockableRoadWayStrings.Add("WayTrafficLight2-2");
@@ -70,7 +70,7 @@ public class DeadlockTests : MonoBehaviour
     {
         yield return null;
         DisableLoops();
-        List<RoadWay> deadlockableRoadWays = FindObjectsOfType<RoadWay>().Where(r => deadlockableRoadWayStrings.Contains(r.name)).ToList();
+        List<RoadWay> deadlockableRoadWays = GameObject.FindObjectsOfType<RoadWay>().Where(r => deadlockableRoadWayStrings.Contains(r.name)).ToList();
         VehicleFactory vehicleFactory = GameObject.FindObjectOfType<VehicleFactory>();
         List<VehicleEngine> vehicles = new List<VehicleEngine>();
         Assert.True(deadlockableRoadWays.Count > 0);

@@ -13,7 +13,7 @@ public class WaitAtDestinationBehaviour : BehaviourStrategy
     {
         evacuAgentPedestrianBase = GetComponentInParent<EvacuAgentPedestrianBase>();
         groupCollection = evacuAgentPedestrianBase.GroupCollection;
-        maxRadius = 3f;
+        maxRadius = 2f;
         minRadius = 0f;
         RadiusToDestination = Random.Range(minRadius, maxRadius);
         normalSpeed = GetComponentInParent<Pedestrian>().GetPedestrianNormalSpeed();
@@ -28,6 +28,6 @@ public class WaitAtDestinationBehaviour : BehaviourStrategy
     public override void PerformBehaviour()
     {
         evacuAgentPedestrianBase.ChangeSpeedToMatchLeader(normalSpeed);
-        evacuAgentPedestrianBase.IsPedestrianMovementStopped(false);
+        evacuAgentPedestrianBase.IsPedestrianMovementStopped(true);
     }
 }

@@ -113,7 +113,7 @@ public class WaitForFollowersBehaviour_AreAllFolowersAtDestination_ReturnsFalse_
 
     public override void Act()
     {
-        actualBool = waitForFollowersBehaviour.AreAllFolowersAtDestination();
+        actualBool = waitForFollowersBehaviour.AreAllFollowersAtDestination();
     }
 
     public override void Assertion()
@@ -163,7 +163,7 @@ public class WaitForFollowersBehaviour_AreAllFolowersAtDestination_ReturnsFalse_
 
     public override void Act()
     {
-        actualBool = waitForFollowersBehaviour.AreAllFolowersAtDestination();
+        actualBool = waitForFollowersBehaviour.AreAllFollowersAtDestination();
     }
 
     public override void Assertion()
@@ -213,7 +213,7 @@ public class WaitForFollowersBehaviour_AreAllFolowersAtDestination_ReturnsTrue_W
 
     public override void Act()
     {
-        actualBool = waitForFollowersBehaviour.AreAllFolowersAtDestination();
+        actualBool = waitForFollowersBehaviour.AreAllFollowersAtDestination();
     }
 
     public override void Assertion()

@@ -12,8 +12,14 @@ EditorBuildSettings:
     path: Assets/Scenes/Sumo.unity
     guid: c8b3006946df9be4e94131bb7df427a8
   - enabled: 1
-    path: Assets/Scenes/Evacu-agent.unity
+    path: Assets/Scenes/Evacu-agent/Evacu-agent_Test_Scene.unity
     guid: c66d45eed5f184d498bf46614bb7080c
+  - enabled: 1
+    path: Assets/Scenes/Evacu-agent/Evacu-agent_Birmingham2.unity
+    guid: 45118c2f3ca160a408989e2b62d1a13d
+  - enabled: 1
+    path: Assets/Scenes/Evacu-agent/TrafalgarSquare.unity
+    guid: d89f9c33c05d52145ab159d8a301f045
   - enabled: 1
     path: Assets/Scenes/DayDemoWithoutTrafficLights.unity
     guid: 96f2c4e36278b1b4e92e3ec3bf341948

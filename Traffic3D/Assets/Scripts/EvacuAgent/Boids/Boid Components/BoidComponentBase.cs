@@ -2,6 +2,7 @@
 
 public abstract class BoidComponentBase : MonoBehaviour
 {
+    protected abstract bool IsDebuggingOn { get; }
     public abstract Vector3 CalculateComponentVelocity(BoidBehaviourStrategyBase followerBoidBehaviour);
 
     public bool DoesVectorContainNaN(Vector3 vector)

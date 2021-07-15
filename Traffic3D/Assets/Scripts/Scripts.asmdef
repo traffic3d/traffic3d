@@ -2,7 +2,8 @@
     "name": "Scripts",
     "references": [
         "RainMaker",
-        "NavMeshComponents"
+        "NavMeshComponents",
+        "Unity.TextMeshPro"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

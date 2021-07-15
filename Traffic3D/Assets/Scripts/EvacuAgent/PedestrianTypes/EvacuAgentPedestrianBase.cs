@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -22,6 +22,8 @@ public abstract class EvacuAgentPedestrianBase : MonoBehaviour
     public List<EvacuAgentPedestrianBase> visibleGroupMembers;
     public List<EvacuAgentPedestrianBase> visibleNonGroupMembers;
 
+    private float groupMemberAwarenessDistance;
+
     public virtual void InitialisePedestrian(Pedestrian pedestrian)
     {
         this.pedestrian = pedestrian;
@@ -37,6 +39,7 @@ public abstract class EvacuAgentPedestrianBase : MonoBehaviour
         boidManager = GetComponent<BoidManager>();
         visibleGroupMembers = new List<EvacuAgentPedestrianBase>();
         visibleNonGroupMembers = new List<EvacuAgentPedestrianBase>();
+        groupMemberAwarenessDistance = 15f;
     }
 
     public void AddGroupCollection(GroupCollection groupCollection)
@@ -49,10 +52,11 @@ public abstract class EvacuAgentPedestrianBase : MonoBehaviour
         navMeshAgent.speed = leaderSpeed;
     }
 
-    public void IsPedestrianMovementStopped(bool isMovementActive)
+    public void IsPedestrianMovementStopped(bool isMovementStopped)
     {
-        navMeshAgent.isStopped = isMovementActive;
-        boidManager.isBoidMovementStopped = isMovementActive;
+        navMeshAgent.velocity = Vector3.zero;
+        navMeshAgent.isStopped = isMovementStopped;
+        boidManager.isBoidMovementStopped = isMovementStopped;
     }
 
     public List<EvacuAgentPedestrianBase> GetVisibleGroupMembers()

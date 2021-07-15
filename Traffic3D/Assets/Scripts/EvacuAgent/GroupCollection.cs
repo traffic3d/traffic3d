@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GroupCollection : MonoBehaviour
@@ -8,10 +9,12 @@ public class GroupCollection : MonoBehaviour
     public int TotalGroupCount { get; set; }
     public bool shouldUpdatePath { get; set; }
     public bool ShouldUpdateGroupDestination { get; private set; }
+    public bool isGroupWaiting { get; private set; }
     private bool hasNewMemberBeenAdded;
     private List<EvacuAgentPedestrianBase> group;
     private List<Vector3> path;
     private int currentPathIndex;
+    private bool isDebuggingOn = false;
 
     // Current destination and it's visited status. Gets set to true when the first group member hits the relevant collider
     private KeyValuePair<Vector3, bool> visitedStateOfCurrentDestination;
@@ -74,4 +77,22 @@ public class GroupCollection : MonoBehaviour
     }
 
     public int GetNumberOfPathNodes() => path.Count;
+
+    public IEnumerator SetGroupWaitingForSeconds(float seconds)
+    {
+        isGroupWaiting = true;
+        yield return new WaitForSeconds(seconds);
+        isGroupWaiting = false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (!isDebuggingOn)
+            return;
+
+        // Draws lines from leader to all group members
+        Gizmos.color = Color.blue;
+        group.ForEach(x => Gizmos.DrawLine(GroupLeaderPedestrian.transform.position, x.transform.position));
+        Gizmos.color = Color.white;
+    }
 }

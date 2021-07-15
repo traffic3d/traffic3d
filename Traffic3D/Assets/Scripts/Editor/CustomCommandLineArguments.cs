@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
@@ -58,7 +58,7 @@ public static class CustomCommandLineArguments
             UnityEditor.EditorApplication.isPlaying = true;
             if (EditorSceneManager.GetActiveScene() == null)
             {
-                EditorSceneManager.LoadScene(0);
+                EditorSceneManager.LoadScene("DayDemo");
             }
         }
     }

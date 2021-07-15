@@ -18,6 +18,7 @@ public abstract class BoidBehaviourStrategyBase : BehaviourStrategy
     public abstract float SeparationWeight { get; }
     public abstract float TargetSeekingWeight { get; }
     public abstract float InterGroupSeparationWeight { get; }
+    protected abstract bool IsDebuggingOn { get; }
     protected bool shouldUpdateBoid;
     public float maxSpeedMetresSecond = 2.4f;
 
@@ -110,7 +111,7 @@ public abstract class BoidBehaviourStrategyBase : BehaviourStrategy
 
     private void OnDrawGizmos()
     {
-        if (!isDebuggingOn)
+        if (!IsDebuggingOn)
             return;
 
         Gizmos.color = Color.red; // Red is to the group destination

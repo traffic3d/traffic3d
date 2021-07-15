@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
@@ -6,13 +7,16 @@ public class UIController : MonoBehaviour
     public GameObject currentMenuContentPanel;
 
     [SerializeField]
-    private Text timerTextComponent;
+    private TextMeshProUGUI timerTextComponent;
 
     [SerializeField]
     private GameObject menuSimulationPanel;
 
     [SerializeField]
     private GameObject menuInformationPanel;
+
+    [SerializeField]
+    private GameObject legendPanel;
 
     [SerializeField]
     private Animator menuPanelParentAnimator;
@@ -30,7 +34,8 @@ public class UIController : MonoBehaviour
 
     void Update()
     {
-        timerTextComponent.text = Time.timeSinceLevelLoad.ToString();
+        float roundedTimeValue = Mathf.Round(Time.timeSinceLevelLoad * 100f) / 100f;
+        timerTextComponent.text = roundedTimeValue.ToString();
     }
 
     public void OnButtonClickChangeMenuContentState(int menuContentState)
@@ -46,6 +51,9 @@ public class UIController : MonoBehaviour
             case MenuContentState.InformationMenuContent:
                 currentMenuContentPanel = menuInformationPanel;
                 break;
+            case MenuContentState.LegendMenuContent:
+                currentMenuContentPanel = legendPanel;
+                break;
         }
 
         currentMenuContentPanel.SetActive(true);
@@ -56,6 +64,11 @@ public class UIController : MonoBehaviour
     {
         bool isMenuMinimised = menuPanelParentAnimator.GetBool(isMenuMinimisedAnimatorString);
         menuPanelParentAnimator.SetBool(isMenuMinimisedAnimatorString, !isMenuMinimised);
+    }
+
+    public void UpdateSimulationPlaySpeed(float speedValue)
+    {
+        Time.timeScale = speedValue;
     }
 
     private void OpenMinimisedMenuOnMenuTabClick()
@@ -72,5 +85,6 @@ public class UIController : MonoBehaviour
 public enum MenuContentState
 {
     SimulationMenuContent = 0,
-    InformationMenuContent = 1
+    InformationMenuContent = 1,
+    LegendMenuContent = 2
 }

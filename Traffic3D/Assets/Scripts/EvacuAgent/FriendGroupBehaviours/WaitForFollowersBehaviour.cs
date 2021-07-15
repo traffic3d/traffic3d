@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class WaitForFollowersBehaviour : BehaviourStrategy
 {
@@ -24,7 +24,7 @@ public class WaitForFollowersBehaviour : BehaviourStrategy
 
     public override bool ShouldTriggerBehaviour()
     {
-        return IsLeaderAtDestination() && AreAllFolowersAtDestination();
+        return IsLeaderAtDestination() && AreAllFollowersAtDestination();
     }
 
     public override void PerformBehaviour()
@@ -42,10 +42,11 @@ public class WaitForFollowersBehaviour : BehaviourStrategy
 
     public bool IsLeaderAtDestination()
     {
-        return Vector3.Distance(groupCollection.GroupDestination, transform.position) < leaderAcceptableProximity;
+        float distance = Vector3.Distance(groupCollection.GroupDestination, transform.position);
+        return distance <= leaderAcceptableProximity;
     }
 
-    public bool AreAllFolowersAtDestination()
+    public bool AreAllFollowersAtDestination()
     {
         if(groupCollection.GetGroupMembers().Count < groupCollection.TotalGroupCount)
         {

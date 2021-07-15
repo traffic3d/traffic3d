@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -48,7 +48,7 @@ public class ShooterPedestrianPointPathCreator : PedestrianPointPathCreator
 
         foreach (Collider collider in collidersInRadius)
         {
-            pedestrianPoints.Add(collider.GetComponent<PedestrianPoint>());
+            pedestrianPoints.Add(collider.GetComponentInChildren<PedestrianPoint>());
         }
 
         return pedestrianPoints;

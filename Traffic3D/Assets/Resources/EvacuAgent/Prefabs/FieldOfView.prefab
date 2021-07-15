@@ -50,7 +50,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   findAgentsDelay: 1
-  visiblePedestrians: []
+  allVisiblePedestrians: []
   viewRadius: 5
   numberOfSegments: 21
 --- !u!33 &5559683167168654897

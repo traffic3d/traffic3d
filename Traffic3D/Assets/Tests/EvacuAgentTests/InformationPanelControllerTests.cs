@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
@@ -26,7 +26,7 @@ public class InformationPanelController_UpdateNumberOfPedestrianText_GetsCorrect
         InformationPanelControllerTestsHelper.ClearAllTextFields(informationPanelController);
 
         tags = new List<string> { InformationPanelControllerTestsHelper.untaggedString, InformationPanelControllerTestsHelper.untaggedString, EvacuAgentSceneParamaters.SHOOTER_TAG };
-        expectedNumberOfPedestrians = "2";
+        expectedNumberOfPedestrians = "3";
 
         foreach(string tag in tags)
         {

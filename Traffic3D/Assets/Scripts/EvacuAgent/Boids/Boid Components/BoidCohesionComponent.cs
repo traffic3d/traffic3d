@@ -2,6 +2,8 @@
 
 public class BoidCohesionComponent : BoidComponentBase
 {
+    protected override bool IsDebuggingOn => false;
+
     public override Vector3 CalculateComponentVelocity(BoidBehaviourStrategyBase followerBoidBehaviour)
     {
         Vector3 velocity = Vector3.zero;

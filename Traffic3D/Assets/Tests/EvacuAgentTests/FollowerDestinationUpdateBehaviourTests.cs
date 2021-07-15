@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.AI;
@@ -109,8 +109,8 @@ public class FollowerDestinationUpdateBehaviour_PerformBehaviour_CorrectlySetsNe
         evacuAgentPedestrianBase = SpawnFriendGroupOfEvacuAgentPedestrians(2)[1];
         followerDestinationUpdateBehaviour = evacuAgentPedestrianBase.GetComponentInChildren<FollowerDestinationUpdateBehaviour>();
 
-        locationOne = new Vector3(1f, 0.05f, 20f);
-        locationTwo = new Vector3(3f, 0.05f, -17f);
+        locationOne = new Vector3(1f, 0.005f, 20f);
+        locationTwo = new Vector3(3f, 0.005f, -17f);
 
         navMeshAgent = evacuAgentPedestrianBase.navMeshAgent;
 
