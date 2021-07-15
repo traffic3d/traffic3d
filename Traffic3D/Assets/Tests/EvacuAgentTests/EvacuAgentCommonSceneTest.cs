@@ -21,7 +21,7 @@ namespace Tests
             try
             {
                 SocketManager.GetInstance().SetSocket(new MockSocket());
-                SceneManager.LoadScene(2);
+                SceneManager.LoadScene("Evacu-agent_Test_Scene");
             }
             catch (Exception e)
             {

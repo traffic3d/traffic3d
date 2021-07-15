@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,7 +11,7 @@ public class CommonSceneTest
         try
         {
             SocketManager.GetInstance().SetSocket(new MockSocket());
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene("DayDemo");
         }
         catch (Exception e)
         {
