@@ -18,6 +18,7 @@ ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x2
     -customBuildPath $BUILD_PATH \
     -customBuildOptions AcceptExternalModificationsToPlayer \
     -executeMethod BuildCommand.PerformBuild \
+    -RandomSeed 12345 \
     -logFile
 
 UNITY_EXIT_CODE=$?

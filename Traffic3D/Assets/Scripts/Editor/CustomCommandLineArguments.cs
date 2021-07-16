@@ -11,6 +11,7 @@ public static class CustomCommandLineArguments
         CheckJSONConfigFile();
         CheckRunBenchmark();
         CheckOpenScene();
+        CheckRandomSeed();
     }
 
     public static string GetArgument(string name)
@@ -60,6 +61,23 @@ public static class CustomCommandLineArguments
             {
                 EditorSceneManager.LoadScene("DayDemo");
             }
+        }
+    }
+
+    private static void CheckRandomSeed()
+    {
+        string randomSeedString = GetArgument("RandomSeed");
+        if (randomSeedString == null)
+        {
+            return;
+        }
+        if (int.TryParse(randomSeedString, out int randomSeed))
+        {
+            RandomNumberGenerator.seed = randomSeed;
+        }
+        else
+        {
+            throw new ArgumentException("RandomSeed must have an integer as a value.");
         }
     }
 
