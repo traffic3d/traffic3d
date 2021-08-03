@@ -45,6 +45,30 @@ ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x2
 
 If you are using a [Unity cache server](https://github.com/Unity-Technologies/unity-cache-server) you can also add a line, such as: `-CacheServerIPAddress XXX.XXX.XXX.XXX:8126`.
 
+## Evacu-agent
+
+Evacu-agent is an evacuation simulation that extends the pedestrian behaviour in Traffic3D.
+
+### Camera Controls
+
+Panning:
+
+* Pan up: `up arrow`, `w`.
+* Pan left: `left arrow`, `a`.
+* Pan down: `down arrow`, `s`.
+* Pan right: `right arrow`, `d`.
+* Increase pan speed while pressed: `left shift`.
+
+Rotating:
+
+* Rotate left: `q`.
+* Rotate right: `e`.
+
+Zooming:
+
+* Zoom out: `z`.
+* Zoom in: `c`.
+
 ## Configuration
 
 Configuration is used to bulk import initialisation values into the Traffic3D system.
@@ -105,27 +129,3 @@ Copies of the license can also be obtained [directly from Mozilla](https://mozil
 ## Getting started with development
 
 Please read [CONTRIBUTING.md](/CONTRIBUTING.md) before you start working on this repository.
-
-## EvacuAgent
-
-EvacuAgent is an evacuation simulation that extends the pedestrian behaviour in Traffic3D.
-
-### Camera Controls
-
-Panning:
-
-* Pan up: `up arrow`, `w`.
-* Pan left: `left arrow`, `a`.
-* Pan down: `down arrow`, `s`.
-* Pan right: `right arrow`, `d`.
-* Increase pan speed while pressed: `left shift`.
-
-Rotating:
-
-* Rotate left: `q`.
-* Rotate right: `e`.
-
-Zooming:
-
-* Zoom out: `z`.
-* Zoom in: `c`.
