@@ -1,4 +1,4 @@
-﻿using UnityEditor;
+using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
@@ -20,7 +20,7 @@ public class ImportOsmGui : EditorWindow
     private bool isSceneActive;
 
     //Add to "Windows" tab
-    [MenuItem("Window/Import OpenStreetMap File")]
+    [MenuItem("Traffic3D/Import OpenStreetMap File")]
 
     /// <summary>
     /// Create UI pop-up
