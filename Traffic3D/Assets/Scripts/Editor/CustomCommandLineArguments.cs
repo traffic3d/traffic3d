@@ -73,7 +73,8 @@ public static class CustomCommandLineArguments
         }
         if (int.TryParse(randomSeedString, out int randomSeed))
         {
-            RandomNumberGenerator.seed = randomSeed;
+            Settings.SetRandomSeed(randomSeed);
+            RandomNumberGenerator.ReloadInstance();
         }
         else
         {

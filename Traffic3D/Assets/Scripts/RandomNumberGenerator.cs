@@ -12,7 +12,8 @@ using UnityEngine;
 /// </summary>
 public class RandomNumberGenerator
 {
-    public static int seed = 123;
+    public const int DEFAULT_RANDOM_SEED = 123;
+    private static int seed = DEFAULT_RANDOM_SEED;
     private static RandomNumberGenerator instance;
     private System.Random random;
 
@@ -25,10 +26,29 @@ public class RandomNumberGenerator
         return instance;
     }
 
+    public static void ReloadInstance()
+    {
+        instance = null;
+        GetInstance();
+    }
+
+    public static int GetSeed()
+    {
+        if (Settings.GetRandomSeed(out int settingSeed))
+        {
+            seed = settingSeed;
+            return seed;
+        }
+        else
+        {
+            return seed;
+        }
+    }
+
     private RandomNumberGenerator()
     {
-        Random.InitState(seed);
-        random = new System.Random(seed);
+        Random.InitState(GetSeed());
+        random = new System.Random(GetSeed());
     }
 
     /// <summary>
@@ -47,7 +67,7 @@ public class RandomNumberGenerator
     /// <returns>Returns the next random float between 0 and 1 inclusive.</returns>
     public float NextFloat()
     {
-        return (float) random.NextDouble();
+        return (float)random.NextDouble();
     }
 
     /// <summary>
@@ -69,7 +89,7 @@ public class RandomNumberGenerator
     /// <returns>Return a random float between min (inclusive) and max (inclusive)</returns>
     public float Range(float min, float max)
     {
-        return (float) (min + (random.NextDouble() * (max - min)));
+        return (float)(min + (random.NextDouble() * (max - min)));
     }
 
 }

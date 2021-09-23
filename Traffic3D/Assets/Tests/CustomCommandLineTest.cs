@@ -64,6 +64,6 @@ public class CustomCommandLineTest : CommonSceneTest
     public IEnumerator RandomNumberSeedTest()
     {
         yield return null;
-        Assert.AreEqual(randomNumberSeedTestValue, RandomNumberGenerator.seed);
+        Assert.AreEqual(randomNumberSeedTestValue, RandomNumberGenerator.GetSeed());
     }
 }
