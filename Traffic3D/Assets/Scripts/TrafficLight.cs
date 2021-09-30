@@ -10,12 +10,12 @@ public class TrafficLight : MonoBehaviour
     public Material amberMaterial;
     public Material greenMaterial;
     public Material blackMaterial;
-    public GameObject redLightObject;
-    public GameObject amberLightObject;
-    public GameObject greenLightObject;
+    public Renderer redLightObject;
+    public Renderer amberLightObject;
+    public Renderer greenLightObject;
     public List<RoadNode> stopNodes;
     public LightColour currentLightColour = LightColour.RED;
-    private Dictionary<LightColour, GameObject> lightObjects;
+    private Dictionary<LightColour, Renderer> lightObjects;
     private Dictionary<LightColour, Material> lightMaterials;
 
     public event TrafficLightChangeEvent trafficLightChangeEvent;
@@ -24,7 +24,7 @@ public class TrafficLight : MonoBehaviour
 
     void Awake()
     {
-        lightObjects = new Dictionary<LightColour, GameObject>();
+        lightObjects = new Dictionary<LightColour, Renderer>();
         lightObjects.Add(LightColour.RED, redLightObject);
         lightObjects.Add(LightColour.AMBER, amberLightObject);
         lightObjects.Add(LightColour.GREEN, greenLightObject);
@@ -41,7 +41,7 @@ public class TrafficLight : MonoBehaviour
     public void SetColour(LightColour lightColour)
     {
         currentLightColour = lightColour;
-        foreach (KeyValuePair<LightColour, GameObject> lightObjectEntry in lightObjects)
+        foreach (KeyValuePair<LightColour, Renderer> lightObjectEntry in lightObjects)
         {
             if (lightColour == lightObjectEntry.Key)
             {
@@ -63,9 +63,9 @@ public class TrafficLight : MonoBehaviour
     /// </summary>
     /// <param name="lightObject">The game object to have the material changed.</param>
     /// <param name="material">The material to change to.</param>
-    private void ChangeMaterial(GameObject lightObject, Material material)
+    private void ChangeMaterial(Renderer lightObject, Material material)
     {
-        lightObject.GetComponent<Renderer>().material = material;
+        lightObject.material = material;
     }
 
     /// <summary>

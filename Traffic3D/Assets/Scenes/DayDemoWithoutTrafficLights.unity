@@ -9767,21 +9767,29 @@ MonoBehaviour:
   timeOfStartInvisibility: 1
   isLeftHandDrive: 1
   vehicleProbabilities:
-  - vehicle: {fileID: 1717347129989908, guid: 389154cd7472f41a7b5ad5e90e564a2b, type: 3}
+  - vehicle: {fileID: 8588772200871737206, guid: 389154cd7472f41a7b5ad5e90e564a2b,
+      type: 3}
     probability: 0.15
-  - vehicle: {fileID: 1496974738235772, guid: 1033c1a7523064cd79e138342dd09237, type: 3}
+  - vehicle: {fileID: 981059062173342068, guid: 1033c1a7523064cd79e138342dd09237,
+      type: 3}
     probability: 0.1
-  - vehicle: {fileID: 1591734672701284, guid: d2d21d8010c1c40e3a775968e254b2de, type: 3}
+  - vehicle: {fileID: 8652479516804725867, guid: d2d21d8010c1c40e3a775968e254b2de,
+      type: 3}
     probability: 0.1
-  - vehicle: {fileID: 1428463760430286, guid: 24b06f08c08444941b85f74d4b008933, type: 3}
+  - vehicle: {fileID: 1609045988877570482, guid: 24b06f08c08444941b85f74d4b008933,
+      type: 3}
     probability: 0.15
-  - vehicle: {fileID: 1310869725840042, guid: 7e18cdb9eeaed4a66b40612cc522f29d, type: 3}
+  - vehicle: {fileID: 2670748517366013716, guid: 7e18cdb9eeaed4a66b40612cc522f29d,
+      type: 3}
     probability: 0.15
-  - vehicle: {fileID: 1181654110177340, guid: 14eab376b0a144867a1e547c112cebfe, type: 3}
+  - vehicle: {fileID: 2858257825132716182, guid: 14eab376b0a144867a1e547c112cebfe,
+      type: 3}
     probability: 0.1
-  - vehicle: {fileID: 1525343814800894, guid: 6a50b2b7eef3d4c058c762652655491e, type: 3}
+  - vehicle: {fileID: 420449844689583293, guid: 6a50b2b7eef3d4c058c762652655491e,
+      type: 3}
     probability: 0.15
-  - vehicle: {fileID: 1878293882199392, guid: e0552afcd8441481fa7c886f6daa3d76, type: 3}
+  - vehicle: {fileID: 8276394593898460683, guid: e0552afcd8441481fa7c886f6daa3d76,
+      type: 3}
     probability: 0.1
   currentVehicles: []
 --- !u!4 &1212612604

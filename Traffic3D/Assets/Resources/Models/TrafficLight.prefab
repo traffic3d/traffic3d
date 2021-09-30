@@ -326,9 +326,9 @@ MonoBehaviour:
   amberMaterial: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
   greenMaterial: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
   blackMaterial: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
-  redLightObject: {fileID: 1958904380822094183}
-  amberLightObject: {fileID: 6202853068206195027}
-  greenLightObject: {fileID: 2025604407300282356}
+  redLightObject: {fileID: 6051607742409484927}
+  amberLightObject: {fileID: 5236578251265209946}
+  greenLightObject: {fileID: 53103092487529778}
   stopNodes: []
   currentLightColour: 0
 --- !u!208 &5028247167848600434
