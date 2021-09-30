@@ -2,7 +2,8 @@
     "name": "Tests",
     "references": [
         "Scripts",
-        "Editor"
+        "Editor",
+        "RainMaker"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"
