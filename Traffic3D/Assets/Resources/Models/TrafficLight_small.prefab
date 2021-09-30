@@ -79,7 +79,6 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -171,7 +170,6 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -267,7 +265,6 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -297,9 +294,9 @@ MonoBehaviour:
   amberMaterial: {fileID: 2100000, guid: b15e8dabd870e7f4aab59dfb06df04e7, type: 2}
   greenMaterial: {fileID: 2100000, guid: 1b901cc3f2bdf9e4ca74f3ca18070d7f, type: 2}
   blackMaterial: {fileID: 2100000, guid: 19e7132d3a31643909cab99ec3b4a073, type: 2}
-  redLightObject: {fileID: 3259382710335715231}
-  amberLightObject: {fileID: 7038616583007729842}
-  greenLightObject: {fileID: 5180618397542737434}
+  redLightObject: {fileID: 6778125110113496110}
+  amberLightObject: {fileID: 7038616583007729844}
+  greenLightObject: {fileID: 6861410613033388827}
   stopNodes: []
   currentLightColour: 0
 --- !u!1 &7038616583007729842
@@ -381,7 +378,6 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0

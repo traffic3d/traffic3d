@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class RoadNode : MonoBehaviour
 {
@@ -26,9 +26,9 @@ public class RoadNode : MonoBehaviour
         }
     }
 
-    public bool CanSpawnVehicle(GameObject vehicle)
+    public bool CanSpawnVehicle(VehicleEngine vehicle)
     {
-        BoxCollider boxCollider = vehicle.GetComponentInChildren<BoxCollider>();
+        BoxCollider boxCollider = vehicle.gameObject.GetComponentInChildren<BoxCollider>();
         currentBoxColliderCheck = boxCollider;
         Vector3 boxSize = GetBoxSize(boxCollider);
         Quaternion boxRotation = GetBoxRotation(boxCollider);

@@ -58,8 +58,7 @@ public class DeadlockTests
         yield return null;
         DisableLoops();
         VehicleFactory vehicleFactory = GameObject.FindObjectOfType<VehicleFactory>();
-        GameObject vehicle = vehicleFactory.SpawnVehicle(vehicleFactory.GetRandomVehicle(), RoadNetworkManager.GetInstance().GetRandomStartNode());
-        VehicleEngine vehicleEngine = vehicle.GetComponent<VehicleEngine>();
+        VehicleEngine vehicleEngine = vehicleFactory.SpawnVehicle(vehicleFactory.GetRandomVehicle(), RoadNetworkManager.GetInstance().GetRandomStartNode());
         yield return new WaitForFixedUpdate();
         Assert.False(vehicleEngine.IsInDeadlock());
     }

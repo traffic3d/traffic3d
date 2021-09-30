@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEditor;
@@ -247,13 +247,13 @@ public class ImportOsmUiWrapper
         GameObject vehicleFactoryGameObject = new GameObject("VehicleFactory");
         VehicleFactory vehicleFactory = vehicleFactoryGameObject.AddComponent<VehicleFactory>();
         string[] assets = Directory.GetFiles("Assets/Vehicles", "*.prefab");
-        List<GameObject> vehicles = new List<GameObject>();
+        List<VehicleEngine> vehicles = new List<VehicleEngine>();
         foreach (string path in assets)
         {
             GameObject vehicle = AssetDatabase.LoadAssetAtPath<GameObject>(path);
             if (vehicle != null)
             {
-                vehicles.Add(vehicle);
+                vehicles.Add(vehicle.GetComponent<VehicleEngine>());
             }
         }
         vehicleFactory.SetDefaultVehicleProbabilities(vehicles);
