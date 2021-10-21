@@ -1,18 +1,18 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class DensityMeasurePoint : MonoBehaviour
 {
     void OnTriggerEnter(Collider other)
     {
-        VehicleEngine vehicleEngine = other.GetComponentInParent<VehicleEngine>();
-        if (vehicleEngine != null && !vehicleEngine.densityCountTriggered)
+        Vehicle vehicle = other.GetComponentInParent<Vehicle>();
+        if (vehicle != null && !vehicle.vehicleDriver.densityCountTriggered)
         {
-            vehicleEngine.densityCountTriggered = true;
+            vehicle.vehicleDriver.densityCountTriggered = true;
             PythonManager.GetInstance().IncrementDensityCount();
             // Calculate Delay
-            if (vehicleEngine.startDelayTime != -1)
+            if (vehicle.vehicleDriver.startDelayTime != -1)
             {
-                float delay = Time.time - vehicleEngine.startDelayTime;
+                float delay = Time.time - vehicle.vehicleDriver.startDelayTime;
                 Utils.AppendAllTextToResults(Utils.VEHICLE_DELAY_TIMES_FILE_NAME, delay.ToString() + ",");
             }
         }

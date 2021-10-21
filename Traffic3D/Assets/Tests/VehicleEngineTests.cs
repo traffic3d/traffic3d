@@ -21,9 +21,9 @@ public class VehicleEngineTests : CommonSceneTest
     {
         DisableLoops();
         TrafficLightManager.GetInstance().SetTrafficLightsToGreen(TrafficLightManager.GetInstance().trafficLights.Select(t => t.trafficLightId).ToList());
-        VehicleEngine vehicleEngine = SpawnVehicle();
+        Vehicle vehicle = SpawnVehicle();
         yield return null;
-        Assert.True(vehicleEngine.GetEngineStatus() == VehicleEngine.EngineStatus.ACCELERATE);
+        Assert.True(vehicle.vehicleEngine.GetEngineStatus() == VehicleEngine.EngineStatus.ACCELERATE);
     }
 
     [UnityTest]
@@ -32,9 +32,9 @@ public class VehicleEngineTests : CommonSceneTest
     {
         DisableLoops();
         TrafficLightManager.GetInstance().SetAllToRed();
-        VehicleEngine vehicleEngine = SpawnVehicle();
-        yield return new WaitUntil(() => TrafficLightManager.GetInstance().GetTrafficLightFromStopNode(vehicleEngine.currentNode) != null);
-        Assert.True(vehicleEngine.GetEngineStatus() == VehicleEngine.EngineStatus.STOP || vehicleEngine.GetEngineStatus() == VehicleEngine.EngineStatus.HARD_STOP);
+        Vehicle vehicle = SpawnVehicle();
+        yield return new WaitUntil(() => TrafficLightManager.GetInstance().GetTrafficLightFromStopNode(vehicle.vehicleDriver.currentNode) != null);
+        Assert.True(vehicle.vehicleEngine.GetEngineStatus() == VehicleEngine.EngineStatus.STOP || vehicle.vehicleEngine.GetEngineStatus() == VehicleEngine.EngineStatus.HARD_STOP);
     }
 
     [UnityTest]
@@ -88,24 +88,25 @@ public class VehicleEngineTests : CommonSceneTest
         {
             Assert.Inconclusive("Unable to test. No paths with turnings.");
         }
-        VehicleEngine vehicleEngine = SpawnVehicle(roadWayWithTurning.nodes[0]);
-        GameObject vehicle = vehicleEngine.gameObject;
+        Vehicle vehicle = SpawnVehicle(roadWayWithTurning.nodes[0]);
+        VehicleDriver vehicleDriver = vehicle.vehicleDriver;
+        GameObject vehicleObject = vehicleDriver.gameObject;
         VehiclePath vehiclePath = roadWayWithTurning.ToDirectVehiclePath();
-        vehicleEngine.SetVehiclePath(vehiclePath);
+        vehicleDriver.SetVehiclePath(vehiclePath);
         bool carIsDestroyed = false;
         for (int i = 0; i <= TIME_OUT_DESTROY_TIME; i = i + 1)
         {
             yield return new WaitForSeconds(1);
 
-            if (vehicle == null)
+            if (vehicleObject == null)
             {
                 carIsDestroyed = true;
                 break;
             }
             // While turning, speeds should be reduced.
-            if (vehiclePath.GetDirectionDifferenceToRoadAheadByDistanceMeasured(vehicleEngine.currentNode, vehicleEngine.transform, CHECK_DISTANCE_AHEAD_SPEED_TEST, false) > CHECK_ANGLE_DIFFERENCE_SPEED_TEST)
+            if (vehiclePath.GetDirectionDifferenceToRoadAheadByDistanceMeasured(vehicleDriver.currentNode, vehicleDriver.transform, CHECK_DISTANCE_AHEAD_SPEED_TEST, false) > CHECK_ANGLE_DIFFERENCE_SPEED_TEST)
             {
-                Assert.Greater(vehicleEngine.maxSpeed, vehicleEngine.targetSpeed, "Turning Speed");
+                Assert.Greater(vehicleDriver.vehicleSettings.maxSpeed, vehicle.vehicleEngine.targetSpeed, "Turning Speed");
             }
 
         }
@@ -125,23 +126,23 @@ public class VehicleEngineTests : CommonSceneTest
         RoadWay longestRoadWay = RoadNetworkManager.GetInstance().GetWays().Aggregate((w1, w2) => w1.GetDistance() > w2.GetDistance() ? w1 : w2);
         int originalSpeedLimit = longestRoadWay.speedLimit;
         longestRoadWay.speedLimit = SPEED_LIMIT_TEST_VALUE;
-        VehicleEngine vehicleEngine = SpawnVehicle(longestRoadWay.nodes[0]);
-        GameObject vehicle = vehicleEngine.gameObject;
+        Vehicle vehicle = SpawnVehicle(longestRoadWay.nodes[0]);
+        VehicleDriver vehicleDriver = vehicle.vehicleDriver;
+        GameObject vehicleObject = vehicle.gameObject;
         VehiclePath vehiclePath = longestRoadWay.ToDirectVehiclePath();
-        vehicleEngine.SetVehiclePath(vehiclePath);
+        vehicleDriver.SetVehiclePath(vehiclePath);
         bool carIsDestroyed = false;
         for (int i = 0; i <= TIME_OUT_DESTROY_TIME; i++)
         {
             yield return new WaitForSeconds(1);
 
-            if (vehicle == null)
+            if (vehicleObject == null)
             {
                 carIsDestroyed = true;
                 break;
             }
-            Assert.AreEqual(SPEED_LIMIT_TEST_VALUE, vehicleEngine.maxSpeed, "Vehicle max speed is not the same as speed limit.");
-            Assert.GreaterOrEqual(SPEED_LIMIT_TEST_VALUE + SPEED_LIMIT_TEST_ALLOWABLE_EXTRA, vehicleEngine.currentSpeed, "Vehicle current speed is over the speed limit.");
-
+            Assert.AreEqual(SPEED_LIMIT_TEST_VALUE, vehicle.vehicleSettings.maxSpeed, "Vehicle max speed is not the same as speed limit.");
+            Assert.GreaterOrEqual(SPEED_LIMIT_TEST_VALUE + SPEED_LIMIT_TEST_ALLOWABLE_EXTRA, vehicle.vehicleEngine.currentSpeed, "Vehicle current speed is over the speed limit.");
         }
         Assert.True(carIsDestroyed);
         longestRoadWay.speedLimit = originalSpeedLimit;
@@ -153,28 +154,29 @@ public class VehicleEngineTests : CommonSceneTest
     {
         yield return null;
         DisableLoops();
-        VehicleEngine vehicleEngine = SpawnVehicle();
+        Vehicle vehicle = SpawnVehicle();
+        VehicleSettings vehicleSettings = vehicle.vehicleSettings;
 
-        vehicleEngine.SetEngineStatus(VehicleEngine.EngineStatus.ACCELERATE);
+        vehicle.vehicleEngine.SetEngineStatus(VehicleEngine.EngineStatus.ACCELERATE);
 
-        Assert.AreEqual(0, vehicleEngine.wheelColliderFrontLeft.brakeTorque);
-        Assert.AreEqual(0, vehicleEngine.wheelColliderFrontRight.brakeTorque);
-        Assert.AreEqual(vehicleEngine.currentMotorTorque, vehicleEngine.wheelColliderFrontLeft.motorTorque);
-        Assert.AreEqual(vehicleEngine.currentMotorTorque, vehicleEngine.wheelColliderFrontRight.motorTorque);
+        Assert.AreEqual(0, vehicleSettings.wheelColliderFrontLeft.brakeTorque);
+        Assert.AreEqual(0, vehicleSettings.wheelColliderFrontRight.brakeTorque);
+        Assert.AreEqual(vehicle.vehicleEngine.currentMotorTorque, vehicleSettings.wheelColliderFrontLeft.motorTorque);
+        Assert.AreEqual(vehicle.vehicleEngine.currentMotorTorque, vehicleSettings.wheelColliderFrontRight.motorTorque);
 
-        vehicleEngine.SetEngineStatus(VehicleEngine.EngineStatus.STOP);
+        vehicle.vehicleEngine.SetEngineStatus(VehicleEngine.EngineStatus.STOP);
 
-        Assert.AreEqual(vehicleEngine.normalBrakeTorque, vehicleEngine.wheelColliderFrontLeft.brakeTorque);
-        Assert.AreEqual(vehicleEngine.normalBrakeTorque, vehicleEngine.wheelColliderFrontRight.brakeTorque);
-        Assert.AreEqual(0, vehicleEngine.wheelColliderFrontLeft.motorTorque);
-        Assert.AreEqual(0, vehicleEngine.wheelColliderFrontRight.motorTorque);
+        Assert.AreEqual(vehicleSettings.normalBrakeTorque, vehicleSettings.wheelColliderFrontLeft.brakeTorque);
+        Assert.AreEqual(vehicleSettings.normalBrakeTorque, vehicleSettings.wheelColliderFrontRight.brakeTorque);
+        Assert.AreEqual(0, vehicleSettings.wheelColliderFrontLeft.motorTorque);
+        Assert.AreEqual(0, vehicleSettings.wheelColliderFrontRight.motorTorque);
 
-        vehicleEngine.SetEngineStatus(VehicleEngine.EngineStatus.HARD_STOP);
+        vehicle.vehicleEngine.SetEngineStatus(VehicleEngine.EngineStatus.HARD_STOP);
 
-        Assert.AreEqual(vehicleEngine.maxBrakeTorque, vehicleEngine.wheelColliderFrontLeft.brakeTorque);
-        Assert.AreEqual(vehicleEngine.maxBrakeTorque, vehicleEngine.wheelColliderFrontRight.brakeTorque);
-        Assert.AreEqual(0, vehicleEngine.wheelColliderFrontLeft.motorTorque);
-        Assert.AreEqual(0, vehicleEngine.wheelColliderFrontRight.motorTorque);
+        Assert.AreEqual(vehicleSettings.maxBrakeTorque, vehicleSettings.wheelColliderFrontLeft.brakeTorque);
+        Assert.AreEqual(vehicleSettings.maxBrakeTorque, vehicleSettings.wheelColliderFrontRight.brakeTorque);
+        Assert.AreEqual(0, vehicleSettings.wheelColliderFrontLeft.motorTorque);
+        Assert.AreEqual(0, vehicleSettings.wheelColliderFrontRight.motorTorque);
     }
 
     private new void DisableLoops()
@@ -198,15 +200,19 @@ public class VehicleEngineTests : CommonSceneTest
         RoadNetworkManager.GetInstance().Reload();
     }
 
-    private VehicleEngine SpawnVehicle()
+    private Vehicle SpawnVehicle()
     {
         return SpawnVehicle(RoadNetworkManager.GetInstance().GetRandomStartNode());
     }
 
-    private VehicleEngine SpawnVehicle(RoadNode startNode)
+    private Vehicle SpawnVehicle(RoadNode startNode)
     {
         VehicleFactory vehicleFactory = (VehicleFactory)GameObject.FindObjectOfType(typeof(VehicleFactory));
-        return vehicleFactory.SpawnVehicle(vehicleFactory.GetRandomVehicle(), startNode);
+        Vehicle vehicle = vehicleFactory.SpawnVehicle(vehicleFactory.GetRandomVehicle(), startNode);
+        Assert.NotNull(vehicle, "Failed to spawn vehicle.");
+        Assert.NotNull(vehicle.vehicleDriver, "Failed to spawn vehicle driver.");
+        Assert.NotNull(vehicle.vehicleEngine, "Failed to spawn vehicle engine.");
+        return vehicle;
     }
 
 }

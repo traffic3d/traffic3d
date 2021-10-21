@@ -34,14 +34,14 @@ public class VehicleFactoryTests : CommonSceneTest
         vehicleFactory.StopAllCoroutines();
         string[] assets = Directory.GetFiles("Assets/Vehicles", "*.prefab");
         GameObject templateVehicle = AssetDatabase.LoadAssetAtPath<GameObject>(assets[0]);
-        List<VehicleEngine> vehicleList = new List<VehicleEngine>();
+        List<Vehicle> vehicleList = new List<Vehicle>();
         for (int i = 0; i < NUMBER_TEST_VEHICLES; i++)
         {
-            vehicleList.Add(templateVehicle.GetComponent<VehicleEngine>());
+            vehicleList.Add(templateVehicle.GetComponent<Vehicle>());
         }
         vehicleFactory.SetDefaultVehicleProbabilities(vehicleList);
         int vehicleCount = 0;
-        foreach (VehicleEngine vehicle in vehicleList)
+        foreach (Vehicle vehicle in vehicleList)
         {
             Assert.True(vehicleFactory.vehicleProbabilities.Any(o => o.vehicle.Equals(vehicle)));
             vehicleCount++;
@@ -57,18 +57,18 @@ public class VehicleFactoryTests : CommonSceneTest
     {
         DisableLoops();
         VehicleFactory vehicleFactory = (VehicleFactory)GameObject.FindObjectOfType(typeof(VehicleFactory));
-        foreach(VehicleEngine vehicleEngine in vehicleFactory.currentVehicles)
+        foreach(Vehicle currentVehicle in vehicleFactory.currentVehicles)
         {
-            GameObject.DestroyImmediate(vehicleEngine.gameObject);
+            GameObject.DestroyImmediate(currentVehicle.gameObject);
         }
         vehicleFactory.CleanVehicles();
         RoadNode node = RoadNetworkManager.GetInstance().GetNodes().Find(n => n.startNode);
         Assert.IsTrue(node.CanSpawnVehicle(vehicleFactory.vehicleProbabilities[0].vehicle));
-        VehicleEngine vehicle = vehicleFactory.SpawnVehicle(vehicleFactory.vehicleProbabilities[0].vehicle, node);
+        Vehicle vehicle = vehicleFactory.SpawnVehicle(vehicleFactory.vehicleProbabilities[0].vehicle, node);
         Assert.NotNull(vehicle);
         yield return null;
         Assert.IsFalse(node.CanSpawnVehicle(vehicleFactory.vehicleProbabilities[0].vehicle));
-        VehicleEngine vehicle2 = vehicleFactory.SpawnVehicle(vehicleFactory.vehicleProbabilities[0].vehicle, node);
+        Vehicle vehicle2 = vehicleFactory.SpawnVehicle(vehicleFactory.vehicleProbabilities[0].vehicle, node);
         Assert.IsNull(vehicle2);
     }
 }

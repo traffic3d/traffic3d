@@ -233,6 +233,8 @@ public class SumoManager : MonoBehaviour
     {
         GameObject vehicle = Instantiate(vehicleFactory.GetRandomVehicle()).gameObject;
         vehicle.GetComponent<Rigidbody>().isKinematic = true;
+        vehicle.GetComponent<Vehicle>().enabled = false;
+        vehicle.GetComponent<VehicleDriver>().enabled = false;
         vehicle.GetComponent<VehicleEngine>().enabled = false;
         foreach (BoxCollider boxCollider in vehicle.GetComponentsInChildren<BoxCollider>())
         {
