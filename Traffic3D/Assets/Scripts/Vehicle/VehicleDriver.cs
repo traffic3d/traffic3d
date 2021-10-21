@@ -562,10 +562,6 @@ public class VehicleDriver : MonoBehaviour
         }
         else
         {
-            currentDeadlockSeconds = currentDeadlockSeconds - Time.fixedDeltaTime;
-        }
-        if (currentDeadlockSeconds < 0)
-        {
             currentDeadlockSeconds = 0;
         }
     }
