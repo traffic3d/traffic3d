@@ -24,11 +24,10 @@ public class VehicleDriver : MonoBehaviour
     public float deadlockPriorityModifier;
     public bool deadlock;
     public float deadlockReleaseAtTime = 0;
-    private float shortestSide;
-    private float longestSide;
     private const int deadlockSearchMaxAttempts = 100;
     private const float attemptAnotherDeadlockReleaseAfter = 5f;
     private bool isLeftHandDrive;
+    private const float mergeAlgorithmPadding = 3f;
     private const float debugSphereSize = 0.25f;
     public Dictionary<Vehicle, HashSet<PathIntersectionPoint>> vehicleIntersectionPoints = new Dictionary<Vehicle, HashSet<PathIntersectionPoint>>();
 
@@ -40,11 +39,8 @@ public class VehicleDriver : MonoBehaviour
 
     void Start()
     {
-        Mesh mainMesh = GetComponentsInChildren<MeshFilter>().Aggregate((m1, m2) => (m1.mesh.bounds.extents.x * m1.mesh.bounds.extents.y * m1.mesh.bounds.extents.z) > (m2.mesh.bounds.extents.x * m2.mesh.bounds.extents.y * m2.mesh.bounds.extents.z) ? m1 : m2).mesh;
-        longestSide = Math.Max(mainMesh.bounds.size.z * transform.lossyScale.z, mainMesh.bounds.size.x * transform.lossyScale.x);
-        shortestSide = Math.Min(mainMesh.bounds.size.z * transform.lossyScale.z, mainMesh.bounds.size.x * transform.lossyScale.x);
         GetComponent<Rigidbody>().centerOfMass = Vector3.zero;
-        distanceBetweenRays = (shortestSide / (vehicleSettings.numberOfSensorRays - 1));
+        distanceBetweenRays = (vehicleSettings.shortestSideLength / (vehicleSettings.numberOfSensorRays - 1));
         startTime = Time.time;
         startPos = transform.position;
         deadlockPriorityModifier = RandomNumberGenerator.GetInstance().NextFloat();
@@ -214,10 +210,10 @@ public class VehicleDriver : MonoBehaviour
         List<Ray> rays = new List<Ray>();
         RaycastHit hit;
         Vector3 rayPosition = transform.position + transform.TransformDirection(Vector3.up);
-        rayPosition = rayPosition + transform.TransformDirection(Vector3.forward) * ((longestSide / 2) - 1) + transform.TransformDirection(Vector3.left) * (shortestSide / 2);
+        rayPosition = rayPosition + transform.TransformDirection(Vector3.forward) * ((vehicleSettings.longestSideLength / 2) - 1) + transform.TransformDirection(Vector3.left) * (vehicleSettings.shortestSideLength / 2);
         float angle = (float)Math.PI * vehicleSettings.wheelColliderFrontLeft.steerAngle / 180f;
         Vector3 direction = transform.TransformDirection(new Vector3((float)Math.Sin(angle), 0, (float)Math.Cos(angle)));
-        for (float i = 0; i <= shortestSide; i = i + distanceBetweenRays)
+        for (float i = 0; i <= vehicleSettings.shortestSideLength; i = i + distanceBetweenRays)
         {
             Ray ray = new Ray(rayPosition + transform.TransformDirection(Vector3.right) * i, direction);
             rays.Add(ray);
@@ -319,7 +315,7 @@ public class VehicleDriver : MonoBehaviour
                     vehicleBehind = otherVehicle.vehicleDriver;
                 }
             }
-            if (distanceAhead - longestSide <= vehicle.vehicleEngine.currentSpeed)
+            if (distanceAhead - vehicleSettings.longestSideLength - mergeAlgorithmPadding <= vehicle.vehicleEngine.currentSpeed)
             {
                 waitingForVehicleDriverAhead = vehicleAhead;
             }
@@ -411,7 +407,7 @@ public class VehicleDriver : MonoBehaviour
 
     private void ApplyMergeAlgorithm(float distanceAhead, float distanceBehind)
     {
-        if (distanceAhead - longestSide > vehicle.vehicleEngine.currentSpeed && distanceBehind > vehicleSettings.maxSpeed)
+        if (distanceAhead - vehicleSettings.longestSideLength - mergeAlgorithmPadding > vehicle.vehicleEngine.currentSpeed && distanceBehind > vehicleSettings.maxSpeed)
         {
             vehicle.vehicleEngine.SetTargetSpeed(Math.Min(vehicle.vehicleEngine.targetSpeed, distanceAhead));
         }

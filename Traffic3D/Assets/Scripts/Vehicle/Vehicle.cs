@@ -21,6 +21,15 @@ public class Vehicle : MonoBehaviour
         }
         vehicleEngine = gameObject.AddComponent<VehicleEngine>();
         vehicleDriver = gameObject.AddComponent<VehicleDriver>();
+        Mesh mainMesh = GetComponentsInChildren<MeshFilter>().Aggregate((m1, m2) => (m1.mesh.bounds.extents.x * m1.mesh.bounds.extents.y * m1.mesh.bounds.extents.z) > (m2.mesh.bounds.extents.x * m2.mesh.bounds.extents.y * m2.mesh.bounds.extents.z) ? m1 : m2).mesh;
+        if (vehicleSettings.longestSideLength < 0)
+        {
+            vehicleSettings.longestSideLength = Math.Max(mainMesh.bounds.size.z * transform.lossyScale.z, mainMesh.bounds.size.x * transform.lossyScale.x);
+        }
+        if (vehicleSettings.shortestSideLength < 0)
+        {
+            vehicleSettings.shortestSideLength = Math.Min(mainMesh.bounds.size.z * transform.lossyScale.z, mainMesh.bounds.size.x * transform.lossyScale.x);
+        }
     }
 
     private void Start()

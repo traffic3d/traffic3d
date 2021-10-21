@@ -22,6 +22,8 @@ public class VehicleSettings : MonoBehaviour
     public float deadlockReleaseProceedSpeed = 10f;
     public float releaseDeadlockAfterSeconds = 3;
     public float nodeReadingOffset = 0f;
+    public float longestSideLength = -1f;
+    public float shortestSideLength = -1f;
     // Vehicle Engine Properties
     public float normalBrakeTorque = 200f;
     public float maxBrakeTorque = 400f;

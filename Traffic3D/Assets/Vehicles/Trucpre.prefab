@@ -350,6 +350,8 @@ MonoBehaviour:
   deadlockReleaseProceedSpeed: 10
   releaseDeadlockAfterSeconds: 3
   nodeReadingOffset: 0
+  longestSideLength: 8
+  shortestSideLength: -1
   normalBrakeTorque: 2400
   maxBrakeTorque: 2400
   maxSpeed: 50
