@@ -3,84 +3,56 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class VehicleEngine : MonoBehaviour
+public class VehicleDriver : MonoBehaviour
 {
+    public Vehicle vehicle;
+    public VehicleSettings vehicleSettings;
     public VehiclePath path;
-    public float maxSteerAngle = 45f;
-    public float turnSpeed = 5f;
-    public WheelCollider wheelColliderFrontLeft;
-    public WheelCollider wheelColliderFrontRight;
-    public float maxMotorTorque = 200f;
-    public float currentMotorTorque;
-    public float normalBrakeTorque = 200f;
-    public float maxBrakeTorque = 400f;
-    public float currentSpeed;
-    public float stoppingDistance = 7f;
-    public float maxSpeed = 100f;
-    public List<float> distanceForSpeedCheck = new List<float> { 10, 30, 60, 150 };
-    public float cornerThresholdDegrees = 90f;
-    public float cornerSensitivityModifier = 50f;
-    public float cornerMinSpeed = 10f;
-    public float stopDistanceToSpeed = 0.4f;
-    public float stopLineEvaluationDistance = 10f;
-    public float trafficLightMaxSpeedOnGreen = 20f;
-    public float mergeRadiusCheck = 100f;
-    public Vector3 centerOfMass;
     public Transform currentNode;
     public int currentNodeNumber;
     private float targetSteerAngle = 0;
-    private Mesh mainMesh;
-    public float numberOfSensorRays = 5;
-    public float isWaitingOnSensorRaysDistance = 5;
     public bool isWaitingOnSensorRays = false;
-    public float steerReduceRayConstant = 5;
-    public float maxDistanceToMonitor = 100;
     private float distanceBetweenRays;
-    private float shortestSide;
-    private float longestSide;
-    public float targetSpeed;
     public float startTime;
     public float startDelayTime = -1;
     public Vector3 startPos;
-    public float nodeReadingOffset;
-    public EngineStatus engineStatus;
     public bool densityCountTriggered = false;
     public bool debug = false;
-    public VehicleEngine waitingForVehicleAhead = null;
-    public VehicleEngine waitingForVehicleBehind = null;
-    public float deadlockReleaseProceedSpeed = 10f;
-    public float releaseDeadlockAfterSeconds = 3;
+    public VehicleDriver waitingForVehicleDriverAhead = null;
+    public VehicleDriver waitingForVehicleDriverBehind = null;
     public float currentDeadlockSeconds = 0;
     public float deadlockPriorityModifier;
     public bool deadlock;
     public float deadlockReleaseAtTime = 0;
-    private int deadlockSearchMaxAttempts = 100;
-    private float attemptAnotherDeadlockReleaseAfter = 5f;
+    private float shortestSide;
+    private float longestSide;
+    private const int deadlockSearchMaxAttempts = 100;
+    private const float attemptAnotherDeadlockReleaseAfter = 5f;
     private bool isLeftHandDrive;
     private const float debugSphereSize = 0.25f;
-    private const float metresPerSecondToKilometresPerHourConversion = 3.6f;
-    private Dictionary<VehicleEngine, HashSet<PathIntersectionPoint>> vehicleIntersectionPoints = new Dictionary<VehicleEngine, HashSet<PathIntersectionPoint>>();
+    public Dictionary<Vehicle, HashSet<PathIntersectionPoint>> vehicleIntersectionPoints = new Dictionary<Vehicle, HashSet<PathIntersectionPoint>>();
+
+    private void Awake()
+    {
+        vehicle = gameObject.GetComponent<Vehicle>();
+        vehicleSettings = gameObject.GetComponent<VehicleSettings>();
+    }
 
     void Start()
     {
-        GetComponent<Rigidbody>().centerOfMass = centerOfMass;
-        mainMesh = GetComponentsInChildren<MeshFilter>().Aggregate((m1, m2) => (m1.mesh.bounds.extents.x * m1.mesh.bounds.extents.y * m1.mesh.bounds.extents.z) > (m2.mesh.bounds.extents.x * m2.mesh.bounds.extents.y * m2.mesh.bounds.extents.z) ? m1 : m2).mesh;
+        Mesh mainMesh = GetComponentsInChildren<MeshFilter>().Aggregate((m1, m2) => (m1.mesh.bounds.extents.x * m1.mesh.bounds.extents.y * m1.mesh.bounds.extents.z) > (m2.mesh.bounds.extents.x * m2.mesh.bounds.extents.y * m2.mesh.bounds.extents.z) ? m1 : m2).mesh;
         longestSide = Math.Max(mainMesh.bounds.size.z * transform.lossyScale.z, mainMesh.bounds.size.x * transform.lossyScale.x);
         shortestSide = Math.Min(mainMesh.bounds.size.z * transform.lossyScale.z, mainMesh.bounds.size.x * transform.lossyScale.x);
-        distanceBetweenRays = (shortestSide / (numberOfSensorRays - 1));
+        GetComponent<Rigidbody>().centerOfMass = Vector3.zero;
+        distanceBetweenRays = (shortestSide / (vehicleSettings.numberOfSensorRays - 1));
         startTime = Time.time;
         startPos = transform.position;
-        engineStatus = EngineStatus.STOP;
-        targetSpeed = maxSpeed;
-        currentMotorTorque = maxMotorTorque;
         deadlockPriorityModifier = RandomNumberGenerator.GetInstance().NextFloat();
         isLeftHandDrive = FindObjectOfType<VehicleFactory>().isLeftHandDrive;
-        EventManager.GetInstance().VehicleSpawnEvent += OnVehicleSpawnEvent;
-        EventManager.GetInstance().VehicleDestroyEvent += OnVehicleDestroyEvent;
         // Find all vehicles and intersection paths
-        foreach (VehicleEngine vehicleEngine in FindObjectsOfType<VehicleEngine>())
+        foreach (Vehicle vehicle in FindObjectsOfType<Vehicle>())
         {
-            AddVehicleIntersectionPoint(vehicleEngine);
+            AddVehicleIntersectionPoint(vehicle);
         }
         SpeedLimitCheck();
     }
@@ -99,23 +71,6 @@ public class VehicleEngine : MonoBehaviour
         this.path = vehiclePath;
         currentNodeNumber = 1;
         currentNode = path.nodes[currentNodeNumber];
-    }
-
-    public void OnVehicleSpawnEvent(object sender, VehicleEventArgs args)
-    {
-        AddVehicleIntersectionPoint(args.vehicleEngine);
-    }
-
-    public void OnVehicleDestroyEvent(object sender, VehicleEventArgs args)
-    {
-        vehicleIntersectionPoints.Remove(args.vehicleEngine);
-    }
-
-    private void OnDestroy()
-    {
-        EventManager.GetInstance().VehicleSpawnEvent -= OnVehicleSpawnEvent;
-        EventManager.GetInstance().VehicleDestroyEvent -= OnVehicleDestroyEvent;
-        EventManager.GetInstance().CallVehicleDestroyEvent(this, new VehicleEventArgs(this));
     }
 
     public void OnCollisionEnter(Collision other)
@@ -145,32 +100,23 @@ public class VehicleEngine : MonoBehaviour
         {
             return;
         }
-        if (Vector3.Distance(transform.TransformPoint(0, 0, nodeReadingOffset), currentNode.position) < 3f)
+        if (Vector3.Distance(transform.TransformPoint(0, 0, vehicleSettings.nodeReadingOffset), currentNode.position) < 3f)
         {
             NextNode();
             SpeedLimitCheck();
         }
         if (currentNodeNumber == path.nodes.Count - 1)
         {
-            Destroy();
+            vehicle.DestroyVehicle();
             return;
         }
         ApplySteer();
-        currentSpeed = GetComponent<Rigidbody>().velocity.magnitude * metresPerSecondToKilometresPerHourConversion;
         SpeedCheck();
         SensorCheck();
         TrafficLight trafficLight = TrafficLightManager.GetInstance().GetTrafficLightFromStopNode(currentNode);
         if ((trafficLight != null && trafficLight.IsCurrentLightColour(TrafficLight.LightColour.RED)) || this.gameObject.tag == "hap")
         {
-            SetEngineStatus(EngineStatus.HARD_STOP);
-        }
-        else if (currentSpeed < targetSpeed && currentSpeed < maxSpeed)
-        {
-            SetEngineStatus(EngineStatus.ACCELERATE);
-        }
-        else
-        {
-            SetEngineStatus(EngineStatus.STOP);
+            vehicle.vehicleEngine.SetTargetSpeed(0);
         }
         if (startDelayTime == -1 && trafficLight != null)
         {
@@ -184,9 +130,9 @@ public class VehicleEngine : MonoBehaviour
     private void ApplySteer()
     {
         Vector3 relativeVector = transform.InverseTransformPoint(currentNode.position);
-        float newSteer = (relativeVector.x / relativeVector.magnitude) * maxSteerAngle;
-        wheelColliderFrontLeft.steerAngle = Mathf.Lerp(newSteer, targetSteerAngle, Time.deltaTime * turnSpeed);
-        wheelColliderFrontRight.steerAngle = Mathf.Lerp(newSteer, targetSteerAngle, Time.deltaTime * turnSpeed);
+        float newSteer = (relativeVector.x / relativeVector.magnitude) * vehicleSettings.maxSteerAngle;
+        vehicleSettings.wheelColliderFrontLeft.steerAngle = Mathf.Lerp(newSteer, targetSteerAngle, Time.deltaTime * vehicleSettings.turnSpeed);
+        vehicleSettings.wheelColliderFrontRight.steerAngle = Mathf.Lerp(newSteer, targetSteerAngle, Time.deltaTime * vehicleSettings.turnSpeed);
     }
 
     /// <summary>
@@ -196,11 +142,11 @@ public class VehicleEngine : MonoBehaviour
     private void SpeedCheck()
     {
         // Reset Speed
-        SetTargetSpeed(maxSpeed);
+        vehicle.vehicleEngine.SetTargetSpeed(vehicleSettings.maxSpeed);
         // Corner Speed Check
         // Store the distances with their angles
         Dictionary<float, float> distanceAndAngles = new Dictionary<float, float>();
-        foreach (float distanceToCheck in distanceForSpeedCheck)
+        foreach (float distanceToCheck in vehicleSettings.distanceForSpeedCheck)
         {
             float angle = path.GetDirectionDifferenceToRoadAheadByDistanceMeasured(currentNode, transform, distanceToCheck, debug);
             if (float.IsNaN(angle))
@@ -220,26 +166,26 @@ public class VehicleEngine : MonoBehaviour
             // Find the average angle using the mean of all angles found.
             averageAngleDifference = averageAngleDifference / distanceAndAngles.Count;
             // Put the averaged angle into a exponential decay curve formula where x is the angle and y is the speed output
-            double finalSpeed = Math.Pow(cornerSensitivityModifier, -averageAngleDifference / cornerThresholdDegrees) * maxSpeed;
+            double finalSpeed = Math.Pow(vehicleSettings.cornerSensitivityModifier, -averageAngleDifference / vehicleSettings.cornerThresholdDegrees) * vehicleSettings.maxSpeed;
             // Keep final speed between the minimum corner speed and the max speed.
-            finalSpeed = Math.Max(cornerMinSpeed, Math.Min(finalSpeed, maxSpeed));
-            SetTargetSpeed((float)finalSpeed);
+            finalSpeed = Math.Max(vehicleSettings.cornerMinSpeed, Math.Min(finalSpeed, vehicleSettings.maxSpeed));
+            vehicle.vehicleEngine.SetTargetSpeed((float)finalSpeed);
         }
         // Stop Node Check
         Transform nextStopNode = path.GetNextStopNode(currentNode);
         if (nextStopNode != null)
         {
             float distance = path.GetDistanceToNextStopNode(currentNode, transform);
-            if (!float.IsNaN(distance) && distance < maxDistanceToMonitor)
+            if (!float.IsNaN(distance) && distance < vehicleSettings.maxDistanceToMonitor)
             {
-                float speed = distance * stopDistanceToSpeed;
+                float speed = distance * vehicleSettings.stopDistanceToSpeed;
                 if (TrafficLightManager.GetInstance().GetTrafficLightFromStopNode(nextStopNode).IsCurrentLightColour(TrafficLight.LightColour.RED))
                 {
-                    SetTargetSpeed(speed);
+                    vehicle.vehicleEngine.SetTargetSpeed(speed);
                 }
                 else
                 {
-                    SetTargetSpeed((speed < trafficLightMaxSpeedOnGreen ? trafficLightMaxSpeedOnGreen : speed));
+                    vehicle.vehicleEngine.SetTargetSpeed((speed < vehicleSettings.trafficLightMaxSpeedOnGreen ? vehicleSettings.trafficLightMaxSpeedOnGreen : speed));
                 }
             }
         }
@@ -248,16 +194,16 @@ public class VehicleEngine : MonoBehaviour
         if (nextStopLine != null)
         {
             float distance = path.GetDistanceToNextStopLine(currentNode, transform);
-            if (!float.IsNaN(distance) && distance < maxDistanceToMonitor)
+            if (!float.IsNaN(distance) && distance < vehicleSettings.maxDistanceToMonitor)
             {
-                if (distance <= stopLineEvaluationDistance)
+                if (distance <= vehicleSettings.stopLineEvaluationDistance)
                 {
                     MergeCheck(nextStopLine.type);
                 }
                 else
                 {
-                    float speed = distance * stopDistanceToSpeed;
-                    SetTargetSpeed(Math.Min(Math.Max(0, speed), targetSpeed));
+                    float speed = distance * vehicleSettings.stopDistanceToSpeed;
+                    vehicle.vehicleEngine.SetTargetSpeed(Math.Min(Math.Max(0, speed), vehicle.vehicleEngine.targetSpeed));
                 }
             }
         }
@@ -269,15 +215,15 @@ public class VehicleEngine : MonoBehaviour
         RaycastHit hit;
         Vector3 rayPosition = transform.position + transform.TransformDirection(Vector3.up);
         rayPosition = rayPosition + transform.TransformDirection(Vector3.forward) * ((longestSide / 2) - 1) + transform.TransformDirection(Vector3.left) * (shortestSide / 2);
-        float angle = (float)Math.PI * wheelColliderFrontLeft.steerAngle / 180f;
+        float angle = (float)Math.PI * vehicleSettings.wheelColliderFrontLeft.steerAngle / 180f;
         Vector3 direction = transform.TransformDirection(new Vector3((float)Math.Sin(angle), 0, (float)Math.Cos(angle)));
         for (float i = 0; i <= shortestSide; i = i + distanceBetweenRays)
         {
             Ray ray = new Ray(rayPosition + transform.TransformDirection(Vector3.right) * i, direction);
             rays.Add(ray);
         }
-        float speedToTarget = targetSpeed;
-        float distanceToMonitor = Math.Min(Math.Max(maxDistanceToMonitor - (Math.Abs(angle) * steerReduceRayConstant * maxDistanceToMonitor), stoppingDistance), maxDistanceToMonitor);
+        float speedToTarget = vehicle.vehicleEngine.targetSpeed;
+        float distanceToMonitor = Math.Min(Math.Max(vehicleSettings.maxDistanceToMonitor - (Math.Abs(angle) * vehicleSettings.steerReduceRayConstant * vehicleSettings.maxDistanceToMonitor), vehicleSettings.stoppingDistance), vehicleSettings.maxDistanceToMonitor);
         isWaitingOnSensorRays = false;
         foreach (Ray ray in rays)
         {
@@ -291,8 +237,8 @@ public class VehicleEngine : MonoBehaviour
                 {
                     Debug.DrawRay(ray.origin, ray.direction * hit.distance, new Color(1, (hit.distance / distanceToMonitor), 0), 0.01f);
                 }
-                speedToTarget = Math.Min(speedToTarget, (hit.distance - stoppingDistance) / 2);
-                if ((hit.distance - stoppingDistance) / 2 < isWaitingOnSensorRaysDistance)
+                speedToTarget = Math.Min(speedToTarget, (hit.distance - vehicleSettings.stoppingDistance) / 2);
+                if ((hit.distance - vehicleSettings.stoppingDistance) / 2 < vehicleSettings.isWaitingOnSensorRaysDistance)
                 {
                     isWaitingOnSensorRays = true;
                 }
@@ -305,16 +251,16 @@ public class VehicleEngine : MonoBehaviour
                 }
             }
         }
-        SetTargetSpeed(speedToTarget);
+        vehicle.vehicleEngine.SetTargetSpeed(speedToTarget);
     }
 
     private void MergeCheck(StopLine.Type stopLineType)
     {
-        float previousTargetSpeed = targetSpeed;
-        waitingForVehicleAhead = null;
-        waitingForVehicleBehind = null;
+        float previousTargetSpeed = vehicle.vehicleEngine.targetSpeed;
+        waitingForVehicleDriverAhead = null;
+        waitingForVehicleDriverBehind = null;
         UpdateVehicleIntersectionPointCache();
-        Dictionary<PathIntersectionPoint, HashSet<VehicleEngine>> vehiclesAtIntersectionPoint = GetVehiclesAtIntersectionPointsUsingCache();
+        Dictionary<PathIntersectionPoint, HashSet<Vehicle>> vehiclesAtIntersectionPoint = GetVehiclesAtIntersectionPointsUsingCache();
         if (vehiclesAtIntersectionPoint.Count == 0)
         {
             return;
@@ -324,7 +270,7 @@ public class VehicleEngine : MonoBehaviour
         {
             if (path.GetDistanceFromVehicleToIntersectionPoint(path, currentNodeNumber, transform, i, out float distanceResult))
             {
-                return distanceResult <= mergeRadiusCheck;
+                return distanceResult <= vehicleSettings.mergeRadiusCheck;
             }
             return false;
         }
@@ -342,7 +288,7 @@ public class VehicleEngine : MonoBehaviour
             {
                 Debug.DrawLine(pathIntersectionPoint.intersection, pathIntersectionPoint.intersection + Vector3.up * 5, Color.red);
             }
-            HashSet<VehicleEngine> vehiclesWithSameIntersection = vehiclesAtIntersectionPoint[pathIntersectionPoint];
+            HashSet<Vehicle> vehiclesWithSameIntersection = vehiclesAtIntersectionPoint[pathIntersectionPoint];
             float currentDistance;
             if (!path.GetDistanceFromVehicleToIntersectionPoint(path, currentNodeNumber, transform, pathIntersectionPoint, out currentDistance))
             {
@@ -351,12 +297,12 @@ public class VehicleEngine : MonoBehaviour
             }
             float distanceAhead = float.MaxValue;
             float distanceBehind = float.MaxValue;
-            VehicleEngine vehicleAhead = null;
-            VehicleEngine vehicleBehind = null;
-            foreach (VehicleEngine otherVehicle in vehiclesWithSameIntersection)
+            VehicleDriver vehicleAhead = null;
+            VehicleDriver vehicleBehind = null;
+            foreach (Vehicle otherVehicle in vehiclesWithSameIntersection)
             {
                 float otherVehicleDistance;
-                if (!otherVehicle.path.GetDistanceFromVehicleToIntersectionPoint(otherVehicle.path, otherVehicle.currentNodeNumber, otherVehicle.transform, pathIntersectionPoint, out otherVehicleDistance))
+                if (!otherVehicle.vehicleDriver.path.GetDistanceFromVehicleToIntersectionPoint(otherVehicle.vehicleDriver.path, otherVehicle.vehicleDriver.currentNodeNumber, otherVehicle.transform, pathIntersectionPoint, out otherVehicleDistance))
                 {
                     // Vehicle is now past intersection point
                     continue;
@@ -365,21 +311,21 @@ public class VehicleEngine : MonoBehaviour
                 if (relativeDistance >= 0 && distanceAhead > relativeDistance)
                 {
                     distanceAhead = relativeDistance;
-                    vehicleAhead = otherVehicle;
+                    vehicleAhead = otherVehicle.vehicleDriver;
                 }
                 else if (relativeDistance < 0 && distanceBehind > -relativeDistance)
                 {
                     distanceBehind = -relativeDistance;
-                    vehicleBehind = otherVehicle;
+                    vehicleBehind = otherVehicle.vehicleDriver;
                 }
             }
-            if (distanceAhead - longestSide <= currentSpeed)
+            if (distanceAhead - longestSide <= vehicle.vehicleEngine.currentSpeed)
             {
-                waitingForVehicleAhead = vehicleAhead;
+                waitingForVehicleDriverAhead = vehicleAhead;
             }
-            if (distanceBehind <= maxSpeed)
+            if (distanceBehind <= vehicleSettings.maxSpeed)
             {
-                waitingForVehicleBehind = vehicleBehind;
+                waitingForVehicleDriverBehind = vehicleBehind;
             }
             ApplyMergeAlgorithm(distanceAhead, distanceBehind);
         }
@@ -395,10 +341,10 @@ public class VehicleEngine : MonoBehaviour
         }
         if (isReleasingDeadlock)
         {
-            waitingForVehicleAhead = null;
-            waitingForVehicleBehind = null;
+            waitingForVehicleDriverAhead = null;
+            waitingForVehicleDriverBehind = null;
             // Bypass merge speed and proceed with caution
-            SetTargetSpeed(deadlockReleaseProceedSpeed);
+            vehicle.vehicleEngine.SetTargetSpeed(vehicleSettings.deadlockReleaseProceedSpeed);
             return;
         }
     }
@@ -406,7 +352,7 @@ public class VehicleEngine : MonoBehaviour
     private void SurfaceCheck()
     {
         WheelHit hit;
-        if (wheelColliderFrontLeft.GetGroundHit(out hit))
+        if (vehicleSettings.wheelColliderFrontLeft.GetGroundHit(out hit))
         {
             float staticFriction = hit.collider.material.staticFriction;
             float dyanmicFriction = hit.collider.material.dynamicFriction;
@@ -421,7 +367,7 @@ public class VehicleEngine : MonoBehaviour
                 wheelCollider.forwardFriction = wheelFrictionCurveForward;
                 wheelCollider.sidewaysFriction = wheelFrictionCurveSideways;
             }
-            currentMotorTorque = Math.Min(maxMotorTorque, maxMotorTorque * dyanmicFriction);
+            vehicle.vehicleEngine.currentMotorTorque = Math.Min(vehicleSettings.maxMotorTorque, vehicleSettings.maxMotorTorque * dyanmicFriction);
         }
     }
 
@@ -444,27 +390,7 @@ public class VehicleEngine : MonoBehaviour
             return;
         }
         // Unlikely to get multiple road ways so just pick the first one.
-        maxSpeed = roadWays.First().speedLimit;
-    }
-
-    /// <summary>
-    /// Destroys the vehicle and passes information to the Python Manager.
-    /// </summary>
-    private void Destroy()
-    {
-        if (!densityCountTriggered)
-        {
-            densityCountTriggered = true;
-            PythonManager.GetInstance().IncrementDensityCount();
-        }
-        Vector3 endPos = transform.position;
-        double distance = Vector3.Distance(startPos, endPos);
-        double time = (Time.time - startTime);
-        double speed = (distance / time);
-        PythonManager.GetInstance().speedList.Add(speed);
-        Destroy(this.gameObject);
-        PythonManager.GetInstance().IncrementRewardCount();
-        Utils.AppendAllTextToResults(Utils.VEHICLE_TIMES_FILE_NAME, time.ToString() + ",");
+        vehicleSettings.maxSpeed = roadWays.First().speedLimit;
     }
 
     /// <summary>
@@ -483,68 +409,15 @@ public class VehicleEngine : MonoBehaviour
         currentNode = path.nodes[currentNodeNumber];
     }
 
-    /// <summary>
-    /// Set the target speed of the vehicle
-    /// </summary>
-    /// <param name="targetSpeed">Speed in kilometers per hour</param>
-    public void SetTargetSpeed(float targetSpeed)
-    {
-        this.targetSpeed = targetSpeed;
-    }
-
-    /// <summary>
-    /// Gets the current engine status of the vehicle.
-    /// </summary>
-    /// <returns>The current engine status enum of the vehicle.</returns>
-    public EngineStatus GetEngineStatus()
-    {
-        return engineStatus;
-    }
-
-    /// <summary>
-    /// Set the current engine status of the vehicle.
-    /// </summary>
-    /// <param name="engineStatus">The status that the vehicle engine should be in.</param>
-    public void SetEngineStatus(EngineStatus engineStatus)
-    {
-        this.engineStatus = engineStatus;
-        wheelColliderFrontLeft.brakeTorque = 0;
-        wheelColliderFrontRight.brakeTorque = 0;
-        wheelColliderFrontLeft.motorTorque = 0;
-        wheelColliderFrontRight.motorTorque = 0;
-        if (engineStatus == EngineStatus.ACCELERATE)
-        {
-            wheelColliderFrontLeft.motorTorque = currentMotorTorque;
-            wheelColliderFrontRight.motorTorque = currentMotorTorque;
-        }
-        else if (engineStatus == EngineStatus.STOP)
-        {
-            wheelColliderFrontLeft.brakeTorque = normalBrakeTorque;
-            wheelColliderFrontRight.brakeTorque = normalBrakeTorque;
-        }
-        else if (engineStatus == EngineStatus.HARD_STOP)
-        {
-            wheelColliderFrontLeft.brakeTorque = maxBrakeTorque;
-            wheelColliderFrontRight.brakeTorque = maxBrakeTorque;
-        }
-    }
-
-    public enum EngineStatus
-    {
-        ACCELERATE,
-        STOP,
-        HARD_STOP
-    }
-
     private void ApplyMergeAlgorithm(float distanceAhead, float distanceBehind)
     {
-        if (distanceAhead - longestSide > currentSpeed && distanceBehind > maxSpeed)
+        if (distanceAhead - longestSide > vehicle.vehicleEngine.currentSpeed && distanceBehind > vehicleSettings.maxSpeed)
         {
-            SetTargetSpeed(Math.Min(targetSpeed, distanceAhead));
+            vehicle.vehicleEngine.SetTargetSpeed(Math.Min(vehicle.vehicleEngine.targetSpeed, distanceAhead));
         }
         else
         {
-            SetTargetSpeed(0);
+            vehicle.vehicleEngine.SetTargetSpeed(0);
         }
     }
 
@@ -587,11 +460,11 @@ public class VehicleEngine : MonoBehaviour
     /// Add all intersection points with this vehicle and another to a list for use in MergeCheck()
     /// </summary>
     /// <param name="otherVehicle">The other vehicle to check</param>
-    private void AddVehicleIntersectionPoint(VehicleEngine otherVehicle)
+    public void AddVehicleIntersectionPoint(Vehicle otherVehicle)
     {
-        if (otherVehicle != null && !otherVehicle.Equals(this))
+        if (otherVehicle != null && !otherVehicle.vehicleDriver.Equals(this))
         {
-            vehicleIntersectionPoints.Add(otherVehicle, path.GetIntersectionPoints(otherVehicle.path));
+            vehicleIntersectionPoints.Add(otherVehicle, path.GetIntersectionPoints(otherVehicle.vehicleDriver.path));
         }
     }
 
@@ -600,9 +473,9 @@ public class VehicleEngine : MonoBehaviour
     /// </summary>
     private void UpdateVehicleIntersectionPointCache()
     {
-        foreach (VehicleEngine vehicleEngine in vehicleIntersectionPoints.Keys.Where(v => v == null).ToList())
+        foreach (Vehicle vehicle in vehicleIntersectionPoints.Keys.Where(v => v == null).ToList())
         {
-            vehicleIntersectionPoints.Remove(vehicleEngine);
+            vehicleIntersectionPoints.Remove(vehicle);
         }
     }
 
@@ -622,18 +495,18 @@ public class VehicleEngine : MonoBehaviour
     /// <returns>True if in a merging deadlock</returns>
     public bool IsInDeadlock()
     {
-        if (waitingForVehicleBehind == null && waitingForVehicleAhead == null)
+        if (waitingForVehicleDriverBehind == null && waitingForVehicleDriverAhead == null)
         {
             return false;
         }
-        List<VehicleEngine> vehiclesToSearch = new List<VehicleEngine>();
-        if (waitingForVehicleAhead != null)
+        List<VehicleDriver> vehiclesToSearch = new List<VehicleDriver>();
+        if (waitingForVehicleDriverAhead != null)
         {
-            vehiclesToSearch.Add(waitingForVehicleAhead);
+            vehiclesToSearch.Add(waitingForVehicleDriverAhead);
         }
-        if (waitingForVehicleBehind != null)
+        if (waitingForVehicleDriverBehind != null)
         {
-            vehiclesToSearch.Add(waitingForVehicleBehind);
+            vehiclesToSearch.Add(waitingForVehicleDriverBehind);
         }
         bool isInDeadlock = false;
         for (int i = 0; i < deadlockSearchMaxAttempts; i++)
@@ -642,37 +515,37 @@ public class VehicleEngine : MonoBehaviour
             {
                 break;
             }
-            VehicleEngine vehicleToSearch = vehiclesToSearch.First();
+            VehicleDriver vehicleDriverToSearch = vehiclesToSearch.First();
             // Vehicle has been found in a loop of waiting vehicles.
-            if (this.Equals(vehicleToSearch.waitingForVehicleAhead) || this.Equals(vehicleToSearch.waitingForVehicleBehind))
+            if (this.Equals(vehicleDriverToSearch.waitingForVehicleDriverAhead) || this.Equals(vehicleDriverToSearch.waitingForVehicleDriverBehind))
             {
                 isInDeadlock = true;
                 break;
             }
-            if (vehicleToSearch.waitingForVehicleAhead != null)
+            if (vehicleDriverToSearch.waitingForVehicleDriverAhead != null)
             {
-                if (vehicleToSearch.waitingForVehicleAhead.deadlock)
+                if (vehicleDriverToSearch.waitingForVehicleDriverAhead.deadlock)
                 {
                     isInDeadlock = true;
                     break;
                 }
-                vehiclesToSearch.Add(vehicleToSearch.waitingForVehicleAhead);
+                vehiclesToSearch.Add(vehicleDriverToSearch.waitingForVehicleDriverAhead);
             }
-            if (vehicleToSearch.waitingForVehicleBehind != null)
+            if (vehicleDriverToSearch.waitingForVehicleDriverBehind != null)
             {
-                if (vehicleToSearch.waitingForVehicleBehind.deadlock)
+                if (vehicleDriverToSearch.waitingForVehicleDriverBehind.deadlock)
                 {
                     isInDeadlock = true;
                     break;
                 }
-                vehiclesToSearch.Add(vehicleToSearch.waitingForVehicleBehind);
+                vehiclesToSearch.Add(vehicleDriverToSearch.waitingForVehicleDriverBehind);
             }
-            if (vehiclesToSearch.Count == 1 && vehicleToSearch.waitingForVehicleAhead == null && vehicleToSearch.waitingForVehicleBehind == null && vehicleToSearch.isWaitingOnSensorRays)
+            if (vehiclesToSearch.Count == 1 && vehicleDriverToSearch.waitingForVehicleDriverAhead == null && vehicleDriverToSearch.waitingForVehicleDriverBehind == null && vehicleDriverToSearch.isWaitingOnSensorRays)
             {
                 isInDeadlock = true;
                 break;
             }
-            vehiclesToSearch.Remove(vehicleToSearch);
+            vehiclesToSearch.Remove(vehicleDriverToSearch);
         }
         return isInDeadlock;
     }
@@ -703,20 +576,20 @@ public class VehicleEngine : MonoBehaviour
     /// <returns>True if the deadlock should be released</returns>
     private bool ShouldReleaseDeadlock()
     {
-        if (currentDeadlockSeconds < releaseDeadlockAfterSeconds)
+        if (currentDeadlockSeconds < vehicleSettings.releaseDeadlockAfterSeconds)
         {
             return false;
         }
-        List<VehicleEngine> vehiclesInArea = FindObjectsOfType<VehicleEngine>().Where(v => Vector3.Distance(v.transform.position, transform.position) <= mergeRadiusCheck).OrderByDescending(v => v.GetDeadlockPriority()).ToList();
-        List<VehicleEngine> vehiclesInAreaOriginal = new List<VehicleEngine>(vehiclesInArea);
+        List<Vehicle> vehiclesInArea = FindObjectsOfType<Vehicle>().Where(v => Vector3.Distance(v.transform.position, transform.position) <= vehicleSettings.mergeRadiusCheck).OrderByDescending(v => v.vehicleDriver.GetDeadlockPriority()).ToList();
+        List<Vehicle> vehiclesInAreaOriginal = new List<Vehicle>(vehiclesInArea);
         while (vehiclesInArea.Count > 0)
         {
-            VehicleEngine vehicleToCheck = vehiclesInArea.First();
-            if (this.Equals(vehicleToCheck))
+            Vehicle vehicleToCheck = vehiclesInArea.First();
+            if (this.Equals(vehicleToCheck.vehicleDriver))
             {
                 return true;
             }
-            if (vehicleToCheck.IsReleasingDeadlock() || !vehicleToCheck.isWaitingOnSensorRays)
+            if (vehicleToCheck.vehicleDriver.IsReleasingDeadlock() || !vehicleToCheck.vehicleDriver.isWaitingOnSensorRays)
             {
                 return false;
             }
@@ -735,10 +608,10 @@ public class VehicleEngine : MonoBehaviour
     /// Gets a Dictionary of intersection points with the vehicles that will be passing through that intersection point
     /// </summary>
     /// <returns>A dictionary of interesection points with vehicles</returns>
-    private Dictionary<PathIntersectionPoint, HashSet<VehicleEngine>> GetVehiclesAtIntersectionPointsUsingCache()
+    private Dictionary<PathIntersectionPoint, HashSet<Vehicle>> GetVehiclesAtIntersectionPointsUsingCache()
     {
-        Dictionary<PathIntersectionPoint, HashSet<VehicleEngine>> vehiclesAtIntersectionPoint = new Dictionary<PathIntersectionPoint, HashSet<VehicleEngine>>();
-        foreach (KeyValuePair<VehicleEngine, HashSet<PathIntersectionPoint>> entry in vehicleIntersectionPoints)
+        Dictionary<PathIntersectionPoint, HashSet<Vehicle>> vehiclesAtIntersectionPoint = new Dictionary<PathIntersectionPoint, HashSet<Vehicle>>();
+        foreach (KeyValuePair<Vehicle, HashSet<PathIntersectionPoint>> entry in vehicleIntersectionPoints)
         {
             foreach (PathIntersectionPoint intersectionPoint in entry.Value)
             {
@@ -748,7 +621,7 @@ public class VehicleEngine : MonoBehaviour
                 }
                 else
                 {
-                    vehiclesAtIntersectionPoint.Add(intersectionPoint, new HashSet<VehicleEngine>() { entry.Key });
+                    vehiclesAtIntersectionPoint.Add(intersectionPoint, new HashSet<Vehicle>() { entry.Key });
                 }
             }
         }

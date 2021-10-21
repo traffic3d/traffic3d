@@ -101,7 +101,7 @@ public class PathIntersectionPoint
         }
         else
         {
-            VehicleEngine vehicle = GameObject.FindObjectsOfType<VehicleEngine>().Where(v => v.path == vehiclePath).FirstOrDefault();
+            VehicleDriver vehicle = GameObject.FindObjectsOfType<VehicleDriver>().Where(v => v.path == vehiclePath).FirstOrDefault();
             string vehicleName = (vehicle != null) ? vehicle.name : "Null";
             throw new ArgumentException("Vehicle path doesn't have this intersection. Vehicle: " + vehicleName + " - Intersection: " + ToString());
         }

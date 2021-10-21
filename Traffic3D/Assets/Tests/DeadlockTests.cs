@@ -58,9 +58,9 @@ public class DeadlockTests
         yield return null;
         DisableLoops();
         VehicleFactory vehicleFactory = GameObject.FindObjectOfType<VehicleFactory>();
-        VehicleEngine vehicleEngine = vehicleFactory.SpawnVehicle(vehicleFactory.GetRandomVehicle(), RoadNetworkManager.GetInstance().GetRandomStartNode());
+        Vehicle vehicle = vehicleFactory.SpawnVehicle(vehicleFactory.GetRandomVehicle(), RoadNetworkManager.GetInstance().GetRandomStartNode());
         yield return new WaitForFixedUpdate();
-        Assert.False(vehicleEngine.IsInDeadlock());
+        Assert.False(vehicle.vehicleDriver.IsInDeadlock());
     }
 
     [UnityTest]
@@ -71,13 +71,13 @@ public class DeadlockTests
         DisableLoops();
         List<RoadWay> deadlockableRoadWays = GameObject.FindObjectsOfType<RoadWay>().Where(r => deadlockableRoadWayStrings.Contains(r.name)).ToList();
         VehicleFactory vehicleFactory = GameObject.FindObjectOfType<VehicleFactory>();
-        List<VehicleEngine> vehicles = new List<VehicleEngine>();
+        List<Vehicle> vehicles = new List<Vehicle>();
         Assert.True(deadlockableRoadWays.Count > 0);
         foreach(RoadWay roadWay in deadlockableRoadWays)
         {
-            VehicleEngine vehicleEngine = vehicleFactory.SpawnVehicle(vehicleFactory.GetRandomVehicle(), roadWay.nodes[0]).GetComponent<VehicleEngine>();
-            vehicleEngine.SetVehiclePath(roadWay.ToDirectVehiclePath());
-            vehicles.Add(vehicleEngine);
+            Vehicle vehicle = vehicleFactory.SpawnVehicle(vehicleFactory.GetRandomVehicle(), roadWay.nodes[0]);
+            vehicle.vehicleDriver.SetVehiclePath(roadWay.ToDirectVehiclePath());
+            vehicles.Add(vehicle);
         }
         // Vehicles must be close to the stop line.
         bool vehiclesReady = false;
@@ -85,24 +85,25 @@ public class DeadlockTests
         for (int i = 0; i <= MAX_STOP_LINE_CHECKS; i++)
         {
             yield return new WaitForFixedUpdate();
-            if (vehicles.All(v => v.maxSpeed == 0))
+            if (vehicles.All(v => v.vehicleSettings.maxSpeed == 0))
             {
                 vehiclesReady = true;
                 break;
             }
-            foreach (VehicleEngine vehicle in vehicles)
+            foreach (Vehicle vehicle in vehicles)
             {
                 if (vehicle == null)
                 {
                     break;
                 }
-                float distance = vehicle.path.GetDistanceToNextStopLine(vehicle.currentNode, vehicle.transform);
+                VehicleSettings vehicleSettings = vehicle.vehicleSettings;
+                float distance = vehicle.vehicleDriver.path.GetDistanceToNextStopLine(vehicle.vehicleDriver.currentNode, vehicle.transform);
                 // Just before the stop line evaluation point.
-                vehicle.maxSpeed = distance - vehicle.stopLineEvaluationDistance;
+                vehicleSettings.maxSpeed = distance - vehicleSettings.stopLineEvaluationDistance;
                 if (distance < STOP_LINE_DISTANCE)
                 {
-                    previousMaxSpeed = vehicle.maxSpeed;
-                    vehicle.maxSpeed = 0;
+                    previousMaxSpeed = vehicleSettings.maxSpeed;
+                    vehicleSettings.maxSpeed = 0;
                 }
             }
         }
@@ -110,16 +111,16 @@ public class DeadlockTests
         {
             Assert.Fail("Unable to align vehicles for deadlock.");
         }
-        foreach (VehicleEngine vehicle in vehicles)
+        foreach (Vehicle vehicle in vehicles)
         {
-            vehicle.maxSpeed = previousMaxSpeed;
+            vehicle.vehicleSettings.maxSpeed = previousMaxSpeed;
         }
         // All vehicles are at the stop line
         bool allVehiclesDeadlocked = false;
         for (int i = 0; i <= MAX_STOP_LINE_CHECKS; i++)
         {
             yield return new WaitForFixedUpdate();
-            if (vehicles.All(v => v.deadlock))
+            if (vehicles.All(v => v.vehicleDriver.deadlock))
             {
                 allVehiclesDeadlocked = true;
                 break;

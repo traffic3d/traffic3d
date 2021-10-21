@@ -574,7 +574,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4552897400682038}
   - component: {fileID: 54240910825635966}
-  - component: {fileID: 8276394593898460683}
+  - component: {fileID: 5728002534296835732}
+  - component: {fileID: 4617105939134164532}
   m_Layer: 0
   m_Name: yellowBuspre
   m_TagString: car
@@ -621,7 +622,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &8276394593898460683
+--- !u!114 &5728002534296835732
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -630,20 +631,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 1878293882199392}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a84fd945f96726a4ea85aa1c60896077, type: 3}
+  m_Script: {fileID: 11500000, guid: 45f65ec64a5e5934b9ce04d28d7e3a16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vehicleSettings: {fileID: 0}
+  vehicleEngine: {fileID: 0}
+  vehicleDriver: {fileID: 0}
+--- !u!114 &4617105939134164532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1878293882199392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c00063b1b6b22347afd0580eba6cca4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxSteerAngle: 75
   turnSpeed: 5
-  wheelColliderFrontLeft: {fileID: 146353838976224590}
-  wheelColliderFrontRight: {fileID: 146036045479180732}
-  maxMotorTorque: 1800
-  currentMotorTorque: 0
-  normalBrakeTorque: 3600
-  maxBrakeTorque: 3600
-  currentSpeed: 0
   stoppingDistance: 7
-  maxSpeed: 50
   distanceForSpeedCheck:
   - 10
   - 30
@@ -656,22 +664,21 @@ MonoBehaviour:
   stopLineEvaluationDistance: 10
   trafficLightMaxSpeedOnGreen: 20
   mergeRadiusCheck: 100
-  centerOfMass: {x: 0, y: 0, z: 0}
-  currentNode: {fileID: 0}
-  currentNodeNumber: 0
   numberOfSensorRays: 5
+  isWaitingOnSensorRaysDistance: 5
   steerReduceRayConstant: 5
   maxDistanceToMonitor: 100
-  targetSpeed: 0
-  startTime: 0
-  startDelayTime: -1
-  startPos: {x: 0, y: 0, z: 0}
+  deadlockReleaseProceedSpeed: 10
+  releaseDeadlockAfterSeconds: 3
   nodeReadingOffset: 1
-  engineStatus: 0
-  densityCountTriggered: 0
-  debug: 0
-  waitingForVehicleAhead: {fileID: 0}
-  waitingForVehicleBehind: {fileID: 0}
+  longestSideLength: -1
+  shortestSideLength: -1
+  normalBrakeTorque: 3600
+  maxBrakeTorque: 3600
+  maxSpeed: 50
+  maxMotorTorque: 1800
+  wheelColliderFrontLeft: {fileID: 146353838976224590}
+  wheelColliderFrontRight: {fileID: 146036045479180732}
 --- !u!1 &1934155448739692
 GameObject:
   m_ObjectHideFlags: 0

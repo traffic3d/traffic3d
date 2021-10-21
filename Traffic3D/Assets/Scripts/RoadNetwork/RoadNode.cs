@@ -26,7 +26,7 @@ public class RoadNode : MonoBehaviour
         }
     }
 
-    public bool CanSpawnVehicle(VehicleEngine vehicle)
+    public bool CanSpawnVehicle(Vehicle vehicle)
     {
         BoxCollider boxCollider = vehicle.gameObject.GetComponentInChildren<BoxCollider>();
         currentBoxColliderCheck = boxCollider;

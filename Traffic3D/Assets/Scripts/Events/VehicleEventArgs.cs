@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 
 public class VehicleEventArgs : EventArgs
 {
-    public VehicleEngine vehicleEngine;
+    public Vehicle vehicle;
 
-    public VehicleEventArgs(VehicleEngine vehicleEngine)
+    public VehicleEventArgs(Vehicle vehicle)
     {
-        this.vehicleEngine = vehicleEngine;
+        this.vehicle = vehicle;
     }
 }
