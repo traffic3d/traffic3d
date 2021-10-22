@@ -7,10 +7,7 @@ public class VehicleDriver : MonoBehaviour
 {
     public Vehicle vehicle;
     public VehicleSettings vehicleSettings;
-    public VehiclePath path;
-    public Transform currentNode;
-    public int currentNodeNumber;
-    private float targetSteerAngle = 0;
+    public VehicleNavigation vehicleNavigation;
     public bool isWaitingOnSensorRays = false;
     private float distanceBetweenRays;
     public float startTime;
@@ -28,13 +25,13 @@ public class VehicleDriver : MonoBehaviour
     private const float attemptAnotherDeadlockReleaseAfter = 5f;
     private bool isLeftHandDrive;
     private const float mergeAlgorithmPadding = 3f;
-    private const float debugSphereSize = 0.25f;
     public Dictionary<Vehicle, HashSet<PathIntersectionPoint>> vehicleIntersectionPoints = new Dictionary<Vehicle, HashSet<PathIntersectionPoint>>();
 
     private void Awake()
     {
         vehicle = gameObject.GetComponent<Vehicle>();
         vehicleSettings = gameObject.GetComponent<VehicleSettings>();
+        vehicleNavigation = gameObject.AddComponent<VehicleNavigation>();
     }
 
     void Start()
@@ -51,22 +48,6 @@ public class VehicleDriver : MonoBehaviour
             AddVehicleIntersectionPoint(vehicle);
         }
         SpeedLimitCheck();
-    }
-
-    /// <summary>
-    /// Sets the path for the vehicle to use.
-    /// </summary>
-    /// <param name="path">The path for the vehicle to use.</param>
-    public void GenerateVehiclePath(RoadNode startRoadNode)
-    {
-        SetVehiclePath(RoadNetworkManager.GetInstance().GetValidVehiclePath(startRoadNode));
-    }
-
-    public void SetVehiclePath(VehiclePath vehiclePath)
-    {
-        this.path = vehiclePath;
-        currentNodeNumber = 1;
-        currentNode = path.nodes[currentNodeNumber];
     }
 
     public void OnCollisionEnter(Collision other)
@@ -92,24 +73,23 @@ public class VehicleDriver : MonoBehaviour
     /// </summary>
     private void FixedUpdate()
     {
-        if (path == null)
+        if (vehicleNavigation.path == null)
         {
             return;
         }
-        if (Vector3.Distance(transform.TransformPoint(0, 0, vehicleSettings.nodeReadingOffset), currentNode.position) < 3f)
+        if (vehicleNavigation.CheckNextNode())
         {
-            NextNode();
             SpeedLimitCheck();
         }
-        if (currentNodeNumber == path.nodes.Count - 1)
+        if (vehicleNavigation.IsAtDestination())
         {
             vehicle.DestroyVehicle();
             return;
         }
-        ApplySteer();
+        vehicleNavigation.ApplySteer();
         SpeedCheck();
         SensorCheck();
-        TrafficLight trafficLight = TrafficLightManager.GetInstance().GetTrafficLightFromStopNode(currentNode);
+        TrafficLight trafficLight = TrafficLightManager.GetInstance().GetTrafficLightFromStopNode(vehicleNavigation.currentNode);
         if ((trafficLight != null && trafficLight.IsCurrentLightColour(TrafficLight.LightColour.RED)) || this.gameObject.tag == "hap")
         {
             vehicle.vehicleEngine.SetTargetSpeed(0);
@@ -118,17 +98,6 @@ public class VehicleDriver : MonoBehaviour
         {
             startDelayTime = Time.time;
         }
-    }
-
-    /// <summary>
-    /// Applies the steer of the vehicle for this current period of time.
-    /// </summary>
-    private void ApplySteer()
-    {
-        Vector3 relativeVector = transform.InverseTransformPoint(currentNode.position);
-        float newSteer = (relativeVector.x / relativeVector.magnitude) * vehicleSettings.maxSteerAngle;
-        vehicleSettings.wheelColliderFrontLeft.steerAngle = Mathf.Lerp(newSteer, targetSteerAngle, Time.deltaTime * vehicleSettings.turnSpeed);
-        vehicleSettings.wheelColliderFrontRight.steerAngle = Mathf.Lerp(newSteer, targetSteerAngle, Time.deltaTime * vehicleSettings.turnSpeed);
     }
 
     /// <summary>
@@ -144,7 +113,7 @@ public class VehicleDriver : MonoBehaviour
         Dictionary<float, float> distanceAndAngles = new Dictionary<float, float>();
         foreach (float distanceToCheck in vehicleSettings.distanceForSpeedCheck)
         {
-            float angle = path.GetDirectionDifferenceToRoadAheadByDistanceMeasured(currentNode, transform, distanceToCheck, debug);
+            float angle = vehicleNavigation.path.GetDirectionDifferenceToRoadAheadByDistanceMeasured(vehicleNavigation.currentNode, transform, distanceToCheck, debug);
             if (float.IsNaN(angle))
             {
                 continue;
@@ -168,10 +137,10 @@ public class VehicleDriver : MonoBehaviour
             vehicle.vehicleEngine.SetTargetSpeed((float)finalSpeed);
         }
         // Stop Node Check
-        Transform nextStopNode = path.GetNextStopNode(currentNode);
+        Transform nextStopNode = vehicleNavigation.path.GetNextStopNode(vehicleNavigation.currentNode);
         if (nextStopNode != null)
         {
-            float distance = path.GetDistanceToNextStopNode(currentNode, transform);
+            float distance = vehicleNavigation.path.GetDistanceToNextStopNode(vehicleNavigation.currentNode, transform);
             if (!float.IsNaN(distance) && distance < vehicleSettings.maxDistanceToMonitor)
             {
                 float speed = distance * vehicleSettings.stopDistanceToSpeed;
@@ -186,10 +155,10 @@ public class VehicleDriver : MonoBehaviour
             }
         }
         // Stop Line Check
-        StopLine nextStopLine = path.GetNextStopLine(currentNode);
+        StopLine nextStopLine = vehicleNavigation.path.GetNextStopLine(vehicleNavigation.currentNode);
         if (nextStopLine != null)
         {
-            float distance = path.GetDistanceToNextStopLine(currentNode, transform);
+            float distance = vehicleNavigation.path.GetDistanceToNextStopLine(vehicleNavigation.currentNode, transform);
             if (!float.IsNaN(distance) && distance < vehicleSettings.maxDistanceToMonitor)
             {
                 if (distance <= vehicleSettings.stopLineEvaluationDistance)
@@ -264,7 +233,7 @@ public class VehicleDriver : MonoBehaviour
         // Find intersections within a certain distance of the vehicle
         HashSet<PathIntersectionPoint> pathIntersectionPoints = new HashSet<PathIntersectionPoint>(vehiclesAtIntersectionPoint.Keys.Where(i =>
         {
-            if (path.GetDistanceFromVehicleToIntersectionPoint(path, currentNodeNumber, transform, i, out float distanceResult))
+            if (vehicleNavigation.path.GetDistanceFromVehicleToIntersectionPoint(vehicleNavigation.path, vehicleNavigation.currentNodeNumber, transform, i, out float distanceResult))
             {
                 return distanceResult <= vehicleSettings.mergeRadiusCheck;
             }
@@ -286,7 +255,7 @@ public class VehicleDriver : MonoBehaviour
             }
             HashSet<Vehicle> vehiclesWithSameIntersection = vehiclesAtIntersectionPoint[pathIntersectionPoint];
             float currentDistance;
-            if (!path.GetDistanceFromVehicleToIntersectionPoint(path, currentNodeNumber, transform, pathIntersectionPoint, out currentDistance))
+            if (!vehicleNavigation.path.GetDistanceFromVehicleToIntersectionPoint(vehicleNavigation.path, vehicleNavigation.currentNodeNumber, transform, pathIntersectionPoint, out currentDistance))
             {
                 // Unable to get path distance to intersection
                 continue;
@@ -298,7 +267,7 @@ public class VehicleDriver : MonoBehaviour
             foreach (Vehicle otherVehicle in vehiclesWithSameIntersection)
             {
                 float otherVehicleDistance;
-                if (!otherVehicle.vehicleDriver.path.GetDistanceFromVehicleToIntersectionPoint(otherVehicle.vehicleDriver.path, otherVehicle.vehicleDriver.currentNodeNumber, otherVehicle.transform, pathIntersectionPoint, out otherVehicleDistance))
+                if (!otherVehicle.vehicleDriver.vehicleNavigation.path.GetDistanceFromVehicleToIntersectionPoint(otherVehicle.vehicleDriver.vehicleNavigation.path, otherVehicle.vehicleDriver.vehicleNavigation.currentNodeNumber, otherVehicle.transform, pathIntersectionPoint, out otherVehicleDistance))
                 {
                     // Vehicle is now past intersection point
                     continue;
@@ -369,16 +338,16 @@ public class VehicleDriver : MonoBehaviour
 
     private void SpeedLimitCheck()
     {
-        RoadNode roadNode = path.nodes[currentNodeNumber].GetComponent<RoadNode>();
+        RoadNode roadNode = vehicleNavigation.path.nodes[vehicleNavigation.currentNodeNumber].GetComponent<RoadNode>();
         List<RoadWay> roadWays = new List<RoadWay>();
-        if (currentNodeNumber + 1 < path.nodes.Count)
+        if (vehicleNavigation.currentNodeNumber + 1 < vehicleNavigation.path.nodes.Count)
         {
-            RoadNode nextRoadNode = path.nodes[currentNodeNumber + 1].GetComponent<RoadNode>();
+            RoadNode nextRoadNode = vehicleNavigation.path.nodes[vehicleNavigation.currentNodeNumber + 1].GetComponent<RoadNode>();
             roadWays = RoadNetworkManager.GetInstance().GetRoadWaysFromNodes(roadNode, nextRoadNode);
         }
-        else if (currentNodeNumber > 0)
+        else if (vehicleNavigation.currentNodeNumber > 0)
         {
-            RoadNode previousRoadNode = path.nodes[currentNodeNumber - 1].GetComponent<RoadNode>();
+            RoadNode previousRoadNode = vehicleNavigation.path.nodes[vehicleNavigation.currentNodeNumber - 1].GetComponent<RoadNode>();
             roadWays = RoadNetworkManager.GetInstance().GetRoadWaysFromNodes(previousRoadNode, roadNode);
         }
         if (roadWays.Count == 0)
@@ -387,22 +356,6 @@ public class VehicleDriver : MonoBehaviour
         }
         // Unlikely to get multiple road ways so just pick the first one.
         vehicleSettings.maxSpeed = roadWays.First().speedLimit;
-    }
-
-    /// <summary>
-    /// Sets the vehicle to the next node in the path.
-    /// </summary>
-    private void NextNode()
-    {
-        if (currentNodeNumber == path.nodes.Count - 1)
-        {
-            currentNodeNumber = 0;
-        }
-        else
-        {
-            currentNodeNumber++;
-        }
-        currentNode = path.nodes[currentNodeNumber];
     }
 
     private void ApplyMergeAlgorithm(float distanceAhead, float distanceBehind)
@@ -447,7 +400,7 @@ public class VehicleDriver : MonoBehaviour
     */
     private bool IsOtherPathIncomingFromLookingDirection(PathIntersectionPoint pathIntersectionPoint)
     {
-        PathIntersectionLine currentIntersectionLine = pathIntersectionPoint.GetLineFromPath(path);
+        PathIntersectionLine currentIntersectionLine = pathIntersectionPoint.GetLineFromPath(vehicleNavigation.path);
         return (isLeftHandDrive && !pathIntersectionPoint.IsIncomingPathFromDirection(PathIntersectionPoint.Direction.RIGHT, currentIntersectionLine)) ||
             (!isLeftHandDrive && !pathIntersectionPoint.IsIncomingPathFromDirection(PathIntersectionPoint.Direction.LEFT, currentIntersectionLine));
     }
@@ -460,7 +413,7 @@ public class VehicleDriver : MonoBehaviour
     {
         if (otherVehicle != null && !otherVehicle.vehicleDriver.Equals(this))
         {
-            vehicleIntersectionPoints.Add(otherVehicle, path.GetIntersectionPoints(otherVehicle.vehicleDriver.path));
+            vehicleIntersectionPoints.Add(otherVehicle, vehicleNavigation.path.GetIntersectionPoints(otherVehicle.vehicleDriver.vehicleNavigation.path));
         }
     }
 
@@ -629,31 +582,6 @@ public class VehicleDriver : MonoBehaviour
         newWheelFrictionCurve.asymptoteSlip = wheelFrictionCurveToClone.asymptoteSlip;
         newWheelFrictionCurve.stiffness = wheelFrictionCurveToClone.stiffness;
         return newWheelFrictionCurve;
-    }
-
-    void OnDrawGizmosSelected()
-    {
-        if (path == null)
-        {
-            return;
-        }
-        Gizmos.color = Color.green;
-        for (int i = 0; i < path.nodes.Count; i++)
-        {
-            Vector3 currentNode = path.nodes[i].transform.position;
-            Vector3 previousNode = Vector3.zero;
-            Vector3 lastNode = Vector3.zero;
-            if (i > 0)
-            {
-                previousNode = path.nodes[i - 1].transform.position;
-            }
-            else if (i == 0 && path.nodes.Count > 1)
-            {
-                currentNode = lastNode;
-            }
-            Gizmos.DrawLine(previousNode, currentNode);
-            Gizmos.DrawWireSphere(currentNode, debugSphereSize);
-        }
     }
 }
 
