@@ -76,7 +76,7 @@ public class DeadlockTests
         foreach(RoadWay roadWay in deadlockableRoadWays)
         {
             Vehicle vehicle = vehicleFactory.SpawnVehicle(vehicleFactory.GetRandomVehicle(), roadWay.nodes[0]);
-            vehicle.vehicleDriver.SetVehiclePath(roadWay.ToDirectVehiclePath());
+            vehicle.vehicleDriver.vehicleNavigation.SetVehiclePath(roadWay.ToDirectVehiclePath());
             vehicles.Add(vehicle);
         }
         // Vehicles must be close to the stop line.
@@ -97,7 +97,7 @@ public class DeadlockTests
                     break;
                 }
                 VehicleSettings vehicleSettings = vehicle.vehicleSettings;
-                float distance = vehicle.vehicleDriver.path.GetDistanceToNextStopLine(vehicle.vehicleDriver.currentNode, vehicle.transform);
+                float distance = vehicle.vehicleDriver.vehicleNavigation.path.GetDistanceToNextStopLine(vehicle.vehicleDriver.vehicleNavigation.currentNode, vehicle.transform);
                 // Just before the stop line evaluation point.
                 vehicleSettings.maxSpeed = distance - vehicleSettings.stopLineEvaluationDistance;
                 if (distance < STOP_LINE_DISTANCE)

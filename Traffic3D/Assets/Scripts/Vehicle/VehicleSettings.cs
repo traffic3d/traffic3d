@@ -4,8 +4,6 @@ using UnityEngine;
 public class VehicleSettings : MonoBehaviour
 {
     // Vehicle Driver Properties
-    public float maxSteerAngle = 45f;
-    public float turnSpeed = 5f;
     public float stoppingDistance = 7f;
     public List<float> distanceForSpeedCheck = new List<float> { 10, 30, 60, 150 };
     public float cornerThresholdDegrees = 90f;
@@ -21,9 +19,12 @@ public class VehicleSettings : MonoBehaviour
     public float maxDistanceToMonitor = 100;
     public float deadlockReleaseProceedSpeed = 10f;
     public float releaseDeadlockAfterSeconds = 3;
-    public float nodeReadingOffset = 0f;
     public float longestSideLength = -1f;
     public float shortestSideLength = -1f;
+    // Vehicle Navigation Properties
+    public float maxSteerAngle = 45f;
+    public float turnSpeed = 5f;
+    public float nodeReadingOffset = 0f;
     // Vehicle Engine Properties
     public float normalBrakeTorque = 200f;
     public float maxBrakeTorque = 400f;

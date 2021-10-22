@@ -33,7 +33,7 @@ public class VehicleEngineTests : CommonSceneTest
         DisableLoops();
         TrafficLightManager.GetInstance().SetAllToRed();
         Vehicle vehicle = SpawnVehicle();
-        yield return new WaitUntil(() => TrafficLightManager.GetInstance().GetTrafficLightFromStopNode(vehicle.vehicleDriver.currentNode) != null);
+        yield return new WaitUntil(() => TrafficLightManager.GetInstance().GetTrafficLightFromStopNode(vehicle.vehicleDriver.vehicleNavigation.currentNode) != null);
         Assert.True(vehicle.vehicleEngine.GetEngineStatus() == VehicleEngine.EngineStatus.STOP || vehicle.vehicleEngine.GetEngineStatus() == VehicleEngine.EngineStatus.HARD_STOP);
     }
 
@@ -92,7 +92,7 @@ public class VehicleEngineTests : CommonSceneTest
         VehicleDriver vehicleDriver = vehicle.vehicleDriver;
         GameObject vehicleObject = vehicleDriver.gameObject;
         VehiclePath vehiclePath = roadWayWithTurning.ToDirectVehiclePath();
-        vehicleDriver.SetVehiclePath(vehiclePath);
+        vehicleDriver.vehicleNavigation.SetVehiclePath(vehiclePath);
         bool carIsDestroyed = false;
         for (int i = 0; i <= TIME_OUT_DESTROY_TIME; i = i + 1)
         {
@@ -104,7 +104,7 @@ public class VehicleEngineTests : CommonSceneTest
                 break;
             }
             // While turning, speeds should be reduced.
-            if (vehiclePath.GetDirectionDifferenceToRoadAheadByDistanceMeasured(vehicleDriver.currentNode, vehicleDriver.transform, CHECK_DISTANCE_AHEAD_SPEED_TEST, false) > CHECK_ANGLE_DIFFERENCE_SPEED_TEST)
+            if (vehiclePath.GetDirectionDifferenceToRoadAheadByDistanceMeasured(vehicleDriver.vehicleNavigation.currentNode, vehicleDriver.transform, CHECK_DISTANCE_AHEAD_SPEED_TEST, false) > CHECK_ANGLE_DIFFERENCE_SPEED_TEST)
             {
                 Assert.Greater(vehicleDriver.vehicleSettings.maxSpeed, vehicle.vehicleEngine.targetSpeed, "Turning Speed");
             }
@@ -130,7 +130,7 @@ public class VehicleEngineTests : CommonSceneTest
         VehicleDriver vehicleDriver = vehicle.vehicleDriver;
         GameObject vehicleObject = vehicle.gameObject;
         VehiclePath vehiclePath = longestRoadWay.ToDirectVehiclePath();
-        vehicleDriver.SetVehiclePath(vehiclePath);
+        vehicleDriver.vehicleNavigation.SetVehiclePath(vehiclePath);
         bool carIsDestroyed = false;
         for (int i = 0; i <= TIME_OUT_DESTROY_TIME; i++)
         {

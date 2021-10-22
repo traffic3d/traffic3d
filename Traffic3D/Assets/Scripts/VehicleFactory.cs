@@ -91,7 +91,7 @@ public class VehicleFactory : MonoBehaviour
         try
         {
             TemporarilyHideVehicle(spawnedVehicle, timeOfStartInvisibility);
-            spawnedVehicle.vehicleDriver.GenerateVehiclePath(startRoadNode);
+            spawnedVehicle.vehicleDriver.vehicleNavigation.GenerateVehiclePath(startRoadNode);
             currentVehicles.Add(spawnedVehicle);
             EventManager.GetInstance().CallVehicleSpawnEvent(this, new VehicleEventArgs(spawnedVehicle));
         }
