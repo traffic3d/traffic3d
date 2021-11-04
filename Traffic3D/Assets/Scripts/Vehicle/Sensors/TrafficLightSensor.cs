@@ -19,7 +19,7 @@ public class TrafficLightSensor : ISensor
     public void Run(Dictionary<string, object> args)
     {
         TrafficLight trafficLight = TrafficLightManager.GetInstance().GetTrafficLightFromStopNode(vehicle.vehicleDriver.vehicleNavigation.currentNode);
-        if ((trafficLight != null && trafficLight.IsCurrentLightColour(TrafficLight.LightColour.RED)) || vehicle.gameObject.tag == "hap")
+        if ((trafficLight != null && trafficLight.IsCurrentLightColour(TrafficLight.LightColour.RED)) || vehicle.gameObject.tag == "collided")
         {
             vehicle.vehicleEngine.SetTargetSpeed(0);
         }

@@ -197,8 +197,8 @@ public class PythonManager : MonoBehaviour
     /// </summary>
     public IEnumerator SendRewards()
     {
-        // Both "car" and "hap" tags are cars that are waiting.
-        int finalReward = rewardCount - (GameObject.FindGameObjectsWithTag("car").Length + GameObject.FindGameObjectsWithTag("hap").Length);
+        // Both "car" and "collided" tags are cars that are waiting.
+        int finalReward = rewardCount - (GameObject.FindGameObjectsWithTag("car").Length + GameObject.FindGameObjectsWithTag("collided").Length);
         Utils.AppendAllTextToResults("TrueRewards.csv", finalReward.ToString() + ",");
         Utils.AppendAllTextToResults(Utils.THROUGHPUT_FILE_NAME, rewardCount.ToString() + ",");
         SocketManager.GetInstance().Send("" + finalReward);

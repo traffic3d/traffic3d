@@ -34,7 +34,7 @@ public class VehicleDriver : MonoBehaviour
     {
         if (other.gameObject.tag == "car")
         {
-            other.gameObject.tag = "hap";
+            other.gameObject.tag = "collided";
         }
     }
 
