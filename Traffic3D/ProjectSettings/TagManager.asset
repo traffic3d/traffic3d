@@ -6,8 +6,6 @@ TagManager:
   tags:
   - drive
   - car
-  - hap
-  - unhap
   - roadway
   - pathway
   - criteriaValueError
@@ -19,6 +17,7 @@ TagManager:
   - workerHighlight
   - worker
   - friend
+  - collided
   layers:
   - Default
   - TransparentFX

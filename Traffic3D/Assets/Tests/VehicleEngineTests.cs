@@ -11,7 +11,6 @@ public class VehicleEngineTests : CommonSceneTest
     public const int STOP_LIGHT_TIME = 20;
     public const int TIME_OUT_DESTROY_TIME = 60;
     public const int TIME_OUT_STOP_TIME = 60;
-    public const int CHECK_DISTANCE_AHEAD_SPEED_TEST = 5;
     public const int CHECK_ANGLE_DIFFERENCE_SPEED_TEST = 2;
     public const int SPEED_LIMIT_TEST_VALUE = 20;
     public const int SPEED_LIMIT_TEST_ALLOWABLE_EXTRA = 1;
@@ -104,7 +103,7 @@ public class VehicleEngineTests : CommonSceneTest
                 break;
             }
             // While turning, speeds should be reduced.
-            if (vehiclePath.GetDirectionDifferenceToRoadAheadByDistanceMeasured(vehicleDriver.vehicleNavigation.currentNode, vehicleDriver.transform, CHECK_DISTANCE_AHEAD_SPEED_TEST, false) > CHECK_ANGLE_DIFFERENCE_SPEED_TEST)
+            if (vehiclePath.GetDirectionDifferenceToRoadAheadByDistanceMeasured(vehicleDriver.vehicleNavigation.currentNode, vehicleDriver.transform, vehicle.vehicleSettings.distanceForSpeedCheck.Min(), false) > CHECK_ANGLE_DIFFERENCE_SPEED_TEST)
             {
                 Assert.Greater(vehicleDriver.vehicleSettings.maxSpeed, vehicle.vehicleEngine.targetSpeed, "Turning Speed");
             }

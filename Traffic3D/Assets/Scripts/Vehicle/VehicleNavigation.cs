@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class VehicleNavigation : MonoBehaviour
 {
@@ -6,6 +7,7 @@ public class VehicleNavigation : MonoBehaviour
     public VehiclePath path;
     public Transform currentNode;
     public int currentNodeNumber;
+    public RoadNodeUnityEvent nextNodeEvent = new RoadNodeUnityEvent();
 
     private const float targetSteerAngle = 0;
     private const float checkNextNodeDistance = 3f;
@@ -80,6 +82,12 @@ public class VehicleNavigation : MonoBehaviour
             currentNodeNumber++;
         }
         currentNode = path.nodes[currentNodeNumber];
+        nextNodeEvent.Invoke(currentNode);
+    }
+
+    [System.Serializable]
+    public class RoadNodeUnityEvent : UnityEvent<Transform>
+    {
     }
 
     void OnDrawGizmosSelected()
