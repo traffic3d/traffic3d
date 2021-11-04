@@ -40,12 +40,12 @@ public class Vehicle : MonoBehaviour
 
     public void OnVehicleSpawnEvent(object sender, VehicleEventArgs args)
     {
-        vehicleDriver.AddVehicleIntersectionPoint(args.vehicle);
+        vehicleDriver.vehicleSensors.GetSensor<MergeSensor>().AddVehicleIntersectionPoint(args.vehicle);
     }
 
     public void OnVehicleDestroyEvent(object sender, VehicleEventArgs args)
     {
-        vehicleDriver.vehicleIntersectionPoints.Remove(args.vehicle);
+        vehicleDriver.vehicleSensors.GetSensor<MergeSensor>().vehicleIntersectionPoints.Remove(args.vehicle);
     }
 
     private void OnDestroy()

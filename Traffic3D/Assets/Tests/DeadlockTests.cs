@@ -60,7 +60,7 @@ public class DeadlockTests
         VehicleFactory vehicleFactory = GameObject.FindObjectOfType<VehicleFactory>();
         Vehicle vehicle = vehicleFactory.SpawnVehicle(vehicleFactory.GetRandomVehicle(), RoadNetworkManager.GetInstance().GetRandomStartNode());
         yield return new WaitForFixedUpdate();
-        Assert.False(vehicle.vehicleDriver.IsInDeadlock());
+        Assert.False(vehicle.vehicleDriver.vehicleSensors.GetSensor<DeadlockSensor>().IsInDeadlock());
     }
 
     [UnityTest]
@@ -120,7 +120,7 @@ public class DeadlockTests
         for (int i = 0; i <= MAX_STOP_LINE_CHECKS; i++)
         {
             yield return new WaitForFixedUpdate();
-            if (vehicles.All(v => v.vehicleDriver.deadlock))
+            if (vehicles.All(v => v.vehicleDriver.vehicleSensors.GetSensor<DeadlockSensor>().deadlock))
             {
                 allVehiclesDeadlocked = true;
                 break;

@@ -7,12 +7,13 @@ public class DensityMeasurePoint : MonoBehaviour
         Vehicle vehicle = other.GetComponentInParent<Vehicle>();
         if (vehicle != null && !vehicle.vehicleDriver.densityCountTriggered)
         {
+            TrafficLightSensor trafficLightSensor = vehicle.vehicleDriver.vehicleSensors.GetSensor<TrafficLightSensor>();
             vehicle.vehicleDriver.densityCountTriggered = true;
             PythonManager.GetInstance().IncrementDensityCount();
             // Calculate Delay
-            if (vehicle.vehicleDriver.startDelayTime != -1)
+            if (trafficLightSensor.startDelayTime != -1)
             {
-                float delay = Time.time - vehicle.vehicleDriver.startDelayTime;
+                float delay = Time.time - trafficLightSensor.startDelayTime;
                 Utils.AppendAllTextToResults(Utils.VEHICLE_DELAY_TIMES_FILE_NAME, delay.ToString() + ",");
             }
         }
