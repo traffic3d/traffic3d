@@ -6,7 +6,6 @@ public class DeadlockSensor : ISensor
 {
     private Vehicle vehicle;
     public float currentDeadlockSeconds = 0;
-    public float deadlockPriorityModifier;
     public bool deadlock;
     public float deadlockReleaseAtTime = 0;
     private const int deadlockSearchMaxAttempts = 100;
@@ -15,7 +14,6 @@ public class DeadlockSensor : ISensor
     public DeadlockSensor(Vehicle vehicle)
     {
         this.vehicle = vehicle;
-        deadlockPriorityModifier = RandomNumberGenerator.GetInstance().NextFloat();
     }
 
     public void Start()
@@ -43,15 +41,6 @@ public class DeadlockSensor : ISensor
             vehicle.vehicleEngine.SetTargetSpeed(vehicle.vehicleSettings.deadlockReleaseProceedSpeed);
             return;
         }
-    }
-
-    /// <summary>
-    /// Get the deadlock priority of the current vehicle
-    /// </summary>
-    /// <returns>Returns priority of vehicle for deadlock releases</returns>
-    public float GetDeadlockPriority()
-    {
-        return deadlockPriorityModifier;
     }
 
     /// <summary>
@@ -144,8 +133,7 @@ public class DeadlockSensor : ISensor
         {
             return false;
         }
-        List<Vehicle> vehiclesInArea = GameObject.FindObjectsOfType<Vehicle>().Where(v => Vector3.Distance(v.transform.position, vehicle.transform.position) <= vehicleSettings.mergeRadiusCheck).OrderByDescending(v => v.vehicleDriver.vehicleSensors.GetSensor<DeadlockSensor>().GetDeadlockPriority()).ToList();
-        List<Vehicle> vehiclesInAreaOriginal = new List<Vehicle>(vehiclesInArea);
+        List<Vehicle> vehiclesInArea = GameObject.FindObjectsOfType<Vehicle>().Where(v => Vector3.Distance(v.transform.position, vehicle.transform.position) <= vehicleSettings.mergeRadiusCheck).OrderByDescending(v => v.gameObject.GetInstanceID()).ToList();
         while (vehiclesInArea.Count > 0)
         {
             Vehicle vehicleToCheck = vehiclesInArea.First();
