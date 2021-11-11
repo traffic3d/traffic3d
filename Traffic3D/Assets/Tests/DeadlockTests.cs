@@ -2,10 +2,10 @@ using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
-using System.Linq;
 
 [Category("Tests")]
 public class DeadlockTests
@@ -73,7 +73,7 @@ public class DeadlockTests
         VehicleFactory vehicleFactory = GameObject.FindObjectOfType<VehicleFactory>();
         List<Vehicle> vehicles = new List<Vehicle>();
         Assert.True(deadlockableRoadWays.Count > 0);
-        foreach(RoadWay roadWay in deadlockableRoadWays)
+        foreach (RoadWay roadWay in deadlockableRoadWays)
         {
             Vehicle vehicle = vehicleFactory.SpawnVehicle(vehicleFactory.GetRandomVehicle(), roadWay.nodes[0]);
             vehicle.vehicleDriver.vehicleNavigation.SetVehiclePath(roadWay.ToDirectVehiclePath());
@@ -129,6 +129,12 @@ public class DeadlockTests
         if (!allVehiclesDeadlocked)
         {
             Assert.Fail("Vehicles are not deadlocked.");
+        }
+        // All vehicles should have the same deadlock release list
+        List<Vehicle> comparisonList = vehicles.First().vehicleDriver.vehicleSensors.GetSensor<DeadlockSensor>().lastVehicleReleaseList;
+        foreach (Vehicle vehicle in vehicles)
+        {
+            CollectionAssert.AreEqual(comparisonList, vehicle.vehicleDriver.vehicleSensors.GetSensor<DeadlockSensor>().lastVehicleReleaseList);
         }
         bool allVehiclesCompleted = false;
         // Vehicles should work out how to stop the deadlock and complete their journey.
