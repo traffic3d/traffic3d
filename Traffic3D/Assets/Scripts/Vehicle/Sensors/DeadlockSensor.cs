@@ -6,7 +6,6 @@ public class DeadlockSensor : ISensor
 {
     private Vehicle vehicle;
     public float currentDeadlockSeconds = 0;
-    public float deadlockPriorityModifier;
     public bool deadlock;
     public float deadlockReleaseAtTime = 0;
     private const int deadlockSearchMaxAttempts = 100;
@@ -15,7 +14,6 @@ public class DeadlockSensor : ISensor
     public DeadlockSensor(Vehicle vehicle)
     {
         this.vehicle = vehicle;
-        deadlockPriorityModifier = RandomNumberGenerator.GetInstance().NextFloat();
     }
 
     public void Start()
@@ -43,15 +41,6 @@ public class DeadlockSensor : ISensor
             vehicle.vehicleEngine.SetTargetSpeed(vehicle.vehicleSettings.deadlockReleaseProceedSpeed);
             return;
         }
-    }
-
-    /// <summary>
-    /// Get the deadlock priority of the current vehicle
-    /// </summary>
-    /// <returns>Returns priority of vehicle for deadlock releases</returns>
-    public float GetDeadlockPriority()
-    {
-        return deadlockPriorityModifier;
     }
 
     /// <summary>
@@ -144,11 +133,10 @@ public class DeadlockSensor : ISensor
         {
             return false;
         }
-        List<Vehicle> vehiclesInArea = GameObject.FindObjectsOfType<Vehicle>().Where(v => Vector3.Distance(v.transform.position, vehicle.transform.position) <= vehicleSettings.mergeRadiusCheck).OrderByDescending(v => v.vehicleDriver.vehicleSensors.GetSensor<DeadlockSensor>().GetDeadlockPriority()).ToList();
-        List<Vehicle> vehiclesInAreaOriginal = new List<Vehicle>(vehiclesInArea);
-        while (vehiclesInArea.Count > 0)
+        List<Vehicle> vehicleReleaseList = this.GenerateVehicleReleaseList();
+        while (vehicleReleaseList.Count > 0)
         {
-            Vehicle vehicleToCheck = vehiclesInArea.First();
+            Vehicle vehicleToCheck = vehicleReleaseList.First();
             if (vehicle.vehicleDriver.Equals(vehicleToCheck.vehicleDriver))
             {
                 return true;
@@ -157,10 +145,15 @@ public class DeadlockSensor : ISensor
             {
                 return false;
             }
-            vehiclesInArea.Remove(vehicleToCheck);
+            vehicleReleaseList.Remove(vehicleToCheck);
         }
         // This is the last vehicle so should release
         return true;
+    }
+
+    public List<Vehicle> GenerateVehicleReleaseList()
+    {
+        return GameObject.FindObjectsOfType<Vehicle>().Where(v => v.vehicleDriver.vehicleSensors.GetSensor<DeadlockSensor>().deadlock).OrderByDescending(v => v.gameObject.GetInstanceID()).ToList();
     }
 
     public bool IsReleasingDeadlock()

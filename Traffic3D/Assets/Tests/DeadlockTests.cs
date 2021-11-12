@@ -2,16 +2,16 @@ using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
-using System.Linq;
 
 [Category("Tests")]
 public class DeadlockTests
 {
     private const int TIME_OUT = 60;
-    private const int MAX_STOP_LINE_CHECKS = 10000;
+    private const int MAX_CHECKS = 10000;
     private const int STOP_LINE_DISTANCE = 15;
     private List<string> deadlockableRoadWayStrings;
 
@@ -73,7 +73,7 @@ public class DeadlockTests
         VehicleFactory vehicleFactory = GameObject.FindObjectOfType<VehicleFactory>();
         List<Vehicle> vehicles = new List<Vehicle>();
         Assert.True(deadlockableRoadWays.Count > 0);
-        foreach(RoadWay roadWay in deadlockableRoadWays)
+        foreach (RoadWay roadWay in deadlockableRoadWays)
         {
             Vehicle vehicle = vehicleFactory.SpawnVehicle(vehicleFactory.GetRandomVehicle(), roadWay.nodes[0]);
             vehicle.vehicleDriver.vehicleNavigation.SetVehiclePath(roadWay.ToDirectVehiclePath());
@@ -82,7 +82,7 @@ public class DeadlockTests
         // Vehicles must be close to the stop line.
         bool vehiclesReady = false;
         float previousMaxSpeed = 50;
-        for (int i = 0; i <= MAX_STOP_LINE_CHECKS; i++)
+        for (int i = 0; i <= MAX_CHECKS; i++)
         {
             yield return new WaitForFixedUpdate();
             if (vehicles.All(v => v.vehicleSettings.maxSpeed == 0))
@@ -117,7 +117,7 @@ public class DeadlockTests
         }
         // All vehicles are at the stop line
         bool allVehiclesDeadlocked = false;
-        for (int i = 0; i <= MAX_STOP_LINE_CHECKS; i++)
+        for (int i = 0; i <= MAX_CHECKS; i++)
         {
             yield return new WaitForFixedUpdate();
             if (vehicles.All(v => v.vehicleDriver.vehicleSensors.GetSensor<DeadlockSensor>().deadlock))
@@ -130,9 +130,17 @@ public class DeadlockTests
         {
             Assert.Fail("Vehicles are not deadlocked.");
         }
+        // All vehicles should have the same deadlock release list
+        List<Vehicle> comparisonList = vehicles.First().vehicleDriver.vehicleSensors.GetSensor<DeadlockSensor>().GenerateVehicleReleaseList();
+        Assert.NotNull(comparisonList);
+        Assert.IsNotEmpty(comparisonList);
+        foreach (Vehicle vehicle in vehicles)
+        {
+            CollectionAssert.AreEqual(comparisonList, vehicle.vehicleDriver.vehicleSensors.GetSensor<DeadlockSensor>().GenerateVehicleReleaseList());
+        }
         bool allVehiclesCompleted = false;
         // Vehicles should work out how to stop the deadlock and complete their journey.
-        for (int i = 0; i <= MAX_STOP_LINE_CHECKS; i++)
+        for (int i = 0; i <= MAX_CHECKS; i++)
         {
             yield return new WaitForFixedUpdate();
             if (vehicles.All(v => v == null))
