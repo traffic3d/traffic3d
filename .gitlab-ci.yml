@@ -8,11 +8,12 @@ variables:
     FEATURE_BRANCH_TAG: $CI_COMMIT_REF_SLUG
 
 
-cache:
-    key: "$CI_PROJECT_NAMESPACE-$CI_PROJECT_NAME-$CI_COMMIT_REF_SLUG-$BUILD_TARGET"
-    paths:
-        - .apt/
-        - $BUILD_NAME/Library/
+default:
+    cache:
+        key: "$CI_PROJECT_NAMESPACE-$CI_PROJECT_NAME-$CI_COMMIT_REF_SLUG-$BUILD_TARGET"
+        paths:
+            - .apt/
+            - $BUILD_NAME/Library/
 
 stages:
     - lint
